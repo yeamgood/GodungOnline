@@ -1,72 +1,62 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
-<head>
-	<title>Registration Form</title>
-	<link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
-<body>
-	<form th:action="@{/}" method="get">
-		<button class="btn btn-md btn-warning btn-block" type="Submit">Go To Login Page</button>
-	</form>	
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
 	
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
-				<form autocomplete="off" action="#" th:action="@{/registration}"
-					th:object="${user}" method="post" class="form-horizontal"
-					role="form">
-					<h2>Registration Form</h2>
-					<div class="form-group">
-						<div class="col-sm-9">
-						<label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
-								class="validation-message"></label>
-						<input type="text" th:field="*{name}" placeholder="Name"
-								class="form-control" /> 
-						</div>
-					</div>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Godung Online</title>
 
-					<div class="form-group">
-						<div class="col-sm-9">
-						<label	th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
-								class="validation-message"></label>
-							<input type="text" th:field="*{lastName}"
-								placeholder="Last Name" class="form-control" /> 
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-9">
-							<input type="text" th:field="*{email}" placeholder="Email"
-								class="form-control" /> <label
-								th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
-								class="validation-message"></label>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-9">
-							<input type="password" th:field="*{password}"
-								placeholder="Password" class="form-control" /> <label
-								th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
-								class="validation-message"></label>
-						</div>
-					</div>
+    <!-- Bootstrap -->
+    <link type="text/css" th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link type="text/css" th:href="@{/vendors/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+    <!-- NProgress -->
+    <link type="text/css" th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
+    <!-- Animate.css -->
+    <link type="text/css" th:href="@{/vendors/animate.css/animate.min.css}" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link type="text/css" th:href="@{/build/css/custom.min.css}" rel="stylesheet">
+  </head>
 
-					<div class="form-group">
-						<div class="col-sm-9">
-							<button type="submit" class="btn btn-primary btn-block">Register User</button>
-						</div>
-					</div>
-					
-					<span th:utext="${successMessage}"></span>
-					
-					
-				</form>
-			</div>
-		</div>
-	</div>
+  <body class="login">
+    <div>
+      <div class="login_wrapper">
+        <div class="animate form login_form">
+          <div class="mid_center">
+            <h1><i class="fa fa-cubes"></i> Godung Online</h1>
+          </div>
+          <section class="login_content">
+            	<form th:action="@{/login}" method="POST" class="form-signin">
+              <h1>Registration Form</h1>
+     
+              <div><input type="text" id="name" name="name"  th:placeholder="name" class="form-control"/></div>
+              <div><input type="text" id="lastName" name="lastName"  th:placeholder="lastName" class="form-control"/></div>
+              <div><input type="text" id="email" name="email"  th:placeholder="Email" class="form-control"/></div>
+              <div><input type="password" th:placeholder="Password" id="password" name="password" class="form-control"/></div>
+              <button class="btn btn-primary btn-block" name="Submit" value="Login" type="Submit"><i class="fa fa-user"></i> Register</button>
+    
+              <div class="clearfix"></div>
 
-</body>
+              <div class="separator">
+                <p class="change_link">Already a member ?
+                  <a th:href="@{/login}" class="to_register">Log in</a>
+                </p>
+
+                <div class="clearfix"></div><br />
+                <div>
+                  <p>©2017 All Rights Reserved. Godung Online.</p>
+                </div>
+              </div>
+              
+            </form>
+          </section>
+        </div>
+      </div>
+    </div>
+  </body>
+  
 </html>
