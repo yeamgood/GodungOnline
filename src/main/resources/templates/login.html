@@ -23,34 +23,33 @@
   </head>
 
   <body class="login">
-  
-  testset <span th:text="#{form.first-name}"></span>
-  
+ 
     <div>
       <div class="login_wrapper">
         <div class="animate form login_form">
           <div class="mid_center">
-            <h1><i class="fa fa-cube"></i> Godung Online</h1>
+            <h1><i class="fa fa-cube"></i> <span th:text="#{app.name}"></span></h1>
+            <p><span th:text="#{app.version}"></span></p>
           </div>
           <section class="login_content">
             	<form th:action="@{/login}" method="POST" class="form-signin">
-              <h1>Login Form</h1>
+              <h1><span th:text="#{form.login.loginform}"></span></h1>
      
-              <div><input type="text" id="email" name="email"  th:placeholder="Email" class="form-control"/></div>
-              <div><input type="password" th:placeholder="Password" id="password" name="password" class="form-control"/></div>
-              <button class="btn btn-primary btn-block" name="Submit" value="Login" type="Submit"><i class="fa fa-sign-in"></i> Log in</button>
+              <div><input type="text" id="email" name="email"  th:placeholder="#{form.login.email}" class="form-control"/></div>
+              <div><input type="password" th:placeholder="#{form.login.password}" id="password" name="password" class="form-control"/></div>
+              <button class="btn btn-primary btn-block" name="Submit" value="Login" type="Submit"><i class="fa fa-sign-in"></i> <span th:text="#{form.login.login}"></span></button>
     
               <div class="clearfix"></div>
 
               <div class="separator">
-                <p class="change_link">New to site?
-                  <a th:href="@{/registration}" class="to_register"> Create Account </a>
-                  <a th:href="@{/forgot_password}">Lost your password?</a>
+                <p class="change_link"><span th:text="#{form.login.newtosite}"></span>
+                  <a th:href="@{/registration}" class="to_register"> <span th:text="#{form.login.createacc}"></span> </a>
+                  <a th:href="@{/forgot_password}"><span th:text="#{form.login.lostpass}"></span></a>
                 </p>
 
                 <div class="clearfix"></div><br />
                 <div>
-                  <p>©2017 All Rights Reserved. Godung Online.</p>
+                  <p><span th:text="#{app.copyright}"></span></p>
                 </div>
               </div>
               

@@ -27,28 +27,29 @@
       <div class="login_wrapper">
         <div class="animate form login_form">
           <div class="mid_center">
-            <h1><i class="fa fa-cube"></i> Godung Online</h1>
+            <h1><i class="fa fa-cube"></i> <span th:text="#{app.name}"></span></h1>
+            <p><span th:text="#{app.version}"></span></p>
           </div>
           <section class="login_content">
-            	<form th:action="@{/login}" method="POST" class="form-signin">
-              <h1>Registration Form</h1>
+        	    <form autocomplete="off" action="#" th:action="@{/registration}" th:object="${user}" method="post" class="form-horizontal" role="form">
+              <h1><span th:text="#{form.register.retistrationform}"></span></h1>
      
-              <div><input type="text" id="name" name="name"  th:placeholder="name" class="form-control"/></div>
-              <div><input type="text" id="lastName" name="lastName"  th:placeholder="lastName" class="form-control"/></div>
-              <div><input type="text" id="email" name="email"  th:placeholder="Email" class="form-control"/></div>
-              <div><input type="password" th:placeholder="Password" id="password" name="password" class="form-control"/></div>
-              <button class="btn btn-primary btn-block" name="Submit" value="Login" type="Submit"><i class="fa fa-user"></i> Register</button>
+              <div><input type="text" id="firstName" name="firstName"  th:placeholder="#{form.register.firstname}" class="form-control"/></div>
+              <div><input type="text" id="lastName" name="lastName"  th:placeholder="#{form.register.lastname}" class="form-control"/></div>
+              <div><input type="text" id="email" name="email"  th:placeholder="#{form.register.email}" class="form-control"/></div>
+              <div><input type="password" id="password" name="password" th:placeholder="#{form.register.password}" class="form-control"/></div>
+              <button class="btn btn-primary btn-block" name="Submit" value="Login" type="Submit"><i class="fa fa-user"></i> <span th:text="#{form.register.register}"></span></button>
     
               <div class="clearfix"></div>
 
               <div class="separator">
-                <p class="change_link">Already a member ?
-                  <a th:href="@{/login}" class="to_register">Log in</a>
+                <p class="change_link"><span th:text="#{form.register.alreadymember}"></span>
+                  <a th:href="@{/login}" class="to_register"><span th:text="#{form.register.login}"></span></a>
                 </p>
 
                 <div class="clearfix"></div><br />
                 <div>
-                  <p>©2017 All Rights Reserved. Godung Online.</p>
+                  <p><span th:text="#{app.copyright}"></span></p>
                 </div>
               </div>
               
