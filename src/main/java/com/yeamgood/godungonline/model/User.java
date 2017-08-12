@@ -27,21 +27,21 @@ public class User {
 	private int id;
 	
 	@Column(name = "email")
-	@Email(message = "*Please provide a valid Email")
-	@NotEmpty(message = "*Please provide an email")
+	@Email(message = "{validation.required.email.valid}")
+	@NotEmpty(message = "{validation.required.email}")
 	private String email;
 	
 	@Column(name = "password")
-	@Length(min = 5, message = "*Your password must have at least 5 characters")
-	@NotEmpty(message = "*Please provide your password")
+	@Length(min = 5, message = "{validation.required.password.valid}")
+	@NotEmpty(message = "{validation.required.password}")
 	private String password;
 	
 	@Column(name = "first_name")
-	@NotEmpty(message = "*Please provide your first name")
+	@NotEmpty(message = "{validation.required.firstname}")
 	private String firstName;
 	
 	@Column(name = "last_name")
-	@NotEmpty(message = "*Please provide your last name")
+	@NotEmpty(message = "{validation.required.lastname}")
 	private String lastName;
 	
 	@Column(name = "active")

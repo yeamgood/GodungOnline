@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org">
 	
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -20,10 +20,12 @@
     <link type="text/css" th:href="@{/vendors/animate.css/animate.min.css}" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link type="text/css" th:href="@{/build/css/custom.min.css}" rel="stylesheet">
+    <!-- Main Theme Style -->
+    <link type="text/css" th:href="@{/css/main.css}" rel="stylesheet">
   </head>
 
   <body class="login">
- 
+
     <div>
       <div class="login_wrapper">
         <div class="animate form login_form">
@@ -32,11 +34,20 @@
             <p><span th:text="#{app.version}"></span></p>
           </div>
           <section class="login_content">
-            	<form th:action="@{/login}" method="POST" class="form-signin">
+            	<form th:action="@{/login}" th:object="${user}" method="POST" class="form-signin">
+              
               <h1><span th:text="#{form.login.loginform}"></span></h1>
      
-              <div><input type="text" id="email" name="email"  th:placeholder="#{form.login.email}" class="form-control"/></div>
-              <div><input type="password" th:placeholder="#{form.login.password}" id="password" name="password" class="form-control"/></div>
+      		  <div class="validation-box">
+                <div>
+                  <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="validation-message"></label>
+              	  <input type="text" th:field="*{email}" name="email"  th:placeholder="#{form.login.email}" class="form-control"/>
+                </div>
+                <div>
+                  <!-- <label th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="validation-message"></label> -->
+                  <input type="password" th:field="*{password}" name="password" th:placeholder="#{form.login.password}" class="form-control"/>
+                </div>
+              </div>
               <button class="btn btn-primary btn-block" name="Submit" value="Login" type="Submit"><i class="fa fa-sign-in"></i> <span th:text="#{form.login.login}"></span></button>
     
               <div class="clearfix"></div>
@@ -46,18 +57,24 @@
                   <a th:href="@{/registration}" class="to_register"> <span th:text="#{form.login.createacc}"></span> </a>
                   <a th:href="@{/forgot_password}"><span th:text="#{form.login.lostpass}"></span></a>
                 </p>
-
+                
                 <div class="clearfix"></div><br />
                 <div>
                   <p><span th:text="#{app.copyright}"></span></p>
                 </div>
               </div>
+              <p>
+                <a th:href="@{/login?lang=th}"><img alt="th" th:src="@{/images/flags/24/Thailand.png}"></a>
+            	    <a th:href="@{/login?lang=en}"><img alt="en" th:src="@{/images/flags/24/United Kingdom(Great Britain).png}"></a>
+              </p>
+              
               
             </form>
           </section>
         </div>
       </div>
     </div>
+    
   </body>
   
 </html>
