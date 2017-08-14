@@ -1,5 +1,7 @@
 package com.yeamgood.godungonline.controller;
 
+import java.util.Locale;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.yeamgood.godungonline.bean.Pnotify;
 import com.yeamgood.godungonline.model.User;
 import com.yeamgood.godungonline.service.UserService;
 
@@ -43,9 +46,15 @@ public class RegistrationController {
 			modelAndView.setViewName("registration");
 		} else {
 			userService.saveUser(user);
-			modelAndView.addObject("successMessage", messageSource.getMessage("message.user.register.success",null,LocaleContextHolder.getLocale()));
+			Locale userLocale = LocaleContextHolder.getLocale();
+			Pnotify pnotify = new Pnotify();
+			pnotify.setTitle(messageSource.getMessage("pnotify.title.success",null,userLocale));
+			pnotify.setType(messageSource.getMessage("pnotify.type.success",null,userLocale));
+			pnotify.setText(messageSource.getMessage("message.user.register.success",null,userLocale));
+			modelAndView.addObject("pnotify", pnotify);
+			
 			modelAndView.addObject("user", new User());
-			modelAndView.setViewName("registration");
+			modelAndView.setViewName("login");
 		}
 		return modelAndView;
 	}

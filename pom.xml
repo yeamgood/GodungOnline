@@ -69,6 +69,20 @@
 		    <artifactId>nekohtml</artifactId>
 		    <version>1.9.22</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-mail</artifactId>
+		    <version>1.5.4.RELEASE</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context-support</artifactId>
+		    <version>4.3.9.RELEASE</version>
+		</dependency>
+		
+		
 		<!-- https://mvnrepository.com/artifact/org.apache.tiles/tiles-jsp
 		<dependency>
 		    <groupId>org.apache.tiles</groupId>

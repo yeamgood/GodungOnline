@@ -22,10 +22,16 @@
     <link type="text/css" th:href="@{/build/css/custom.min.css}" rel="stylesheet">
     <!-- Main Theme Style -->
     <link type="text/css" th:href="@{/css/main.css}" rel="stylesheet">
+    
+    <!-- PNotify -->
+    <link type="text/css" th:href="@{vendors/pnotify/dist/pnotify.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{vendors/pnotify/dist/pnotify.buttons.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{vendors/pnotify/dist/pnotify.nonblock.css}" rel="stylesheet">
+    
   </head>
 
   <body class="login">
-
+  
     <div>
       <div class="login_wrapper">
         <div class="animate form login_form">
@@ -75,6 +81,57 @@
       </div>
     </div>
     
+    <!-- jQuery -->
+    <script th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+    <!-- Bootstrap -->
+    <script th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+    
+    <!-- PNotify -->
+    <script th:src="@{/vendors/pnotify/dist/pnotify.js}"></script>
+    <script th:src="@{/vendors/pnotify/dist/pnotify.buttons.js}"></script>
+    <script th:src="@{/vendors/pnotify/dist/pnotify.nonblock.js}"></script>
+    
+    <script>
+	function openNotification(inputType,inputTitle,inputText){
+		if(inputType == "success" || inputType == "info" || inputType == "error"){ /* SUCCESS,INFO,ERROR */
+			new PNotify({
+	            title: inputTitle,
+	            text: inputText,
+	            type: inputType,
+	            styling: 'bootstrap3'
+	        });
+		}else if(inputType == "notice"){ /* NOTICE */
+			new PNotify({
+				title: inputTitle,
+				text: inputText,
+	            styling: 'bootstrap3'
+	        });
+		}else if(inputType == "dark"){ /* DARK */
+			new PNotify({
+				title: inputTitle,
+				text: inputText,
+	            type: inputType,
+	            styling: 'bootstrap3',
+	            addclass: 'dark'
+	        });
+		}else{
+			new PNotify({ /* NOTICE */
+				title: inputTitle,
+				text: inputText,
+	            styling: 'bootstrap3'
+	        });
+		}
+	}	
+    </script>
+    
+    <script th:inline="javascript">
+		/*<![CDATA[*/
+		var pnotify = [[${pnotify}]];
+		if(pnotify != null){
+			openNotification(pnotify.type,pnotify.title,pnotify.text);
+		}
+		/*]]>*/
+	</script>
+    
   </body>
-  
 </html>
