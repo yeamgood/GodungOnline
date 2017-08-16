@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<style>
+
+.messageBox{
+	max-width: 600px;
+	text-align: center;
+	margin: 0 auto;
+}
+.header {
+	background-color: #4387fd;
+	color : white;
+	padding:10px 10px;
+	margin: 0px 0px;
+}
+
+.body{
+	background-color:#f9f9f9;
+	text-align: left;
+	padding:10px 10px;
+	margin: 0px 0px;
+}
+
+.footer{
+ 	background-color: #4387fd;
+	color : white;
+	padding:10px 10px;
+	margin: 0px 0px;
+}
+.buttonBox{
+	text-align: center;
+}
+.button {
+    background-color: #4387fd;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none !important;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+</style>
+
+</head>
+<body>
+	<div class="messageBox">
+		<div class="header">
+			<h1><span th:text="${message0}"></span></h1>
+		</div>
+		<div class="body">
+			 	<p>
+			 		<span th:text="${message1}"></span>
+			 	</p>
+			 	<p>
+					<span th:text="${message2}"></span> <span th:text="${userName}"></span>
+				</p>
+				<p>
+					<span th:text="${message3}"></span>
+			 	</p>
+			 	<div class="buttonBox">
+			 		<a href="#" th:href="${url}" class="button"><span th:text="${message6}"></span></a>
+			 	</div>
+		 		<div class="buttonBox">
+		 			<a href="#" th:href="${url}"><span th:text="${message4}"></span></a>
+			 	</div>
+			 
+			 	<p>
+			 		<span th:text="${message5}"></span>
+			 	</p>
+			 	
+		</div>
+		<div class="footer">
+		 <span th:text="${message7}"></span>
+		</div>
+	</div>
+   
+</body>
+</html>

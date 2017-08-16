@@ -23,8 +23,7 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService{
 
 	@Override
 	public void createPasswordResetTokenForUser(User user, String token) {
-		// TODO Auto-generated method stub
-		PasswordResetToken myToken = new PasswordResetToken(user, token);
+		PasswordResetToken myToken = new PasswordResetToken(token, user);
 		passwordResetTokenRepository.save(myToken);
 	}
 	
@@ -36,9 +35,7 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService{
 	    }
 	 
 	    Calendar cal = Calendar.getInstance();
-	    if ((passToken.getExpiryDate()
-	        .getTime() - cal.getTime()
-	        .getTime()) <= 0) {
+	    if ((passToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
 	        return "expired";
 	    }
 	 

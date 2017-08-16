@@ -1,5 +1,6 @@
 package com.yeamgood.godungonline.model;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -33,12 +34,25 @@ public class PasswordResetToken {
     @Column(name = "expiry_date")
     private Date expiryDate;
 
-	public PasswordResetToken(User user, String token) {
-		super();
-		this.user = user;
-		this.token = token;
-	}
+    public PasswordResetToken() {
+        super();
+    }
 
+    public PasswordResetToken(final String token, final User user) {
+        super();
+
+        this.token = token;
+        this.user = user;
+        this.expiryDate = calculateExpiryDate(EXPIRATION);
+    }
+
+    private Date calculateExpiryDate(final int expiryTimeInMinutes) {
+        final Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(new Date().getTime());
+        cal.add(Calendar.MINUTE, expiryTimeInMinutes);
+        return new Date(cal.getTime().getTime());
+    }
+    
 	public Long getId() {
 		return id;
 	}

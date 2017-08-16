@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.yeamgood.godungonline.bean.Pnotify;
 import com.yeamgood.godungonline.model.User;
@@ -36,7 +37,7 @@ public class RegistrationController {
 	}
 	
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
+	public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult,RedirectAttributes redirectAttributes) {
 		ModelAndView modelAndView = new ModelAndView();
 		User userExists = userService.findUserByEmail(user.getEmail());
 		if (userExists != null) {
@@ -50,11 +51,9 @@ public class RegistrationController {
 			Pnotify pnotify = new Pnotify();
 			pnotify.setTitle(messageSource.getMessage("pnotify.title.success",null,userLocale));
 			pnotify.setType(messageSource.getMessage("pnotify.type.success",null,userLocale));
-			pnotify.setText(messageSource.getMessage("message.user.register.success",null,userLocale));
-			modelAndView.addObject("pnotify", pnotify);
-			
-			modelAndView.addObject("user", new User());
-			modelAndView.setViewName("login");
+			pnotify.setText(messageSource.getMessage("message.resetpassword.success",null,userLocale));
+			redirectAttributes.addFlashAttribute(pnotify);
+			modelAndView.setViewName("redirect:/login");
 		}
 		return modelAndView;
 	}
