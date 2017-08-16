@@ -3,7 +3,6 @@ package com.yeamgood.godungonline.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
@@ -24,18 +23,6 @@ public class LoginController {
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-    MessageSource messageSource;
-	
-//	@RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
-//	public ModelAndView login(){
-//		ModelAndView modelAndView = new ModelAndView();
-//		User user = new User();
-//		modelAndView.addObject("user", user);
-//		modelAndView.setViewName("login");
-//		return modelAndView;
-//	}
-	
 	@RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
 			                  @RequestParam(value = "logout", required = false) String logout, 
@@ -44,17 +31,24 @@ public class LoginController {
 		if (error != null) {
 			bindingResult.rejectValue("email", "error.user", getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
 		}
-
 		if (logout != null) {
 			model.addObject("msg", "You've been logged out successfully.");
 		}
-		//User user = new User();
 		model.addObject("user", user);
 		model.setViewName("login");
 		return model;
 	}
 	
-	//CUSTOMIZE THE ERROR MESSAGE
+	@RequestMapping(value="/admin/home", method = RequestMethod.GET)
+	public ModelAndView home(){
+		ModelAndView modelAndView = new ModelAndView();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.findUserByEmail(auth.getName());
+		modelAndView.addObject("userName", "Welcome " + user.getFirstName() + " " + user.getLastName());
+		modelAndView.setViewName("home");
+		return modelAndView;
+	}
+	
 	private String getErrorMessage(HttpServletRequest request, String key){
 		Exception exception = (Exception) request.getSession().getAttribute(key);
 		String error = "";
@@ -66,17 +60,6 @@ public class LoginController {
 			error = "Invalid username and password!";
 		}
 		return error;
-	}
-	
-	@RequestMapping(value="/admin/home", method = RequestMethod.GET)
-	public ModelAndView home(){
-		ModelAndView modelAndView = new ModelAndView();
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User user = userService.findUserByEmail(auth.getName());
-		modelAndView.addObject("userName", "Welcome " + user.getFirstName() + " " + user.getLastName());
-		modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role");
-		modelAndView.setViewName("home");
-		return modelAndView;
 	}
 
 }

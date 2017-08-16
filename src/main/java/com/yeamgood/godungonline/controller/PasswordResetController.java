@@ -26,12 +26,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.yeamgood.godungonline.bean.Pnotify;
 import com.yeamgood.godungonline.form.ResetPasswordForm;
 import com.yeamgood.godungonline.model.User;
-import com.yeamgood.godungonline.service.MailContentBuilder;
+import com.yeamgood.godungonline.service.MailBuilderService;
 import com.yeamgood.godungonline.service.PasswordResetTokenService;
 import com.yeamgood.godungonline.service.UserService;
 
 @Controller
-public class ForgotPasswordController {
+public class PasswordResetController {
 	
 	@Autowired
 	private UserService userService;
@@ -49,17 +49,17 @@ public class ForgotPasswordController {
 	 private HttpServletRequest httpServletRequest;
 	 
 	 @Autowired
-	 private MailContentBuilder mailContentBuilder;
+	 private MailBuilderService mailBuilderService;
 	 
-	@RequestMapping(value={"/forgot_password"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/forgotPassword"}, method = RequestMethod.GET)
 	public ModelAndView forgotPassword(){
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("user", new User());
-		modelAndView.setViewName("forgot_password");
+		modelAndView.setViewName("form_password_forgot");
 		return modelAndView;
 	}
 	
-	@RequestMapping(value={"/forgot_password"}, method = RequestMethod.POST)
+	@RequestMapping(value={"/forgotPassword"}, method = RequestMethod.POST)
 	public ModelAndView forgotPasswordSendEmail(@Valid User user, BindingResult bindingResult,RedirectAttributes redirectAttributes) throws Exception {
 		ModelAndView modelAndView = new ModelAndView();
 		User userExists = userService.findUserByEmail(user.getEmail());
@@ -67,7 +67,7 @@ public class ForgotPasswordController {
 			bindingResult.rejectValue("email", "error.user", message.getMessage("validation.required.email.not.registered",null,LocaleContextHolder.getLocale()));
 		}
 		if (bindingResult.hasFieldErrors("email")) {
-			modelAndView.setViewName("forgot_password");
+			modelAndView.setViewName("form_password_forgot");
 		} else {
 			Locale userLocale = LocaleContextHolder.getLocale();
 			String token = UUID.randomUUID().toString();
@@ -88,7 +88,7 @@ public class ForgotPasswordController {
 	}
 	
 	@RequestMapping(value = "/changePassword", method = RequestMethod.GET)
-	public String showChangePasswordPage(Locale locale, Model model, @RequestParam("id") long id,@RequestParam("token") String token,RedirectAttributes redirectAttributes) {
+	public String changePassword(Locale locale, Model model, @RequestParam("id") long id,@RequestParam("token") String token,RedirectAttributes redirectAttributes) {
 		String result = passwordResetTokenService.validatePasswordResetToken(id, token);
 		if (result != null) {
 			Locale userLocale = LocaleContextHolder.getLocale();
@@ -99,14 +99,14 @@ public class ForgotPasswordController {
 			redirectAttributes.addFlashAttribute(pnotify);
 			return "redirect:/login?lang=" + locale.getLanguage();
 		}
-		return "redirect:/reset_password?lang=" + locale.getLanguage();
+		return "redirect:/resetPassword?lang=" + locale.getLanguage();
 	}
 	
-	@RequestMapping(value={"/reset_password"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/resetPassword"}, method = RequestMethod.GET)
 	public ModelAndView resetPassword(){
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("resetPasswordForm", new ResetPasswordForm());
-		modelAndView.setViewName("reset_password");
+		modelAndView.setViewName("form_password_reset");
 		return modelAndView;
 	}
 	
@@ -118,7 +118,7 @@ public class ForgotPasswordController {
 			bindingResult.rejectValue("password", "error.resetPasswordForm", messageError);
 		}
 		if (bindingResult.hasErrors()) {
-			modelAndView.setViewName("reset_password");
+			modelAndView.setViewName("form_password_reset");
 		}else {
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			userService.changeUserPassword(user, resetPasswordForm.getPassword());
@@ -138,7 +138,7 @@ public class ForgotPasswordController {
         MimeMessageHelper helper = new MimeMessageHelper(mineMessage);
         
         String url = contextPath + "/changePassword?id=" + user.getId() + "&token=" + token;
-        String content = mailContentBuilder.build(url,user);
+        String content = mailBuilderService.passwordResetTemplatebuild(url,user);
        
         helper.setSubject(message.getMessage("email.resetpassword.subject",null,locale));
         helper.setTo(user.getEmail());

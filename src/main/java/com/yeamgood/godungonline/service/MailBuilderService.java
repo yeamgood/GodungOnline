@@ -10,7 +10,7 @@ import org.thymeleaf.context.Context;
 import com.yeamgood.godungonline.model.User;
 
 @Service
-public class MailContentBuilder {
+public class MailBuilderService {
 
 	private TemplateEngine templateEngine;
 	
@@ -18,11 +18,11 @@ public class MailContentBuilder {
     private MessageSource message;
 	 
     @Autowired
-    public MailContentBuilder(TemplateEngine templateEngine) {
+    public MailBuilderService(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
     }
  
-    public String build(String url,User user) {
+    public String passwordResetTemplatebuild(String url,User user) {
         Context context = new Context();
         context.setVariable("url", url);
         context.setVariable("userName", user.getFirstName());
@@ -34,7 +34,7 @@ public class MailContentBuilder {
         context.setVariable("message5", message.getMessage("email.resetpassword.message5",null,LocaleContextHolder.getLocale()));
         context.setVariable("message6", message.getMessage("email.resetpassword.message6",null,LocaleContextHolder.getLocale()));
         context.setVariable("message7", message.getMessage("email.resetpassword.message7",null,LocaleContextHolder.getLocale()));
-        return templateEngine.process("mailTemplate", context);
+        return templateEngine.process("mail/template_password_reset", context);
     }
     
 }
