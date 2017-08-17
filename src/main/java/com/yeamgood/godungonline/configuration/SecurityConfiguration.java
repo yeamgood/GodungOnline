@@ -51,16 +51,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/forgotPassword").permitAll()
 				.antMatchers("/changePassword").permitAll()
 				.antMatchers("/resetPassword","/savePassword*").hasAuthority("CHANGE_PASSWORD_PRIVILEGE")
-				.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
-				.authenticated().and().csrf().disable().formLogin()
+				.antMatchers("/user/**").hasAuthority("USER")
+				.antMatchers("/admin/**").hasAuthority("ADMIN")
+				.anyRequest().authenticated().and().csrf().disable().formLogin()
 				.loginPage("/login").failureUrl("/login?error=true")
-				.defaultSuccessUrl("/admin/home",true)
+				.defaultSuccessUrl("/authorizeRole",true)
 				.usernameParameter("email")
 				.passwordParameter("password")
 				.and().logout()
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.logoutSuccessUrl("/").and().exceptionHandling()
-				.accessDeniedPage("/access-denied");
+				.logoutSuccessUrl("/").and().
+				exceptionHandling().accessDeniedPage("/access-denied");
 	}
 	
 	@Override

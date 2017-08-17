@@ -1,11 +1,16 @@
 package com.yeamgood.godungonline.controller;
 
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -13,8 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.yeamgood.godungonline.bean.Pnotify;
+import com.yeamgood.godungonline.model.Godung;
 import com.yeamgood.godungonline.model.User;
+import com.yeamgood.godungonline.service.GodungService;
 import com.yeamgood.godungonline.service.UserService;
 
 @Controller
@@ -22,6 +31,12 @@ public class LoginController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private GodungService godungService;
+	
+	@Autowired
+    MessageSource message;
 	
 	@RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
@@ -39,13 +54,59 @@ public class LoginController {
 		return model;
 	}
 	
+	
+	@RequestMapping("/authorizeRole")
+    public ModelAndView defaultAfterLogin() {
+		ModelAndView modelAndView = new ModelAndView();
+		Set<String> roles = AuthorityUtils.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+		System.out.println(" TEST role is " + roles.toString());
+		
+		if(roles.contains("ADMIN")) {
+			modelAndView.setViewName("redirect:/admin/home");
+		}else if(roles.contains("USER")) {
+			modelAndView.setViewName("redirect:/user/home");
+		}else {
+			modelAndView.setViewName("redirect:/login");
+		}
+		return modelAndView;
+
+    }
+	
 	@RequestMapping(value="/admin/home", method = RequestMethod.GET)
-	public ModelAndView home(){
+	public ModelAndView adminHome(RedirectAttributes redirectAttributes){
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findUserByEmail(auth.getName());
-		modelAndView.addObject("userName", "Welcome " + user.getFirstName() + " " + user.getLastName());
-		modelAndView.setViewName("home");
+		if(user.getGodung().getActive() != 1) {
+			Pnotify pnotify = new Pnotify();
+			pnotify.setTitle(message.getMessage("pnotify.title.error",null,LocaleContextHolder.getLocale()));
+			pnotify.setType(message.getMessage("pnotify.type.error",null,LocaleContextHolder.getLocale()));
+			pnotify.setText(message.getMessage("message.error.godung.notactive",null,LocaleContextHolder.getLocale()));
+			redirectAttributes.addFlashAttribute(pnotify);
+			modelAndView.setViewName("redirect:/login");
+		}else {
+			modelAndView.addObject("userName", "Welcome " + user.getFirstName() + " " + user.getLastName());
+			modelAndView.setViewName("admin/home");
+		}
+		return modelAndView;
+	}
+	
+	@RequestMapping(value="/user/home", method = RequestMethod.GET)
+	public ModelAndView userHome(RedirectAttributes redirectAttributes){
+		ModelAndView modelAndView = new ModelAndView();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.findUserByEmail(auth.getName());
+		if(user.getGodung().getActive() != 1) {
+			Pnotify pnotify = new Pnotify();
+			pnotify.setTitle(message.getMessage("pnotify.title.error",null,LocaleContextHolder.getLocale()));
+			pnotify.setType(message.getMessage("pnotify.type.error",null,LocaleContextHolder.getLocale()));
+			pnotify.setText(message.getMessage("message.error.godung.notactive",null,LocaleContextHolder.getLocale()));
+			redirectAttributes.addFlashAttribute(pnotify);
+			modelAndView.setViewName("redirect:/login");
+		}else {
+			modelAndView.addObject("userName", "Welcome " + user.getFirstName() + " " + user.getLastName());
+			modelAndView.setViewName("user/home");
+		}
 		return modelAndView;
 	}
 	

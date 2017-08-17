@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Email;
@@ -50,6 +51,10 @@ public class User {
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(nullable = false, name = "godung_id")
+	private Godung godung;
 
 	public int getId() {
 		return id;
@@ -107,4 +112,12 @@ public class User {
 		this.roles = roles;
 	}
 
+	public Godung getGodung() {
+		return godung;
+	}
+
+	public void setGodung(Godung godung) {
+		this.godung = godung;
+	}
+	
 }
