@@ -1,5 +1,6 @@
 package com.yeamgood.godungonline.model;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,8 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
@@ -25,7 +26,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "user_id")
-	private int id;
+	private Long id;
 	
 	@Column(name = "email")
 	@Email(message = "{validation.required.email.valid}")
@@ -37,13 +38,9 @@ public class User {
 	@NotEmpty(message = "{validation.required.password}")
 	private String password;
 	
-	@Column(name = "first_name")
-	@NotEmpty(message = "{validation.required.firstname}")
-	private String firstName;
-	
-	@Column(name = "last_name")
-	@NotEmpty(message = "{validation.required.lastname}")
-	private String lastName;
+	@Column(name = "name")
+	@NotEmpty(message = "{validation.required.name}")
+	private String name;
 	
 	@Column(name = "active")
 	private int active;
@@ -52,15 +49,18 @@ public class User {
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(nullable = false, name = "godung_id")
-	private Godung godung;
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "user_godung", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "godung_id"))
+	private List<Godung> godungs;
+	
+	@Transient
+	Godung godung;
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -80,20 +80,12 @@ public class User {
 		this.password = password;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public String getName() {
+		return name;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public int getActive() {
@@ -110,6 +102,14 @@ public class User {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	public List<Godung> getGodungs() {
+		return godungs;
+	}
+
+	public void setGodungs(List<Godung> godungs) {
+		this.godungs = godungs;
 	}
 
 	public Godung getGodung() {

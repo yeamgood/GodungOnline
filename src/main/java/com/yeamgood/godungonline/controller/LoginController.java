@@ -1,5 +1,6 @@
 package com.yeamgood.godungonline.controller;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,18 +14,20 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.yeamgood.godungonline.bean.Pnotify;
-import com.yeamgood.godungonline.bean.PnotifyType;
+import com.yeamgood.godungonline.model.Godung;
 import com.yeamgood.godungonline.model.User;
 import com.yeamgood.godungonline.service.UserService;
 
 @Controller
+@SessionAttributes("user")
 public class LoginController {
 	
 	@Autowired
@@ -61,7 +64,6 @@ public class LoginController {
 			modelAndView.setViewName("redirect:/login");
 		}
 		return modelAndView;
-
     }
 	
 	@RequestMapping(value="/admin/home", method = RequestMethod.GET)
@@ -69,14 +71,12 @@ public class LoginController {
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findUserByEmail(auth.getName());
-		if(user.getGodung().getActive() != 1) {
-			Pnotify pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"message.error.godung.notactive");
-			redirectAttributes.addFlashAttribute(pnotify);
-			modelAndView.setViewName("redirect:/login");
-		}else {
-			modelAndView.addObject("userName", "Welcome " + user.getFirstName() + " " + user.getLastName());
-			modelAndView.setViewName("admin/home");
-		}
+		
+		manageSelectGodung(user);
+		
+		modelAndView.addObject("user",user);
+		modelAndView.addObject("userName", "Welcome " + user.getName());
+		modelAndView.setViewName("admin/home");
 		return modelAndView;
 	}
 	
@@ -85,15 +85,23 @@ public class LoginController {
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findUserByEmail(auth.getName());
-		if(user.getGodung().getActive() != 1) {
-			Pnotify pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"message.error.godung.notactive");
-			redirectAttributes.addFlashAttribute(pnotify);
-			modelAndView.setViewName("redirect:/login");
-		}else {
-			modelAndView.addObject("userName", "Welcome " + user.getFirstName() + " " + user.getLastName());
-			modelAndView.setViewName("user/home");
-		}
+		
+		manageSelectGodung(user);
+		
+		modelAndView.addObject("user",user);
+		modelAndView.addObject("userName", "Welcome " + user.getName() );
+		modelAndView.setViewName("user/home");
 		return modelAndView;
+	}
+	
+	private void manageSelectGodung(User user) {
+		if(user.getGodungs().size() == 1) {
+			user.setGodung(user.getGodungs().get(0));
+		}else if(user.getGodungs().size() > 1) {
+			//TODO Multi Godung
+		}else {
+			//TODO ERROR
+		}
 	}
 	
 	private String getErrorMessage(HttpServletRequest request, String key){

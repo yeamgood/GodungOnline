@@ -1,12 +1,15 @@
 package com.yeamgood.godungonline.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.yeamgood.godungonline.model.Godung;
 import com.yeamgood.godungonline.model.Role;
@@ -33,6 +36,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	@Transactional(rollbackFor={Exception.class})
 	public void saveUser(User user) {
 		
 		Godung godung = new Godung();
@@ -40,8 +44,10 @@ public class UserServiceImpl implements UserService{
 		godung.setCreateUser("SYSTEM");
 		godung.setCreateDate(new Date());
 		godungRepository.save(godung);
-		
-		user.setGodung(godung);
+		List<Godung> godungs = new ArrayList<Godung>();
+		godungs.add(godung);
+
+		user.setGodungs(godungs);
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(1);
         Role userRole = roleRepository.findByRole("USER");

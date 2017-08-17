@@ -4,7 +4,7 @@
 	
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <!-- Meta, title, CSS, favicons, etc. -->
+    <!-- Meta, title, CSS, icons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,6 +24,11 @@
     <link type="text/css" th:href="@{/build/css/custom.min.css}" rel="stylesheet">
     <!-- Main Theme Style -->
     <link type="text/css" th:href="@{/css/main.css}" rel="stylesheet">
+    
+    <!-- PNotify -->
+    <link type="text/css" th:href="@{vendors/pnotify/dist/pnotify.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{vendors/pnotify/dist/pnotify.buttons.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{vendors/pnotify/dist/pnotify.nonblock.css}" rel="stylesheet">
   </head>
 
   <body class="login">
@@ -58,12 +63,8 @@
      
       		  <div class="validation-box">
                 <div>
-                  <label th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="validation-message"></label>
-                  <input type="text" th:field="*{firstName}" name="firstName"  th:placeholder="#{form.register.firstname}" class="form-control"/>
-                </div>
-                <div>
-                  <label th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="validation-message"></label>
-                  <input type="text" th:field="*{lastName}" name="lastName"  th:placeholder="#{form.register.lastname}" class="form-control"/>
+                  <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="validation-message"></label>
+                  <input type="text" th:field="*{name}" name="name"  th:placeholder="#{form.register.name}" class="form-control"/>
                 </div>
                 <div>
                   <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="validation-message"></label>
@@ -101,7 +102,7 @@
     <script th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
     <!-- Bootstrap -->
     <script th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
-    <!-- bootstrap-progressbar -->
+    <!-- bootstrap-Progress bar -->
     <script th:src="@{/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js}"></script>
     
     <!-- PNotify -->
@@ -109,7 +110,48 @@
     <script th:src="@{/vendors/pnotify/dist/pnotify.buttons.js}"></script>
     <script th:src="@{/vendors/pnotify/dist/pnotify.nonblock.js}"></script>
     
+    <script>
+	function openNotification(inputType,inputTitle,inputText){
+		if(inputType == "success" || inputType == "info" || inputType == "error"){ /* SUCCESS,INFO,ERROR */
+			new PNotify({
+	            title: inputTitle,
+	            text: inputText,
+	            type: inputType,
+	            styling: 'bootstrap3'
+	        });
+		}else if(inputType == "notice"){ /* NOTICE */
+			new PNotify({
+				title: inputTitle,
+				text: inputText,
+	            styling: 'bootstrap3'
+	        });
+		}else if(inputType == "dark"){ /* DARK */
+			new PNotify({
+				title: inputTitle,
+				text: inputText,
+	            type: inputType,
+	            styling: 'bootstrap3',
+	            addclass: 'dark'
+	        });
+		}else{
+			new PNotify({ /* NOTICE */
+				title: inputTitle,
+				text: inputText,
+	            styling: 'bootstrap3'
+	        });
+		}
+	}	
+    </script>
     
+    <script th:inline="javascript">
+		/*<![CDATA[*/
+		var pnotify = [[${pnotify}]];
+		if(pnotify != null){
+			openNotification(pnotify.type,pnotify.title,pnotify.text);
+		}
+		/*]]>*/
+	</script>
+	
   </body>
   
 </html>

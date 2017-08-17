@@ -25,7 +25,7 @@ public class MailBuilderService {
     public String passwordResetTemplatebuild(String url,User user) {
         Context context = new Context();
         context.setVariable("url", url);
-        context.setVariable("userName", user.getFirstName());
+        context.setVariable("name", user.getName());
         context.setVariable("message0", message.getMessage("email.resetpassword.message0",null,LocaleContextHolder.getLocale()));
         context.setVariable("message1", message.getMessage("email.resetpassword.message1",null,LocaleContextHolder.getLocale()));
         context.setVariable("message2", message.getMessage("email.resetpassword.message2",null,LocaleContextHolder.getLocale()));

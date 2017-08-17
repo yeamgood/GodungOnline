@@ -1,4 +1,4 @@
-package com.yeamgood.godungonline.model;
+package com.yeamgood.godungonline.model.template;
 
 import java.util.Date;
 

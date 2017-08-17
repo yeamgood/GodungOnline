@@ -45,10 +45,14 @@ public class RegistrationController {
 		if (bindingResult.hasErrors()) {
 			modelAndView.setViewName("registration");
 		} else {
-			userService.saveUser(user);
-			Pnotify pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"message.resetpassword.success");
-			redirectAttributes.addFlashAttribute(pnotify);
-			modelAndView.setViewName("redirect:/login");
+			try {
+				userService.saveUser(user);
+				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,"message.user.register.success"));
+				modelAndView.setViewName("redirect:/login");
+			} catch (Exception e) {
+				modelAndView.addObject("pnotify",new Pnotify(messageSource,PnotifyType.ERROR,"message.error.system"));
+				modelAndView.setViewName("registration");
+			}
 		}
 		return modelAndView;
 	}

@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.yeamgood.godungonline.model.template.ModelTemplate;
+
 @Entity
 @Table(name = "godung")
 public class Godung extends ModelTemplate{
@@ -14,7 +16,7 @@ public class Godung extends ModelTemplate{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "godung_id")
-	private long id;
+	private Long id;
 	
 	@Column(name = "godung_name")
 	private String name;
@@ -23,11 +25,11 @@ public class Godung extends ModelTemplate{
 	
 	private int active;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
