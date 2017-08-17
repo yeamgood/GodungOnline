@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
@@ -21,9 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.yeamgood.godungonline.bean.Pnotify;
-import com.yeamgood.godungonline.model.Godung;
+import com.yeamgood.godungonline.bean.PnotifyType;
 import com.yeamgood.godungonline.model.User;
-import com.yeamgood.godungonline.service.GodungService;
 import com.yeamgood.godungonline.service.UserService;
 
 @Controller
@@ -33,10 +31,7 @@ public class LoginController {
 	private UserService userService;
 	
 	@Autowired
-	private GodungService godungService;
-	
-	@Autowired
-    MessageSource message;
+    MessageSource messageSource;
 	
 	@RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
@@ -54,13 +49,10 @@ public class LoginController {
 		return model;
 	}
 	
-	
 	@RequestMapping("/authorizeRole")
     public ModelAndView defaultAfterLogin() {
 		ModelAndView modelAndView = new ModelAndView();
 		Set<String> roles = AuthorityUtils.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-		System.out.println(" TEST role is " + roles.toString());
-		
 		if(roles.contains("ADMIN")) {
 			modelAndView.setViewName("redirect:/admin/home");
 		}else if(roles.contains("USER")) {
@@ -78,10 +70,7 @@ public class LoginController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findUserByEmail(auth.getName());
 		if(user.getGodung().getActive() != 1) {
-			Pnotify pnotify = new Pnotify();
-			pnotify.setTitle(message.getMessage("pnotify.title.error",null,LocaleContextHolder.getLocale()));
-			pnotify.setType(message.getMessage("pnotify.type.error",null,LocaleContextHolder.getLocale()));
-			pnotify.setText(message.getMessage("message.error.godung.notactive",null,LocaleContextHolder.getLocale()));
+			Pnotify pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"message.error.godung.notactive");
 			redirectAttributes.addFlashAttribute(pnotify);
 			modelAndView.setViewName("redirect:/login");
 		}else {
@@ -97,10 +86,7 @@ public class LoginController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findUserByEmail(auth.getName());
 		if(user.getGodung().getActive() != 1) {
-			Pnotify pnotify = new Pnotify();
-			pnotify.setTitle(message.getMessage("pnotify.title.error",null,LocaleContextHolder.getLocale()));
-			pnotify.setType(message.getMessage("pnotify.type.error",null,LocaleContextHolder.getLocale()));
-			pnotify.setText(message.getMessage("message.error.godung.notactive",null,LocaleContextHolder.getLocale()));
+			Pnotify pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"message.error.godung.notactive");
 			redirectAttributes.addFlashAttribute(pnotify);
 			modelAndView.setViewName("redirect:/login");
 		}else {

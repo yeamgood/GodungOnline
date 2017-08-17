@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.yeamgood.godungonline.bean.Pnotify;
+import com.yeamgood.godungonline.bean.PnotifyType;
 import com.yeamgood.godungonline.form.ResetPasswordForm;
 import com.yeamgood.godungonline.model.User;
 import com.yeamgood.godungonline.service.MailBuilderService;
@@ -37,7 +38,7 @@ public class PasswordResetController {
 	private UserService userService;
 	
 	@Autowired
-    private MessageSource message;
+    private MessageSource messageSource;
 	
 	@Autowired
 	private PasswordResetTokenService passwordResetTokenService;
@@ -64,7 +65,7 @@ public class PasswordResetController {
 		ModelAndView modelAndView = new ModelAndView();
 		User userExists = userService.findUserByEmail(user.getEmail());
 		if (!bindingResult.hasFieldErrors("email") && userExists == null) {
-			bindingResult.rejectValue("email", "error.user", message.getMessage("validation.required.email.not.registered",null,LocaleContextHolder.getLocale()));
+			bindingResult.rejectValue("email", "error.user", messageSource.getMessage("validation.required.email.not.registered",null,LocaleContextHolder.getLocale()));
 		}
 		if (bindingResult.hasFieldErrors("email")) {
 			modelAndView.setViewName("form_password_forgot");
@@ -77,10 +78,7 @@ public class PasswordResetController {
 					        ":" + httpServletRequest.getServerPort() + httpServletRequest.getContextPath();
 			sendEmail(appUrl,userLocale,token,userExists);
 			
-			Pnotify pnotify = new Pnotify();
-			pnotify.setTitle(message.getMessage("pnotify.title.success",null,userLocale));
-			pnotify.setType(message.getMessage("pnotify.type.success",null,userLocale));
-			pnotify.setText(message.getMessage("message.forgotpassword.sendmail.success",null,userLocale));
+			Pnotify pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"message.forgotpassword.sendmail.success");
 			redirectAttributes.addFlashAttribute(pnotify);
 			modelAndView.setViewName("redirect:/login");
 		}
@@ -91,11 +89,7 @@ public class PasswordResetController {
 	public String changePassword(Locale locale, Model model, @RequestParam("id") long id,@RequestParam("token") String token,RedirectAttributes redirectAttributes) {
 		String result = passwordResetTokenService.validatePasswordResetToken(id, token);
 		if (result != null) {
-			Locale userLocale = LocaleContextHolder.getLocale();
-			Pnotify pnotify = new Pnotify();
-			pnotify.setTitle(message.getMessage("pnotify.title.error",null,userLocale));
-			pnotify.setType(message.getMessage("pnotify.type.error",null,userLocale));
-			pnotify.setText(message.getMessage("auth.message." + result,null,userLocale));
+			Pnotify pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"auth.message.invalidToken");
 			redirectAttributes.addFlashAttribute(pnotify);
 			return "redirect:/login?lang=" + locale.getLanguage();
 		}
@@ -114,7 +108,7 @@ public class PasswordResetController {
 	public ModelAndView savePassword(@Valid ResetPasswordForm resetPasswordForm, BindingResult bindingResult,RedirectAttributes redirectAttributes){
 		ModelAndView modelAndView = new ModelAndView();
 		if(!bindingResult.hasErrors() && !resetPasswordForm.getPassword().equals(resetPasswordForm.getConfirmPassword())) {
-			String messageError = message.getMessage("validation.required.password.compare",null,LocaleContextHolder.getLocale());
+			String messageError = messageSource.getMessage("validation.required.password.compare",null,LocaleContextHolder.getLocale());
 			bindingResult.rejectValue("password", "error.resetPasswordForm", messageError);
 		}
 		if (bindingResult.hasErrors()) {
@@ -122,11 +116,7 @@ public class PasswordResetController {
 		}else {
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			userService.changeUserPassword(user, resetPasswordForm.getPassword());
-			
-			Pnotify pnotify = new Pnotify();
-			pnotify.setTitle(message.getMessage("pnotify.title.success",null,LocaleContextHolder.getLocale()));
-			pnotify.setType(message.getMessage("pnotify.type.success",null,LocaleContextHolder.getLocale()));
-			pnotify.setText(message.getMessage("message.resetpassword.success",null,LocaleContextHolder.getLocale()));
+			Pnotify pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"message.resetpassword.success");
 			redirectAttributes.addFlashAttribute(pnotify);
 			modelAndView.setViewName("redirect:/login");
 		}
@@ -140,10 +130,9 @@ public class PasswordResetController {
         String url = contextPath + "/changePassword?id=" + user.getId() + "&token=" + token;
         String content = mailBuilderService.passwordResetTemplatebuild(url,user);
        
-        helper.setSubject(message.getMessage("email.resetpassword.subject",null,locale));
+        helper.setSubject(messageSource.getMessage("email.resetpassword.subject",null,locale));
         helper.setTo(user.getEmail());
         helper.setText(content,true);
-       
         emailSender.send(mineMessage);
     }
 	
