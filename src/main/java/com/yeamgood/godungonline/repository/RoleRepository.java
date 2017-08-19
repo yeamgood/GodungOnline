@@ -7,6 +7,5 @@ import com.yeamgood.godungonline.model.Role;
 
 @Repository("roleRepository")
 public interface RoleRepository extends JpaRepository<Role, Integer>{
-	Role findByRole(String role);
-
+	public Role findById(Long id);
 }

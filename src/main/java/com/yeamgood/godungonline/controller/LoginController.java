@@ -14,7 +14,6 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,8 +21,11 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.yeamgood.godungonline.model.Godung;
+import com.yeamgood.godungonline.bean.Pnotify;
+import com.yeamgood.godungonline.bean.PnotifyType;
+import com.yeamgood.godungonline.model.Menu;
 import com.yeamgood.godungonline.model.User;
+import com.yeamgood.godungonline.repository.MenuRepository;
 import com.yeamgood.godungonline.service.UserService;
 
 @Controller
@@ -32,6 +34,9 @@ public class LoginController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private MenuRepository menuRepository;
 	
 	@Autowired
     MessageSource messageSource;
@@ -44,9 +49,30 @@ public class LoginController {
 		if (error != null) {
 			bindingResult.rejectValue("email", "error.user", getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
 		}
+		System.out.println("logout " + logout);
 		if (logout != null) {
-			model.addObject("msg", "You've been logged out successfully.");
+			//model.addObject("msg", "You've been logged out successfully.");
+			model.addObject("pnotify",new Pnotify(messageSource,PnotifyType.SUCCESS,"message.success.logout"));
 		}
+		
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		if(auth.isAuthenticated()) {
+//			model.setViewName("redirect:/user/home");
+//		}else {
+//			model.addObject("user", user);
+//			model.setViewName("login");
+//		}
+		
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		String currentUserName = authentication.getName();
+//		System.out.println("test dd " + currentUserName);
+//		if (authentication instanceof AnonymousAuthenticationToken) {
+//			model.addObject("user", user);
+//			model.setViewName("login");
+//		}else {
+//			model.setViewName("redirect:/user/home");
+//		}
+		
 		model.addObject("user", user);
 		model.setViewName("login");
 		return model;
@@ -71,15 +97,22 @@ public class LoginController {
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findUserByEmail(auth.getName());
-		
-		manageSelectGodung(user);
+		//manageSelectGodung(user);
+		manageMenu(user);
 		
 		modelAndView.addObject("user",user);
-		modelAndView.addObject("userName", "Welcome " + user.getName());
 		modelAndView.setViewName("admin/home");
 		return modelAndView;
 	}
 	
+	private void manageMenu(User user) {
+		List<Menu> menuList;
+		for (Menu menu : user.getRole().getMenuList()) {
+			menuList = menuRepository.findAllByParentId(menu.getId());
+			menu.setMenuList(menuList);
+		}
+	}
+
 	@RequestMapping(value="/user/home", method = RequestMethod.GET)
 	public ModelAndView userHome(RedirectAttributes redirectAttributes){
 		ModelAndView modelAndView = new ModelAndView();
@@ -87,9 +120,9 @@ public class LoginController {
 		User user = userService.findUserByEmail(auth.getName());
 		
 		manageSelectGodung(user);
+		manageMenu(user);
 		
 		modelAndView.addObject("user",user);
-		modelAndView.addObject("userName", "Welcome " + user.getName() );
 		modelAndView.setViewName("user/home");
 		return modelAndView;
 	}

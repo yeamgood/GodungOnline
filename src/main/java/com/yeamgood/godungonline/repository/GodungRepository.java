@@ -8,5 +8,5 @@ import com.yeamgood.godungonline.model.Godung;
 
 @Repository("godungRepository")
 public interface GodungRepository extends JpaRepository<Godung, Long> {
-	public Godung findById(long id);
+	public Godung findById(Long id);
 }

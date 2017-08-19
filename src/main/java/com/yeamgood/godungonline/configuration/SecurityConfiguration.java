@@ -58,10 +58,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.defaultSuccessUrl("/authorizeRole",true)
 				.usernameParameter("email")
 				.passwordParameter("password")
-				.and().logout()
-				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.logoutSuccessUrl("/").and().
-				exceptionHandling().accessDeniedPage("/access-denied");
+				.and()
+				.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+				.clearAuthentication(true)
+				.logoutSuccessUrl("/")
+				.deleteCookies("JSESSIONID")
+		        .invalidateHttpSession(true)
+				.and()
+				.exceptionHandling().accessDeniedPage("/access-denied");
 	}
 	
 	@Override

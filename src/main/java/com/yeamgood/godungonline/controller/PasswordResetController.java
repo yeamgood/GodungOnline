@@ -78,7 +78,7 @@ public class PasswordResetController {
 					        ":" + httpServletRequest.getServerPort() + httpServletRequest.getContextPath();
 			sendEmail(appUrl,userLocale,token,userExists);
 			
-			Pnotify pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"message.forgotpassword.sendmail.success");
+			Pnotify pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"message.forgotpassword.sendmail.success");
 			redirectAttributes.addFlashAttribute(pnotify);
 			modelAndView.setViewName("redirect:/login");
 		}

@@ -12,8 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.Valid;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
@@ -46,14 +48,19 @@ public class User {
 	private int active;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles;
+	@JoinTable(name = "user_rolelogin", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<RoleLogin> roles;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "user_godung", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "godung_id"))
 	private List<Godung> godungs;
 	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "role_id")
+	private Role role;
+	
 	@Transient
+	@Valid
 	Godung godung;
 
 	public Long getId() {
@@ -96,11 +103,11 @@ public class User {
 		this.active = active;
 	}
 
-	public Set<Role> getRoles() {
+	public Set<RoleLogin> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Set<Role> roles) {
+	public void setRoles(Set<RoleLogin> roles) {
 		this.roles = roles;
 	}
 
@@ -118,6 +125,14 @@ public class User {
 
 	public void setGodung(Godung godung) {
 		this.godung = godung;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 	
 }

@@ -50,6 +50,7 @@ public class RegistrationController {
 				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,"message.user.register.success"));
 				modelAndView.setViewName("redirect:/login");
 			} catch (Exception e) {
+				e.printStackTrace();
 				modelAndView.addObject("pnotify",new Pnotify(messageSource,PnotifyType.ERROR,"message.error.system"));
 				modelAndView.setViewName("registration");
 			}
