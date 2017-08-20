@@ -13,10 +13,15 @@ INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`
 INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `priority`) VALUES ('3','/admin/role', '1', 'fa fa-tasks', 'Roles', '3');
 INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `priority`) VALUES ('4','/admin/menu', '1', 'fa fa-desktop', 'Menu', '4');
 
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `priority`) VALUES ('5','#', '1', 'fa fa-cogs', 'Setting', '4');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `priority`,`parent_id`) VALUES ('6','/user/profile', '1', 'fa fa-user', 'Profile', '4','5');
+
+
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '1');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '2');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '3');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '4');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '5');
 
 -- ADD USER ADMIN --
 INSERT INTO `godung_online`.`user` (`user_id`,`active`, `email`, `name`, `password`) VALUES ('1','1', 'admin@gmail.com', 'admin', '$2a$10$z3LIFllUl2jRgzEBl2JYnucHH8v7Dp64A11du7Ehmo6drTf7jeOKq');

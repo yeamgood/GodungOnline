@@ -15,8 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Where;
-
 import com.yeamgood.godungonline.model.template.ModelTemplate;
 
 @Entity
@@ -36,7 +34,7 @@ public class Role extends ModelTemplate{
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "role_menu", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "menu_id"))
-	@Where(clause = "parent_id is null")
+	//@Where(clause = "parent_id is null")
 	@OrderBy("priority ASC")
     private List<Menu> menuList;
 	

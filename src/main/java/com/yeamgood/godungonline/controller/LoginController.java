@@ -1,5 +1,6 @@
 package com.yeamgood.godungonline.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -120,11 +121,24 @@ public class LoginController {
 	}
 	
 	private void manageMenu(User user) {
-		List<Menu> menuList;
+		List<Menu> subMenuList;
+		List<Menu> menuList = new ArrayList<Menu>();
 		for (Menu menu : user.getRole().getMenuList()) {
-			menuList = menuRepository.findAllByParentId(menu.getId());
-			menu.setMenuList(menuList);
+			if(menu.getParentId() == null) {
+				menuList.add(menu);
+			}
 		}
+		
+		for(Menu menu : menuList) {
+			subMenuList = new ArrayList<Menu>();
+			for (Menu subMenu : user.getRole().getMenuList()) {
+				if(subMenu.getParentId() != null && subMenu.getParentId().equals(menu.getId())) {
+					subMenuList.add(subMenu);
+				}
+			}
+			menu.setMenuList(subMenuList);
+		}
+		user.getRole().setMenuList(menuList);
 		
 	}
 	
