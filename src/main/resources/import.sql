@@ -22,6 +22,7 @@ INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '2')
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '3');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '4');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '5');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '6');
 
 -- ADD USER ADMIN --
 INSERT INTO `godung_online`.`user` (`user_id`,`active`, `email`, `name`, `password`) VALUES ('1','1', 'admin@gmail.com', 'admin', '$2a$10$z3LIFllUl2jRgzEBl2JYnucHH8v7Dp64A11du7Ehmo6drTf7jeOKq');

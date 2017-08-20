@@ -1,237 +1,118 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:th="http://www.thymeleaf.org">
-	  
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <!-- Meta, title, CSS, favicons, etc. -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-    <title>Gentelella Alela! | </title>
-    
-    <!-- Bootstrap -->
-    <link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link th:href="@{/vendors/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
-    <!-- NProgress -->
-    <link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
-    <!-- iCheck -->
-    <link th:href="@{/vendors/iCheck/skins/flat/green.css}" rel="stylesheet">
-    <!-- Datatables -->
-    <link th:href="@{/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css}" rel="stylesheet">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- Meta, title, CSS, favicons, etc. -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Custom Theme Style -->
-    <link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
-    
-    
-    
-    
-  </head>
+<title>Godung Online</title>
 
-  <body class="nav-md">  
-    <div class="container body">
-      <div class="main_container">
-        <div class="col-md-3 left_col">
-          <div class="left_col scroll-view">
-            <div class="navbar nav_title" style="border: 0;">
-              <a href="home.html" class="site_title"><i class="fa fa-cube"></i> <span>Godung Online<br/>test</span></a>
-            </div>
+<!-- Bootstrap -->
+<link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
+<!-- Font Awesome -->
+<link th:href="@{/vendors/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+<!-- NProgress -->
+<link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
+<!-- iCheck -->
+<link th:href="@{/vendors/iCheck/skins/flat/green.css}" rel="stylesheet">
+<!-- Datatables -->
+<link th:href="@{/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css}" rel="stylesheet">
+<!-- Custom Theme Style -->
+<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
+</head>
 
+<body class="nav-md">
+	<div class="container body">
+		<div class="main_container">
+			
+			<!-- menu -->	
+			<div th:replace="fragments/menu:: menu"></div>
+			<!-- /menu -->
 
-			<div class="profile">
-              <div style="width:100%;padding: 5px 10px;color: #ECF0F1;font-size:14px;">
-                <span class="label label-success"><span>ADMIN GodungOnline</span></span>
-              </div>
-            </div>
-            <div class="clearfix"></div>
+			<!-- header -->	
+			<div th:replace="fragments/header:: header"></div>
+			<!-- /header -->	
 
-            <br />
+			<!-- page content -->
+	        <div class="right_col" role="main">
+	            <div class="clearfix"></div>
+	            <div class="col-md-12 col-sm-12 col-xs-12">
+	              <div class="x_panel">
+	                <div class="x_title">
+	                  <h2><i class="fa fa-user"></i> Roles<small>Manage Roles</small></h2>
+	                  <div class="clearfix"></div>
+	                </div>
+	                <div class="x_content">
+	                    <div class="x_content">
+	                    <table id="datatable-user" class="table table-striped table-bordered">
+	                      <thead>
+	                        <tr>
+	                          <th>id</th>
+	                          <th>name</th>
+	                          <th>system</th>
+	                          <th>Action</th>
+	                        </tr>
+	                      </thead>
+	                      <tbody>
+	                        <tr th:each="role : ${roleList}">
+	                          <td th:text="${role.id}"></td>
+	                          <td th:text="${role.name}"></td>
+	                          <td th:text="${role.system}"></td>
+	                          <td></td>
+	                        </tr>
+	                      </tbody>
+	                    </table>
+	                  </div>
+	                </div>
+	              </div>
+	            </div>
+	        </div> 
+	        <!-- /page content -->
 
-            <!-- sidebar menu -->
-           <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-              <div class="menu_section">
-			    <ul class="nav side-menu">
-			      <li th:each="menu : ${session.user.role.menuList}">
-			      <a th:href="@{${menu.action}}">
-			      	<i class="fa" th:class="${menu.icon}"></i> 
-			      	<span th:text="${menu.name}"></span>
-			        <span class="fa fa-chevron-down" th:if="${!menu.menuList.empty}"></span>
-			      </a>
-			      <ul class="nav child_menu">
-                    <li th:each="menuChild : ${menu.menuList}">
-                      <a th:href="@{${menuChild.action}}"><span th:text="${menuChild.name}"></span></a>
-                    </li>
-                  </ul>
-			      </li>
-			    </ul>
-		      </div>
-	        </div>
-            <!-- /sidebar menu -->
-         
-          </div>
-        </div>
+			<!-- footer content -->
+			<div th:replace="fragments/footer:: footer"></div>
+			<!-- /footer content -->
+		</div>
+	</div>
 
-        <!-- top navigation -->
-        <div class="top_nav">
-          <div class="nav_menu">
-            <nav>
-              <div class="nav toggle">
-                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-              </div>
+	<!-- jQuery -->
+	<script th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+	<!-- Bootstrap -->
+	<script th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+	<!-- FastClick -->
+	<script th:src="@{/vendors/fastclick/lib/fastclick.js}"></script>
+	<!-- NProgress -->
+	<script th:src="@{/vendors/nprogress/nprogress.js}"></script>
+	<!-- iCheck -->
+	<script th:src="@{/vendors/iCheck/icheck.min.js}"></script>
+	<!-- Datatables -->
+	<script th:src="@{/vendors/datatables.net/js/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-buttons/js/buttons.flash.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-buttons/js/buttons.html5.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-buttons/js/buttons.print.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js}"></script>
+	<script th:src="@{/vendors/datatables.net-scroller/js/dataTables.scroller.min.js}"></script>
+	<script th:src="@{/vendors/jszip/dist/jszip.min.js}"></script>
+	<script th:src="@{/vendors/pdfmake/build/pdfmake.min.js}"></script>
+	<script th:src="@{/vendors/pdfmake/build/vfs_fonts.js}"></script>
 
-              <ul class="nav navbar-nav navbar-right">
-                <li class="">
-                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img th:src="@{/images/user.png}" alt=""><span th:text="${session.user.name}"></span>
-                    <span class=" fa fa-angle-down"></span>
-                  </a>
-                  <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <li><a href="javascript:;"> Profile</a></li>
-                    <li>
-                      <a href="javascript:;">
-                        <span>Settings</span>
-                      </a>
-                    </li>
-                    <li><a href="javascript:;">Help</a></li>
-                    <li><a th:href="@{/logout}"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
-                  </ul>
-                </li>
+	<!-- Custom Theme Scripts -->
+	<script th:src="@{/build/js/custom.min.js}"></script>
 
-                
-              </ul>
-            </nav>
-          </div>
-        </div>
-        <!-- /top navigation -->
-
-        <!-- page content -->
-        <div class="right_col" role="main">
-            <div class="clearfix"></div>
-            <div class="col-md-12 col-sm-12 col-xs-12">
-              <div class="x_panel">
-                <div class="x_title">
-                  <h2><i class="fa fa-user"></i> Roles<small>Manage Roles</small></h2>
-                  <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div class="x_content">
-                    <table id="datatable-user" class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th>id</th>
-                          <th>name</th>
-                          <th>system</th>
-                          <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr th:each="role : ${roleList}">
-                          <td th:text="${role.id}"></td>
-                          <td th:text="${role.name}"></td>
-                          <td th:text="${role.system}"></td>
-                          <td></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-        </div> 
-        <!-- /page content -->
-        
-         <!-- page content -->
-      <!--   <div class="right_col" role="main">
-          <div class="">
-
-            <div class="clearfix"></div>
-
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Default Example <small>Users</small></h2>
-                   
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <table id="datatable" class="table table-striped table-bordered">
-
-                     <thead>
-                        <tr>
-                          <th>id</th>
-                          <th>name</th>
-                          <th>system</th>
-                          <th>Action</th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        <tr th:each="role : ${roleList}">
-                          <td th:text="${role.id}"></td>
-                          <td th:text="${role.name}"></td>
-                          <td th:text="${role.system}"></td>
-                          <td></td>
-                        </tr>
-                      </tbody>
-                      
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
-        <!-- /page content -->
-
-        <!-- footer content -->
-        <footer>
-          <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
-          </div>
-          <div class="clearfix"></div>
-        </footer>
-        <!-- /footer content -->
-      </div>
-    </div>
-    
-    <!-- jQuery -->
-    <script th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
-    <!-- Bootstrap -->
-    <script th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
-    <!-- FastClick -->
-    <script th:src="@{/vendors/fastclick/lib/fastclick.js}"></script>
-    <!-- NProgress -->
-    <script th:src="@{/vendors/nprogress/nprogress.js}"></script>
-    <!-- iCheck -->
-    <script th:src="@{/vendors/iCheck/icheck.min.js}"></script>
-    <!-- Datatables -->
-    <script th:src="@{/vendors/datatables.net/js/jquery.dataTables.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-buttons/js/buttons.flash.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-buttons/js/buttons.html5.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-buttons/js/buttons.print.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js}"></script>
-    <script th:src="@{/vendors/datatables.net-scroller/js/dataTables.scroller.min.js}"></script>
-    <script th:src="@{/vendors/jszip/dist/jszip.min.js}"></script>
-    <script th:src="@{/vendors/pdfmake/build/pdfmake.min.js}"></script>
-    <script th:src="@{/vendors/pdfmake/build/vfs_fonts.js}"></script>
-
-    <!-- Custom Theme Scripts -->
-    <script th:src="@{/build/js/custom.min.js}"></script>
-    
-    <script th:inline="javascript">
+	<script th:inline="javascript">
 	/*<![CDATA[*/
 	
 	var url_language = [[#{javascript.datatable.language.url}]];
@@ -251,6 +132,6 @@
     
     /*]]>*/
 	</script>
-	
-  </body>
+
+</body>
 </html>
