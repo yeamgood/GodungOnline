@@ -112,56 +112,82 @@
 
         <!-- page content -->
         <div class="right_col" role="main">
-        
             <div class="clearfix"></div>
-           
-           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="x_panel">
                 <div class="x_title">
-                  <h2><i class="fa fa-user"></i> Users<small>Manage Users</small></h2>
+                  <h2><i class="fa fa-user"></i> Roles<small>Manage Roles</small></h2>
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-
                     <div class="x_content">
                     <table id="datatable-user" class="table table-striped table-bordered">
                       <thead>
                         <tr>
                           <th>id</th>
-                          <th>email</th>
                           <th>name</th>
-                          <th>password</th>
-                          <th>active</th>
+                          <th>system</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr th:each="role : ${roleList}">
+                          <td th:text="${role.id}"></td>
+                          <td th:text="${role.name}"></td>
+                          <td th:text="${role.system}"></td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div> 
+        <!-- /page content -->
+        
+         <!-- page content -->
+      <!--   <div class="right_col" role="main">
+          <div class="">
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Default Example <small>Users</small></h2>
+                   
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <table id="datatable" class="table table-striped table-bordered">
+
+                     <thead>
+                        <tr>
+                          <th>id</th>
+                          <th>name</th>
+                          <th>system</th>
                           <th>Action</th>
                         </tr>
                       </thead>
 
-
                       <tbody>
-                        <tr th:each="user : ${userList}">
-                           <td th:text="${user.id}"></td>
-                           <td th:text="${user.email}"></td>
-                           <td th:text="${user.name}"></td>
-                           <td th:text="${user.password}"></td>
-                           <td th:text="${user.active}"></td>
+                        <tr th:each="role : ${roleList}">
+                          <td th:text="${role.id}"></td>
+                          <td th:text="${role.name}"></td>
+                          <td th:text="${role.system}"></td>
                           <td></td>
                         </tr>
-                     
-                        
                       </tbody>
+                      
                     </table>
                   </div>
-                  
-                  
-                  
-                  
-
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- /page content -->
 
         <!-- footer content -->

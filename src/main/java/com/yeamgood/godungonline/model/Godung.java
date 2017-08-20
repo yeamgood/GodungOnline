@@ -8,9 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -32,9 +30,8 @@ public class Godung extends ModelTemplate{
 
 	@Column(name = "active")
 	
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "godung_role", joinColumns = @JoinColumn(name = "godung_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private List<Role> roleList;
+	@OneToMany(mappedBy = "godung", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<GodungUserRole> godungUserRoleList;
 	
 	private int active;
 
@@ -62,12 +59,13 @@ public class Godung extends ModelTemplate{
 		this.active = active;
 	}
 
-	public List<Role> getRoleList() {
-		return roleList;
+	public List<GodungUserRole> getGodungUserRoleList() {
+		return godungUserRoleList;
 	}
 
-	public void setRoleList(List<Role> roleList) {
-		this.roleList = roleList;
+	public void setGodungUserRoleList(List<GodungUserRole> godungUserRoleList) {
+		this.godungUserRoleList = godungUserRoleList;
 	}
+
 
 }

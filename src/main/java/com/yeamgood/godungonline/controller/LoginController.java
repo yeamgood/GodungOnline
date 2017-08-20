@@ -97,11 +97,25 @@ public class LoginController {
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findUserByEmail(auth.getName());
-		//manageSelectGodung(user);
+		manageSelectGodungAndRole(user);
 		manageMenu(user);
 		
 		modelAndView.addObject("user",user);
 		modelAndView.setViewName("admin/home");
+		return modelAndView;
+	}
+
+	@RequestMapping(value="/user/home", method = RequestMethod.GET)
+	public ModelAndView userHome(RedirectAttributes redirectAttributes){
+		ModelAndView modelAndView = new ModelAndView();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.findUserByEmail(auth.getName());
+		
+		manageSelectGodungAndRole(user);
+		manageMenu(user);
+		
+		modelAndView.addObject("user",user);
+		modelAndView.setViewName("user/home");
 		return modelAndView;
 	}
 	
@@ -111,27 +125,16 @@ public class LoginController {
 			menuList = menuRepository.findAllByParentId(menu.getId());
 			menu.setMenuList(menuList);
 		}
-	}
-
-	@RequestMapping(value="/user/home", method = RequestMethod.GET)
-	public ModelAndView userHome(RedirectAttributes redirectAttributes){
-		ModelAndView modelAndView = new ModelAndView();
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User user = userService.findUserByEmail(auth.getName());
 		
-		manageSelectGodung(user);
-		manageMenu(user);
-		
-		modelAndView.addObject("user",user);
-		modelAndView.setViewName("user/home");
-		return modelAndView;
 	}
 	
-	private void manageSelectGodung(User user) {
-		if(user.getGodungs().size() == 1) {
-			user.setGodung(user.getGodungs().get(0));
-		}else if(user.getGodungs().size() > 1) {
-			//TODO Multi Godung
+	private void manageSelectGodungAndRole(User user) {
+		
+		if(user.getGodungUserRoleList().size() == 1) {
+			user.setGodung(user.getGodungUserRoleList().get(0).getGodung());
+			user.setRole(user.getGodungUserRoleList().get(0).getRole());
+		}else if(user.getGodungUserRoleList().size() > 1) {
+			//TODO MULTI
 		}else {
 			//TODO ERROR
 		}

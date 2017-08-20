@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.Valid;
@@ -51,17 +51,17 @@ public class User {
 	@JoinTable(name = "user_rolelogin", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<RoleLogin> roles;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "user_godung", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "godung_id"))
-	private List<Godung> godungs;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "role_id")
-	private Role role;
+	@OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<GodungUserRole> godungUserRoleList;
 	
 	@Transient
 	@Valid
 	Godung godung;
+	
+	@Transient
+	Role role;
+	
+	
 
 	public Long getId() {
 		return id;
@@ -111,13 +111,6 @@ public class User {
 		this.roles = roles;
 	}
 
-	public List<Godung> getGodungs() {
-		return godungs;
-	}
-
-	public void setGodungs(List<Godung> godungs) {
-		this.godungs = godungs;
-	}
 
 	public Godung getGodung() {
 		return godung;
@@ -125,6 +118,14 @@ public class User {
 
 	public void setGodung(Godung godung) {
 		this.godung = godung;
+	}
+
+	public List<GodungUserRole> getGodungUserRoleList() {
+		return godungUserRoleList;
+	}
+
+	public void setGodungUserRoleList(List<GodungUserRole> godungUserRoleList) {
+		this.godungUserRoleList = godungUserRoleList;
 	}
 
 	public Role getRole() {

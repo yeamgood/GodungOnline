@@ -1,10 +1,8 @@
 package com.yeamgood.godungonline.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,10 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yeamgood.godungonline.model.Godung;
+import com.yeamgood.godungonline.model.GodungUserRole;
 import com.yeamgood.godungonline.model.Role;
 import com.yeamgood.godungonline.model.RoleLogin;
 import com.yeamgood.godungonline.model.User;
 import com.yeamgood.godungonline.repository.GodungRepository;
+import com.yeamgood.godungonline.repository.GodungUserRoleRepository;
 import com.yeamgood.godungonline.repository.RoleLoginRepository;
 import com.yeamgood.godungonline.repository.RoleRepository;
 import com.yeamgood.godungonline.repository.UserRepository;
@@ -34,6 +34,9 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
     private RoleRepository roleRepository;
+	
+	@Autowired
+	private GodungUserRoleRepository godungUserRoleRepository;
     
 	@Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -43,35 +46,33 @@ public class UserServiceImpl implements UserService{
 		return userRepository.findByEmail(email);
 	}
 	
-	private final Long ROLE_ADMIN = (long) 1;
-	private final Long ROLE_USER = (long) 2;
+	private final String ROLELOGIN_USER = "USER";
+	private final Long ROLE_ADMIN_FREE = (long) 2;
 	private final String USER_SYSTEM = "SYSTEM";
 	private final int ACTIVE = 1;
 	
 	@Override
 	@Transactional(rollbackFor={Exception.class})
 	public void saveUser(User user) {
-		
-		Role role = roleRepository.findById(ROLE_USER);
-		List<Role> roleList = new  ArrayList<Role>();
-		roleList.add(role);
+		Role role = roleRepository.findById(ROLE_ADMIN_FREE);
 		
 		Godung godung = user.getGodung();
+		godung.setActive(ACTIVE);
 		godung.setCreateUser(USER_SYSTEM);
 		godung.setCreateDate(new Date());
-		godung.setRoleList(roleList);
 		godungRepository.save(godung);
 		
-		List<Godung> godungs = new ArrayList<Godung>();
-		godungs.add(godung);
-
-		user.setGodungs(godungs);
-		user.setRole(role);
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(ACTIVE);
-        RoleLogin userRole = roleLoginRepository.findByRole("USER");
+        RoleLogin userRole = roleLoginRepository.findByRole(ROLELOGIN_USER);
         user.setRoles(new HashSet<RoleLogin>(Arrays.asList(userRole)));
 		userRepository.save(user);
+		
+		GodungUserRole godungUserRole = new GodungUserRole();
+		godungUserRole.setGodung(godung);
+		godungUserRole.setUser(user);
+		godungUserRole.setRole(role);
+		godungUserRoleRepository.save(godungUserRole);
 	}
 
 	@Override
