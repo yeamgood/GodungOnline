@@ -44,6 +44,10 @@ public class User {
 	@NotEmpty(message = "{validation.required.name}")
 	private String name;
 	
+	@Column(name = "language")
+	@NotEmpty(message = "{validation.required.language}")
+	private String language;
+	
 	@Column(name = "active")
 	private int active;
 	
@@ -60,8 +64,6 @@ public class User {
 	
 	@Transient
 	Role role;
-	
-	
 
 	public Long getId() {
 		return id;

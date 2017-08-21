@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,6 +16,7 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,18 +30,16 @@ import com.yeamgood.godungonline.bean.Pnotify;
 import com.yeamgood.godungonline.bean.PnotifyType;
 import com.yeamgood.godungonline.model.Menu;
 import com.yeamgood.godungonline.model.User;
-import com.yeamgood.godungonline.repository.MenuRepository;
 import com.yeamgood.godungonline.service.UserService;
 
 @Controller
 @SessionAttributes("user")
 public class LoginController {
 	
-	@Autowired
-	private UserService userService;
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
-	private MenuRepository menuRepository;
+	private UserService userService;
 	
 	@Autowired
     MessageSource messageSource;
@@ -46,43 +48,34 @@ public class LoginController {
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
 			                  @RequestParam(value = "logout", required = false) String logout, 
 			                  User user, BindingResult bindingResult,HttpServletRequest request) {
-		ModelAndView model = new ModelAndView(); 
+		ModelAndView modelAndView = new ModelAndView(); 
 		if (error != null) {
 			bindingResult.rejectValue("email", "error.user", getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
 		}
-		System.out.println("logout " + logout);
 		if (logout != null) {
-			//model.addObject("msg", "You've been logged out successfully.");
-			model.addObject("pnotify",new Pnotify(messageSource,PnotifyType.SUCCESS,"message.success.logout"));
+			modelAndView.addObject("pnotify",new Pnotify(messageSource,PnotifyType.SUCCESS,"message.success.logout"));
 		}
 		
-//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//		if(auth.isAuthenticated()) {
-//			model.setViewName("redirect:/user/home");
-//		}else {
-//			model.addObject("user", user);
-//			model.setViewName("login");
-//		}
 		
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		String currentUserName = authentication.getName();
-//		System.out.println("test dd " + currentUserName);
-//		if (authentication instanceof AnonymousAuthenticationToken) {
-//			model.addObject("user", user);
-//			model.setViewName("login");
-//		}else {
-//			model.setViewName("redirect:/user/home");
-//		}
+		Set<String> roles = AuthorityUtils.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+		if(roles.contains("ADMIN")) {
+			modelAndView.setViewName("redirect:/admin/home");
+		}else if(roles.contains("USER")) {
+			modelAndView.setViewName("redirect:/user/home");
+		}else {
+			modelAndView.setViewName("login");
+		}
 		
-		model.addObject("user", user);
-		model.setViewName("login");
-		return model;
+		modelAndView.addObject("user", user);
+		return modelAndView;
 	}
-	
-	@RequestMapping("/authorizeRole")
+
+	@RequestMapping("/loginAuthorizeRole")
     public ModelAndView defaultAfterLogin() {
 		ModelAndView modelAndView = new ModelAndView();
-		Set<String> roles = AuthorityUtils.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Set<String> roles = AuthorityUtils.authorityListToSet(auth.getAuthorities());
+		logger.info("[USER][Loggin] email:" + auth.getName() + " role:" + roles.toString());
 		if(roles.contains("ADMIN")) {
 			modelAndView.setViewName("redirect:/admin/home");
 		}else if(roles.contains("USER")) {
@@ -100,9 +93,8 @@ public class LoginController {
 		User user = userService.findUserByEmail(auth.getName());
 		manageSelectGodungAndRole(user);
 		manageMenu(user);
-		
 		modelAndView.addObject("user",user);
-		modelAndView.setViewName("admin/home");
+		modelAndView.setViewName("home");
 		return modelAndView;
 	}
 
@@ -111,13 +103,24 @@ public class LoginController {
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findUserByEmail(auth.getName());
-		
 		manageSelectGodungAndRole(user);
 		manageMenu(user);
-		
 		modelAndView.addObject("user",user);
-		modelAndView.setViewName("user/home");
+		modelAndView.setViewName("home");
 		return modelAndView;
+	}
+	
+	@RequestMapping(value="/logoutSuccess", method = RequestMethod.GET)
+	public ModelAndView logoutPage (HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttributes) {
+		System.out.println("logout logout logout logout logout");
+		ModelAndView modelAndView = new ModelAndView(); 
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    if (auth != null){    
+	        new SecurityContextLogoutHandler().logout(request, response, auth);
+	    }
+		redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,"app.action.logout"));
+	    modelAndView.setViewName("redirect:/login");
+	    return modelAndView;
 	}
 	
 	private void manageMenu(User user) {
@@ -128,7 +131,6 @@ public class LoginController {
 				menuList.add(menu);
 			}
 		}
-		
 		for(Menu menu : menuList) {
 			subMenuList = new ArrayList<Menu>();
 			for (Menu subMenu : user.getRole().getMenuList()) {
@@ -143,7 +145,6 @@ public class LoginController {
 	}
 	
 	private void manageSelectGodungAndRole(User user) {
-		
 		if(user.getGodungUserRoleList().size() == 1) {
 			user.setGodung(user.getGodungUserRoleList().get(0).getGodung());
 			user.setRole(user.getGodungUserRoleList().get(0).getRole());

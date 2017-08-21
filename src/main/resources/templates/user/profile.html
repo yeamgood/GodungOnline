@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<!-- Meta, title, CSS, favicons, etc. -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>Godung Online</title>
+	
+	<!-- Bootstrap -->
+    <link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link th:href="@{/vendors/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+    <!-- NProgress -->
+    <link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
+    <!-- iCheck -->
+    <link th:href="@{/vendors/iCheck/skins/flat/green.css}" rel="stylesheet">
+    <!-- Datatables -->
+    <link th:href="@{/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
+    <!-- PNotify -->
+    <link th:href="@{/vendors/pnotify/dist/pnotify.css}" rel="stylesheet">
+    <link th:href="@{/vendors/pnotify/dist/pnotify.buttons.css}" rel="stylesheet">
+    <link th:href="@{/vendors/pnotify/dist/pnotify.nonblock.css}" rel="stylesheet">
+</head>
+<body class="nav-md">
+	<div class="container body">
+		<div class="main_container">
+
+			<!-- menu -->	
+			<div th:replace="fragments/menu:: menu"></div>
+			<!-- /menu -->
+
+			<!-- header -->	
+			<div th:replace="fragments/header:: header"></div>
+			<!-- /header -->	
+
+			<!-- page content -->
+			<div class="right_col" role="main">
+			  	<div class="clearfix"></div>
+	            <div class="row">
+	              <div class="col-md-12 col-sm-12 col-xs-12">
+	                <div class="x_panel">
+	                  <div class="x_title">
+	                    <h2>Profile <small>Manage Profile</small></h2>
+	                    <div class="clearfix"></div>
+	                  </div>
+	                  <div class="x_content">
+	                    <br />
+	                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" 
+	                    th:action="@{/user/profile/save}" th:object="${user}" method="POST" >
+	
+	                      <div class="form-group">
+	                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name" th:text="#{form.profile.label.email}">
+	                        </label>
+	                        <div class="col-md-6 col-sm-6 col-xs-12">
+	                          <label class="control-label" th:text="${session.user.email}"></label>
+	                        </div>
+	                      </div>
+	                      <div class="form-group">
+	                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name" th:text="#{form.profile.label.name}">
+	                        </label>
+	                        <div class="col-md-6 col-sm-6 col-xs-12">
+	                          <input type="text" id="last-name" name="name" class="form-control col-md-7 col-xs-12" th:value="${session.user.name}">
+	                        </div>
+	                      </div>
+	                       <div class="form-group">
+	                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name" th:text="#{form.profile.label.language}">
+	                        </label>
+	                        <div class="col-md-6 col-sm-6 col-xs-12">
+	                          <select class="form-control">
+	                            <option>ภาษาไทย</option>
+	                            <option>English</option>
+	                          </select>
+	                        </div>
+	                      </div>
+	                  
+	                      <div class="ln_solid"></div>
+	                      <div class="form-group">
+	                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+	                          <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> <span th:text="#{bt.text.save}"></span></button>
+	                        </div>
+	                      </div>
+	
+	                    </form>
+	                  </div>
+	                </div>
+	              </div>
+	            </div>
+            </div>
+			<!-- /page content -->
+
+			<!-- footer content -->
+			<div th:replace="fragments/footer:: footer"></div>
+			<!-- /footer content -->
+		</div>
+	</div>
+
+	 <!-- jQuery -->
+    <script th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+    <!-- Bootstrap -->
+    <script th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+    <!-- FastClick -->
+    <script th:src="@{/vendors/fastclick/lib/fastclick.js}"></script>
+    <!-- NProgress -->
+    <script th:src="@{/vendors/nprogress/nprogress.js}"></script>
+    <!-- iCheck -->
+    <script th:src="@{/vendors/iCheck/icheck.min.js}"></script>
+    <!-- Datatables -->
+    <script th:src="@{/vendors/datatables.net/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js}"></script>
+    <script th:src="@{/vendors/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
+    <script th:src="@{/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js}"></script>
+    <script th:src="@{/vendors/datatables.net-buttons/js/buttons.flash.min.js}"></script>
+    <script th:src="@{/vendors/datatables.net-buttons/js/buttons.html5.min.js}"></script>
+    <script th:src="@{/vendors/datatables.net-buttons/js/buttons.print.min.js}"></script>
+    <script th:src="@{/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js}"></script>
+    <script th:src="@{/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js}"></script>
+    <script th:src="@{/vendors/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+    <script th:src="@{/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js}"></script>
+    <script th:src="@{/vendors/datatables.net-scroller/js/dataTables.scroller.min.js}"></script>
+    <script th:src="@{/vendors/jszip/dist/jszip.min.js}"></script>
+    <script th:src="@{/vendors/pdfmake/build/pdfmake.min.js}"></script>
+    <script th:src="@{/vendors/pdfmake/build/vfs_fonts.js}"></script>
+  	<!-- PNotify -->
+    <script th:src="@{/vendors/pnotify/dist/pnotify.js}"></script>
+    <script th:src="@{/vendors/pnotify/dist/pnotify.buttons.js}"></script>
+    <script th:src="@{/vendors/pnotify/dist/pnotify.nonblock.js}"></script>
+    
+    <!-- Custom Theme Scripts -->
+    <script th:src="@{/build/js/custom.js}"></script>
+    
+    <script>
+	function openNotification(inputType,inputTitle,inputText){
+		if(inputType == "success" || inputType == "info" || inputType == "error"){ /* SUCCESS,INFO,ERROR */
+			new PNotify({
+	            title: inputTitle,
+	            text: inputText,
+	            type: inputType,
+	            styling: 'bootstrap3'
+	        });
+		}else if(inputType == "notice"){ /* NOTICE */
+			new PNotify({
+				title: inputTitle,
+				text: inputText,
+	            styling: 'bootstrap3'
+	        });
+		}else if(inputType == "dark"){ /* DARK */
+			new PNotify({
+				title: inputTitle,
+				text: inputText,
+	            type: inputType,
+	            styling: 'bootstrap3',
+	            addclass: 'dark'
+	        });
+		}else{
+			new PNotify({ /* NOTICE */
+				title: inputTitle,
+				text: inputText,
+	            styling: 'bootstrap3'
+	        });
+		}
+	}	
+    </script>
+    
+    <script th:inline="javascript">
+		/*<![CDATA[*/
+		var pnotify = [[${pnotify}]];
+		if(pnotify != null){
+			openNotification(pnotify.type,pnotify.title,pnotify.text);
+		}
+		/*]]>*/
+	</script>
+
+</body>
+</html>
