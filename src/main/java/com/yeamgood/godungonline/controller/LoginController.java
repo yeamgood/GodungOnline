@@ -55,8 +55,6 @@ public class LoginController {
 		if (logout != null) {
 			modelAndView.addObject("pnotify",new Pnotify(messageSource,PnotifyType.SUCCESS,"message.success.logout"));
 		}
-		
-		
 		Set<String> roles = AuthorityUtils.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
 		if(roles.contains("ADMIN")) {
 			modelAndView.setViewName("redirect:/admin/home");
@@ -76,10 +74,11 @@ public class LoginController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Set<String> roles = AuthorityUtils.authorityListToSet(auth.getAuthorities());
 		logger.info("[USER][Loggin] email:" + auth.getName() + " role:" + roles.toString());
+		User user = userService.findUserByEmail(auth.getName());
 		if(roles.contains("ADMIN")) {
-			modelAndView.setViewName("redirect:/admin/home");
+			modelAndView.setViewName("redirect:/admin/home?lang="+user.getLanguage());
 		}else if(roles.contains("USER")) {
-			modelAndView.setViewName("redirect:/user/home");
+			modelAndView.setViewName("redirect:/user/home?lang="+user.getLanguage());
 		}else {
 			modelAndView.setViewName("redirect:/login");
 		}

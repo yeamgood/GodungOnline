@@ -29,17 +29,20 @@ public class Menu {
 	@Column(name="icon")
 	private String icon;
 	
+	@Column(name="message_code")
+	private String messageCode;
+	
 	@Column(name="action")
 	private String action;
+	
+	@Column(name="priority")
+	private String priority;
 	
 	@Column(name="parent_id")
 	private Long parentId;
 	
 	@Column(name="active")
 	private String active;
-	
-	@Column(name="priority")
-	private String priority;
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "menu_menu_privilege", joinColumns = @JoinColumn(name = "menu_id"), inverseJoinColumns = @JoinColumn(name = "menu_privilege_id"))
@@ -70,6 +73,14 @@ public class Menu {
 
 	public void setIcon(String icon) {
 		this.icon = icon;
+	}
+	
+	public String getMessageCode() {
+		return messageCode;
+	}
+
+	public void setMessageCode(String messageCode) {
+		this.messageCode = messageCode;
 	}
 
 	public String getAction() {

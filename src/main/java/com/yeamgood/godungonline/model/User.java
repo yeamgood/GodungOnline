@@ -45,7 +45,6 @@ public class User {
 	private String name;
 	
 	@Column(name = "language")
-	@NotEmpty(message = "{validation.required.language}")
 	private String language;
 	
 	@Column(name = "active")
@@ -136,6 +135,14 @@ public class User {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 	
 }

@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 @Entity
@@ -24,6 +25,10 @@ public class Common {
 	
 	@Column(name = "common_value")
 	private String value;
+	
+	@Column(name = "sequence")
+	@OrderBy("sequence ASC")
+	private String sequence;
 	
 	@Column(name = "description")
 	private String description;
@@ -68,4 +73,12 @@ public class Common {
 		this.description = description;
 	}
 
+	public String getSequence() {
+		return sequence;
+	}
+
+	public void setSequence(String sequence) {
+		this.sequence = sequence;
+	}
+	
 }

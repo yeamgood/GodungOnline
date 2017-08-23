@@ -30,6 +30,8 @@
     <link th:href="@{/vendors/pnotify/dist/pnotify.css}" rel="stylesheet">
     <link th:href="@{/vendors/pnotify/dist/pnotify.buttons.css}" rel="stylesheet">
     <link th:href="@{/vendors/pnotify/dist/pnotify.nonblock.css}" rel="stylesheet">
+    <!-- Main Theme Style -->
+    <link type="text/css" th:href="@{/css/main.css}" rel="stylesheet">
 </head>
 <body class="nav-md">
 	<div class="container body">
@@ -56,29 +58,38 @@
 	                  <div class="x_content">
 	                    <br />
 	                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" 
-	                    th:action="@{/user/profile/save}" th:object="${user}" method="POST" >
+	                    th:action="@{/user/profile/save}" th:object="${profileForm}" method="POST" >
 	
 	                      <div class="form-group">
-	                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name" th:text="#{form.profile.label.email}">
-	                        </label>
+	                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name" th:text="#{form.profile.label.email}"></label>
 	                        <div class="col-md-6 col-sm-6 col-xs-12">
-	                          <label class="control-label" th:text="${session.user.email}"></label>
+	                          <label class="control-label" th:text="${profileForm.email}"></label>
 	                        </div>
 	                      </div>
 	                      <div class="form-group">
-	                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name" th:text="#{form.profile.label.name}">
-	                        </label>
+	                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name" th:text="#{form.profile.label.name}"></label>
 	                        <div class="col-md-6 col-sm-6 col-xs-12">
-	                          <input type="text" id="last-name" name="name" class="form-control col-md-7 col-xs-12" th:value="${session.user.name}">
+	                          <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="validation-message"></label>
+	                          <input type="text" th:field="*{name}" name="name" class="form-control col-md-7 col-xs-12" th:value="${profileForm.name}">
 	                        </div>
 	                      </div>
 	                       <div class="form-group">
-	                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name" th:text="#{form.profile.label.language}">
-	                        </label>
+	                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name" th:text="#{form.profile.label.godungname}"></label>
 	                        <div class="col-md-6 col-sm-6 col-xs-12">
-	                          <select class="form-control">
-	                            <option>ภาษาไทย</option>
-	                            <option>English</option>
+	                          <label th:if="${#fields.hasErrors('godungName')}" th:errors="*{godungName}" class="validation-message"></label>
+	                          <input type="text" th:field="*{godungName}" name="godungName" class="form-control col-md-7 col-xs-12" th:value="${profileForm.godungName}">
+	                        </div>
+	                      </div>
+	                      <div class="form-group">
+	                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name" th:text="#{form.profile.label.language}"></label>
+	                        <div class="col-md-6 col-sm-6 col-xs-12">
+	                          <label th:if="${#fields.hasErrors('language')}" th:errors="*{language}" class="validation-message"></label>
+	                          <select th:field="*{language}" class="form-control" name="language">
+	                            	<option th:each="common :${profileForm.languageList}" 
+			                            th:value="${common.key}" 
+			                            th:text="${common.value}" 
+	                                    th:selected="${common.key} == ${profileForm.language} ? true : false">
+	                          	</option>
 	                          </select>
 	                        </div>
 	                      </div>

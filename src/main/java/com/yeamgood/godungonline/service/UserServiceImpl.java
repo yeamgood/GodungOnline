@@ -4,7 +4,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +25,8 @@ import com.yeamgood.godungonline.repository.UserRepository;
 
 @Service("userService")
 public class UserServiceImpl implements UserService{
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private UserRepository userRepository;
@@ -37,7 +42,7 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private GodungUserRoleRepository godungUserRoleRepository;
-    
+	
 	@Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
@@ -54,6 +59,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	@Transactional(rollbackFor={Exception.class})
 	public void saveUser(User user) {
+		logger.debug("I:");
 		Role role = roleRepository.findById(ROLE_ADMIN_FREE);
 		
 		Godung godung = user.getGodung();
@@ -66,6 +72,7 @@ public class UserServiceImpl implements UserService{
         user.setActive(ACTIVE);
         RoleLogin userRole = roleLoginRepository.findByRole(ROLELOGIN_USER);
         user.setRoles(new HashSet<RoleLogin>(Arrays.asList(userRole)));
+        user.setLanguage(LocaleContextHolder.getLocale().getLanguage());
 		userRepository.save(user);
 		
 		GodungUserRole godungUserRole = new GodungUserRole();
@@ -73,6 +80,7 @@ public class UserServiceImpl implements UserService{
 		godungUserRole.setUser(user);
 		godungUserRole.setRole(role);
 		godungUserRoleRepository.save(godungUserRole);
+		logger.debug("O:");
 	}
 
 	@Override
@@ -80,7 +88,10 @@ public class UserServiceImpl implements UserService{
 		user.setPassword(bCryptPasswordEncoder.encode(password));
 		userRepository.save(user);
 	}
-	
-	
+
+	@Override
+	public void updateProfile(User user) {
+		
+	}
 
 }

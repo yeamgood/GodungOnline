@@ -2,6 +2,8 @@ package com.yeamgood.godungonline.controller;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -20,6 +22,8 @@ import com.yeamgood.godungonline.service.UserService;
 @Controller
 public class RegistrationController {
 	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired
 	private UserService userService;
 	
@@ -37,24 +41,30 @@ public class RegistrationController {
 	
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
 	public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult,RedirectAttributes redirectAttributes) {
+		logger.debug("I:");
 		ModelAndView modelAndView = new ModelAndView();
 		User userExists = userService.findUserByEmail(user.getEmail());
 		if (userExists != null) {
+			logger.debug("userExists");
 			bindingResult.rejectValue("email", "error.user", messageSource.getMessage("validation.required.email.registered",null,LocaleContextHolder.getLocale()));
 		}
 		if (bindingResult.hasErrors()) {
+			logger.debug("bindingResult error");
 			modelAndView.setViewName("registration");
 		} else {
 			try {
+				logger.debug("save");
 				userService.saveUser(user);
 				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,"message.user.register.success"));
 				modelAndView.setViewName("redirect:/login");
 			} catch (Exception e) {
 				e.printStackTrace();
+				logger.error("error",e);
 				modelAndView.addObject("pnotify",new Pnotify(messageSource,PnotifyType.ERROR,"message.error.system"));
 				modelAndView.setViewName("registration");
 			}
 		}
+		logger.debug("O:");
 		return modelAndView;
 	}
 

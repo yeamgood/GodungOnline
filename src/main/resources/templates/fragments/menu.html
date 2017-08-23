@@ -23,7 +23,7 @@
 								th:text="${menu.name}"></span> <span class="fa fa-chevron-down" th:if="${!menu.menuList.empty}"></span>
 						</a>
 							<ul class="nav child_menu">
-								<li th:each="menuChild : ${menu.menuList}"><a th:href="@{${menuChild.action}}"><span th:text="${menuChild.name}"></span></a></li>
+								<li th:each="menuChild : ${menu.menuList}"><a th:href="@{${menuChild.action}}"><i class="fa" th:class="${menuChild.icon}"></i><span th:text="${menuChild.name}"></span></a></li>
 							</ul></li>
 					</ul>
 				</div>
