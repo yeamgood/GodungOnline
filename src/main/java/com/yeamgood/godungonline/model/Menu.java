@@ -29,8 +29,8 @@ public class Menu {
 	@Column(name="icon")
 	private String icon;
 	
-	@Column(name="message_code")
-	private String messageCode;
+	@Column(name="code")
+	private String code;
 	
 	@Column(name="action")
 	private String action;
@@ -74,13 +74,13 @@ public class Menu {
 	public void setIcon(String icon) {
 		this.icon = icon;
 	}
-	
-	public String getMessageCode() {
-		return messageCode;
+
+	public String getCode() {
+		return code;
 	}
 
-	public void setMessageCode(String messageCode) {
-		this.messageCode = messageCode;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String getAction() {

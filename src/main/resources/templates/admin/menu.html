@@ -58,6 +58,7 @@
 										<tr>
 											<th>Id</th>
 											<th>Name</th>
+											<th>Code</th>
 											<th>Icon</th>
 											<th>Action</th>
 											<th>ParentId</th>
@@ -70,6 +71,7 @@
 										<tr th:each="menu : ${menuList}">
 											<td th:text="${menu.id}"></td>
 											<td th:text="${menu.name}"></td>
+											<td th:text="${menu.code}"></td>
 											<td th:text="${menu.icon}"></td>
 											<td th:text="${menu.action}"></td>
 											<td th:text="${menu.parentId}"></td>

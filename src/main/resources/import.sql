@@ -8,14 +8,14 @@ INSERT INTO `godung_online`.`role` (`role_id`, `system`, `version`, `name`) VALU
 INSERT INTO `godung_online`.`role` (`role_id`, `system`, `version`, `name`) VALUES ('5', '1', '1', 'ADMIN_FREE_4');
 INSERT INTO `godung_online`.`role` (`role_id`, `system`, `version`, `name`) VALUES ('6', '1', '1', 'ADMIN_FREE_5');
 
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `message_code`, `priority`) VALUES ('1','/admin/home', '1', 'fa fa-home', 'Home', 'menu.home.name', '1');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `message_code`, `priority`) VALUES ('2','/admin/user', '1', 'fa fa-user', 'Users', 'menu.user.name', '2');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `message_code`, `priority`) VALUES ('3','/admin/role', '1', 'fa fa-tasks', 'Roles', 'menu.role.name', '3');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `message_code`, `priority`) VALUES ('4','/admin/menu', '1', 'fa fa-desktop', 'Menu', 'menu.menu.name', '4');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('1','/admin/home', '1', 'fa fa-home', 'Home', 'menu.name.home', '1');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('2','/admin/user', '1', 'fa fa-user', 'Users', 'menu.name.user', '2');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('3','/admin/role', '1', 'fa fa-tasks', 'Roles', 'menu.name.role', '3');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('4','/admin/menu', '1', 'fa fa-desktop', 'Menu', 'menu.name.menu', '4');
 
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `message_code`, `priority`) VALUES ('5','/user/home', '1', 'fa fa-home', 'Home', 'menu.home.name', '1');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `message_code`, `priority`) VALUES ('6','javascript:;', '1', 'fa fa-cogs', 'Setting', 'menu.setting.name', '60');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `message_code`, `priority`,`parent_id`) VALUES ('7','/user/profile', '1', 'fa fa-user', 'Profile', 'menu.profile.name', '4','6');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('5','/user/home', '1', 'fa fa-home', 'Home', 'menu.name.home', '1');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('6','javascript:;', '1', 'fa fa-cogs', 'Setting', 'menu.name.setting', '60');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('7','/user/profile', '1', 'fa fa-user', 'Profile', 'menu.name.profile', '4','6');
 
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '1');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '2');
@@ -25,12 +25,12 @@ INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '5')
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '6');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '7');
 
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `message_code`, `priority`) VALUES ('8','javascript:;', '1', 'fa fa-table', 'Product Management', 'menu.productmanagement.name', '40');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `message_code`, `priority`,`parent_id`) VALUES ('9','javascript:;', '1', 'fa fa-home', 'Werehouse', 'menu.werehouse.name', '1','8');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `message_code`, `priority`,`parent_id`) VALUES ('10','javascript:;', '1', 'fa fa-cubes', 'Product', 'menu.product.name', '2','8');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `message_code`, `priority`,`parent_id`) VALUES ('11','javascript:;', '1', 'fa fa-tags', 'Brand', 'menu.brand.name', '3','8');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `message_code`, `priority`,`parent_id`) VALUES ('12','javascript:;', '1', 'fa fa-book', 'Measure', 'menu.measure.name', '4','8');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `message_code`, `priority`,`parent_id`) VALUES ('13','javascript:;', '1', 'fa fa-sitemap', 'Category', 'menu.category.name', '5','8');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('8','javascript:;', '1', 'fa fa-table', 'Product Management', 'menu.name.productmanagement', '40');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('9','javascript:;', '1', 'fa fa-home', 'Werehouse', 'menu.name.werehouse', '1','8');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('10','javascript:;', '1', 'fa fa-cubes', 'Product', 'menu.name.product', '2','8');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('11','javascript:;', '1', 'fa fa-tags', 'Brand', 'menu.name.brand', '3','8');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('12','javascript:;', '1', 'fa fa-book', 'Measure', 'menu.name.measure', '4','8');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('13','javascript:;', '1', 'fa fa-sitemap', 'Category', 'menu.name.category', '5','8');
 
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '8');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '9');

@@ -48,7 +48,7 @@ public class ProfileController {
 		return modelAndView;
 	}
 	
-	@RequestMapping(value="/user/profile/save", method = RequestMethod.POST)
+	@RequestMapping(value="/user/profile", method = RequestMethod.POST)
 	public ModelAndView userProfileSave(@Valid ProfileForm profileForm,BindingResult bindingResult,HttpSession session,RedirectAttributes redirectAttributes){
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
