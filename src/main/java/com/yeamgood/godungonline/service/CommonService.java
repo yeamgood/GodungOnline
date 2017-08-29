@@ -5,7 +5,6 @@ import java.util.List;
 import com.yeamgood.godungonline.model.Common;
 
 public interface CommonService {
-	public Common findCommonById(long id);
-
-	public List<Common> findCommonByType(String string);
+	public Common findById(long id);
+	public List<Common> findByType(String string);
 }

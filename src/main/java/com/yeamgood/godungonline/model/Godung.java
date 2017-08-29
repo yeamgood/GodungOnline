@@ -22,33 +22,32 @@ public class Godung extends ModelTemplate{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "godung_id")
-	private Long id;
+	private Long godungId;
 	
 	@Column(name = "godung_name")
 	@NotEmpty(message = "{validation.required.godung.name}")
-	private String name;
+	private String godungName;
 
 	@Column(name = "active")
+	private int active;
 	
 	@OneToMany(mappedBy = "godung", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<GodungUserRole> godungUserRoleList;
-	
-	private int active;
 
-	public Long getId() {
-		return id;
+	public Long getGodungId() {
+		return godungId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setGodungId(Long godungId) {
+		this.godungId = godungId;
 	}
 
-	public String getName() {
-		return name;
+	public String getGodungName() {
+		return godungName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setGodungName(String godungName) {
+		this.godungName = godungName;
 	}
 
 	public int getActive() {

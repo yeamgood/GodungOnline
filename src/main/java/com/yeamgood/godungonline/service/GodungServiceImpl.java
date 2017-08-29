@@ -22,8 +22,8 @@ public class GodungServiceImpl implements GodungService{
 	}
 
 	@Override
-	public Godung findGodungById(long id) {
-		return godungRepository.findById(id);
+	public Godung findGodungByGodungId(long godungId) {
+		return godungRepository.findByGodungId(godungId);
 	}
 
 	

@@ -24,6 +24,23 @@ public class ModelTemplate {
 	@Version
 	@Column(name = "version")
 	public int version;
+	
+	public void setCreate(String user,Date date) {
+		this.createUser = user;
+		this.createDate = date;
+	}
+	
+	public void setUpdate(String user,Date date) {
+		this.updateUser = user;
+		this.updateDate = date;
+	}
+	
+	public void setCreateAndUpdate(String user,Date date) {
+		this.createUser = user;
+		this.createDate = date;
+		this.updateUser = user;
+		this.updateDate = date;
+	}
 
 	public String getCreateUser() {
 		return createUser;

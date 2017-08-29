@@ -4,3 +4,43 @@
 .validation-box{
 	text-align: left;
 }
+
+.span_white{
+	color: white !important;
+}
+
+.search-head{
+    background: #337ab7 !important;
+    border: 1px solid #2e6da4 !important;
+    padding: 0px 10px;
+    color: #fff
+}
+
+.search-content{
+    /* border: 1px solid #2e6da4 !important; */
+   	margin-top: 0px;
+    padding-top: 10px;
+}
+
+.search-content-header tr th {
+	text-align: center !important;
+}
+
+.content-center {
+	text-align: center !important;
+}
+
+.profile_title_edit{
+	padding: 0px;
+}
+
+/* datatables mergin 0 */
+.datatables_action{
+	margin: 0px;
+}
+.datatable_col_no{
+	width: 30px !important;
+}
+.datatable_col_action{
+	width: 70px !important;
+}

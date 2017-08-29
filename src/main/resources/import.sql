@@ -30,7 +30,7 @@ INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`
 INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('10','javascript:;', '1', 'fa fa-cubes', 'Product', 'menu.name.product', '2','8');
 INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('11','javascript:;', '1', 'fa fa-tags', 'Brand', 'menu.name.brand', '3','8');
 INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('12','javascript:;', '1', 'fa fa-book', 'Measure', 'menu.name.measure', '4','8');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('13','javascript:;', '1', 'fa fa-sitemap', 'Category', 'menu.name.category', '5','8');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('13','/user/category', '1', 'fa fa-sitemap', 'Category', 'menu.name.category', '5','8');
 
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '8');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '9');
@@ -54,4 +54,20 @@ INSERT INTO `godung_online`.`user` (`user_id`,`active`, `email`, `name`, `passwo
 INSERT INTO `godung_online`.`user_rolelogin` (`user_id`, `role_id`) VALUES ('2', '2');
 INSERT INTO `godung_online`.`godung` (`godung_id`, `godung_name`, `create_date`, `create_user`, `version`, `active`) VALUES ('2', 'userGodung', SYSDATE() , 'SYSTEM', '0', '1');
 INSERT INTO `godung_online`.`godung_user_role` (`id`, `godung_id`, `role_id`, `user_id`) VALUES ('2', '2', '2', '2');
+INSERT INTO `godung_online`.`category` (`category_id`,`category_code`, `create_date`, `create_user`, `version`, `category_name`, `godung_id`, `description`) VALUES ('1', 'CAT20170830-00001', SYSDATE(), 'SYSTEM', '0', 'เหล็ก', '2','เหล็กสีดำขนานใหญ่');
+INSERT INTO `godung_online`.`category` (`category_id`,`category_code`, `create_date`, `create_user`, `version`, `category_name`, `godung_id`, `description`) VALUES ('2', 'CAT20170830-00002', SYSDATE(), 'SYSTEM', '0', 'กระจก', '2','เหล็กสีดำขนานใหญ่');
+INSERT INTO `godung_online`.`category` (`category_id`,`category_code`, `create_date`, `create_user`, `version`, `category_name`, `godung_id`, `description`) VALUES ('3', 'CAT20170830-00003', SYSDATE(), 'SYSTEM', '0', 'อลูมิเนียม', '2','เหล็กสีดำขนานใหญ่');
+INSERT INTO `godung_online`.`category` (`category_id`,`category_code`, `create_date`, `create_user`, `version`, `category_name`, `godung_id`, `description`) VALUES ('4', 'CAT20170830-00004', SYSDATE(), 'SYSTEM', '0', 'อลูมิเนียม', '2','เหล็กสีดำขนานใหญ่');
+INSERT INTO `godung_online`.`category` (`category_id`,`category_code`, `create_date`, `create_user`, `version`, `category_name`, `godung_id`, `description`) VALUES ('5', 'CAT20170830-00005', SYSDATE(), 'SYSTEM', '0', 'อลูมิเนียม', '2','เหล็กสีดำขนานใหญ่');
+INSERT INTO `godung_online`.`category` (`category_id`,`category_code`, `create_date`, `create_user`, `version`, `category_name`, `godung_id`, `description`) VALUES ('6', 'CAT20170830-00006', SYSDATE(), 'SYSTEM', '0', 'อลูมิเนียม', '2','เหล็กสีดำขนานใหญ่');
+INSERT INTO `godung_online`.`category` (`category_id`,`category_code`, `create_date`, `create_user`, `version`, `category_name`, `godung_id`, `description`) VALUES ('7', 'CAT20170830-00007', SYSDATE(), 'SYSTEM', '0', 'อลูมิเนียม', '2','เหล็กสีดำขนานใหญ่');
+INSERT INTO `godung_online`.`category` (`category_id`,`category_code`, `create_date`, `create_user`, `version`, `category_name`, `godung_id`, `description`) VALUES ('8', 'CAT20170830-00008', SYSDATE(), 'SYSTEM', '0', 'อลูมิเนียม', '2','เหล็กสีดำขนานใหญ่');
+INSERT INTO `godung_online`.`category` (`category_id`,`category_code`, `create_date`, `create_user`, `version`, `category_name`, `godung_id`, `description`) VALUES ('9', 'CAT20170830-00009', SYSDATE(), 'SYSTEM', '0', 'อลูมิเนียม', '2','เหล็กสีดำขนานใหญ่');
+INSERT INTO `godung_online`.`category` (`category_id`,`category_code`, `create_date`, `create_user`, `version`, `category_name`, `godung_id`, `description`) VALUES ('10', 'CAT20170830-00010', SYSDATE(), 'SYSTEM', '0', 'อลูมิเนียม', '2','เหล็กสีดำขนานใหญ่');
+INSERT INTO `godung_online`.`category` (`category_id`,`category_code`, `create_date`, `create_user`, `version`, `category_name`, `godung_id`, `description`) VALUES ('11', 'CAT20170830-00011', SYSDATE(), 'SYSTEM', '0', 'อลูมิเนียม', '2','เหล็กสีดำขนานใหญ่');
+INSERT INTO `godung_online`.`category` (`category_id`,`category_code`, `create_date`, `create_user`, `version`, `category_name`, `godung_id`, `description`) VALUES ('12', 'CAT20170830-00012', SYSDATE(), 'SYSTEM', '0', 'อลูมิเนียม', '2','เหล็กสีดำขนานใหญ่');
+INSERT INTO `godung_online`.`category` (`category_id`,`category_code`, `create_date`, `create_user`, `version`, `category_name`, `godung_id`, `description`) VALUES ('13', 'CAT20170830-00013', SYSDATE(), 'SYSTEM', '0', 'อลูมิเนียม', '2','เหล็กสีดำขนานใหญ่');
+INSERT INTO `godung_online`.`category` (`category_id`,`category_code`, `create_date`, `create_user`, `version`, `category_name`, `godung_id`, `description`) VALUES ('14', 'CAT20170830-00014', SYSDATE(), 'SYSTEM', '0', 'อลูมิเนียม', '2','เหล็กสีดำขนานใหญ่');
+INSERT INTO `godung_online`.`category` (`category_id`,`category_code`, `create_date`, `create_user`, `version`, `category_name`, `godung_id`, `description`) VALUES ('15', 'CAT20170830-00015', SYSDATE(), 'SYSTEM', '0', 'อลูมิเนียม', '2','เหล็กสีดำขนานใหญ่');
+
 

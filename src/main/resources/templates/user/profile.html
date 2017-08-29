@@ -52,7 +52,7 @@
 	              <div class="col-md-12 col-sm-12 col-xs-12">
 	                <div class="x_panel">
 	                  <div class="x_title">
-	                    <h2>Profile <small>Manage Profile</small></h2>
+	                    <h2><i th:class="${menu.icon}"></i> <label th:text="#{${menu.code}}"></label></h2>
 	                    <div class="clearfix"></div>
 	                  </div>
 	                  <div class="x_content">
@@ -64,6 +64,7 @@
 	                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name" th:text="#{form.profile.label.email}"></label>
 	                        <div class="col-md-6 col-sm-6 col-xs-12">
 	                          <label class="control-label" th:text="${profileForm.email}"></label>
+	                          <input type="hidden" name="email" th:value="${profileForm.email}" />
 	                        </div>
 	                      </div>
 	                      <div class="form-group">
@@ -85,7 +86,7 @@
 	                        <div class="col-md-6 col-sm-6 col-xs-12">
 	                          <label th:if="${#fields.hasErrors('language')}" th:errors="*{language}" class="validation-message"></label>
 	                          <select th:field="*{language}" class="form-control" name="language">
-	                            	<option th:each="common :${profileForm.languageList}" 
+	                            	<option th:each="common :${languageList}" 
 			                            th:value="${common.key}" 
 			                            th:text="${common.value}" 
 	                                    th:selected="${common.key} == ${profileForm.language} ? true : false">

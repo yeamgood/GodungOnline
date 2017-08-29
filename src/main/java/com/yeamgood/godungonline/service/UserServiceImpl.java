@@ -64,8 +64,7 @@ public class UserServiceImpl implements UserService{
 		
 		Godung godung = user.getGodung();
 		godung.setActive(ACTIVE);
-		godung.setCreateUser(USER_SYSTEM);
-		godung.setCreateDate(new Date());
+		godung.setCreate(USER_SYSTEM, new Date());
 		godungRepository.save(godung);
 		
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));

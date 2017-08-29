@@ -67,8 +67,8 @@
                   <input type="text" th:field="*{name}" name="name"  th:placeholder="#{form.register.name}" class="form-control"/>
                 </div>
                  <div>
-                  <label th:if="${#fields.hasErrors('godung.name')}" th:errors="*{godung.name}" class="validation-message"></label>
-                  <input type="text" th:field="*{godung.name}" name="godung.name"  th:placeholder="#{form.register.godung.name}" class="form-control"/>
+                  <label th:if="${#fields.hasErrors('godung.godungName')}" th:errors="*{godung.godungName}" class="validation-message"></label>
+                  <input type="text" th:field="*{godung.godungName}" name="godungName"  th:placeholder="#{form.register.godung.name}" class="form-control"/>
                 </div>
                 <div>
                   <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="validation-message"></label>

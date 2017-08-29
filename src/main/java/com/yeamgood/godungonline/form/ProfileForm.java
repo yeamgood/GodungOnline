@@ -1,26 +1,24 @@
 package com.yeamgood.godungonline.form;
 
-import java.util.List;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
-
-import com.yeamgood.godungonline.model.Common;
 
 public class ProfileForm {
 	
 	private String email;
 	
 	@NotEmpty(message = "{validation.required.name}")
+	@Size(max=50, message="{validation.max.lenght}")
 	private String name;
 	
 	@NotEmpty(message = "{validation.required.language}")
 	private String language;
 	
 	@NotEmpty(message = "{validation.required.godung.name}")
+	@Size(max=25, message="{validation.max.lenght}")
 	private String godungName;
 	
-	private List<Common> languageList;
-
 	public String getEmail() {
 		return email;
 	}
@@ -45,14 +43,6 @@ public class ProfileForm {
 		this.language = language;
 	}
 
-	public List<Common> getLanguageList() {
-		return languageList;
-	}
-
-	public void setLanguageList(List<Common> languageList) {
-		this.languageList = languageList;
-	}
-
 	public String getGodungName() {
 		return godungName;
 	}
@@ -60,5 +50,5 @@ public class ProfileForm {
 	public void setGodungName(String godungName) {
 		this.godungName = godungName;
 	}
-	
+
 }

@@ -15,12 +15,12 @@ public class CommonServiceImpl implements CommonService{
 	private CommonRepository commonRepository;
 
 	@Override
-	public Common findCommonById(long id) {
+	public Common findById(long id) {
 		return commonRepository.findOne(id);
 	}
 
 	@Override
-	public List<Common> findCommonByType(String type) {
+	public List<Common> findByType(String type) {
 		return commonRepository.findByType(type);
 	}
 

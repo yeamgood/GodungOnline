@@ -6,11 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.yeamgood.godungonline.bean.CommonType;
 import com.yeamgood.godungonline.form.ProfileForm;
 import com.yeamgood.godungonline.model.Godung;
 import com.yeamgood.godungonline.model.User;
-import com.yeamgood.godungonline.repository.CommonRepository;
 import com.yeamgood.godungonline.repository.GodungRepository;
 import com.yeamgood.godungonline.repository.UserRepository;
 
@@ -25,9 +23,6 @@ public class ProfileServiceImpl implements ProfileService{
 	@Autowired
 	private GodungRepository godungRepository;
 	
-	@Autowired
-	private CommonRepository commonRepository;
-	
 	@Override
 	public void loadProfile(ProfileForm profileForm, Long userId, Long godungId) {
 		logger.debug("I:");
@@ -35,9 +30,8 @@ public class ProfileServiceImpl implements ProfileService{
 		Godung godung = godungRepository.findOne(godungId);
 		profileForm.setEmail(user.getEmail());
 		profileForm.setName(user.getName());
-		profileForm.setGodungName(godung.getName());
+		profileForm.setGodungName(godung.getGodungName());
 		profileForm.setLanguage(user.getLanguage());
-		profileForm.setLanguageList(commonRepository.findByType(CommonType.LANGUAGE.toString()));
 		logger.debug("O: profileForm:" + profileForm);
 		logger.debug("O:");
 	}
@@ -52,7 +46,7 @@ public class ProfileServiceImpl implements ProfileService{
 		userRepository.save(user);
 		
 		Godung godung = godungRepository.findOne(godungId);
-		godung.setName(profileForm.getGodungName());
+		godung.setGodungName(profileForm.getGodungName());
 		godungRepository.save(godung);
 		logger.debug("O:");
 	}
