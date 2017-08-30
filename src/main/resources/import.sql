@@ -28,7 +28,7 @@ INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '7')
 INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('8','javascript:;', '1', 'fa fa-table', 'Product Management', 'menu.name.productmanagement', '40');
 INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('9','javascript:;', '1', 'fa fa-home', 'Werehouse', 'menu.name.werehouse', '1','8');
 INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('10','javascript:;', '1', 'fa fa-cubes', 'Product', 'menu.name.product', '2','8');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('11','javascript:;', '1', 'fa fa-tags', 'Brand', 'menu.name.brand', '3','8');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('11','/user/brand', '1', 'fa fa-tags', 'Brand', 'menu.name.brand', '3','8');
 INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('12','javascript:;', '1', 'fa fa-book', 'Measure', 'menu.name.measure', '4','8');
 INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('13','/user/category', '1', 'fa fa-sitemap', 'Category', 'menu.name.category', '5','8');
 

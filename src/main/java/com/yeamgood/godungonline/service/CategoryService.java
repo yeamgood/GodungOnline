@@ -9,8 +9,8 @@ import com.yeamgood.godungonline.model.Category;
 import com.yeamgood.godungonline.model.User;
 
 public interface CategoryService {
-	public Category findById(long id);
-	public Category findById(long id,User user) throws GodungIdException;
+	public Category findById(Long id);
+	public Category findById(Long id,User user) throws GodungIdException;
 	public List<Category> findAllOrderByCategoryNameAsc();
 	public List<Category> findAllByGodungGodungIdOrderByCategoryNameAsc(Long godungId);
 	public List<Category> findByGodungGodungIdAndCategoryNameIgnoreCaseContaining(Long godungId, String category, Pageable pageable);

@@ -26,7 +26,7 @@ public class CategoryServiceImpl implements CategoryService{
 	private CategoryRepository categoryRepository;
 
 	@Override
-	public Category findById(long id) {
+	public Category findById(Long id) {
 		logger.debug("I:");
 		logger.debug("O:");
 		return categoryRepository.findOne(id);
@@ -106,7 +106,7 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 
 	@Override
-	public Category findById(long id, User user) throws GodungIdException {
+	public Category findById(Long id, User user) throws GodungIdException {
 		logger.debug("I:");
 		Category category = categoryRepository.findOne(id);
 		long godungIdTemp = category.getGodung().getGodungId().longValue();

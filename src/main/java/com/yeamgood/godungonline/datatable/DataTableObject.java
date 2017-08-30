@@ -2,8 +2,6 @@ package com.yeamgood.godungonline.datatable;
 
 import java.util.List;
 
-import com.yeamgood.godungonline.model.Category;
-
 public class DataTableObject {
 	int iTotalRecords;
 
@@ -13,7 +11,7 @@ public class DataTableObject {
 
 	String sColumns;
 
-	List<Category> aaData;
+	List<?> aaData;
 
 	public int getiTotalRecords() {
 		return iTotalRecords;
@@ -47,11 +45,11 @@ public class DataTableObject {
 		this.sColumns = sColumns;
 	}
 
-	public List<Category> getAaData() {
+	public List<?> getAaData() {
 		return aaData;
 	}
 
-	public void setAaData(List<Category> aaData) {
+	public void setAaData(List<?> aaData) {
 		this.aaData = aaData;
 	}
 

@@ -63,7 +63,7 @@
 								<div class="col-md-6" class="pull-right">
 										<button type="button" class="btn btn-success" onclick="openSaveModal();">
 											<i class="fa" th:class="#{bt.icon.add}"></i>
-											<span class="span_white" th:text="#{form.category.bt.add}"></span>
+											<span class="span_white" th:text="#{form.brand.bt.add}"></span>
 										</button>
 								</div>
 								<div class="clearfix"></div>
@@ -96,9 +96,9 @@
 											</div>
 											<div class="content-center">
 												<span th:text="#{label.search.by}"></span> 
-												<span th:text="#{form.category.label.code}"></span> ,
-												<span th:text="#{form.category.label.name}"></span> ,
-												<span th:text="#{form.category.label.description}"></span>
+												<span th:text="#{form.brand.label.code}"></span> ,
+												<span th:text="#{form.brand.label.name}"></span> ,
+												<span th:text="#{form.brand.label.description}"></span>
 											</div>
 										</div>
 									</div>
@@ -106,21 +106,21 @@
 										<div class="col-md-12 col-sm-12 col-xs-12">
 												<form class="form-horizontal form-label-left input_mask">
 							                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.category.label.code}"></label>
+							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.brand.label.code}"></label>
 							                         <div class="col-md-8 col-sm-8 col-xs-12">
 							                         <input id="input_advance_code" type="text" class="form-control" >
 							                         </div>
 							                      </div>
 							
 							                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-							                       <label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.category.label.name}"></label>
+							                       <label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.brand.label.name}"></label>
 							                        <div class="col-md-8 col-sm-8 col-xs-12">
 							                          <input id="input_advance_name"  type="text" class="form-control" >
 							                        </div>
 							                      </div>
 							                      
 							                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.category.label.description}"></label>
+							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.brand.label.description}"></label>
 							                         <div class="col-md-8 col-sm-8 col-xs-12">
 							                         <input id="input_advance_description"  type="text" class="form-control" >
 							                         </div>
@@ -140,7 +140,7 @@
 
 							<div class="clearfix"></div>
 							<div class="search-head">
-							<h2><i class="fa fa-th-list"></i> Category List</h2>
+							<h2><i class="fa fa-th-list"></i> Brand List</h2>
 							</div>
 								<div class="x_content search-content">
 									
@@ -148,10 +148,10 @@
 										<thead class="search-content-header">
 											<tr>
 												<th th:text="#{datatables.text.no}" ></th>
-												<th th:text="#{form.category.label.code}" class="col-md-1"></th>
-												<th th:text="#{form.category.label.name}" class="col-md-3"></th>
-												<th th:text="#{form.category.label.description}" class="col-md-3"></th>
-												<th th:text="#{form.category.label.action}" class="col-md-1"></th>
+												<th th:text="#{form.brand.label.code}" class="col-md-1"></th>
+												<th th:text="#{form.brand.label.name}" class="col-md-3"></th>
+												<th th:text="#{form.brand.label.description}" class="col-md-3"></th>
+												<th th:text="#{form.brand.label.action}" class="col-md-1"></th>
 											</tr>
 										</thead>
 									</table>
@@ -182,23 +182,23 @@
 							</h4>
 						</div>
 
-						<form id="categoryForm" data-parsley-validate class="form-horizontal form-label-left">
+						<form id="brandForm" data-parsley-validate class="form-horizontal form-label-left">
 							<div class="modal-body validation-box">
-								<input type="hidden" id="categoryId" name="categoryId" >
+								<input type="hidden" id="brandId" name="brandId" >
 								<div class="form-group">
-									<label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name" th:text="#{form.category.label.code}"></label>
+									<label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name" th:text="#{form.brand.label.code}"></label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<input type="text" id="categoryCode" name="categoryCode" class="form-control col-md-7 col-xs-12" readonly="readonly" placeholder="ระบบสร้างให้อัตโนมัติ">
+										<input type="text" id="brandCode" name="brandCode" class="form-control col-md-7 col-xs-12" readonly="readonly" placeholder="ระบบสร้างให้อัตโนมัติ">
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name" th:text="#{form.category.label.name} + ' ' + #{label.request}"></label>
+									<label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name" th:text="#{form.brand.label.name} + ' ' + #{label.request}"></label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<input type="text" id="categoryName" name="categoryName" required="required" class="form-control col-md-7 col-xs-12">
+										<input type="text" id="brandName" name="brandName" required="required" class="form-control col-md-7 col-xs-12">
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.category.label.description}">
+									<label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.brand.label.description}">
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<textarea id="description" name="description" class="form-control" rows="3"></textarea>
@@ -234,7 +234,7 @@
                         </div>
                         <div class="modal-body">
                         		<form id="deleteForm" data-parsley-validate class="form-horizontal form-label-left">
-                        			<input type="hidden" id="delete_id" name="categoryId" />
+                        			<input type="hidden" id="delete_id" name="brandId" />
                         			<span id="modal_delete_content"></span>
                         		</form>
                         </div>
@@ -307,7 +307,7 @@
 
 	<script th:inline="javascript">
 	var url_language = /*[[#{javascript.datatable.language.url}]]*/;
-	var url_category = /*[[@{/user/category/list/ajax}]]*/;
+	var url_brand = /*[[@{/user/brand/list/ajax}]]*/;
 	
 	var textView = /*[[#{bt.text.view}]]*/;
 	var textEdit = /*[[#{bt.text.edit}]]*/;
@@ -317,7 +317,7 @@
     	
     	var table =  $('#datatablesResult').DataTable( {
     			"processing": true,
-    	        "ajax": url_category,
+    	        "ajax": url_brand,
     	        "paging":   true,
     	        "ordering": true,
     	        "info":     true,
@@ -326,10 +326,10 @@
     	        "order": [[ 1, 'asc' ]],
     	        "columns": [
   	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
-  	            { 'data': 'categoryCode' },
-  	            { 'data': 'categoryName' },
+  	            { 'data': 'brandCode' },
+  	            { 'data': 'brandName' },
   	            { 'data': 'description' },
-  	            { 'data': 'categoryId' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
+  	            { 'data': 'brandId' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
   	        ],
   	      	"columnDefs": [{
                   "render": function ( data, type, row ) {
@@ -337,7 +337,7 @@
 	                	  	 	'<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textEdit +
 	                	  	 	'" onclick="loadAction(\''+data+'\');"><i class="fa fa-edit"></i></button>' +
 	                	  	 	'<button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textDelete +
-	                	  	 	'" onclick="openDeleteDialog(\''+data+'\',\''+row.categoryCode+ ' ' +row.categoryName+ '\');" ><i class="fa fa-trash"></i></button>';
+	                	  	 	'" onclick="openDeleteDialog(\''+data+'\',\''+row.brandCode+ ' ' +row.brandName+ '\');" ><i class="fa fa-trash"></i></button>';
                   },
                   "targets": 4
              }],
@@ -414,18 +414,18 @@
     }
     
     function saveAction() {
- 	   	var urlAction = /*[[@{/user/category/save}]]*/;
+ 	   	var urlAction = /*[[@{/user/brand/save}]]*/;
  	   
 	    $.ajax({
 	        type: "POST",
 	        url: urlAction,
 	        dataType: 'json',
-	        data: $("#categoryForm").serialize(),
+	        data: $("#brandForm").serialize(),
 	        success: function(response){
 	            if(response.status == "SUCCESS"){
 	               	openNotification(response.result.type,response.result.title,response.result.text);
 	               	$('#modal_save').modal('hide');
-	               	$("#categoryForm").trigger('reset');
+	               	$("#brandForm").trigger('reset');
 	              	var table =  $('#datatablesResult').DataTable();
 	                table.ajax.reload();
 	             }else{
@@ -451,7 +451,7 @@
     }
     
     function deleteAction() {
- 	   	var urlAction = /*[[@{/user/category/delete}]]*/;
+ 	   	var urlAction = /*[[@{/user/brand/delete}]]*/;
  	   
 	    $.ajax({
 	        type: "POST",
@@ -462,7 +462,7 @@
 	            if(response.status == "SUCCESS"){
 	               	openNotification(response.result.type,response.result.title,response.result.text);
 	               	$('#modal_delete').modal('hide');
-	               	$("#categoryForm").trigger('reset');
+	               	$("#brandForm").trigger('reset');
 	              	var table =  $('#datatablesResult').DataTable();
 	                table.ajax.reload();
 	             }else{
@@ -476,18 +476,18 @@
 	}
     
     function loadAction(id) {
- 	   	var urlAction = /*[[@{/user/category/load}]]*/;
+ 	   	var urlAction = /*[[@{/user/brand/load}]]*/;
 	    $.ajax({
 	        type: "GET",
 	        url: urlAction,
 	        dataType: 'json',
-	        data: {"categoryId": id},
+	        data: {"brandId": id},
 	        success: function(response){
 	            if(response.status == "SUCCESS"){
 	            	   resetForm();
-	               $("#categoryId").val(response.result.categoryId);
-	               $("#categoryCode").val(response.result.categoryCode);
-		        	   $("#categoryName").val(response.result.categoryName);
+	               $("#brandId").val(response.result.brandId);
+	               $("#brandCode").val(response.result.brandCode);
+		        	   $("#brandName").val(response.result.brandName);
 		        	   $("#description").val(response.result.description);
 	               $('#modal_save').modal('show');
 	             }else{
@@ -501,9 +501,9 @@
 	}
     
     function resetForm(){
-		$("#categoryId").val("");
-   		$("#categoryCode").val("");
-	   	$("#categoryName").val("");
+		$("#brandId").val("");
+   		$("#brandCode").val("");
+	   	$("#brandName").val("");
 	   	$("#description").val("");
     }
     
