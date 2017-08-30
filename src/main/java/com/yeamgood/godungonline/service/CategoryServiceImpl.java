@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yeamgood.godungonline.exception.GodungIdException;
 import com.yeamgood.godungonline.model.Category;
 import com.yeamgood.godungonline.model.User;
 import com.yeamgood.godungonline.repository.CategoryRepository;
@@ -72,9 +73,11 @@ public class CategoryServiceImpl implements CategoryService{
 				maxCategory = new Category();
 			}
 			String generateCode = GenerateCodeUtils.generateCode(GenerateCodeUtils.TYPE_CATEGORY, maxCategory.getCategoryCode());
+			
 			category.setGodung(user.getGodung());
 			category.setCreate(user.getEmail(), new Date());
 			category.setCategoryCode(generateCode);
+			category.setGodung(user.getGodung());
 			categoryRepository.save(category);
 		}else {
 			Category categoryTemp = categoryRepository.findOne(category.getCategoryId());
@@ -84,5 +87,36 @@ public class CategoryServiceImpl implements CategoryService{
 			categoryRepository.save(categoryTemp);
 		}
 		logger.debug("O:");
+	}
+
+	@Override
+	@Transactional(rollbackFor={Exception.class})
+	public void delete(Category category, User user) throws GodungIdException {
+		logger.debug("I:");
+		Category categoryTemp = categoryRepository.findOne(category.getCategoryId());
+		long godungIdTemp = categoryTemp.getGodung().getGodungId().longValue();
+		long godungIdSession = user.getGodung().getGodungId().longValue();
+		
+		if(godungIdTemp ==  godungIdSession) {
+			categoryRepository.delete(categoryTemp);
+		}else {
+			 throw new GodungIdException("GodungId database is " + godungIdTemp + " not equals session user is" + godungIdSession);
+		}
+		logger.debug("O:");
+	}
+
+	@Override
+	public Category findById(long id, User user) throws GodungIdException {
+		logger.debug("I:");
+		Category category = categoryRepository.findOne(id);
+		long godungIdTemp = category.getGodung().getGodungId().longValue();
+		long godungIdSession = user.getGodung().getGodungId().longValue();
+		
+		if(godungIdTemp !=  godungIdSession) {
+			 throw new GodungIdException("GodungId database is " + godungIdTemp + " not equals session user is" + godungIdSession);
+		}
+		
+		logger.debug("O:");
+		return category;
 	}
 }

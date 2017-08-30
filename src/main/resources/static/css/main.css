@@ -44,3 +44,13 @@
 .datatable_col_action{
 	width: 70px !important;
 }
+
+.dt-body-no {
+	width: 30px !important;
+	text-align: center;
+}
+.dt-body-action {
+	width: 70px !important;
+	text-align: center;
+}
+.dt-body-center {text-align: center;}

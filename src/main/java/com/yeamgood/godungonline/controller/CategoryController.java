@@ -62,7 +62,7 @@ public class CategoryController {
 		return modelAndView;
 	}
 	
-	@RequestMapping(value="/user/category/list", method=RequestMethod.GET)
+	@RequestMapping(value="/user/category/list/server", method=RequestMethod.GET)
 	public @ResponseBody String userCategoryList(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException{
 		logger.debug("I");
 		
@@ -79,10 +79,7 @@ public class CategoryController {
 		int page = start/length;
 		String sSearch = datatableRequest.getsSearch();
 		logger.debug("start:" + start + " length:" + length + " page:" + page);
-				
 		Pageable pageable = new PageRequest( page, length,datatableRequest.getDirection(), datatableRequest.getNamecolumn());
-		
-		
 		long count = categoryService.count(godungId);
 		List<Category> categoryList = categoryService.findByGodungGodungIdAndCategoryNameIgnoreCaseContaining(godungId,sSearch,pageable);
 		logger.debug("O:categoryList" + categoryList.size());
@@ -91,19 +88,34 @@ public class CategoryController {
 		dataTableObject.setiTotalRecords((int)count);
 		dataTableObject.setiTotalDisplayRecords((int)count);
 		dataTableObject.setAaData(categoryList);
-		
 		String result = new ObjectMapper().writeValueAsString(dataTableObject);
 		return result;
 	}
 	
-	@RequestMapping(value="/user/category/add", method=RequestMethod.POST)
+	
+	@RequestMapping(value="/user/category/list/ajax", method=RequestMethod.GET)
+	public @ResponseBody String userCategoryListtest(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException{
+		logger.debug("I");
+		logger.debug("datatableRequest" + datatableRequest.toString());
+		
+		User userSession = (User) session.getAttribute("user");
+		Long godungId = userSession.getGodung().getGodungId();
+		List<Category> categoryList = categoryService.findAllByGodungGodungIdOrderByCategoryNameAsc(godungId);
+		logger.debug("O:categoryList" + categoryList.size());
+		
+		DataTableObject dataTableObject = new DataTableObject();
+		dataTableObject.setAaData(categoryList);
+		String result = new ObjectMapper().writeValueAsString(dataTableObject);
+		return result;
+	}
+	
+	@RequestMapping(value="/user/category/save", method=RequestMethod.POST)
 	public @ResponseBody JsonResponse userCategoryAdd(@Valid Category category,BindingResult bindingResult,HttpSession session){
 		logger.debug("I");
 		logger.debug("I" + category.toString());
 		Pnotify pnotify;
+		User userSession;
 		JsonResponse jsonResponse = new JsonResponse();
-		User userSession = (User) session.getAttribute("user");
-		category.setGodung(userSession.getGodung());
 		
 		if (bindingResult.hasErrors()) {
 			String errorMsg = "";
@@ -118,6 +130,7 @@ public class CategoryController {
 			jsonResponse.setResult(pnotify);
 		}else {
 			try {
+				userSession = (User) session.getAttribute("user");
 				categoryService.save(category, userSession);
 				
 				pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.save.success");
@@ -133,7 +146,72 @@ public class CategoryController {
 		}
 		logger.debug("O");
 		return jsonResponse;
+	}
+	
+	@RequestMapping(value="/user/category/delete", method=RequestMethod.POST)
+	public @ResponseBody JsonResponse userCategoryDelete(Category category,HttpSession session){
+		logger.debug("I");
+		logger.debug("I" + category.toString());
+		Pnotify pnotify;
+		User userSession;
+		JsonResponse jsonResponse = new JsonResponse();
 		
+		if(category.getCategoryId() == null) {
+			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.save.error");
+			jsonResponse.setStatus("FAIL");
+			jsonResponse.setResult(pnotify);
+			return jsonResponse;
+		}
+		
+		try {
+			userSession = (User) session.getAttribute("user");
+			categoryService.delete(category, userSession);
+			
+			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.delete.success");
+			jsonResponse.setStatus("SUCCESS");
+			jsonResponse.setResult(pnotify);
+			
+		} catch (Exception e) {
+			logger.error("error:",e);
+			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.delete.error");
+			jsonResponse.setStatus("FAIL");
+			jsonResponse.setResult(pnotify);
+		}
+		
+		logger.debug("O");
+		return jsonResponse;
+	}
+	
+	@RequestMapping(value="/user/category/load", method=RequestMethod.GET)
+	public @ResponseBody JsonResponse load(Category category,HttpSession session){
+		logger.debug("I");
+		logger.debug("I" + category.toString());
+		Pnotify pnotify;
+		User userSession;
+		JsonResponse jsonResponse = new JsonResponse();
+		
+		if(category.getCategoryId() == null) {
+			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.load.error");
+			jsonResponse.setStatus("FAIL");
+			jsonResponse.setResult(pnotify);
+			return jsonResponse;
+		}
+		
+		try {
+			userSession = (User) session.getAttribute("user");
+			Category categoryTemp = categoryService.findById(category.getCategoryId(), userSession);
+			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.load.success");
+			jsonResponse.setStatus("SUCCESS");
+			jsonResponse.setResult(categoryTemp);
+		} catch (Exception e) {
+			logger.error("error:",e);
+			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.load.error");
+			jsonResponse.setStatus("FAIL");
+			jsonResponse.setResult(pnotify);
+		}
+		
+		logger.debug("O");
+		return jsonResponse;
 	}
 
 }

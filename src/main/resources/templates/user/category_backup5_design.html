@@ -324,8 +324,7 @@
     	        "ordering": true,
     	        "info":     true,
     	        "searching":	true,
-    	       // "dom": '<"top"lp>t<"bottom"ip>',  
-    	       //"dom": 'lrtip',
+    	        "dom": '<"top"lp>t<"bottom"ip><"clear">',  
     	        "language": {"url": url_language},
     	        "order": [[ 1, 'asc' ]],
     	        "columns": [
@@ -344,11 +343,7 @@
 	                	  	 	'" onclick="openDeleteDialog(\''+data+'\',\''+row.categoryCode+ ' ' +row.categoryName+ '\');" ><i class="fa fa-trash"></i></button>';
                   },
                   "targets": 4
-             }],
-             "initComplete": function( settings, json ) {
-            	 		//fix bug datatables use dom not responsive html
-            			 $("#datatablesResult_filter").hide();
-           		}
+             }]
     	    } );
     	
     		/* SET RELOAD TOOLTIP DATATABLE */

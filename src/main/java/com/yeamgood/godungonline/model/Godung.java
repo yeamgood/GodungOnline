@@ -31,7 +31,7 @@ public class Godung extends ModelTemplate{
 	@Column(name = "active")
 	private int active;
 	
-	@OneToMany(mappedBy = "godung", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToMany(mappedBy = "godung")
     private List<GodungUserRole> godungUserRoleList;
 
 	public Long getGodungId() {

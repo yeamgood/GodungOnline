@@ -61,7 +61,7 @@
 									</h2>
 								</div>
 								<div class="col-md-6" class="pull-right">
-										<button type="button" class="btn btn-success" onclick="openSaveModal();">
+										<button type="button" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg">
 											<i class="fa" th:class="#{bt.icon.add}"></i>
 											<span class="span_white" th:text="#{bt.add.category}"></span>
 										</button>
@@ -143,15 +143,45 @@
 							<h2><i class="fa fa-th-list"></i> Category List</h2>
 							</div>
 								<div class="x_content search-content">
-									
-									 <table id="datatablesResult" class="table table-striped table-bordered" style="width:100%">
+									<!-- <table id="datatablesResult" class="table table-striped table-bordered">
 										<thead class="search-content-header">
 											<tr>
-												<th th:text="#{datatables.text.no}" ></th>
-												<th th:text="#{form.category.label.code}" class="col-md-1"></th>
+												<th th:text="#{datatables.text.no}" class="datatable_col_no"></th>
+												<th th:text="#{form.category.label.code}" class="col-md-2"></th>
 												<th th:text="#{form.category.label.name}" class="col-md-3"></th>
-												<th th:text="#{form.category.label.description}" class="col-md-3"></th>
-												<th th:text="#{form.category.label.action}" class="col-md-1"></th>
+												<th th:text="#{form.category.label.description}" class="col-md-4"></th>
+												<th th:text="#{form.category.label.action}" class="datatable_col_action"></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="category : ${categoryList}">
+												<td class="content-center"></td>
+												<td th:text="${category.categoryCode}" class="content-center"></td>
+												<td th:text="${category.categoryName}"></td>
+												<td th:text="${category.description}"></td>
+												<td class="content-center">
+						                            	<a href="#" class="btn btn-primary btn-xs datatables_action" data-toggle="tooltip" data-placement="top" th:title="#{bt.text.view}">
+						                            		<i class="fa fa-search"></i> 
+						                            	</a>
+						                            	<a href="#" class="btn btn-primary btn-xs datatables_action" data-toggle="tooltip" data-placement="top" th:title="#{bt.text.edit}">
+						                            		<i class="fa fa-edit"></i> 
+						                            	</a>
+						                            	<a href="#" class="btn btn-danger btn-xs datatables_action" data-toggle="tooltip" data-placement="top" th:title="#{bt.text.delete}">
+						                            		<i class="fa fa-trash-o"></i>
+						                            	</a>
+												</td>
+											</tr>
+										</tbody>
+									</table> -->
+									
+									<table id="datatablesResult" class="table table-striped table-bordered">
+										<thead class="search-content-header">
+											<tr>
+												<th th:text="#{form.category.label.id}" class="col-md-2"></th>
+												<th th:text="#{form.category.label.name}"></th>
+												<th th:text="#{form.category.label.description}" class="col-md-5"></th>
+												<!-- <th>GodungId</th> -->
+												<!-- <th th:text="#{form.category.label.action}" class="col-md-2"></th> -->
 											</tr>
 										</thead>
 									</table>
@@ -169,7 +199,7 @@
 			<!-- ----------------------------- -->
 			<!-- -------- Start Modal -------- -->
 			<!-- ----------------------------- -->
-			<div id="modal_save" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+			<div id="modal_category" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 
@@ -182,11 +212,11 @@
 							</h4>
 						</div>
 
-						<form id="categoryForm" data-parsley-validate class="form-horizontal form-label-left">
-						<!--  <form  id="categoryForm" autocomplete="off" action="#"  th:object="${category}" 
-						         method="post" class="form-horizontal" role="form"> -->
+						<!-- <form id="categoryForm" data-parsley-validate class="form-horizontal form-label-left"> -->
+						 <form  id="categoryForm" autocomplete="off" action="#"  th:object="${category}" 
+						         method="post" class="form-horizontal" role="form">
 							<div class="modal-body validation-box">
-								<input type="hidden" id="categoryId" name="categoryId" >
+
 								<div class="form-group">
 									<label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name" th:text="#{form.category.label.code}"></label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
@@ -211,7 +241,7 @@
 								<button type="button" class="btn btn-default" data-dismiss="modal">
 									<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
 								</button>
-								<button type="button" class="btn btn-success" onclick="saveAction();">
+								<button type="button" class="btn btn-success" onclick="doAjaxPostTest();">
 									<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
 								</button>
 							</div>
@@ -220,39 +250,6 @@
 					</div>
 				</div>
 			</div>
-			
-			
-			
-			 <div id="modal_delete" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog ">
-                      <div class="modal-content">
-
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-                          </button>
-                          <h4 class="modal-title" id="myModalLabel">
-								<i class="fa fa-trash"></i> <span th:text="#{label.delete.head.confirm}"></span>
-							</h4>
-                        </div>
-                        <div class="modal-body">
-                        		<form id="deleteForm" data-parsley-validate class="form-horizontal form-label-left">
-                        			<input type="hidden" id="delete_id" name="categoryId" />
-                        			<span id="modal_delete_content"></span>
-                        		</form>
-                        </div>
-                        <div class="modal-footer">
-                         <button type="button" class="btn btn-default" data-dismiss="modal">
-							<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
-						 </button>
-                          <button type="button" class="btn btn-danger" onclick="deleteAction();">
-							<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
-						</button>
-                        </div>
-
-                      </div>
-                    </div>
-                  </div>
-			
 			<!-- --------------------------- -->
 			<!-- -------- End Modal -------- -->
 			<!-- --------------------------- -->
@@ -309,59 +306,60 @@
 
 	<script th:inline="javascript">
 	var url_language = /*[[#{javascript.datatable.language.url}]]*/;
-	var url_category = /*[[@{/user/category/list/ajax}]]*/;
-	
-	var textView = /*[[#{bt.text.view}]]*/;
-	var textEdit = /*[[#{bt.text.edit}]]*/;
-	var textDelete = /*[[#{bt.text.delete}]]*/;
+	var url_category = /*[[@{/user/category/list}]]*/;
 	
     $(document).ready(function() {
-    	
-    	var table =  $('#datatablesResult').DataTable( {
-    			"processing": true,
-    	        "ajax": url_category,
-    	        "paging":   true,
-    	        "ordering": true,
-    	        "info":     true,
-    	        "searching":	true,
-    	       // "dom": '<"top"lp>t<"bottom"ip>',  
-    	       //"dom": 'lrtip',
-    	        "language": {"url": url_language},
-    	        "order": [[ 1, 'asc' ]],
-    	        "columns": [
-  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
-  	            { 'data': 'categoryCode' },
-  	            { 'data': 'categoryName' },
-  	            { 'data': 'description' },
-  	            { 'data': 'categoryId' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
-  	        ],
-  	      	"columnDefs": [{
-                  "render": function ( data, type, row ) {
-                	  	return  '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textView +'"><i class="fa fa-search"></i></button>' +
-	                	  	 	'<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textEdit +
-	                	  	 	'" onclick="loadAction(\''+data+'\');"><i class="fa fa-edit"></i></button>' +
-	                	  	 	'<button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textDelete +
-	                	  	 	'" onclick="openDeleteDialog(\''+data+'\',\''+row.categoryCode+ ' ' +row.categoryName+ '\');" ><i class="fa fa-trash"></i></button>';
-                  },
-                  "targets": 4
-             }],
-             "initComplete": function( settings, json ) {
-            	 		//fix bug datatables use dom not responsive html
-            			 $("#datatablesResult_filter").hide();
-           		}
-    	    } );
-    	
-    		/* SET RELOAD TOOLTIP DATATABLE */
-	    	$('#datatablesResult').on( 'draw.dt', function () {
-	    		$('[data-toggle="tooltip"]').tooltip();
-	    	} );
+       /*  var table = $('#datatablesResult').DataTable( {
+        	    "paging":   true,
+ 	        "ordering": true,
+ 	        "info":     true,
+ 	        "searching":	true,
+ 	         "dom": '<"top"lp>t<"bottom"ip><"clear">',   
+ 	        "columnDefs": [ 
+	 	        	{
+	 	        	 	"targets": 0,
+	 	            "searchable": false,
+	 	            "orderable": false
+		        } , {
+		        	 	"targets": 4,
+	                "searchable": false,
+		            "orderable": false
+	            }
+ 	        ],
+ 	        "order": [[ 1, 'asc' ]],
+ 	       	"language": {
+       	 		"url": url_language
+	      	 }
+        } ); */
+        
+
+        var table = $('#datatablesResult').dataTable( {
+			    	        'bProcessing': true,
+			    	        'bServerSide': true,
+			    	        'sAjaxSource': url_category,
+			    	        'bJQueryUI': true,
+			    	        "paging":   true,
+			     	        "ordering": true,
+			     	        "info":     true,
+			     	        "searching":	true,
+			     	        "dom": '<"top"lp>t<"bottom"ip><"clear">',  
+			     	        "language": {
+			            	 	"url": url_language
+			            		},
+			    	        "order": [[ 0, "asc" ]],
+			    	        'aoColumns': [
+			    	            { 'mData': 'categoryId' },
+			    	            { 'mData': 'categoryName' },
+			    	            { 'mData': 'description' }
+			    	        ]
+			    	    }); 
         
        /* SET INDEX COLUMN */
-        table.on( 'order.dt search.dt', function () {
+       /*  table.on( 'order.dt search.dt', function () {
         	table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
                 cell.innerHTML = i+1;
             } );
-        } ).draw(); 
+        } ).draw(); */
         
        /* SET SHOW HIDE ADVENCE SEARCH */
         var searchBasic = 0;
@@ -417,8 +415,15 @@
     		table.columns(1).search($("#input_advance_code").val()).columns(2).search($("#input_advance_name").val()).columns(3).search($("#input_advance_description").val()).draw();
     }
     
-    function saveAction() {
- 	   	var urlAction = /*[[@{/user/category/save}]]*/;
+    function doAjaxPostTest() {
+ 	   	var urlAction = /*[[@{/user/category/add}]]*/;
+ 	 	
+ 	 /* 	var dataObject = {
+ 	 			categoryId: $("#categoryId").val(), 
+ 	 			categoryCode: $("#categoryCode").val(), 
+ 	 			categoryName: $("#categoryName").val(), 
+ 	 			description: $("#description").val()
+ 	 	}; */
  	   
 	    $.ajax({
 	        type: "POST",
@@ -427,11 +432,8 @@
 	        data: $("#categoryForm").serialize(),
 	        success: function(response){
 	            if(response.status == "SUCCESS"){
+	            		$('#modal_category').modal('hide');
 	               	openNotification(response.result.type,response.result.title,response.result.text);
-	               	$('#modal_save').modal('hide');
-	               	$("#categoryForm").trigger('reset');
-	              	var table =  $('#datatablesResult').DataTable();
-	                table.ajax.reload();
 	             }else{
 	            		openNotification(response.result.type,response.result.title,response.result.text);
 	             }
@@ -441,77 +443,7 @@
 	         }
 	    });
 	}
-    
-    function openSaveModal(){
-    		 resetForm();
-    		 $('#modal_save').modal('show');
-    }
-    
-    function openDeleteDialog(id,message){
-    		var messageMain = /*[[#{label.delete.content.confirm}]]*/;
-    		$("#delete_id").val(id);
-    		$("#modal_delete_content").html(messageMain + " : " + message);
-    		$('#modal_delete').modal('show');
-    }
-    
-    function deleteAction() {
- 	   	var urlAction = /*[[@{/user/category/delete}]]*/;
- 	   
-	    $.ajax({
-	        type: "POST",
-	        url: urlAction,
-	        dataType: 'json',
-	        data: $("#deleteForm").serialize(),
-	        success: function(response){
-	            if(response.status == "SUCCESS"){
-	               	openNotification(response.result.type,response.result.title,response.result.text);
-	               	$('#modal_delete').modal('hide');
-	               	$("#categoryForm").trigger('reset');
-	              	var table =  $('#datatablesResult').DataTable();
-	                table.ajax.reload();
-	             }else{
-	            		openNotification(response.result.type,response.result.title,response.result.text);
-	             }
-	         },
-	         error: function(e){
-	             openNotification("error","error",e);
-	         }
-	    });
-	}
-    
-    function loadAction(id) {
- 	   	var urlAction = /*[[@{/user/category/load}]]*/;
-	    $.ajax({
-	        type: "GET",
-	        url: urlAction,
-	        dataType: 'json',
-	        data: {"categoryId": id},
-	        success: function(response){
-	            if(response.status == "SUCCESS"){
-	            	   resetForm();
-	               $("#categoryId").val(response.result.categoryId);
-	               $("#categoryCode").val(response.result.categoryCode);
-		        	   $("#categoryName").val(response.result.categoryName);
-		        	   $("#description").val(response.result.description);
-	               $('#modal_save').modal('show');
-	             }else{
-	            		openNotification(response.result.type,response.result.title,response.result.text);
-	             }
-	         },
-	         error: function(e){
-	             openNotification("error","error",e);
-	         }
-	    });
-	}
-    
-    function resetForm(){
-		$("#categoryId").val("");
-   		$("#categoryCode").val("");
-	   	$("#categoryName").val("");
-	   	$("#description").val("");
-    }
-    
-    
+   
 	</script>
 	
 
