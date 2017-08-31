@@ -14,6 +14,7 @@ public class GenerateCodeUtils {
 	
 	public final static String TYPE_CATEGORY = "CAT";
 	public final static String TYPE_BRAND = "BRA";
+	public final static String TYPE_MEASURE = "MEASURE";
 	
 	public static String generateCode(String title,String maxCode) {
 		String yyyyMMdd = new SimpleDateFormat("yyyyMMdd").format(new Date());
