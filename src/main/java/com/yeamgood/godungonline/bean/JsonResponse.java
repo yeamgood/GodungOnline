@@ -19,5 +19,4 @@ public class JsonResponse {
 	public void setResult(Object result) {
 		this.result = result;
 	}
-
 }

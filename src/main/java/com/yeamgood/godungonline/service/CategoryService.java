@@ -12,7 +12,7 @@ public interface CategoryService {
 	public Category findById(Long id);
 	public Category findById(Long id,User user) throws GodungIdException;
 	public List<Category> findAllOrderByCategoryNameAsc();
-	public List<Category> findAllByGodungGodungIdOrderByCategoryNameAsc(Long godungId);
+	public List<Category> findAllByGodungGodungIdOrderByCategoryCodeAsc(Long godungId);
 	public List<Category> findByGodungGodungIdAndCategoryNameIgnoreCaseContaining(Long godungId, String category, Pageable pageable);
 	public long count(Long godungId);
 	public void save(Category category,User user);

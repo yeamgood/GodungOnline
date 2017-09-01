@@ -1,5 +1,7 @@
 package com.yeamgood.godungonline.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -38,8 +41,11 @@ public class Category extends ModelTemplate{
 	@JoinColumn(name = "godung_id")
 	@JsonIgnore
 	private Godung godung;
-
-
+	
+	@Transient
+	@JsonIgnore
+	List<Long> catogoryBranchList;
+	
 	public Long getCategoryId() {
 		return categoryId;
 	}
@@ -80,10 +86,21 @@ public class Category extends ModelTemplate{
 		this.godung = godung;
 	}
 
+	public List<Long> getCatogoryBranchList() {
+		return catogoryBranchList;
+	}
+
+	public void setCatogoryBranchList(List<Long> catogoryBranchList) {
+		this.catogoryBranchList = catogoryBranchList;
+	}
+
 	@Override
 	public String toString() {
 		return "Category [categoryId=" + categoryId + ", categoryCode=" + categoryCode + ", categoryName="
-				+ categoryName + ", description=" + description + ", godung=" + godung + "]";
+				+ categoryName + ", description=" + description + ", godung=" + godung + ", catogoryBranchList="
+				+ catogoryBranchList + "]";
 	}
+
+	
 	
 }

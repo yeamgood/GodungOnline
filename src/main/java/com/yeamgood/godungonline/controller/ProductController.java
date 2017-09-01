@@ -1,6 +1,5 @@
 package com.yeamgood.godungonline.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -27,17 +26,14 @@ import com.yeamgood.godungonline.bean.Pnotify;
 import com.yeamgood.godungonline.bean.PnotifyType;
 import com.yeamgood.godungonline.datatable.DataTableObject;
 import com.yeamgood.godungonline.datatable.DataTablesRequest;
-import com.yeamgood.godungonline.form.CategoryForm;
-import com.yeamgood.godungonline.model.Category;
-import com.yeamgood.godungonline.model.CategoryBranch;
+import com.yeamgood.godungonline.model.Product;
 import com.yeamgood.godungonline.model.Menu;
 import com.yeamgood.godungonline.model.User;
-import com.yeamgood.godungonline.service.CategoryBranchService;
-import com.yeamgood.godungonline.service.CategoryService;
+import com.yeamgood.godungonline.service.ProductService;
 import com.yeamgood.godungonline.service.MenuService;
 
 @Controller
-public class CategoryController {
+public class ProductController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final Long MENU_CATEGORY_ID = (long) 13;
@@ -49,28 +45,25 @@ public class CategoryController {
 	MenuService menuService;
 	
 	@Autowired
-	CategoryService categoryService;
+	ProductService productService;
 	
-	@Autowired
-	CategoryBranchService categoryBranchService;
-	
-	@RequestMapping(value="/user/category", method = RequestMethod.GET)
-	public ModelAndView userCategory(HttpSession session){
+	@RequestMapping(value="/user/product", method = RequestMethod.GET)
+	public ModelAndView userProduct(HttpSession session){
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
-		//User userSession = (User) session.getAttribute("user");
+		User userSession = (User) session.getAttribute("user");
 		Menu menu = menuService.findById(MENU_CATEGORY_ID);
-		//List<Category> categoryList = categoryService.findAllByGodungGodungIdOrderByCategoryNameAsc(userSession.getGodung().getGodungId());
+		List<Product> productList = productService.findAllByGodungGodungIdOrderByProductNameAsc(userSession.getGodung().getGodungId());
 		
 		modelAndView.addObject("menu", menu);
-		//modelAndView.addObject("categoryList", categoryList);
-		modelAndView.setViewName("user/category");
+		modelAndView.addObject("productList", productList);
+		modelAndView.setViewName("user/product");
 		logger.debug("O");
 		return modelAndView;
 	}
 	
-	@RequestMapping(value="/user/category/list/server", method=RequestMethod.GET)
-	public @ResponseBody String userCategoryList(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException{
+	@RequestMapping(value="/user/product/list/server", method=RequestMethod.GET)
+	public @ResponseBody String userProductList(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException{
 		logger.debug("I");
 		
 		logger.debug("datatableRequest" + datatableRequest.toString());
@@ -87,39 +80,39 @@ public class CategoryController {
 		String sSearch = datatableRequest.getsSearch();
 		logger.debug("start:" + start + " length:" + length + " page:" + page);
 		Pageable pageable = new PageRequest( page, length,datatableRequest.getDirection(), datatableRequest.getNamecolumn());
-		long count = categoryService.count(godungId);
-		List<Category> categoryList = categoryService.findByGodungGodungIdAndCategoryNameIgnoreCaseContaining(godungId,sSearch,pageable);
-		logger.debug("O:categoryList" + categoryList.size());
+		long count = productService.count(godungId);
+		List<Product> productList = productService.findByGodungGodungIdAndProductNameIgnoreCaseContaining(godungId,sSearch,pageable);
+		logger.debug("O:productList" + productList.size());
 		
 		DataTableObject dataTableObject = new DataTableObject();
 		dataTableObject.setiTotalRecords((int)count);
 		dataTableObject.setiTotalDisplayRecords((int)count);
-		dataTableObject.setAaData(categoryList);
+		dataTableObject.setAaData(productList);
 		String result = new ObjectMapper().writeValueAsString(dataTableObject);
 		return result;
 	}
 	
 	
-	@RequestMapping(value="/user/category/list/ajax", method=RequestMethod.GET)
-	public @ResponseBody String userCategoryListtest(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException{
+	@RequestMapping(value="/user/product/list/ajax", method=RequestMethod.GET)
+	public @ResponseBody String userProductListtest(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException{
 		logger.debug("I");
 		logger.debug("datatableRequest" + datatableRequest.toString());
 		
 		User userSession = (User) session.getAttribute("user");
 		Long godungId = userSession.getGodung().getGodungId();
-		List<Category> categoryList = categoryService.findAllByGodungGodungIdOrderByCategoryCodeAsc(godungId);
-		logger.debug("O:categoryList" + categoryList.size());
+		List<Product> productList = productService.findAllByGodungGodungIdOrderByProductNameAsc(godungId);
+		logger.debug("O:productList" + productList.size());
 		
 		DataTableObject dataTableObject = new DataTableObject();
-		dataTableObject.setAaData(categoryList);
+		dataTableObject.setAaData(productList);
 		String result = new ObjectMapper().writeValueAsString(dataTableObject);
 		return result;
 	}
 	
-	@RequestMapping(value="/user/category/save", method=RequestMethod.POST)
-	public @ResponseBody JsonResponse userCategoryAdd(@Valid Category category,BindingResult bindingResult,HttpSession session){
+	@RequestMapping(value="/user/product/save", method=RequestMethod.POST)
+	public @ResponseBody JsonResponse userProductAdd(@Valid Product product,BindingResult bindingResult,HttpSession session){
 		logger.debug("I");
-		logger.debug("I" + category.toString());
+		logger.debug("I" + product.toString());
 		Pnotify pnotify;
 		User userSession;
 		JsonResponse jsonResponse = new JsonResponse();
@@ -138,7 +131,7 @@ public class CategoryController {
 		}else {
 			try {
 				userSession = (User) session.getAttribute("user");
-				categoryService.save(category, userSession);
+				productService.save(product, userSession);
 				
 				pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.save.success");
 				jsonResponse.setStatus("SUCCESS");
@@ -155,15 +148,15 @@ public class CategoryController {
 		return jsonResponse;
 	}
 	
-	@RequestMapping(value="/user/category/delete", method=RequestMethod.POST)
-	public @ResponseBody JsonResponse userCategoryDelete(Category category,HttpSession session){
+	@RequestMapping(value="/user/product/delete", method=RequestMethod.POST)
+	public @ResponseBody JsonResponse userProductDelete(Product product,HttpSession session){
 		logger.debug("I");
-		logger.debug("I" + category.toString());
+		logger.debug("I" + product.toString());
 		Pnotify pnotify;
 		User userSession;
 		JsonResponse jsonResponse = new JsonResponse();
 		
-		if(category.getCategoryId() == null) {
+		if(product.getProductId() == null) {
 			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.save.error");
 			jsonResponse.setStatus("FAIL");
 			jsonResponse.setResult(pnotify);
@@ -172,7 +165,7 @@ public class CategoryController {
 		
 		try {
 			userSession = (User) session.getAttribute("user");
-			categoryService.delete(category, userSession);
+			productService.delete(product, userSession);
 			
 			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.delete.success");
 			jsonResponse.setStatus("SUCCESS");
@@ -189,15 +182,15 @@ public class CategoryController {
 		return jsonResponse;
 	}
 	
-	@RequestMapping(value="/user/category/load", method=RequestMethod.GET)
-	public @ResponseBody JsonResponse load(Category category,HttpSession session){
+	@RequestMapping(value="/user/product/load", method=RequestMethod.GET)
+	public @ResponseBody JsonResponse load(Product product,HttpSession session){
 		logger.debug("I");
-		logger.debug("I" + category.toString());
+		logger.debug("I" + product.toString());
 		Pnotify pnotify;
 		User userSession;
 		JsonResponse jsonResponse = new JsonResponse();
 		
-		if(category.getCategoryId() == null) {
+		if(product.getProductId() == null) {
 			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.load.error");
 			jsonResponse.setStatus("FAIL");
 			jsonResponse.setResult(pnotify);
@@ -206,54 +199,10 @@ public class CategoryController {
 		
 		try {
 			userSession = (User) session.getAttribute("user");
-			Category categoryTemp = categoryService.findById(category.getCategoryId(), userSession);
-			List<Category> categorySelectList = categoryService.findAllByGodungGodungIdOrderByCategoryCodeAsc(userSession.getGodung().getGodungId());
-			List<CategoryBranch> categoryBranchList = categoryBranchService.findAllByCategoryId(category.getCategoryId());
-			
-			//select child category sub
-			List<Category> categoryBranchShowList = new ArrayList<Category>();
-			Category categoryBranchChild;
-			for (CategoryBranch categoryBranch : categoryBranchList) {
-				categoryBranchChild = new Category();
-				categoryBranchChild = categoryService.findById(categoryBranch.getCategoryRefId());
-				categoryBranchShowList.add(categoryBranchChild);
-			}
-			logger.debug("categoryBranchShowList size : " + categoryBranchShowList.size());
-			
-			CategoryForm categoryForm = new CategoryForm();
-			categoryForm.mapObjectToForm(categoryTemp);
-			categoryForm.setCategoryDataList(categorySelectList);
-			categoryForm.setCatogoryBranchShowList(categoryBranchShowList);
-			
+			Product productTemp = productService.findById(product.getProductId(), userSession);
 			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.load.success");
 			jsonResponse.setStatus("SUCCESS");
-			jsonResponse.setResult(categoryForm);
-		} catch (Exception e) {
-			logger.error("error:",e);
-			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.load.error");
-			jsonResponse.setStatus("FAIL");
-			jsonResponse.setResult(pnotify);
-		}
-		
-		logger.debug("O");
-		return jsonResponse;
-	}
-	
-	@RequestMapping(value="/user/category/load/add", method=RequestMethod.GET)
-	public @ResponseBody JsonResponse loadNew(HttpSession session){
-		logger.debug("I");
-		Pnotify pnotify;
-		User userSession;
-		JsonResponse jsonResponse = new JsonResponse();
-		
-		try {
-			userSession = (User) session.getAttribute("user");
-			CategoryForm categoryForm = new CategoryForm();
-			List<Category> categoryRefList = categoryService.findAllByGodungGodungIdOrderByCategoryCodeAsc(userSession.getGodung().getGodungId());
-			categoryForm.setCategoryDataList(categoryRefList);
-			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.load.success");
-			jsonResponse.setStatus("SUCCESS");
-			jsonResponse.setResult(categoryForm);
+			jsonResponse.setResult(productTemp);
 		} catch (Exception e) {
 			logger.error("error:",e);
 			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.load.error");

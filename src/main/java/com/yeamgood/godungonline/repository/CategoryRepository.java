@@ -13,7 +13,7 @@ import com.yeamgood.godungonline.model.Category;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 	public long countByGodungGodungId(Long godungId);
     public Category findTopByGodungGodungIdOrderByCategoryCodeDesc(Long godungId);
-	public List<Category> findAllByGodungGodungIdOrderByCategoryNameAsc(Long godungId);
+	public List<Category> findAllByGodungGodungIdOrderByCategoryCodeAsc(Long godungId);
     public List<Category> findByGodungGodungIdAndCategoryNameIgnoreCaseContaining(Long godungId,String categoryName,Pageable pageable);
     
 //    @Query("SELECT t.title FROM Todo t where t.id = :id") 

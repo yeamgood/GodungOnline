@@ -1,5 +1,6 @@
 package com.yeamgood.godungonline.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,9 +12,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yeamgood.godungonline.bean.CategoryBranchType;
 import com.yeamgood.godungonline.exception.GodungIdException;
 import com.yeamgood.godungonline.model.Category;
+import com.yeamgood.godungonline.model.CategoryBranch;
 import com.yeamgood.godungonline.model.User;
+import com.yeamgood.godungonline.repository.CategoryBranchRepository;
 import com.yeamgood.godungonline.repository.CategoryRepository;
 import com.yeamgood.godungonline.utils.GenerateCodeUtils;
 
@@ -24,6 +28,9 @@ public class CategoryServiceImpl implements CategoryService{
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	private CategoryBranchRepository categoryBranchRepository;
 
 	@Override
 	public Category findById(Long id) {
@@ -40,10 +47,10 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 
 	@Override
-	public List<Category> findAllByGodungGodungIdOrderByCategoryNameAsc(Long godungId) {
+	public List<Category> findAllByGodungGodungIdOrderByCategoryCodeAsc(Long godungId) {
 		logger.debug("I:[godungId]:" + godungId);
 		logger.debug("O:");
-		return categoryRepository.findAllByGodungGodungIdOrderByCategoryNameAsc(godungId);
+		return categoryRepository.findAllByGodungGodungIdOrderByCategoryCodeAsc(godungId);
 	}
 	
 	private Sort sortByCategoryNameAsc() {
@@ -79,12 +86,42 @@ public class CategoryServiceImpl implements CategoryService{
 			category.setCategoryCode(generateCode);
 			category.setGodung(user.getGodung());
 			categoryRepository.save(category);
+			
+			if(category.getCatogoryBranchList() != null) {
+				CategoryBranch categoryBranch;
+				List<CategoryBranch> categoryBranchList = new ArrayList<CategoryBranch>();
+				for (Long categoryId : category.getCatogoryBranchList()) {
+					categoryBranch = new CategoryBranch();
+					categoryBranch.setCategoryId(category.getCategoryId());
+					categoryBranch.setCategoryRefId(categoryId);
+					categoryBranch.setType("CHILD");
+					categoryBranch.setCreate(user.getEmail(), new Date());
+					categoryBranchList.add(categoryBranch);
+				}
+				categoryBranchRepository.save(categoryBranchList);
+			}
+			
 		}else {
 			Category categoryTemp = categoryRepository.findOne(category.getCategoryId());
 			categoryTemp.setCategoryName(category.getCategoryName());
 			categoryTemp.setDescription(category.getDescription());
 			categoryTemp.setUpdate(user.getEmail(), new Date());
 			categoryRepository.save(categoryTemp);
+			
+			if(category.getCatogoryBranchList() != null) {
+				CategoryBranch categoryBranch;
+				List<CategoryBranch> categoryBranchList = new ArrayList<CategoryBranch>();
+				for (Long categoryId : category.getCatogoryBranchList()) {
+					categoryBranch = new CategoryBranch();
+					categoryBranch.setCategoryId(categoryTemp.getCategoryId());
+					categoryBranch.setCategoryRefId(categoryId);
+					categoryBranch.setType(CategoryBranchType.CHILD.toString());
+					categoryBranchList.add(categoryBranch);
+				}
+				List<CategoryBranch> categoryBranchDeleteList = categoryBranchRepository.findAllByCategoryId(categoryTemp.getCategoryId());
+				categoryBranchRepository.delete(categoryBranchDeleteList);
+				categoryBranchRepository.save(categoryBranchList);
+			}
 		}
 		logger.debug("O:");
 	}
@@ -96,9 +133,15 @@ public class CategoryServiceImpl implements CategoryService{
 		Category categoryTemp = categoryRepository.findOne(category.getCategoryId());
 		long godungIdTemp = categoryTemp.getGodung().getGodungId().longValue();
 		long godungIdSession = user.getGodung().getGodungId().longValue();
+		List<CategoryBranch> categoryBranchDeleteList;
 		
 		if(godungIdTemp ==  godungIdSession) {
 			categoryRepository.delete(categoryTemp);
+			categoryBranchDeleteList = categoryBranchRepository.findAllByCategoryId(categoryTemp.getCategoryId());
+			categoryBranchRepository.delete(categoryBranchDeleteList);
+			
+			categoryBranchDeleteList = categoryBranchRepository.findAllByCategoryRefId(categoryTemp.getCategoryId());
+			categoryBranchRepository.delete(categoryBranchDeleteList);
 		}else {
 			 throw new GodungIdException("GodungId database is " + godungIdTemp + " not equals session user is" + godungIdSession);
 		}
