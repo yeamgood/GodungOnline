@@ -41,7 +41,7 @@
 }
 
 .dt-body-action {
-	width: 40px !important;
+	width: 45px !important;
 	text-align: center;
     padding-bottom: 0px !important;
     padding-top: 0px !important;
@@ -50,6 +50,8 @@
 
 .dt-body-action button{
     margin-bottom: 0px !important;
+    margin-right: 0px !important;
+    margin-left: 0px !important;
     margin-top: 2px !important;
 }
 
