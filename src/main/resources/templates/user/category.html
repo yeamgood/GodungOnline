@@ -64,7 +64,7 @@
 									</h2>
 								</div>
 								<div class="col-md-6" class="pull-right">
-										<button type="button" class="btn btn-success" onclick="openSaveModal();">
+										<button type="button" class="btn btn-success" onclick="openModalAdd();">
 											<i class="fa" th:class="#{bt.icon.add}"></i>
 											<span class="span_white" th:text="#{form.category.bt.add}"></span>
 										</button>
@@ -147,14 +147,14 @@
 							</div>
 								<div class="x_content search-content">
 									
-									 <table id="datatablesResult" class="table table-striped table-bordered" style="width:100%">
+									 <table id="datatablesMain" class="table table-striped table-bordered" style="width:100%">
 										<thead class="search-content-header">
 											<tr>
-												<th th:text="#{datatables.text.no}" ></th>
+												<th th:text="#{datatables.text.no}"></th>
 												<th th:text="#{form.category.label.code}" class="col-md-1"></th>
 												<th th:text="#{form.category.label.name}" class="col-md-3"></th>
 												<th th:text="#{form.category.label.description}" class="col-md-3"></th>
-												<th th:text="#{form.category.label.action}" class="col-md-1"></th>
+												<th th:text="#{form.category.label.action}"></th>
 											</tr>
 										</thead>
 									</table>
@@ -172,7 +172,7 @@
 			<!-- ----------------------------- -->
 			<!-- -------- Start Modal -------- -->
 			<!-- ----------------------------- -->
-			<div id="modal_save" class="modal fade bs-example-modal-lg"  role="dialog" aria-hidden="true">
+			<div id="modal_save" class="modal fade bs-example-modal-lg"  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 
@@ -191,26 +191,36 @@
 	                        </div>
                       	</div>
 
-						<form id="categoryForm" data-parsley-validate class="form-horizontal form-label-left">
+						<form id="categoryModalForm" data-parsley-validate class="form-horizontal form-label-left">
 							<div class="modal-body validation-box">
 								<input type="hidden" id="categoryId" name="categoryId" >
 								<div class="form-group">
-									<label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name" th:text="#{form.category.label.code}"></label>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<input type="text" id="categoryCode" name="categoryCode" class="form-control col-md-7 col-xs-12" readonly="readonly" placeholder="ระบบสร้างให้อัตโนมัติ">
+									<div class="control-label col-md-3 col-sm-3 col-xs-12">
+										<label th:text="#{form.category.label.code}"></label>
+										<label class="validation-message" th:text="#{label.request}"></label>
+									</div>
+									<div class="col-md-8 col-sm-8 col-xs-12">
+										<input type="text" id="categoryCode" name="categoryCode" class="form-control" readonly="readonly" placeholder="ระบบสร้างให้อัตโนมัติ">
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name" th:text="#{form.category.label.name} + ' ' + #{label.request}"></label>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<input type="text" id="categoryName" name="categoryName" required="required" class="form-control col-md-7 col-xs-12">
+								
+									<div class="control-label col-md-3 col-sm-3 col-xs-12">
+										<label th:text="#{form.category.label.name}"></label>
+										<label class="validation-message" th:text="#{label.request}"></label>
+									</div>
+									<div class="col-md-8 col-sm-8 col-xs-12">
+										<input type="text" id="categoryName" name="categoryName" required="required" class="form-control">
+										<label id="error_categoryName" class="validation-message" style="display:none;"></label>
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="middle-name" class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.category.label.description}">
-									</label>
-									<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="control-label col-md-3 col-sm-3 col-xs-12">
+										<label th:text="#{form.category.label.description}"></label>
+									</div>
+									<div class="col-md-8 col-sm-8 col-xs-12">
 										<textarea id="description" name="description" class="form-control" rows="3"></textarea>
+										<label id="error_description" class="validation-message" style="display:none;"></label>
 									</div>
 								</div>
 							</div>
@@ -228,23 +238,20 @@
 	                      	<div class="modal-body validation-box">
 		                      	<div class="col-md-12 col-sm-12 col-xs-12">
 		                      		<div class="form-group">
-										<label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name" th:text="#{menu.name.category}"></label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<!-- <select class="form-control"> -->
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name" th:text="#{menu.name.category}"></label>
+										<div class="col-md-8 col-sm-8 col-xs-12">
 											
-					                          <select id="selectCategory" class="" style="width:100%" >
-					                           <option value=""></option>
+					                          <select id="categoryDropdown" class="" style="width:100%" >
+					                           	<option value=""></option>
 					                          </select>
-					                      
-					                          
-					                          <table id="categoryTable" class="table table-striped table-category-ref" style="width: 100%">
+					                          <table id="categoryChildDatatable" class="table table-striped table-category-ref" style="width: 100%">
 							                      <thead>
 							                        <tr>
 							                          <th style="width: 5px;"></th>
 							                          <th></th>
 							                        </tr>
 							                      </thead>
-							                    </table>
+							                 </table>
 										</div>
 									</div>
 		                      	</div>
@@ -255,7 +262,7 @@
 								<button type="button" class="btn btn-default" data-dismiss="modal">
 									<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
 								</button>
-								<button type="button" class="btn btn-success" onclick="saveAction();">
+								<button id="bt_save" type="button" class="btn btn-success" onclick="saveAction();">
 									<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
 								</button>
 							</div>
@@ -267,7 +274,7 @@
 			
 			
 			
-			 <div id="modal_delete" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true">
+			 <div id="modal_delete" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog ">
                       <div class="modal-content">
 
@@ -346,169 +353,309 @@
 	<!-- Custom Theme Scripts -->
 	<script th:src="@{/js/godung.js}"></script>
 	
-	<script>
-	function searchDisplay(){
-		
-	}
-	</script>
 
 	<script th:inline="javascript">
-	var url_language = /*[[#{javascript.datatable.language.url}]]*/;
-	var url_category = /*[[@{/user/category/list/ajax}]]*/;
-	
-	var textView = /*[[#{bt.text.view}]]*/;
-	var textEdit = /*[[#{bt.text.edit}]]*/;
-	var textDelete = /*[[#{bt.text.delete}]]*/;
-	
-    $(document).ready(function() {
-    	
-    	var table =  $('#datatablesResult').DataTable( {
-    			"processing": true,
-    	        "ajax": url_category,
-    	        "paging":   true,
-    	        "ordering": true,
-    	        "info":     true,
-    	        "searching":	true,
-    	        "language": {"url": url_language},
-    	        "order": [[ 1, 'asc' ]],
-    	        "columns": [
-  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
-  	            { 'data': 'categoryCode' },
-  	            { 'data': 'categoryName' },
-  	            { 'data': 'description' },
-  	            { 'data': 'categoryId' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
-  	        ],
-  	      	"columnDefs": [{
-                  "render": function ( data, type, row ) {
-                	  	return  '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textView +'"><i class="fa fa-search"></i></button>' +
-	                	  	 	'<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textEdit +
-	                	  	 	'" onclick="loadAction(\''+data+'\');"><i class="fa fa-edit"></i></button>' +
-	                	  	 	'<button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textDelete +
-	                	  	 	'" onclick="openDeleteDialog(\''+data+'\',\''+row.categoryCode+ ' ' +row.categoryName+ '\');" ><i class="fa fa-trash"></i></button>';
-                  },
-                  "targets": 4
-             }],
-             "initComplete": function( settings, json ) {
-            	 		//fix bug datatables use dom not responsive html
-            			 $("#datatablesResult_filter").hide();
-           		}
-    	    } );
-    	
-    		/* SET RELOAD TOOLTIP DATATABLE */
-	    	$('#datatablesResult').on( 'draw.dt', function () {
-	    		$('[data-toggle="tooltip"]').tooltip();
-	    	} );
-        
-       /* SET INDEX COLUMN */
-        table.on( 'order.dt search.dt', function () {
-        	table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                cell.innerHTML = i+1;
-            } );
-        } ).draw(); 
-        
-       /* SET SHOW HIDE ADVENCE SEARCH */
-        var searchBasic = 0;
-        $("#bt-advance").click(function(){
-	        	if(searchBasic == 0){
-	        		searchBasic = 1;
-	        		$("#search-basic").hide();
-	        		$("#search-advance").show();
-	        	}else{
-	        		searchBasic=0;
-	        		$("#search-advance").hide();
-	        		$("#search-basic").show();
-	        	}
-        });
-        
-        /* BASIC SEARCH */
-        $('#bt_basic_search').on( 'click', function () {
-        		table.search($("#input_basic_search").val()).draw();
+		var url_language = /*[[#{javascript.datatable.language.url}]]*/;
+		var url_category = /*[[@{/user/category/list/ajax}]]*/;
+		var textView = /*[[#{bt.text.view}]]*/;
+		var textEdit = /*[[#{bt.text.edit}]]*/;
+		var textDelete = /*[[#{bt.text.delete}]]*/;
+		
+		<!-- --------------------------------------- -->
+		<!-- -------- Start datatables Main -------- -->
+		<!-- --------------------------------------- -->
+	    $(document).ready(function() {
+		    	var table =  $('#datatablesMain').DataTable( {
+		    			"processing": true,
+		    	        "ajax": url_category,
+		    	        "paging":   true,
+		    	        "ordering": true,
+		    	        "info":     true,
+		    	        "searching":	true,
+		    	        "language": {"url": url_language},
+		    	        "order": [[ 1, 'asc' ]],
+		    	        "columns": [
+		  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
+		  	            { 'data': 'categoryCode' },
+		  	            { 'data': 'categoryName' },
+		  	            { 'data': 'description' },
+		  	            { 'data': 'categoryId' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
+		  	        ],
+		  	      	"columnDefs": [{
+		                  "render": function ( data, type, row ) {
+		                	  /* 	return  '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textView +'"><i class="fa fa-search"></i></button>' +
+			                	  	 	'<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textEdit +
+			                	  	 	'" onclick="loadAction(\''+data+'\');"><i class="fa fa-edit"></i></button>' +
+			                	  	 	'<button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textDelete +
+			                	  	 	'" onclick="openModalDelete(\''+data+'\',\''+row.categoryCode+ ' ' +row.categoryName+ '\');" ><i class="fa fa-trash"></i></button>';  */
+		                		 return	'<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textEdit +
+		                	  	 	'" onclick="loadAction(\''+data+'\');"><i class="fa fa-edit"></i></button>' +
+		                	  	 	'<button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textDelete +
+		                	  	 	'" onclick="openModalDelete(\''+data+'\',\''+row.categoryCode+ ' ' +row.categoryName+ '\');" ><i class="fa fa-trash"></i></button>'; 
+		                  },
+		                  "targets": 4
+		             }],
+		             "initComplete": function( settings, json ) {
+		            	 		//fix bug datatables use dom not responsive html
+		            			 $("#datatablesMain_filter").hide();
+		           		}
+		    	    } );
+	    	
+		    		/* SET RELOAD TOOLTIP AFTER DATATABLE */
+			    	$('#datatablesMain').on( 'draw.dt', function () {
+			    		$('[data-toggle="tooltip"]').tooltip();
+			    	} );
+	        
+		       /* SET INDEX COLUMN */
+		        table.on( 'order.dt search.dt', function () {
+		        	table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+		                cell.innerHTML = i+1;
+		            } );
+		        } ).draw(); 
+	        
+		       /* SET SHOW HIDE ADVENCE SEARCH */
+		        var searchBasic = 0;
+		        $("#bt-advance").click(function(){
+			        	if(searchBasic == 0){
+			        		searchBasic = 1;
+			        		$("#search-basic").hide();
+			        		$("#search-advance").show();
+			        	}else{
+			        		searchBasic=0;
+			        		$("#search-advance").hide();
+			        		$("#search-basic").show();
+			        	}
+		        });
+		        
+		        /* BASIC SEARCH */
+		        $('#bt_basic_search').on( 'click', function () {
+		        		table.search($("#input_basic_search").val()).draw();
+				});
+		        
+		        $('#input_basic_search').on( 'keyup change', function () {
+			    		table.search($("#input_basic_search").val()).draw();
+				});
+		        
+		        /* ADVANCE SEARCH */
+		        $('#input_advance_code,#input_advance_name,#input_advance_description').on( 'keyup change', function () {
+		       	 	searchDatatablesMain();
+				});
+		        
+		        $('#bt_advance_search').on( 'click', function () {
+		        		searchDatatablesMain();
+		        });
+		        
+		        $('#bt_advance_reset').on( 'click', function () {
+		        		$("#input_advance_code").val("");
+		        		$("#input_advance_name").val("");
+		        		$("#input_advance_description").val("");
+			    		searchDatatablesMain();
+			    });
 		});
-        
-        $('#input_basic_search').on( 'keyup change', function () {
-	    		table.search($("#input_basic_search").val()).draw();
-		});
-        
-        /* ADVANCE SEARCH */
-        $('#input_advance_code').on( 'keyup change', function () {
-       	 	reloadDatatable();
-		});
-        
-        $('#input_advance_name').on( 'keyup change', function () {
-        		reloadDatatable();
-		});
-        
-        $('#input_advance_description').on( 'keyup change', function () {
-        		reloadDatatable();
-		});
-        
-        $('#bt_advance_search').on( 'click', function () {
-        		reloadDatatable();
-        });
-        
-        $('#bt_advance_reset').on( 'click', function () {
-        		$("#input_advance_code").val("");
-        		$("#input_advance_name").val("");
-        		$("#input_advance_description").val("");
-	    		reloadDatatable();
+		
+		function searchDatatablesMain(){
+	   		var table = $('#datatablesMain').DataTable();
+	    		table.columns(1).search($("#input_advance_code").val()).columns(2).search($("#input_advance_name").val()).columns(3).search($("#input_advance_description").val()).draw();
+	    }
+		<!-- ------------------------------------- -->
+		<!-- -------- End datatables Main -------- -->
+		<!-- ------------------------------------- -->
+		
+		<!-- ------------------------------------------------- -->
+		<!-- -------- Start datatables Child Category -------- -->
+		<!-- ------------------------------------------------- -->
+	    $(document).ready(function() {
+	        var categoryChildDatatable = $('#categoryChildDatatable').DataTable({
+	        	  	"paging":   false,
+	    	        "ordering": false,
+	    	        "info":     false,
+	    	        "searching":	false,
+	    	        "language": {"url": url_language},
+	    	        "columnDefs": [{
+	    	        	 "targets": 0,
+	    	        	 "className": "dt-body-close"
+	    	        }]
+	        });
+	        
+	        $('#categoryChildDatatable tbody').on('click','i.fa-close', function () {
+        			categoryChildDatatable.row( $(this).parents('tr') ).remove().draw();
+        		});
 	    });
-        
-        
-	});
-    
-    function reloadDatatable(){
-   		var table = $('#datatablesResult').DataTable();
-    		table.columns(1).search($("#input_advance_code").val()).columns(2).search($("#input_advance_name").val()).columns(3).search($("#input_advance_description").val()).draw();
-    }
-    
-    function saveAction() {
- 	   	var urlAction = /*[[@{/user/category/save}]]*/;
- 	   
-	    $.ajax({
-	        type: "POST",
-	        url: urlAction,
-	        dataType: 'json',
-	        data: $("#categoryForm").serialize(),
-	        success: function(response){
-	            if(response.status == "SUCCESS"){
-	               	openNotification(response.result.type,response.result.title,response.result.text);
-	               	$('#modal_save').modal('hide');
-	               	$("#categoryForm").trigger('reset');
-	              	var table =  $('#datatablesResult').DataTable();
-	                table.ajax.reload();
-	             }else{
-	            		openNotification(response.result.type,response.result.title,response.result.text);
-	             }
-	         },
-	         error: function(e){
-	             openNotification("error","error",e);
-	         }
-	    });
-	}
-    
-    function openSaveModal(){
-    	alert("test");
-    		 resetForm();
-    		// $('#modal_save').modal('show');
-    		 
-    		 resetForm();
-    	 	   	var urlAction = /*[[@{/user/category/load/add}]]*/;
-    	 	   	var codename = "";
+	    
+	    function categoryChildDatatableAdd(key,value){
+	     	var table = $('#categoryChildDatatable').DataTable();
+	     	var name =  '<input type="hidden" name="catogoryBranchList" value="'+key+'"><span>' + value + '</span>';
+	     	var btDelete = '<button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textDelete + '"><i class="fa fa-close"></i></button>';
+	     	table.row.add([btDelete,name]).draw();
+	     	$('[data-toggle="tooltip"]').tooltip();
+	    }
+	    
+	    function categoryChildDatatableGenerate(obj){
+		    $('#categoryChildDatatable').DataTable().clear().draw();
+	        $(obj).each(function(i, item){
+	    	   		codename = item.categoryCode + "-" + item.categoryName;
+	    	 		categoryChildDatatableAdd(item.categoryId,codename);
+	       });
+	    }
+		<!-- ------------------------------------------------- -->
+		<!-- -------- End datatables Child Category ---------- -->
+		<!-- ------------------------------------------------- -->
+		
+		
+		<!-- -------------------------------- -->
+		<!-- -------- Start Select2  -------- -->
+		<!-- -------------------------------- -->
+		$(function(){
+	      	$('#categoryDropdown').select2({
+	    	  		placeholder: /*[[#{dropdown.text.select}]]*/,
+	    	  		dropdownParent: $('#modal_save')
+	     	 });
+	      	
+	      	 $('#categoryDropdown').on('select2:select', function (evt) {
+		     	var data = $('#categoryDropdown').select2('data');
+		        	categoryChildDatatableAdd(data[0].id,data[0].text);
+		        	
+		        	$('#categoryDropdown').val(''); 
+		        	$('#categoryDropdown').trigger('change');
+	       	 }); 
+	    }); 
+		
+	    function categoryDropdownGenerate(obj){
+			$("#categoryDropdown").empty();
+			$('#categoryDropdown').append('<option value=""></option>');
+            $(obj).each(function(i, item){
+       	   		var codename = item.categoryCode + "-" + item.categoryName;
+        	   		$('#categoryDropdown').append('<option value="'+item.categoryId+'" >'+codename+'</option>');
+             });
+	    	}
+		<!-- -------------------------------- -->
+		<!-- -------- End  Select2  --------- -->
+		<!-- -------------------------------- -->
+	    
+	    
+	    <!-- -------------------------------- -->
+		<!-- -------- Start Modal ----------- -->
+		<!-- -------------------------------- -->
+		function openModalDelete(id,message){
+	    		var messageMain = /*[[#{label.delete.content.confirm}]]*/;
+	    		$("#delete_id").val(id);
+	    		$("#modal_delete_content").html(messageMain + " : " + message);
+	    		$('#modal_delete').modal('show');
+	    }
+		
+	 	function resetModalForm(){
+			$("#categoryId").val("");
+	   		$("#categoryCode").val("");
+		   	$("#categoryName").val("");
+		   	$("#description").val("");
+		   	$('#categoryChildDatatable').DataTable().clear().draw();;
+		   	resetValidationError();
+		   	//$("#bt_save").focus();
+	    }
+	 	
+	 	function setModalForm(id,code,name,description){
+	 		$("#categoryId").val(id);
+        		$("#categoryCode").val(code);
+     		$("#categoryName").val(name);
+     	   	$("#description").val(description);
+	 	}
+		<!-- -------------------------------- -->
+		<!-- -------- End Modal ----------- -->
+		<!-- -------------------------------- -->
+	    
+	    
+	    <!-- -------------------------------- -->
+		<!-- -------- Start Action -------- -->
+		<!-- -------------------------------- -->
+	    function saveAction() {
+	    		resetValidationError();
+	 	   	var urlAction = /*[[@{/user/category/save}]]*/;
+		    $.ajax({
+		        type: "POST",
+		        url: urlAction,
+		        dataType: 'json',
+		        data: $("#categoryModalForm").serialize(),
+		        success: function(response){
+		            if(response.status == "SUCCESS"){
+		               	openNotification(response.result.type,response.result.title,response.result.text);
+		               	$('#modal_save').modal('hide');
+		               	$("#categoryModalForm").trigger('reset');
+		              	var table =  $('#datatablesMain').DataTable();
+		                table.ajax.reload();
+		             }else{
+		            	 	validationErrorShow(response.result);
+		            		//openNotification(response.result.type,response.result.title,response.result.text);
+		             }
+		         },
+		         error: function(e){
+		             openNotification("error","error",e);
+		         }
+		    });
+		}
+	    
+	    function deleteAction() {
+	 	   	var urlAction = /*[[@{/user/category/delete}]]*/;
+		    $.ajax({
+		        type: "POST",
+		        url: urlAction,
+		        dataType: 'json',
+		        data: $("#deleteForm").serialize(),
+		        success: function(response){
+		            if(response.status == "SUCCESS"){
+		               	openNotification(response.result.type,response.result.title,response.result.text);
+		               	$('#modal_delete').modal('hide');
+		               	$("#categoryModalForm").trigger('reset');
+		              	var table =  $('#datatablesMain').DataTable();
+		                table.ajax.reload();
+		             }else{
+		            		openNotification(response.result.type,response.result.title,response.result.text);
+		             }
+		         },
+		         error: function(e){
+		             openNotification("error","error",e);
+		         }
+		    });
+		}
+	    
+	    function loadAction(id) {
+	    		resetModalForm();
+	 	   	var urlAction = /*[[@{/user/category/load}]]*/;
+		    $.ajax({
+		        type: "GET",
+		        url: urlAction,
+		        dataType: 'json',
+		        data: {"categoryId": id},
+		        success: function(response){
+		            if(response.status == "SUCCESS"){
+			        	   var id = response.result.categoryId;
+			        	   var code = response.result.categoryCode;
+			        	   var name = response.result.categoryName;
+			        	   var description = response.result.description;
+			        	   setModalForm(id,code,name,description);
+			        	   
+			        	   categoryDropdownGenerate(response.result.categoryDropdownList);
+			        	   categoryChildDatatableGenerate(response.result.catogoryBranchShowList);
+		               $('#modal_save').modal('show');
+		             }else{
+		            		openNotification(response.result.type,response.result.title,response.result.text);
+		             }
+		         },
+		         error: function(e){
+		             openNotification("error","error",e);
+		         }
+		    });
+		}
+	    
+	    function openModalAdd(){
+ 			resetModalForm();
+	    		var urlAction = /*[[@{/user/category/load/add}]]*/;
     		    $.ajax({
     		        type: "GET",
     		        url: urlAction,
     		        dataType: 'json',
     		        success: function(response){
     		            if(response.status == "SUCCESS"){
-    		            	
-    		           	  $('#categoryTable').DataTable().clear().draw();
-    		               $("#selectCategory").empty();
-    		               categorySelectDefault();
-    	                   $(response.result.categoryDataList).each(function(i, item){
-    	                	   		codename = item.categoryCode + " " + item.categoryName;
-    	                	   		categorySelect(item.categoryId, codename);
-    	                   });
-    			        	   
+    	                   categoryDropdownGenerate(response.result.categoryDropdownList);
     		               $('#modal_save').modal('show');
     		             }else{
     		            		openNotification(response.result.type,response.result.title,response.result.text);
@@ -518,166 +665,36 @@
     		             openNotification("error","error",e);
     		         }
     		    });
-    }
-    
-    function openDeleteDialog(id,message){
-    		var messageMain = /*[[#{label.delete.content.confirm}]]*/;
-    		$("#delete_id").val(id);
-    		$("#modal_delete_content").html(messageMain + " : " + message);
-    		$('#modal_delete').modal('show');
-    }
-    
-    function deleteAction() {
- 	   	var urlAction = /*[[@{/user/category/delete}]]*/;
- 	   
-	    $.ajax({
-	        type: "POST",
-	        url: urlAction,
-	        dataType: 'json',
-	        data: $("#deleteForm").serialize(),
-	        success: function(response){
-	            if(response.status == "SUCCESS"){
-	               	openNotification(response.result.type,response.result.title,response.result.text);
-	               	$('#modal_delete').modal('hide');
-	               	$("#categoryForm").trigger('reset');
-	              	var table =  $('#datatablesResult').DataTable();
-	                table.ajax.reload();
-	             }else{
-	            		openNotification(response.result.type,response.result.title,response.result.text);
-	             }
-	         },
-	         error: function(e){
-	             openNotification("error","error",e);
-	         }
-	    });
-	}
-    
-    function loadAction(id) {
-    		resetForm();
- 	   	var urlAction = /*[[@{/user/category/load}]]*/;
- 	   	var codename = "";
-	    $.ajax({
-	        type: "GET",
-	        url: urlAction,
-	        dataType: 'json',
-	        data: {"categoryId": id},
-	        success: function(response){
-	            if(response.status == "SUCCESS"){
-	               $("#categoryId").val(response.result.categoryId);
-	               $("#categoryCode").val(response.result.categoryCode);
-		        	   $("#categoryName").val(response.result.categoryName);
-		        	   $("#description").val(response.result.description);
-                   
-		        	   $("#selectCategory").empty();
-	               categorySelectDefault();
-                   $(response.result.categoryDataList).each(function(i, item){
-                	   		codename = item.categoryCode + " " + item.categoryName;
-                	   		categorySelect(item.categoryId, codename);
-                   });
-	                   
-                	  $('#categoryTable').DataTable().clear().draw();
-                   $(response.result.catogoryBranchShowList).each(function(i, item){
-	           	   		codename = item.categoryCode + " " + item.categoryName;
-	           	 		catagoryTableAdd(item.categoryId,codename);
-	              });
-	                   
-		        	   
-	               $('#modal_save').modal('show');
-	             }else{
-	            		openNotification(response.result.type,response.result.title,response.result.text);
-	             }
-	         },
-	         error: function(e){
-	             openNotification("error","error",e);
-	         }
-	    });
-	}
-    
-    function resetForm(){
-		$("#categoryId").val("");
-   		$("#categoryCode").val("");
-	   	$("#categoryName").val("");
-	   	$("#description").val("");
-	   	$('#categoryTable').DataTable().clear().draw();;
-    }
-    
-    
-    
-  $(function(){
-      $('#selectCategory').select2({
-    	  	placeholder: "Select a state"
-      });
-    }); 
-	    
-    $(document).ready(function() {
-        var categoryTable = $('#categoryTable').DataTable({
-        	  	"paging":   false,
-    	        "ordering": false,
-    	        "info":     false,
-    	        "searching":	false
-        });
-        
-        var btDelete = '<button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textDelete + '"><i class="fa fa-close"></i></button>';
-     
-
-        
-        $('#selectCategory').on('select2:select', function (evt) {
-    
-    		  
-	        var data = $('#selectCategory').select2('data');
-	        	catagoryTableAdd(data[0].id,data[0].text);
-	        	
-	        	$('#selectCategory').val(''); 
-	        	$('#selectCategory').trigger('change');
-	    		  
-	
-	        	
-	        
-    		  
-        }); 
-        
-        
-        
-        $('#categoryTable tbody').on('click','i.fa-close', function () {
-        	categoryTable
-                .row( $(this).parents('tr') )
-                .remove()
-                .draw();
-        } );
-    } );
-    
-    function catagoryTableAdd(key,value){
-     	var table = $('#categoryTable').DataTable();
-     	
-     	
-     	var name =  '<input type="hidden" name="catogoryBranchList" value="'+key+'"><span>' + value + '</span>';
-     	var btDelete = '<button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textDelete + '"><i class="fa fa-close"></i></button>';
-     	                
-     	table.row.add([btDelete,name]).draw();
-     	$('[data-toggle="tooltip"]').tooltip();
-    }
-    
-
-    
-    function categorySelectDefault(){
-    		$('#selectCategory').append('<option value=""></option>');
-    }
-    
-    function categorySelect(key,value){
-    		$('#selectCategory').append('<option value="'+key+'" >'+value+'</option>');
-    }
-    
-    
-    
-    
-    
-    
-    
-	</script>
-	
-	
+	    }
+	    <!-- -------------------------------- -->
+		<!-- ---------- End Action ---------- -->
+		<!-- -------------------------------- -->
+		
+		
+		<!-- -------------------------------- -->
+		<!-- ------- Start Validation ------- -->
+		<!-- -------------------------------- -->
+		function validationErrorShow(obj){
+			$(obj).each(function(i, item){
+				var messageOld = $("#error_" + item.field).html();
+				var concat = "";
+				if(messageOld != ""){concat = "<br/>";}
+				
+				$("#error_" + item.field).html(messageOld + concat + item.defaultMessage);
+				$("#error_" + item.field).show();
+			});
+		}
+		
+		function resetValidationError(){
+			$("[id^='error_']").html("");
+			$("[id^='error_']").hide();
+		}
+		
+		<!-- -------------------------------- -->
+		<!-- -------- End Validation -------- -->
+		<!-- -------------------------------- -->
 	  
-	
+	</script>
 
 </body>
 </html>

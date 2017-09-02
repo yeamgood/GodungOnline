@@ -20,7 +20,7 @@ public class CategoryForm {
 	
 	private Menu menu;
 	
-	private List<Category> categoryDataList;
+	private List<Category> categoryDropdownList;
 	
 	private List<Category> catogoryBranchShowList;
 	private List<Long> catogoryBranchList;
@@ -93,14 +93,15 @@ public class CategoryForm {
 		this.menu = menu;
 	}
 
-	public List<Category> getCategoryDataList() {
-		return categoryDataList;
+	public List<Category> getCategoryDropdownList() {
+		return categoryDropdownList;
 	}
 
 
-	public void setCategoryDataList(List<Category> categoryDataList) {
-		this.categoryDataList = categoryDataList;
+	public void setCategoryDropdownList(List<Category> categoryDropdownList) {
+		this.categoryDropdownList = categoryDropdownList;
 	}
+
 
 	public List<Long> getCatogoryBranchList() {
 		return catogoryBranchList;

@@ -35,25 +35,37 @@
 }
 
 /* datatables mergin 0 */
-.datatables_action{
-	margin: 0px;
-}
-.datatable_col_no{
-	width: 30px !important;
-}
-.datatable_col_action{
-	width: 70px !important;
+.dt-body-no {
+	width: 25px !important;
+	text-align: center;
 }
 
-.dt-body-no {
-	width: 30px !important;
-	text-align: center;
-}
 .dt-body-action {
-	width: 70px !important;
+	width: 40px !important;
+	text-align: center;
+    padding-bottom: 0px !important;
+    padding-top: 0px !important;
+    vertical-align: middle !important;
+}
+
+.dt-body-action button{
+    margin-bottom: 0px !important;
+    margin-top: 2px !important;
+}
+
+.dt-body-close {
+	width: 20px !important;
+	text-align: center;
+    vertical-align: middle !important;
+}
+
+.dt-body-close button{
+	margin: 0px !important;
+}
+
+.dt-body-center {
 	text-align: center;
 }
-.dt-body-center {text-align: center;}
 
 /* Modal */
 .modal-custom-header{

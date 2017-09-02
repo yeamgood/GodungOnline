@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,12 +30,13 @@ public class Category extends ModelTemplate{
 	@Column(name = "category_code")
 	private String categoryCode;
 	
-	
 	@Column(name = "category_name")
 	@NotEmpty(message = "{form.category.valid.name}")
+	@Length(max = 100, message = "{validation.max.lenght}")
 	private String categoryName;
 	
 	@Column(name = "description")
+	@Length(max = 200, message = "{validation.max.lenght}")
 	private String description;
 	
 	@ManyToOne()

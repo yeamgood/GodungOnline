@@ -58,12 +58,8 @@ public class CategoryController {
 	public ModelAndView userCategory(HttpSession session){
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
-		//User userSession = (User) session.getAttribute("user");
 		Menu menu = menuService.findById(MENU_CATEGORY_ID);
-		//List<Category> categoryList = categoryService.findAllByGodungGodungIdOrderByCategoryNameAsc(userSession.getGodung().getGodungId());
-		
 		modelAndView.addObject("menu", menu);
-		//modelAndView.addObject("categoryList", categoryList);
 		modelAndView.setViewName("user/category");
 		logger.debug("O");
 		return modelAndView;
@@ -72,9 +68,7 @@ public class CategoryController {
 	@RequestMapping(value="/user/category/list/server", method=RequestMethod.GET)
 	public @ResponseBody String userCategoryList(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException{
 		logger.debug("I");
-		
 		logger.debug("datatableRequest" + datatableRequest.toString());
-		
 		User userSession = (User) session.getAttribute("user");
 		Long godungId = userSession.getGodung().getGodungId();
 
@@ -128,13 +122,15 @@ public class CategoryController {
 			String errorMsg = "";
 			List<FieldError> errors = bindingResult.getFieldErrors();
 		    for (FieldError error : errors ) {
-		    		errorMsg += error.getObjectName() + " - " + error.getDefaultMessage();
+		    		//errorMsg += error.getObjectName() + " - " + error.getCode() + " - " + error.getField() + " - " + error.getArguments() + " - " +error.getDefaultMessage();
+		    		errorMsg += error.getField() + " - " + error.getDefaultMessage();
 		    }
 		    pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.save.error");
 		    pnotify.setText(errorMsg);
 		    
 			jsonResponse.setStatus("FAIL");
-			jsonResponse.setResult(pnotify);
+			jsonResponse.setResult(errors);
+			//jsonResponse.setResult(pnotify);
 		}else {
 			try {
 				userSession = (User) session.getAttribute("user");
@@ -222,7 +218,7 @@ public class CategoryController {
 			
 			CategoryForm categoryForm = new CategoryForm();
 			categoryForm.mapObjectToForm(categoryTemp);
-			categoryForm.setCategoryDataList(categorySelectList);
+			categoryForm.setCategoryDropdownList(categorySelectList);
 			categoryForm.setCatogoryBranchShowList(categoryBranchShowList);
 			
 			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.load.success");
@@ -249,8 +245,8 @@ public class CategoryController {
 		try {
 			userSession = (User) session.getAttribute("user");
 			CategoryForm categoryForm = new CategoryForm();
-			List<Category> categoryRefList = categoryService.findAllByGodungGodungIdOrderByCategoryCodeAsc(userSession.getGodung().getGodungId());
-			categoryForm.setCategoryDataList(categoryRefList);
+			List<Category> categoryDropdownList = categoryService.findAllByGodungGodungIdOrderByCategoryCodeAsc(userSession.getGodung().getGodungId());
+			categoryForm.setCategoryDropdownList(categoryDropdownList);
 			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.load.success");
 			jsonResponse.setStatus("SUCCESS");
 			jsonResponse.setResult(categoryForm);
