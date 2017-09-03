@@ -34,7 +34,7 @@ import com.yeamgood.godungonline.service.MenuService;
 public class MeasureController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	private final Long MENU_CATEGORY_ID = (long) 13;
+	private final Long MENU_MEASURE_ID = (long) 12;
 	
 	@Autowired
     MessageSource messageSource;
@@ -50,7 +50,7 @@ public class MeasureController {
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
 		User userSession = (User) session.getAttribute("user");
-		Menu menu = menuService.findById(MENU_CATEGORY_ID);
+		Menu menu = menuService.findById(MENU_MEASURE_ID);
 		List<Measure> measureList = measureService.findAllByGodungGodungIdOrderByMeasureNameAsc(userSession.getGodung().getGodungId());
 		
 		modelAndView.addObject("menu", menu);

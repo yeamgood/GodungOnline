@@ -34,7 +34,7 @@ import com.yeamgood.godungonline.service.MenuService;
 public class ProductController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	private final Long MENU_CATEGORY_ID = (long) 13;
+	private final Long MENU_PRODUCT_ID = (long) 10;
 	
 	@Autowired
     MessageSource messageSource;
@@ -50,7 +50,7 @@ public class ProductController {
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
 		User userSession = (User) session.getAttribute("user");
-		Menu menu = menuService.findById(MENU_CATEGORY_ID);
+		Menu menu = menuService.findById(MENU_PRODUCT_ID);
 		List<Product> productList = productService.findAllByGodungGodungIdOrderByProductNameAsc(userSession.getGodung().getGodungId());
 		
 		modelAndView.addObject("menu", menu);
