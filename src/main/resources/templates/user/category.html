@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Godung Online</title>
-
+	 <link rel="icon" type="image/gif" th:href="@{/images/logo_box.png}" />
 
 	<!-- Bootstrap -->
     <link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
@@ -187,7 +187,7 @@
 						
 						<div class="profile_title">
 	                        <div class="col-md-12">
-	                         <i class="fa fa-info-circle"></i> <span>ข้อมูลพื้นฐาน</span>
+	                         <i class="fa fa-info-circle"></i> <span th:text="#{form.category.profile.main}"></span>
 	                        </div>
                       	</div>
 
@@ -197,7 +197,6 @@
 								<div class="form-group">
 									<div class="control-label col-md-3 col-sm-3 col-xs-12">
 										<label th:text="#{form.category.label.code}"></label>
-										<label class="validation-message" th:text="#{label.request}"></label>
 									</div>
 									<div class="col-md-8 col-sm-8 col-xs-12">
 										<input type="text" id="categoryCode" name="categoryCode" class="form-control" readonly="readonly" placeholder="ระบบสร้างให้อัตโนมัติ">
@@ -228,12 +227,10 @@
 							<div class="clearfix"></div>
 							<div class="profile_title">
 		                         <div class="col-md-12 col-sm-12 col-xs-12">
-		                         	<i class="fa fa-tags"></i> <span>หมวดย่อย</span>
+		                         	<i class="fa fa-tags"></i> <span th:text="#{form.category.profile.sub}"></span>
 		                        </div>
 	                      	</div>
-	                      	
 	                      	<div class="clearfix"></div>
-	                      	
 	                      	
 	                      	<div class="modal-body validation-box">
 		                      	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -389,7 +386,7 @@
 			                	  	 	'<button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textDelete +
 			                	  	 	'" onclick="openModalDelete(\''+data+'\',\''+row.categoryCode+ ' ' +row.categoryName+ '\');" ><i class="fa fa-trash"></i></button>';  */
 		                		 return	'<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textEdit +
-		                	  	 	'" onclick="loadAction(\''+data+'\');"><i class="fa fa-edit"></i></button>' + " " +
+		                	  	 	'" onclick="loadAction(\''+data+'\');"><i class="fa fa-wrench"></i></button>' + " " +
 		                	  	 	'<button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textDelete +
 		                	  	 	'" onclick="openModalDelete(\''+data+'\',\''+row.categoryCode+ ' ' +row.categoryName+ '\');" ><i class="fa fa-trash"></i></button>'; 
 		                  },
@@ -670,30 +667,6 @@
 		<!-- ---------- End Action ---------- -->
 		<!-- -------------------------------- -->
 		
-		
-		<!-- -------------------------------- -->
-		<!-- ------- Start Validation ------- -->
-		<!-- -------------------------------- -->
-		function validationErrorShow(obj){
-			$(obj).each(function(i, item){
-				var messageOld = $("#error_" + item.field).html();
-				var concat = "";
-				if(messageOld != ""){concat = "<br/>";}
-				
-				$("#error_" + item.field).html(messageOld + concat + item.defaultMessage);
-				$("#error_" + item.field).show();
-			});
-		}
-		
-		function resetValidationError(){
-			$("[id^='error_']").html("");
-			$("[id^='error_']").hide();
-		}
-		
-		<!-- -------------------------------- -->
-		<!-- -------- End Validation -------- -->
-		<!-- -------------------------------- -->
-	  
 	</script>
 
 </body>

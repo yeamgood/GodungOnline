@@ -28,3 +28,21 @@ function openNotification(inputType, inputTitle, inputText) {
 		});
 	}
 }
+
+/* Start Validation */ 
+function validationErrorShow(obj){
+	$(obj).each(function(i, item){
+		var messageOld = $("#error_" + item.field).html();
+		var concat = "";
+		if(messageOld != ""){concat = "<br/>";}
+		
+		$("#error_" + item.field).html(messageOld + concat + item.defaultMessage);
+		$("#error_" + item.field).show();
+	});
+}
+
+function resetValidationError(){
+	$("[id^='error_']").html("");
+	$("[id^='error_']").hide();
+}
+/* End Validation */ 

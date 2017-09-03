@@ -61,6 +61,19 @@ INSERT INTO `godung_online`.`category` (`category_id`,`category_code`, `create_d
 INSERT INTO `godung_online`.`measure` (`measure_id`,`measure_code`, `create_date`, `create_user`, `version`, `measure_name`, `godung_id`, `description`) VALUES ('1', 'MEA20170830-00001', SYSDATE(), 'SYSTEM', '0', 'เส้น', '2','อุปกรณ์เหล็ก');
 INSERT INTO `godung_online`.`measure` (`measure_id`,`measure_code`, `create_date`, `create_user`, `version`, `measure_name`, `godung_id`, `description`) VALUES ('2', 'MEA20170830-00002', SYSDATE(), 'SYSTEM', '0', 'แผ่น', '2','อุปกรณ์กระจก');
 INSERT INTO `godung_online`.`measure` (`measure_id`,`measure_code`, `create_date`, `create_user`, `version`, `measure_name`, `godung_id`, `description`) VALUES ('3', 'MEA20170830-00003', SYSDATE(), 'SYSTEM', '0', 'ท่อ', '2','อุปกรณ์อลูมิเนียม');
+INSERT INTO `godung_online`.`measure_convert` (`measure_convert_id`, `measure_ref_id`, `quantity`, `measure_id`,`version`) VALUES ('1', '2', '20', '1','0');
+INSERT INTO `godung_online`.`measure_convert` (`measure_convert_id`, `measure_ref_id`, `quantity`, `measure_id`,`version`) VALUES ('2', '3', '30', '1','0');
+INSERT INTO `godung_online`.`measure_convert` (`measure_convert_id`, `measure_ref_id`, `quantity`, `measure_id`,`version`) VALUES ('3', '2', '20', '1','0');
+INSERT INTO `godung_online`.`measure_convert` (`measure_convert_id`, `measure_ref_id`, `quantity`, `measure_id`,`version`) VALUES ('4', '3', '30', '1','0');
+INSERT INTO `godung_online`.`measure_convert` (`measure_convert_id`, `measure_ref_id`, `quantity`, `measure_id`,`version`) VALUES ('5', '2', '20', '1','0');
+INSERT INTO `godung_online`.`measure_convert` (`measure_convert_id`, `measure_ref_id`, `quantity`, `measure_id`,`version`) VALUES ('6', '3', '30', '1','0');
+INSERT INTO `godung_online`.`measure_convert` (`measure_convert_id`, `measure_ref_id`, `quantity`, `measure_id`,`version`) VALUES ('7', '2', '20', '1','0');
+INSERT INTO `godung_online`.`measure_convert` (`measure_convert_id`, `measure_ref_id`, `quantity`, `measure_id`,`version`) VALUES ('8', '3', '30', '1','0');
+INSERT INTO `godung_online`.`measure_convert` (`measure_convert_id`, `measure_ref_id`, `quantity`, `measure_id`,`version`) VALUES ('9', '2', '20', '1','0');
+INSERT INTO `godung_online`.`measure_convert` (`measure_convert_id`, `measure_ref_id`, `quantity`, `measure_id`,`version`) VALUES ('10', '3', '30', '1','0');
+INSERT INTO `godung_online`.`measure_convert` (`measure_convert_id`, `measure_ref_id`, `quantity`, `measure_id`,`version`) VALUES ('11', '2', '20', '1','0');
+INSERT INTO `godung_online`.`measure_convert` (`measure_convert_id`, `measure_ref_id`, `quantity`, `measure_id`,`version`) VALUES ('12', '3', '30', '1','0');
+
 
 INSERT INTO `godung_online`.`brand` (`brand_id`,`brand_code`, `create_date`, `create_user`, `version`, `brand_name`, `godung_id`, `description`) VALUES ('1', 'BRA20170830-00001', SYSDATE(), 'SYSTEM', '0', 'Sony', '2','');
 INSERT INTO `godung_online`.`brand` (`brand_id`,`brand_code`, `create_date`, `create_user`, `version`, `brand_name`, `godung_id`, `description`) VALUES ('2', 'BRA20170830-00002', SYSDATE(), 'SYSTEM', '0', 'Lg', '2','');

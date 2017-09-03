@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,9 +30,11 @@ public class Measure extends ModelTemplate{
 	
 	@Column(name = "measure_name")
 	@NotEmpty(message = "{form.measure.valid.name}")
+	@Length(max = 100, message = "{validation.max.lenght}")
 	private String measureName;
 	
 	@Column(name = "description")
+	@Length(max = 200, message = "{validation.max.lenght}")
 	private String description;
 	
 	@ManyToOne()

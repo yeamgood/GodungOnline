@@ -9,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -62,36 +60,6 @@ public class ProductController {
 		return modelAndView;
 	}
 	
-	@RequestMapping(value="/user/product/list/server", method=RequestMethod.GET)
-	public @ResponseBody String userProductList(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException{
-		logger.debug("I");
-		
-		logger.debug("datatableRequest" + datatableRequest.toString());
-		
-		User userSession = (User) session.getAttribute("user");
-		Long godungId = userSession.getGodung().getGodungId();
-
-		int start = datatableRequest.getiDisplayStart();
-		int length = datatableRequest.getiDisplayLength();
-		if(length ==0) {
-			length = 10;
-		}
-		int page = start/length;
-		String sSearch = datatableRequest.getsSearch();
-		logger.debug("start:" + start + " length:" + length + " page:" + page);
-		Pageable pageable = new PageRequest( page, length,datatableRequest.getDirection(), datatableRequest.getNamecolumn());
-		long count = productService.count(godungId);
-		List<Product> productList = productService.findByGodungGodungIdAndProductNameIgnoreCaseContaining(godungId,sSearch,pageable);
-		logger.debug("O:productList" + productList.size());
-		
-		DataTableObject dataTableObject = new DataTableObject();
-		dataTableObject.setiTotalRecords((int)count);
-		dataTableObject.setiTotalDisplayRecords((int)count);
-		dataTableObject.setAaData(productList);
-		String result = new ObjectMapper().writeValueAsString(dataTableObject);
-		return result;
-	}
-	
 	
 	@RequestMapping(value="/user/product/list/ajax", method=RequestMethod.GET)
 	public @ResponseBody String userProductListtest(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException{
@@ -121,13 +89,13 @@ public class ProductController {
 			String errorMsg = "";
 			List<FieldError> errors = bindingResult.getFieldErrors();
 		    for (FieldError error : errors ) {
-		    		errorMsg += error.getObjectName() + " - " + error.getDefaultMessage();
+		    		errorMsg += error.getField() + " - " + error.getDefaultMessage();
 		    }
 		    pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.save.error");
 		    pnotify.setText(errorMsg);
 		    
 			jsonResponse.setStatus("FAIL");
-			jsonResponse.setResult(pnotify);
+			jsonResponse.setResult(errors);
 		}else {
 			try {
 				userSession = (User) session.getAttribute("user");
@@ -203,6 +171,27 @@ public class ProductController {
 			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.load.success");
 			jsonResponse.setStatus("SUCCESS");
 			jsonResponse.setResult(productTemp);
+		} catch (Exception e) {
+			logger.error("error:",e);
+			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.load.error");
+			jsonResponse.setStatus("FAIL");
+			jsonResponse.setResult(pnotify);
+		}
+		
+		logger.debug("O");
+		return jsonResponse;
+	}
+	
+	@RequestMapping(value="/user/product/load/add", method=RequestMethod.GET)
+	public @ResponseBody JsonResponse loadAdd(HttpSession session){
+		logger.debug("I");
+		Pnotify pnotify;
+		JsonResponse jsonResponse = new JsonResponse();
+		try {
+			Product product = new Product();
+			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.load.success");
+			jsonResponse.setStatus("SUCCESS");
+			jsonResponse.setResult(product);
 		} catch (Exception e) {
 			logger.error("error:",e);
 			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.load.error");
