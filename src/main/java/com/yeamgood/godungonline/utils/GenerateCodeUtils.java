@@ -17,6 +17,9 @@ public class GenerateCodeUtils {
 	public final static String TYPE_MEASURE = "MEA";
 	public final static String TYPE_WAREHOUSE = "WAR";
 	public final static String TYPE_PRODUCT = "PRO";
+	public final static String TYPE_SUPPLIER = "SUP";
+	public final static String TYPE_CUSTOMER = "CUS";
+	public final static String TYPE_EMPLOYEE = "EMP";
 	
 	public static String generateCode(String title,String maxCode) {
 		String yyyyMMdd = new SimpleDateFormat("yyyyMMdd").format(new Date());

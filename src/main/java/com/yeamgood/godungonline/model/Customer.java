@@ -2,13 +2,11 @@ package com.yeamgood.godungonline.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Length;
@@ -18,22 +16,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yeamgood.godungonline.model.template.ModelTemplate;
 
 @Entity
-@Table(name = "product")
-public class Product extends ModelTemplate{
+@Table(name = "customer")
+public class Customer extends ModelTemplate{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "product_Id")
-	private Long productId;
+	@Column(name = "customer_Id")
+	private Long customerId;
 	
-	@Column(name = "product_code")
-	private String productCode;
+	@Column(name = "customer_code")
+	private String customerCode;
 	
-	
-	@Column(name = "product_name")
-	@NotEmpty(message = "{form.product.valid.name}")
+	@Column(name = "customer_name")
+	@NotEmpty(message = "{form.customer.valid.name}")
 	@Length(max = 100, message = "{validation.max.lenght}")
-	private String productName;
+	private String customerName;
 	
 	@Column(name = "description")
 	@Length(max = 200, message = "{validation.max.lenght}")
@@ -43,33 +40,29 @@ public class Product extends ModelTemplate{
 	@JoinColumn(name = "godung_id")
 	@JsonIgnore
 	private Godung godung;
-	
-	@OneToOne(targetEntity = Price.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "price_id")
-    private Price price;
 
-	public Long getProductId() {
-		return productId;
+	public Long getCustomerId() {
+		return customerId;
 	}
 
-	public void setProductId(Long productId) {
-		this.productId = productId;
+	public void setCustomerId(Long customerId) {
+		this.customerId = customerId;
 	}
 
-	public String getProductCode() {
-		return productCode;
+	public String getCustomerCode() {
+		return customerCode;
 	}
 
-	public void setProductCode(String productCode) {
-		this.productCode = productCode;
+	public void setCustomerCode(String customerCode) {
+		this.customerCode = customerCode;
 	}
 
-	public String getProductName() {
-		return productName;
+	public String getCustomerName() {
+		return customerName;
 	}
 
-	public void setProductName(String productName) {
-		this.productName = productName;
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
 	}
 
 	public String getDescription() {
@@ -88,17 +81,9 @@ public class Product extends ModelTemplate{
 		this.godung = godung;
 	}
 
-	public Price getPrice() {
-		return price;
-	}
-
-	public void setPrice(Price price) {
-		this.price = price;
-	}
-
 	@Override
 	public String toString() {
-		return "Product [productId=" + productId + ", productCode=" + productCode + ", productName=" + productName + ", description="
+		return "Customer [customerId=" + customerId + ", customerCode=" + customerCode + ", customerName=" + customerName + ", description="
 				+ description + ", godung=" + godung + "]";
 	}
 	

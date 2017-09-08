@@ -46,3 +46,35 @@ function resetValidationError(){
 	$("[id^='error_']").hide();
 }
 /* End Validation */ 
+
+/* Start Modal */ 
+$(document).ready(function() {
+ 	$('.modal').on('show.bs.modal', function() {
+        var nModals = $('.modal.in').length;
+        $(this).attr('data-nmodals', nModals+1);
+        backdropStack(nModals);
+    });
+    function backdropStack(nModals) {
+        setTimeout(function() {
+            $('.modal-backdrop').each(function() {
+                if(!$(this).attr('data-nmodals')) {
+                    $(this).attr('data-nmodals', nModals+1);
+                }
+            });
+            modalStack();
+        }, 100);
+    };
+    function modalStack() {
+        $('.modal').each(function() {
+            $n = $(this).data('nmodals');
+            $z = $(this).css('z-index');
+            $(this).css('z-index', $n*$z);
+        });
+        $('.modal-backdrop').each(function() {
+            $n = $(this).data('nmodals');
+            $z = $(this).css('z-index');
+            $(this).css('z-index', $n*$z);
+        });
+    }
+});
+/* Start Modal */ 

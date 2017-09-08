@@ -63,8 +63,10 @@
 	                      <div class="form-group">
 	                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name" th:text="#{form.profile.label.email}"></label>
 	                        <div class="col-md-6 col-sm-6 col-xs-12">
-	                          <label class="control-label" th:text="${profileForm.email}"></label>
-	                          <input type="hidden" name="email" th:value="${profileForm.email}" />
+	                          <!-- <span th:text="${profileForm.email}"></span>
+	                          <input type="hidden" name="email" th:value="${profileForm.email}" /> -->
+	                          <input type="text" class="form-control" readonly="readonly" th:value="${profileForm.email}" >
+	                          
 	                        </div>
 	                      </div>
 	                      <div class="form-group">

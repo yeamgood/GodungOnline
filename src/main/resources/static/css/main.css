@@ -1,3 +1,9 @@
+
+label {
+  font-weight: normal;
+  font-size: 14px; 
+}
+
 .validation-message{
 	color: red;
 }
@@ -13,11 +19,16 @@
     background: #337ab7 !important;
     border: 1px solid #2e6da4 !important;
     padding: 0px 10px;
-    color: #fff
+    color: #fff;
+}
+
+.search-head button{
+	margin-top: 2px;
+	margin-right: 2px;
+    margin-bottom: 0px;
 }
 
 .search-content{
-    /* border: 1px solid #2e6da4 !important; */
    	margin-top: 0px;
     padding-top: 10px;
 }
@@ -34,7 +45,23 @@
 	padding: 0px;
 }
 
-/* datatables mergin 0 */
+/* profile */
+.profile_header_div{
+	margin-top: 3px;
+}
+.profile_header_button{
+	margin: 0px;
+}
+
+.header-right{
+	margin-top: 5px;
+}
+
+.header-right button{
+	margin: 0px;
+}
+
+/* datatables  */
 .dt-body-no {
 	width: 25px !important;
 	text-align: center;
@@ -55,6 +82,13 @@
     margin-top: 2px !important;
 }
 
+.dt-body-action a{
+    margin-bottom: 0px !important;
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+    margin-top: 2px !important;
+}
+
 .dt-body-close {
 	width: 20px !important;
 	text-align: center;
@@ -67,6 +101,15 @@
 
 .dt-body-center {
 	text-align: center;
+}
+
+.table-small tbody tr td{
+	padding: 2px 5px;
+	vertical-align: middle !important;
+}
+
+.table-small-header{
+	margin-bottom: 0px;
 }
 
 /* Modal */
@@ -83,4 +126,40 @@
 
 .table-category-ref tbody tr td{
 	padding: 3px 10px;
+}
+
+/* Form */
+.control-span{
+	font-size: 14px;
+	padding-top: 6px;	
+}
+
+.form-custom-footer{
+    padding: 5px 0px;
+}
+.form-custom-footer button{
+   margin: 0px !important;
+}
+.form-header-button-right{
+	margin: 0px !important;
+	padding: 5px 0px 0px 0px !important;
+}
+
+.form-header-button-right button{
+	  margin: 0px !important;
+}
+.title_right_button{
+	text-align: right;
+	margin: 3px;
+	padding: 0px;
+}
+.title_right_text{
+	margin-top: 10px;
+}
+.x_title_edit span{
+	color: #73879C !important;
+}
+
+.x_title_edit h2{
+	overflow: visible;
 }

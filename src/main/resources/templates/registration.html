@@ -113,39 +113,8 @@
     <script th:src="@{/vendors/pnotify/dist/pnotify.js}"></script>
     <script th:src="@{/vendors/pnotify/dist/pnotify.buttons.js}"></script>
     <script th:src="@{/vendors/pnotify/dist/pnotify.nonblock.js}"></script>
-    
-    <script>
-	function openNotification(inputType,inputTitle,inputText){
-		if(inputType == "success" || inputType == "info" || inputType == "error"){ /* SUCCESS,INFO,ERROR */
-			new PNotify({
-	            title: inputTitle,
-	            text: inputText,
-	            type: inputType,
-	            styling: 'bootstrap3'
-	        });
-		}else if(inputType == "notice"){ /* NOTICE */
-			new PNotify({
-				title: inputTitle,
-				text: inputText,
-	            styling: 'bootstrap3'
-	        });
-		}else if(inputType == "dark"){ /* DARK */
-			new PNotify({
-				title: inputTitle,
-				text: inputText,
-	            type: inputType,
-	            styling: 'bootstrap3',
-	            addclass: 'dark'
-	        });
-		}else{
-			new PNotify({ /* NOTICE */
-				title: inputTitle,
-				text: inputText,
-	            styling: 'bootstrap3'
-	        });
-		}
-	}	
-    </script>
+    	<!-- Custom Theme Scripts -->
+	<script th:src="@{/js/godung.js}"></script>
     
     <script th:inline="javascript">
 		/*<![CDATA[*/

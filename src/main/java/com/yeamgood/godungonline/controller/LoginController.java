@@ -30,6 +30,7 @@ import com.yeamgood.godungonline.bean.Pnotify;
 import com.yeamgood.godungonline.bean.PnotifyType;
 import com.yeamgood.godungonline.model.Menu;
 import com.yeamgood.godungonline.model.User;
+import com.yeamgood.godungonline.service.MenuService;
 import com.yeamgood.godungonline.service.UserService;
 
 @Controller
@@ -38,11 +39,16 @@ public class LoginController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
+	private final Long MENU_HOME_ID = (long) 5;;
+	
 	@Autowired
 	private UserService userService;
 	
 	@Autowired
     MessageSource messageSource;
+	
+	@Autowired
+	MenuService menuService;
 	
 	@RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
@@ -104,6 +110,8 @@ public class LoginController {
 		User user = userService.findUserByEmail(auth.getName());
 		manageSelectGodungAndRole(user);
 		manageMenu(user);
+		Menu menu = menuService.findById(MENU_HOME_ID);
+		modelAndView.addObject("menu", menu);
 		modelAndView.addObject("user",user);
 		modelAndView.setViewName("home");
 		return modelAndView;

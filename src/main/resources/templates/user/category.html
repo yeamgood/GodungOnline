@@ -63,7 +63,7 @@
 										<i th:class="${menu.icon}"></i> <label th:text="#{${menu.code}}"></label>
 									</h2>
 								</div>
-								<div class="col-md-6" class="pull-right">
+								<div class="pull-right">
 										<button type="button" class="btn btn-success" onclick="openModalAdd();">
 											<i class="fa" th:class="#{bt.icon.add}"></i>
 											<span class="span_white" th:text="#{form.category.bt.add}"></span>
@@ -71,7 +71,7 @@
 								</div>
 								<div class="clearfix"></div>
 								<div class="profile_title profile_title_edit">
-									<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="col-md-6 col-sm-6col-xs-12 ">
 										<div>
 											<h2><i class="fa fa-search"></i> <span th:text="#{label.search.label}"></span></h2>
 										</div>
@@ -142,8 +142,16 @@
 								<!-- End Search Box  -->
 
 							<div class="clearfix"></div>
-							<div class="search-head">
-							<h2><i class="fa fa-th-list"></i> Category List</h2>
+							<div class="search-head col-md-12 col-sm-12 col-xs-12">
+								<div class="col-md-6">
+									<h2><i class="fa fa-list"></i> <span th:text="#{form.category.label.list}"></span></h2>
+								</div>
+								<!-- <div class="pull-right">
+										<button type="button" class="btn btn-success" onclick="openModalAdd();">
+											<i class="fa" th:class="#{bt.icon.add}"></i>
+											<span class="span_white" th:text="#{form.category.bt.add}"></span>
+										</button>
+								</div> -->
 							</div>
 								<div class="x_content search-content">
 									
@@ -185,6 +193,7 @@
 							</h4>
 						</div>
 						
+						<!-- --- Main --- -->
 						<div class="profile_title">
 	                        <div class="col-md-12">
 	                         <i class="fa fa-info-circle"></i> <span th:text="#{form.category.profile.main}"></span>
@@ -199,7 +208,7 @@
 										<label th:text="#{form.category.label.code}"></label>
 									</div>
 									<div class="col-md-8 col-sm-8 col-xs-12">
-										<input type="text" id="categoryCode" name="categoryCode" class="form-control" readonly="readonly" placeholder="ระบบสร้างให้อัตโนมัติ">
+										<input type="text" id="categoryCode" name="categoryCode" class="form-control" readonly="readonly" th:placeholder="#{label.generate.auto}">
 									</div>
 								</div>
 								<div class="form-group">
@@ -224,6 +233,7 @@
 								</div>
 							</div>
 							
+							<!-- --- Sub --- -->
 							<div class="clearfix"></div>
 							<div class="profile_title">
 		                         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -256,6 +266,11 @@
 	                      	
 							<div class="clearfix"></div>
 							<div class="modal-footer modal-custom-footer">
+							
+								<button id="bt_delete" type="button" class="btn btn-danger" style="float: left;display: none;"  onclick="openModalMainDelete();">
+									<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
+								</button>
+								
 								<button type="button" class="btn btn-default" data-dismiss="modal">
 									<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
 								</button>
@@ -521,7 +536,7 @@
 			$("#categoryDropdown").empty();
 			$('#categoryDropdown').append('<option value=""></option>');
             $(obj).each(function(i, item){
-       	   		var codename = item.categoryCode + "-" + item.categoryName;
+       	   		var codename = item.categoryCode + " " + item.categoryName;
         	   		$('#categoryDropdown').append('<option value="'+item.categoryId+'" >'+codename+'</option>');
              });
 	    	}
@@ -539,6 +554,18 @@
 	    		$("#modal_delete_content").html(messageMain + " : " + message);
 	    		$('#modal_delete').modal('show');
 	    }
+		
+		function openModalMainDelete(){
+			var messageMain = /*[[#{label.delete.content.confirm}]]*/;
+			var id = $("#categoryId").val();
+			var code = $("#categoryCode").val();
+			var name = $("#categoryName").val();
+			var message = code + " " + name;
+			
+			$("#delete_id").val(id);
+    			$("#modal_delete_content").html(messageMain + " : " + message);
+    			$('#modal_delete').modal('show');
+		}
 		
 	 	function resetModalForm(){
 			$("#categoryId").val("");
@@ -601,6 +628,7 @@
 		            if(response.status == "SUCCESS"){
 		               	openNotification(response.result.type,response.result.title,response.result.text);
 		               	$('#modal_delete').modal('hide');
+		               	$('#modal_save').modal('hide');
 		               	$("#categoryModalForm").trigger('reset');
 		              	var table =  $('#datatablesMain').DataTable();
 		                table.ajax.reload();
@@ -632,6 +660,7 @@
 			        	   
 			        	   categoryDropdownGenerate(response.result.categoryDropdownList);
 			        	   categoryChildDatatableGenerate(response.result.catogoryBranchShowList);
+			        	   $("#bt_delete").show();
 		               $('#modal_save').modal('show');
 		             }else{
 		            		openNotification(response.result.type,response.result.title,response.result.text);
@@ -653,6 +682,7 @@
     		        success: function(response){
     		            if(response.status == "SUCCESS"){
     	                   categoryDropdownGenerate(response.result.categoryDropdownList);
+    	                   $("#bt_delete").hide();
     		               $('#modal_save').modal('show');
     		             }else{
     		            		openNotification(response.result.type,response.result.title,response.result.text);

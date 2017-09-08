@@ -64,10 +64,17 @@
 									</h2>
 								</div>
 								<div class="pull-right">
-										<button type="button" class="btn btn-success" onclick="openModalAdd();">
-											<i class="fa" th:class="#{bt.icon.add}"></i>
-											<span class="span_white" th:text="#{form.measure.bt.add}"></span>
-										</button>
+									 <div class="btn-group">
+					                    <button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button" aria-expanded="false">
+						                    <i class="fa" th:class="#{bt.icon.add}"></i> 
+						                    <span class="span_white" th:text="#{form.supplier.bt.add}"></span>
+						                    <span class="caret"></span>
+					                    </button>
+					                    <ul role="menu" class="dropdown-menu">
+					                      <li><a href="javascript:;" onclick="openModalAdd();">บุคคลธรรมดา</a></li>
+					                      <li><a href="javascript:;" onclick="openModalAdd();">นิติบุคคล</a></li>
+					                    </ul>
+					                  </div>
 								</div>
 								<div class="clearfix"></div>
 								<div class="profile_title profile_title_edit">
@@ -97,11 +104,15 @@
 													<button id="bt_basic_search" type="button" class="btn btn-primary" th:text="#{bt.text.search}"></button>
 												</span>
 											</div>
+										</div>
+										<div class="col-md-12 col-sm-12 col-xs-12">
 											<div class="content-center">
 												<span th:text="#{label.search.by}"></span> 
-												<span th:text="#{form.measure.label.code}"></span> ,
-												<span th:text="#{form.measure.label.name}"></span> ,
-												<span th:text="#{form.measure.label.description}"></span>
+												<span th:text="#{form.supplier.label.code}"></span> ,
+												<span th:text="#{form.supplier.label.fullname}"></span> ,
+												<span th:text="#{form.supplier.label.national.number}"></span> ,
+												<span th:text="#{form.supplier.label.telephone}"></span> ,
+												<span th:text="#{form.supplier.label.email}"></span>
 											</div>
 										</div>
 									</div>
@@ -109,22 +120,22 @@
 										<div class="col-md-12 col-sm-12 col-xs-12">
 												<form class="form-horizontal form-label-left input_mask">
 							                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.measure.label.code}"></label>
-							                         <div class="col-md-8 col-sm-8 col-xs-12">
+							                       	<label class="control-label col-md-5 col-sm-5 col-xs-12" th:text="#{form.supplier.label.code}"></label>
+							                         <div class="col-md-7 col-sm-7 col-xs-12">
 							                         <input id="input_advance_code" type="text" class="form-control" >
 							                         </div>
 							                      </div>
 							
 							                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-							                       <label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.measure.label.name}"></label>
-							                        <div class="col-md-8 col-sm-8 col-xs-12">
+							                       <label class="control-label col-md-5 col-sm-5 col-xs-12" th:text="#{form.supplier.label.name}"></label>
+							                        <div class="col-md-7 col-sm-7 col-xs-12">
 							                          <input id="input_advance_name"  type="text" class="form-control" >
 							                        </div>
 							                      </div>
 							                      
 							                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.measure.label.description}"></label>
-							                         <div class="col-md-8 col-sm-8 col-xs-12">
+							                       	<label class="control-label col-md-5 col-sm-5 col-xs-12" th:text="#{form.supplier.label.description}"></label>
+							                         <div class="col-md-7 col-sm-7 col-xs-12">
 							                         <input id="input_advance_description"  type="text" class="form-control" >
 							                         </div>
 							                      </div>
@@ -143,7 +154,7 @@
 
 							<div class="clearfix"></div>
 							<div class="search-head">
-							<h2><i class="fa fa-list"></i> <span th:text="#{form.measure.label.list}"></span></h2>
+							<h2><i class="fa fa-list"></i> <span th:text="#{form.supplier.label.list}"></span></h2>
 							</div>
 								<div class="x_content search-content">
 									
@@ -151,10 +162,12 @@
 										<thead class="search-content-header">
 											<tr>
 												<th th:text="#{datatables.text.no}"></th>
-												<th th:text="#{form.measure.label.code}" class="col-md-1"></th>
-												<th th:text="#{form.measure.label.name}" class="col-md-3"></th>
-												<th th:text="#{form.measure.label.description}" class="col-md-3"></th>
-												<th th:text="#{form.measure.label.action}"></th>
+												<th th:text="#{form.supplier.label.code}"></th>
+												<th th:text="#{form.supplier.label.fullname}"></th>
+												<th th:text="#{form.supplier.label.national.number}"></th>
+												<th th:text="#{form.supplier.label.telephone}"></th>
+												<th th:text="#{form.supplier.label.email}"></th>
+												<th th:text="#{form.brand.label.action}"></th>
 											</tr>
 										</thead>
 									</table>
@@ -185,46 +198,207 @@
 							</h4>
 						</div>
 						
-						<div class="profile_title">
-	                        <div class="col-md-12">
-	                          <i class="fa fa-info-circle"></i> <span th:text="#{form.measure.profile.main}"></span>
-	                        </div>
-                      	</div>
-
-						<form id="measureModalForm" data-parsley-validate class="form-horizontal form-label-left">
-							<div class="modal-body validation-box">
-								<input type="hidden" id="measureId" name="measureId" >
-								<div class="form-group">
-									<div class="control-label col-md-3 col-sm-3 col-xs-12">
-										<label th:text="#{form.measure.label.code}"></label>
+						
+							
+							
+							<form id="supplierModalForm" data-parsley-validate class="form-horizontal form-label-left">
+							<div class="profile_title">
+		                        <div class="col-md-12">
+		                          <i class="fa fa-info-circle"></i> <span th:text="#{form.supplier.profile.main}"></span>
+		                        </div>
+	                      	</div>
+							
+								<div class="modal-body validation-box">
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<input type="hidden" id="supplierId" name="supplierId" >
+									<div class="form-group">
+										<div class="control-label col-md-5 col-sm-5 col-xs-12">
+											<label th:text="#{form.supplier.label.code}"></label>
+										</div>
+										<div class="col-md-7 col-sm-7 col-xs-12">
+											<input type="text" id="supplierCode" name="supplierCode" class="form-control" readonly="readonly" th:placeholder="#{label.generate.auto}">
+										</div>
 									</div>
-									<div class="col-md-8 col-sm-8 col-xs-12">
-										<input type="text" id="measureCode" name="measureCode" class="form-control" readonly="readonly" th:placeholder="#{label.generate.auto}">
+									<div class="form-group">
+										<div class="control-label col-md-5 col-sm-5 col-xs-12">
+											<label th:text="#{form.supplier.label.title}"></label>
+										</div>
+										<div class="col-md-7 col-sm-7 col-xs-12">
+											<input type="text" id="xxxxxxxx" name="xxxxxx" required="required" class="form-control">
+											<label id="error_xxxxxxxxxxxx" class="validation-message" style="display:none;"></label>
+										</div>
 									</div>
+									<div class="form-group">
+										<div class="control-label col-md-5 col-sm-5 col-xs-12">
+											<label th:text="#{form.supplier.label.firstname}"></label>
+											<label class="validation-message" th:text="#{label.request}"></label>
+										</div>
+										<div class="col-md-7 col-sm-7 col-xs-12">
+											<input type="text" id="xxxxxxxx" name="xxxxxx" required="required" class="form-control">
+											<label id="error_xxxxxxxxxxxx" class="validation-message" style="display:none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-5 col-sm-5 col-xs-12">
+											<label th:text="#{form.supplier.label.lastname}"></label>
+										</div>
+										<div class="col-md-7 col-sm-7 col-xs-12">
+											<input type="text" id="xxxxxxxx" name="xxxxxx" required="required" class="form-control">
+											<label id="error_xxxxxxxxxxxx" class="validation-message" style="display:none;"></label>
+										</div>
+									</div>
+									
+									
 								</div>
-								<div class="form-group">
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="form-group">
+										<div class="control-label col-md-5 col-sm-5 col-xs-12">
+											<label th:text="#{form.supplier.label.national.number}"></label>
+										</div>
+										<div class="col-md-7 col-sm-7 col-xs-12">
+											<input type="text" id="supplierName" name="supplierName" required="required" class="form-control">
+											<label id="error_supplierName" class="validation-message" style="display:none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-5 col-sm-5 col-xs-12">
+											<label th:text="#{form.supplier.label.tax.number}"></label>
+										</div>
+										<div class="col-md-7 col-sm-7 col-xs-12">
+											<input type="text" id="xxxxxxxx" name="xxxxxx" required="required" class="form-control">
+											<label id="error_xxxxxxxxxxxx" class="validation-message" style="display:none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-5 col-sm-5 col-xs-12">
+											<label th:text="#{form.supplier.label.telephone}"></label>
+										</div>
+										<div class="col-md-7 col-sm-7 col-xs-12">
+											<input type="text" id="xxxxxxxx" name="xxxxxx" required="required" class="form-control">
+											<label id="error_xxxxxxxxxxxx" class="validation-message" style="display:none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-5 col-sm-5 col-xs-12">
+											<label th:text="#{form.supplier.label.email}"></label>
+										</div>
+										<div class="col-md-7 col-sm-7 col-xs-12">
+											<input type="text" id="xxxxxxxx" name="xxxxxx" required="required" class="form-control">
+											<label id="error_xxxxxxxxxxxx" class="validation-message" style="display:none;"></label>
+										</div>
+									</div>
 								
-									<div class="control-label col-md-3 col-sm-3 col-xs-12">
-										<label th:text="#{form.measure.label.name}"></label>
-										<label class="validation-message" th:text="#{label.request}"></label>
-									</div>
-									<div class="col-md-8 col-sm-8 col-xs-12">
-										<input type="text" id="measureName" name="measureName" required="required" class="form-control">
-										<label id="error_measureName" class="validation-message" style="display:none;"></label>
-									</div>
 								</div>
-								<div class="form-group">
-									<div class="control-label col-md-3 col-sm-3 col-xs-12">
-										<label th:text="#{form.measure.label.description}"></label>
-									</div>
-									<div class="col-md-8 col-sm-8 col-xs-12">
-										<textarea id="description" name="description" class="form-control" rows="3"></textarea>
-										<label id="error_description" class="validation-message" style="display:none;"></label>
-									</div>
 								</div>
-							</div>
+								
+								<div class="clearfix"></div>
+							<div class="profile_title">
+		                        <div class="col-md-6">
+		                          <i class="fa fa-home"></i> <span>ที่อยู่</span>
+		                        </div>
+	                      	</div>
 	                      	
-							<div class="clearfix"></div>
+	                      	<div class="clearfix"></div>
+	                      		<div class="modal-body validation-box">
+					                      	<div class="col-md-6 col-sm-6 col-xs-12">
+													<div class="form-group">
+														<div class="control-label col-md-5 col-sm-5 col-xs-12">
+															<label th:text="#{form.address.street1}"></label>
+														</div>
+														<div class="col-md-7 col-sm-7 col-xs-12">
+															<input type="text" id="supplierName" name="supplierName" required="required" class="form-control">
+															<label id="error_supplierName" class="validation-message" style="display:none;"></label>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="control-label col-md-5 col-sm-5 col-xs-12">
+															<label th:text="#{form.address.street2}"></label>
+														</div>
+														<div class="col-md-7 col-sm-7 col-xs-12">
+															<input type="text" id="xxxxxxxx" name="xxxxxx" required="required" class="form-control">
+															<label id="error_xxxxxxxxxxxx" class="validation-message" style="display:none;"></label>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="control-label col-md-5 col-sm-5 col-xs-12">
+															<label th:text="#{form.address.city}"></label>
+														</div>
+														<div class="col-md-7 col-sm-7 col-xs-12">
+															<input type="text" id="xxxxxxxx" name="xxxxxx" required="required" class="form-control">
+															<label id="error_xxxxxxxxxxxx" class="validation-message" style="display:none;"></label>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="control-label col-md-5 col-sm-5 col-xs-12">
+															<label th:text="#{form.address.state}"></label>
+														</div>
+														<div class="col-md-7 col-sm-7 col-xs-12">
+															<input type="text" id="xxxxxxxx" name="xxxxxx" required="required" class="form-control">
+															<label id="error_xxxxxxxxxxxx" class="validation-message" style="display:none;"></label>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="control-label col-md-5 col-sm-5 col-xs-12">
+															<label th:text="#{form.address.postcode}"></label>
+														</div>
+														<div class="col-md-7 col-sm-7 col-xs-12">
+															<input type="text" id="xxxxxxxx" name="xxxxxx" required="required" class="form-control">
+															<label id="error_xxxxxxxxxxxx" class="validation-message" style="display:none;"></label>
+														</div>
+													</div>
+												</div>
+												
+												
+													<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="form-group">
+										<div class="control-label col-md-5 col-sm-5 col-xs-12">
+											<label th:text="#{form.address.street1}"></label>
+										</div>
+										<div class="col-md-7 col-sm-7 col-xs-12">
+											<input type="text" id="supplierName" name="supplierName" required="required" class="form-control">
+											<label id="error_supplierName" class="validation-message" style="display:none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-5 col-sm-5 col-xs-12">
+											<label th:text="#{form.address.street2}"></label>
+										</div>
+										<div class="col-md-7 col-sm-7 col-xs-12">
+											<input type="text" id="xxxxxxxx" name="xxxxxx" required="required" class="form-control">
+											<label id="error_xxxxxxxxxxxx" class="validation-message" style="display:none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-5 col-sm-5 col-xs-12">
+											<label th:text="#{form.address.city}"></label>
+										</div>
+										<div class="col-md-7 col-sm-7 col-xs-12">
+											<input type="text" id="xxxxxxxx" name="xxxxxx" required="required" class="form-control">
+											<label id="error_xxxxxxxxxxxx" class="validation-message" style="display:none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-5 col-sm-5 col-xs-12">
+											<label th:text="#{form.address.state}"></label>
+										</div>
+										<div class="col-md-7 col-sm-7 col-xs-12">
+											<input type="text" id="xxxxxxxx" name="xxxxxx" required="required" class="form-control">
+											<label id="error_xxxxxxxxxxxx" class="validation-message" style="display:none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-5 col-sm-5 col-xs-12">
+											<label th:text="#{form.address.postcode}"></label>
+										</div>
+										<div class="col-md-7 col-sm-7 col-xs-12">
+											<input type="text" id="xxxxxxxx" name="xxxxxx" required="required" class="form-control">
+											<label id="error_xxxxxxxxxxxx" class="validation-message" style="display:none;"></label>
+										</div>
+									</div>
+								</div>
+	                      	</div>
+	                      	
+	                      	<div class="clearfix"></div>
 							<div class="modal-footer modal-custom-footer">
 								<button id="bt_delete" type="button" class="btn btn-danger" style="float: left;display: none;"  onclick="openModalMainDelete();">
 									<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
@@ -236,7 +410,14 @@
 									<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
 								</button>
 							</div>
-						</form>
+								
+								
+								
+								</form>
+								
+							
+							
+                      	
 
 					</div>
 				</div>
@@ -257,7 +438,7 @@
                         </div>
                         <div class="modal-body">
                         		<form id="deleteForm" data-parsley-validate class="form-horizontal form-label-left">
-                        			<input type="hidden" id="delete_id" name="measureId" />
+                        			<input type="hidden" id="delete_id" name="supplierId" />
                         			<span id="modal_delete_content"></span>
                         		</form>
                         </div>
@@ -326,7 +507,7 @@
 
 	<script th:inline="javascript">
 		var url_language = /*[[#{javascript.datatable.language.url}]]*/;
-		var url_measure = /*[[@{/user/measure/list/ajax}]]*/;
+		var url_supplier = /*[[@{/user/supplier/list/ajax}]]*/;
 		var textView = /*[[#{bt.text.view}]]*/;
 		var textEdit = /*[[#{bt.text.edit}]]*/;
 		var textDelete = /*[[#{bt.text.delete}]]*/;
@@ -337,7 +518,7 @@
 	    $(document).ready(function() {
 		    	var table =  $('#datatablesMain').DataTable( {
 		    			"processing": true,
-		    	        "ajax": url_measure,
+		    	        "ajax": url_supplier,
 		    	        "paging":   true,
 		    	        "ordering": true,
 		    	        "info":     true,
@@ -346,19 +527,21 @@
 		    	        "order": [[ 1, 'asc' ]],
 		    	        "columns": [
 		  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
-		  	            { 'data': 'measureCode' },
-		  	            { 'data': 'measureName' },
-		  	            { 'data': 'description' },
-		  	            { 'data': 'measureId' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
+		  	            { 'data': 'supplierCode' },
+		  	            { 'data': 'firstName' },
+		  	            { 'data': 'nationalNumber' },
+		  	            { 'data': 'telephone' },
+		  	            { 'data': 'email' },
+		  	            { 'data': 'supplierId' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
 		  	        ],
 		  	      	"columnDefs": [{
 		                  "render": function ( data, type, row ) {
 		                		 return	'<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textEdit +
 		                	  	 	'" onclick="loadAction(\''+data+'\');"><i class="fa fa-wrench"></i></button>' + " " +
 		                	  	 	'<button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textDelete +
-		                	  	 	'" onclick="openModalDelete(\''+data+'\',\''+row.measureCode+ ' ' +row.measureName+ '\');" ><i class="fa fa-trash"></i></button>'; 
+		                	  	 	'" onclick="openModalDelete(\''+data+'\',\''+row.supplierCode+ ' ' +row.supplierName+ '\');" ><i class="fa fa-trash"></i></button>'; 
 		                  },
-		                  "targets": 4
+		                  "targets": 6
 		             }],
 		             "initComplete": function( settings, json ) {
 		            	 		//fix bug datatables use dom not responsive html
@@ -439,9 +622,9 @@
 		
 		function openModalMainDelete(){
 			var messageMain = /*[[#{label.delete.content.confirm}]]*/;
-			var id = $("#measureId").val();
-			var code = $("#measureCode").val();
-			var name = $("#measureName").val();
+			var id = $("#supplierId").val();
+			var code = $("#supplierCode").val();
+			var name = $("#supplierName").val();
 			var message = code + " " + name;
 			
 			$("#delete_id").val(id);
@@ -450,19 +633,19 @@
 		}
 		
 	 	function resetModalForm(){
-			$("#measureId").val("");
-	   		$("#measureCode").val("");
-		   	$("#measureName").val("");
+			$("#supplierId").val("");
+	   		$("#supplierCode").val("");
+		   	$("#supplierName").val("");
 		   	$("#description").val("");
-		   	$('#measureChildDatatable').DataTable().clear().draw();;
+		   	$('#supplierChildDatatable').DataTable().clear().draw();;
 		   	resetValidationError();
 		   	//$("#bt_save").focus();
 	    }
 	 	
 	 	function setModalForm(id,code,name,description){
-	 		$("#measureId").val(id);
-        		$("#measureCode").val(code);
-     		$("#measureName").val(name);
+	 		$("#supplierId").val(id);
+        		$("#supplierCode").val(code);
+     		$("#supplierName").val(name);
      	   	$("#description").val(description);
 	 	}
 		<!-- -------------------------------- -->
@@ -475,17 +658,17 @@
 		<!-- -------------------------------- -->
 	    function saveAction() {
 	    		resetValidationError();
-	 	   	var urlAction = /*[[@{/user/measure/save}]]*/;
+	 	   	var urlAction = /*[[@{/user/supplier/save}]]*/;
 		    $.ajax({
 		        type: "POST",
 		        url: urlAction,
 		        dataType: 'json',
-		        data: $("#measureModalForm").serialize(),
+		        data: $("#supplierModalForm").serialize(),
 		        success: function(response){
 		            if(response.status == "SUCCESS"){
 		               	openNotification(response.result.type,response.result.title,response.result.text);
 		               	$('#modal_save').modal('hide');
-		               	$("#measureModalForm").trigger('reset');
+		               	$("#supplierModalForm").trigger('reset');
 		              	var table =  $('#datatablesMain').DataTable();
 		                table.ajax.reload();
 		             }else{
@@ -500,7 +683,7 @@
 		}
 	    
 	    function deleteAction() {
-	 	   	var urlAction = /*[[@{/user/measure/delete}]]*/;
+	 	   	var urlAction = /*[[@{/user/supplier/delete}]]*/;
 		    $.ajax({
 		        type: "POST",
 		        url: urlAction,
@@ -511,7 +694,7 @@
 		               	openNotification(response.result.type,response.result.title,response.result.text);
 		               	$('#modal_delete').modal('hide');
 		               	$('#modal_save').modal('hide');
-		               	$("#measureModalForm").trigger('reset');
+		               	$("#supplierModalForm").trigger('reset');
 		              	var table =  $('#datatablesMain').DataTable();
 		                table.ajax.reload();
 		             }else{
@@ -526,17 +709,17 @@
 	    
 	    function loadAction(id) {
 	    		resetModalForm();
-	 	   	var urlAction = /*[[@{/user/measure/load}]]*/;
+	 	   	var urlAction = /*[[@{/user/supplier/load}]]*/;
 		    $.ajax({
 		        type: "GET",
 		        url: urlAction,
 		        dataType: 'json',
-		        data: {"measureId": id},
+		        data: {"supplierId": id},
 		        success: function(response){
 		            if(response.status == "SUCCESS"){
-			        	   var id = response.result.measureId;
-			        	   var code = response.result.measureCode;
-			        	   var name = response.result.measureName;
+			        	   var id = response.result.supplierId;
+			        	   var code = response.result.supplierCode;
+			        	   var name = response.result.supplierName;
 			        	   var description = response.result.description;
 			        	   setModalForm(id,code,name,description);
 			        	   $("#bt_delete").show();
@@ -553,7 +736,7 @@
 	    
 	    function openModalAdd(){
  			resetModalForm();
-	    		var urlAction = /*[[@{/user/measure/load/add}]]*/;
+	    		var urlAction = /*[[@{/user/supplier/load/add}]]*/;
     		    $.ajax({
     		        type: "GET",
     		        url: urlAction,

@@ -72,7 +72,7 @@ public class ProfileController {
 	@RequestMapping(value="/user/profile", method = RequestMethod.POST)
 	public ModelAndView userProfileSave(@Valid ProfileForm profileForm,BindingResult bindingResult,HttpSession session,RedirectAttributes redirectAttributes){
 		logger.debug("I");
-		String language = null;
+		String language = "";
 		ModelAndView modelAndView = new ModelAndView();
 		if (bindingResult.hasErrors()) {
 			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.profileForm", bindingResult);
@@ -83,6 +83,7 @@ public class ProfileController {
 				profileService.updateProfile(profileForm, userSession.getId(),userSession.getGodung().getGodungId());
 				userSession.setName(profileForm.getName());
 				userSession.getGodung().setGodungName(profileForm.getGodungName());
+				userSession.setLanguage(profileForm.getLanguage());
 				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,"action.save.success"));
 				language = "?lang=" + profileForm.getLanguage();
 			} catch (Exception e) {

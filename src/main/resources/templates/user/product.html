@@ -63,11 +63,15 @@
 										<i th:class="${menu.icon}"></i> <label th:text="#{${menu.code}}"></label>
 									</h2>
 								</div>
-								<div class="col-md-6" class="pull-right">
-										<button type="button" class="btn btn-success" onclick="openModalAdd();">
+								<div class="pull-right">
+										<!-- <button type="button" class="btn btn-success" onclick="openModalAdd();">
 											<i class="fa" th:class="#{bt.icon.add}"></i>
 											<span class="span_white" th:text="#{form.product.bt.add}"></span>
-										</button>
+										</button> -->
+										<a class="btn btn-success" th:href="@{/user/product/create}">
+											<i class="fa" th:class="#{bt.icon.add}"></i>
+											<span class="span_white" th:text="#{form.product.bt.add}"></span>
+										</a> 
 								</div>
 								<div class="clearfix"></div>
 								<div class="profile_title profile_title_edit">
@@ -143,7 +147,7 @@
 
 							<div class="clearfix"></div>
 							<div class="search-head">
-							<h2><i class="fa fa-th-list"></i> Product List</h2>
+							<h2><i class="fa fa-list"></i> <span th:text="#{form.product.label.list}"></span></h2>
 							</div>
 								<div class="x_content search-content">
 									
@@ -187,7 +191,7 @@
 						
 						<div class="profile_title">
 	                        <div class="col-md-12">
-	                         <i class="fa fa-info-circle"></i> <span>ข้อมูลพื้นฐาน</span>
+	                          <i class="fa fa-info-circle"></i> <span th:text="#{form.product.profile.main}"></span>
 	                        </div>
                       	</div>
 
@@ -199,7 +203,7 @@
 										<label th:text="#{form.product.label.code}"></label>
 									</div>
 									<div class="col-md-8 col-sm-8 col-xs-12">
-										<input type="text" id="productCode" name="productCode" class="form-control" readonly="readonly" placeholder="ระบบสร้างให้อัตโนมัติ">
+										<input type="text" id="productCode" name="productCode" class="form-control" readonly="readonly" th:placeholder="#{label.generate.auto}">
 									</div>
 								</div>
 								<div class="form-group">
@@ -226,6 +230,9 @@
 	                      	
 							<div class="clearfix"></div>
 							<div class="modal-footer modal-custom-footer">
+								<button id="bt_delete" type="button" class="btn btn-danger" style="float: left;display: none;"  onclick="openModalMainDelete();">
+									<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
+								</button>
 								<button type="button" class="btn btn-default" data-dismiss="modal">
 									<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
 								</button>
@@ -434,6 +441,18 @@
 	    		$('#modal_delete').modal('show');
 	    }
 		
+		function openModalMainDelete(){
+			var messageMain = /*[[#{label.delete.content.confirm}]]*/;
+			var id = $("#productId").val();
+			var code = $("#productCode").val();
+			var name = $("#productName").val();
+			var message = code + " " + name;
+			
+			$("#delete_id").val(id);
+    			$("#modal_delete_content").html(messageMain + " : " + message);
+    			$('#modal_delete').modal('show');
+		}
+		
 	 	function resetModalForm(){
 			$("#productId").val("");
 	   		$("#productCode").val("");
@@ -495,6 +514,7 @@
 		            if(response.status == "SUCCESS"){
 		               	openNotification(response.result.type,response.result.title,response.result.text);
 		               	$('#modal_delete').modal('hide');
+		               	$('#modal_save').modal('hide');
 		               	$("#productModalForm").trigger('reset');
 		              	var table =  $('#datatablesMain').DataTable();
 		                table.ajax.reload();
@@ -523,6 +543,7 @@
 			        	   var name = response.result.productName;
 			        	   var description = response.result.description;
 			        	   setModalForm(id,code,name,description);
+			        	   $("#bt_delete").show();
 		               $('#modal_save').modal('show');
 		             }else{
 		            		openNotification(response.result.type,response.result.title,response.result.text);
@@ -543,6 +564,7 @@
     		        dataType: 'json',
     		        success: function(response){
     		            if(response.status == "SUCCESS"){
+    		            	$("#bt_delete").hide();
     		               $('#modal_save').modal('show');
     		             }else{
     		            		openNotification(response.result.type,response.result.title,response.result.text);

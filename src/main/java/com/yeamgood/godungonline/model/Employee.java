@@ -2,13 +2,11 @@ package com.yeamgood.godungonline.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Length;
@@ -18,22 +16,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yeamgood.godungonline.model.template.ModelTemplate;
 
 @Entity
-@Table(name = "product")
-public class Product extends ModelTemplate{
+@Table(name = "employee")
+public class Employee extends ModelTemplate{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "product_Id")
-	private Long productId;
+	@Column(name = "employee_Id")
+	private Long employeeId;
 	
-	@Column(name = "product_code")
-	private String productCode;
+	@Column(name = "employee_code")
+	private String employeeCode;
 	
-	
-	@Column(name = "product_name")
-	@NotEmpty(message = "{form.product.valid.name}")
+	@Column(name = "employee_name")
+	@NotEmpty(message = "{form.employee.valid.name}")
 	@Length(max = 100, message = "{validation.max.lenght}")
-	private String productName;
+	private String employeeName;
 	
 	@Column(name = "description")
 	@Length(max = 200, message = "{validation.max.lenght}")
@@ -43,33 +40,29 @@ public class Product extends ModelTemplate{
 	@JoinColumn(name = "godung_id")
 	@JsonIgnore
 	private Godung godung;
-	
-	@OneToOne(targetEntity = Price.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "price_id")
-    private Price price;
 
-	public Long getProductId() {
-		return productId;
+	public Long getEmployeeId() {
+		return employeeId;
 	}
 
-	public void setProductId(Long productId) {
-		this.productId = productId;
+	public void setEmployeeId(Long employeeId) {
+		this.employeeId = employeeId;
 	}
 
-	public String getProductCode() {
-		return productCode;
+	public String getEmployeeCode() {
+		return employeeCode;
 	}
 
-	public void setProductCode(String productCode) {
-		this.productCode = productCode;
+	public void setEmployeeCode(String employeeCode) {
+		this.employeeCode = employeeCode;
 	}
 
-	public String getProductName() {
-		return productName;
+	public String getEmployeeName() {
+		return employeeName;
 	}
 
-	public void setProductName(String productName) {
-		this.productName = productName;
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
 	}
 
 	public String getDescription() {
@@ -88,17 +81,9 @@ public class Product extends ModelTemplate{
 		this.godung = godung;
 	}
 
-	public Price getPrice() {
-		return price;
-	}
-
-	public void setPrice(Price price) {
-		this.price = price;
-	}
-
 	@Override
 	public String toString() {
-		return "Product [productId=" + productId + ", productCode=" + productCode + ", productName=" + productName + ", description="
+		return "Employee [employeeId=" + employeeId + ", employeeCode=" + employeeCode + ", employeeName=" + employeeName + ", description="
 				+ description + ", godung=" + godung + "]";
 	}
 	
