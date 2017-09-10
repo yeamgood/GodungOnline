@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.Valid;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -26,8 +28,14 @@ public class Supplier extends ModelTemplate{
 	@Column(name = "supplier_Id")
 	private Long supplierId;
 	
+	@Transient
+	private String supplierIdEncrypt;
+	
 	@Column(name = "supplier_code")
 	private String supplierCode;
+	
+	@Column(name = "supplier_type")
+	private String supplierType;
 	
 	@Column(name = "national_number")
 	@Length(max = 13, message = "{validation.max.lenght}")
@@ -64,10 +72,12 @@ public class Supplier extends ModelTemplate{
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_id")
+	@Valid
 	private Address address;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_send_id")
+	@Valid
 	private Address addressSend;
 	
 	@ManyToOne()
@@ -83,8 +93,6 @@ public class Supplier extends ModelTemplate{
 		this.taxNumber = supplier.getTaxNumber();
 		this.telephone = supplier.getTelephone();
 		this.email = supplier.getEmail();
-//		this.address = supplier.getAddress();
-//		this.addressSend = supplier.getAddressSend();
 	}
 
 	public Long getSupplierId() {
@@ -191,14 +199,31 @@ public class Supplier extends ModelTemplate{
 		this.godung = godung;
 	}
 
+	public String getSupplierType() {
+		return supplierType;
+	}
 
+	public void setSupplierType(String supplierType) {
+		this.supplierType = supplierType;
+	}
+
+	public String getSupplierIdEncrypt() {
+		return supplierIdEncrypt;
+	}
+
+	public void setSupplierIdEncrypt(String supplierIdEncrypt) {
+		this.supplierIdEncrypt = supplierIdEncrypt;
+	}
 
 	@Override
 	public String toString() {
-		return "Supplier [supplierId=" + supplierId + ", supplierCode=" + supplierCode + ", nationalNumber="
-				+ nationalNumber + ", taxNumber=" + taxNumber + ", title=" + title + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", telephone=" + telephone + ", email=" + email + ", description="
-				+ description + ", address=" + address + ", addressSend=" + addressSend + ", godung=" + godung + "]";
+		return "Supplier [supplierId=" + supplierId + ", supplierIdEncrypt=" + supplierIdEncrypt + ", supplierCode="
+				+ supplierCode + ", supplierType=" + supplierType + ", nationalNumber=" + nationalNumber
+				+ ", taxNumber=" + taxNumber + ", title=" + title + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", telephone=" + telephone + ", email=" + email + ", description=" + description
+				+ ", address=" + address + ", addressSend=" + addressSend + ", godung=" + godung + "]";
 	}
+
+
 	
 }

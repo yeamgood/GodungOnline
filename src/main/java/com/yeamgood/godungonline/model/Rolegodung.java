@@ -20,19 +20,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yeamgood.godungonline.model.template.ModelTemplate;
 
 @Entity
-@Table(name = "employee")
-public class Employee extends ModelTemplate{
+@Table(name = "rolegodung")
+public class Rolegodung extends ModelTemplate{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "employee_Id")
-	private Long employeeId;
+	@Column(name = "rolegodung_Id")
+	private Long rolegodungId;
 	
 	@Transient
-	private String employeeIdEncrypt;
+	private String rolegodungIdEncrypt;
 	
-	@Column(name = "employee_code")
-	private String employeeCode;
+	@Column(name = "rolegodung_code")
+	private String rolegodungCode;
 	
 	@Column(name = "national_number")
 	@Length(max = 13, message = "{validation.max.lenght}")
@@ -43,17 +43,17 @@ public class Employee extends ModelTemplate{
 	private String taxNumber;
 	
 	@Column(name = "title")
-	@NotEmpty(message = "{form.employee.valid.title}")
+	@NotEmpty(message = "{form.rolegodung.valid.title}")
 	@Length(max = 50, message = "{validation.max.lenght}")
 	private String title;
 	
 	@Column(name = "first_name")
-	@NotEmpty(message = "{form.employee.valid.firstname}")
+	@NotEmpty(message = "{form.rolegodung.valid.firstname}")
 	@Length(max = 50, message = "{validation.max.lenght}")
 	private String firstName;
 	
 	@Column(name = "last_name")
-	@NotEmpty(message = "{form.employee.valid.lastname}")
+	@NotEmpty(message = "{form.rolegodung.valid.lastname}")
 	@Length(max = 50, message = "{validation.max.lenght}")
 	private String lastName;
 	
@@ -79,30 +79,30 @@ public class Employee extends ModelTemplate{
 	@JsonIgnore
 	private Godung godung;
 	
-	public void setObject(Employee employee) {
-		this.title = employee.getTitle();
-		this.firstName = employee.getFirstName();
-		this.lastName = employee.getLastName();
-		this.nationalNumber = employee.getNationalNumber();
-		this.taxNumber = employee.getTaxNumber();
-		this.telephone = employee.getTelephone();
-		this.email = employee.getEmail();
+	public void setObject(Rolegodung rolegodung) {
+		this.title = rolegodung.getTitle();
+		this.firstName = rolegodung.getFirstName();
+		this.lastName = rolegodung.getLastName();
+		this.nationalNumber = rolegodung.getNationalNumber();
+		this.taxNumber = rolegodung.getTaxNumber();
+		this.telephone = rolegodung.getTelephone();
+		this.email = rolegodung.getEmail();
 	}
 
-	public Long getEmployeeId() {
-		return employeeId;
+	public Long getRolegodungId() {
+		return rolegodungId;
 	}
 
-	public void setEmployeeId(Long employeeId) {
-		this.employeeId = employeeId;
+	public void setRolegodungId(Long rolegodungId) {
+		this.rolegodungId = rolegodungId;
 	}
 
-	public String getEmployeeCode() {
-		return employeeCode;
+	public String getRolegodungCode() {
+		return rolegodungCode;
 	}
 
-	public void setEmployeeCode(String employeeCode) {
-		this.employeeCode = employeeCode;
+	public void setRolegodungCode(String rolegodungCode) {
+		this.rolegodungCode = rolegodungCode;
 	}
 
 	public String getNationalNumber() {
@@ -185,18 +185,18 @@ public class Employee extends ModelTemplate{
 		this.godung = godung;
 	}
 
-	public String getEmployeeIdEncrypt() {
-		return employeeIdEncrypt;
+	public String getRolegodungIdEncrypt() {
+		return rolegodungIdEncrypt;
 	}
 
-	public void setEmployeeIdEncrypt(String employeeIdEncrypt) {
-		this.employeeIdEncrypt = employeeIdEncrypt;
+	public void setRolegodungIdEncrypt(String rolegodungIdEncrypt) {
+		this.rolegodungIdEncrypt = rolegodungIdEncrypt;
 	}
 
 	@Override
 	public String toString() {
-		return "Employee [employeeId=" + employeeId + ", employeeIdEncrypt=" + employeeIdEncrypt + ", employeeCode="
-				+ employeeCode + ", nationalNumber=" + nationalNumber + ", taxNumber=" + taxNumber + ", title=" + title
+		return "Rolegodung [rolegodungId=" + rolegodungId + ", rolegodungIdEncrypt=" + rolegodungIdEncrypt + ", rolegodungCode="
+				+ rolegodungCode + ", nationalNumber=" + nationalNumber + ", taxNumber=" + taxNumber + ", title=" + title
 				+ ", firstName=" + firstName + ", lastName=" + lastName + ", telephone=" + telephone + ", email="
 				+ email + ", description=" + description + ", address=" + address + ", godung=" + godung + "]";
 	}

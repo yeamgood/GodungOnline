@@ -32,7 +32,7 @@ import com.yeamgood.godungonline.service.ProfileService;
 public class ProfileController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	private final Long MENU_PROFILE_ID = (long) 7;
+	private final Long MENU_PROFILE_ID = (long) 51;
 	
 	@Autowired
     MessageSource messageSource;

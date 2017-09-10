@@ -1,32 +1,50 @@
+var stack_bottomright = {
+"dir1": "up",
+"dir2": "left",
+"firstpos1": 25,
+"firstpos2": 25
+};
+
+
 function openNotification(inputType, inputTitle, inputText) {
+	var opts;
 	if (inputType == "success" || inputType == "info" || inputType == "error") { /* SUCCESS,INFO,ERROR */
-		new PNotify({
-			title : inputTitle,
-			text : inputText,
-			type : inputType,
-			styling : 'bootstrap3'
-		});
-	} else if (inputType == "notice") { /* NOTICE */
-		new PNotify({
-			title : inputTitle,
-			text : inputText,
-			styling : 'bootstrap3'
-		});
-	} else if (inputType == "dark") { /* DARK */
-		new PNotify({
+		opts = {
 			title : inputTitle,
 			text : inputText,
 			type : inputType,
 			styling : 'bootstrap3',
-			addclass : 'dark'
-		});
-	} else {
-		new PNotify({ /* NOTICE */
+			addclass: "stack-bottomright",
+			stack : stack_bottomright
+		};
+	} else if (inputType == "notice") { /* NOTICE */
+		opts = {
 			title : inputTitle,
 			text : inputText,
-			styling : 'bootstrap3'
-		});
+			styling : 'bootstrap3',
+			addclass: "stack-bottomright",
+			stack : stack_bottomright
+		};
+	} else if (inputType == "dark") { /* DARK */
+		opts = {
+			title : inputTitle,
+			text : inputText,
+			type : inputType,
+			styling : 'bootstrap3',
+			addclass: "stack-bottomright",
+			addclass : 'dark',
+			stack : stack_bottomright
+		};
+	} else {/* NOTICE */
+		opts = {
+			title : inputTitle,
+			text : inputText,
+			styling : 'bootstrap3',
+			addclass: "stack-bottomright",
+			stack : stack_bottomright
+		};
 	}
+	 new PNotify(opts);
 }
 
 /* Start Validation */ 

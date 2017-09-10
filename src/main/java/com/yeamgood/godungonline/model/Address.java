@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.yeamgood.godungonline.model.template.ModelTemplate;
 
 @Entity
@@ -21,12 +23,15 @@ public class Address extends ModelTemplate{
 	private Long addressId;
 	
 	@Column(name = "street1")
+	@Length(max = 50, message = "{validation.max.lenght}")
 	private String street1;
 	
 	@Column(name = "street2")
+	@Length(max = 50, message = "{validation.max.lenght}")
 	private String street2;
 	
 	@Column(name = "city")
+	@Length(max = 50, message = "{validation.max.lenght}")
 	private String city;
 	
 	@ManyToOne
@@ -34,13 +39,17 @@ public class Address extends ModelTemplate{
     private Province province;
 	
 	@Column(name = "postcode")
+	@Length(max = 5, message = "{validation.max.lenght}")
 	private String postcode;
+	
+	@ManyToOne
+    @JoinColumn(name = "country_id")
+    private Country country;
 	
 	public void setObject(Address address) {
 		this.street1 = address.getStreet1();
 		this.street2 = address.getStreet2();
 		this.city = address.getCity();
-		//this.province = address.getProvince();
 		this.postcode = address.getPostcode();
 	}
 
@@ -92,11 +101,18 @@ public class Address extends ModelTemplate{
 		this.postcode = postcode;
 	}
 
+	public Country getCountry() {
+		return country;
+	}
+
+	public void setCountry(Country country) {
+		this.country = country;
+	}
+
 	@Override
 	public String toString() {
 		return "Address [addressId=" + addressId + ", street1=" + street1 + ", street2=" + street2 + ", city=" + city
-				+ ", province=" + province + ", postcode=" + postcode + "]";
+				+ ", province=" + province + ", postcode=" + postcode + ", country=" + country + "]";
 	}
-	
-	
+
 }

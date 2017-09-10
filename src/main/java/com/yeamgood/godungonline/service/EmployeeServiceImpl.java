@@ -3,18 +3,22 @@ package com.yeamgood.godungonline.service;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yeamgood.godungonline.exception.GodungIdException;
+import com.yeamgood.godungonline.model.Country;
 import com.yeamgood.godungonline.model.Employee;
+import com.yeamgood.godungonline.model.Province;
 import com.yeamgood.godungonline.model.User;
+import com.yeamgood.godungonline.repository.CountryRepository;
 import com.yeamgood.godungonline.repository.EmployeeRepository;
+import com.yeamgood.godungonline.repository.ProvinceRepository;
+import com.yeamgood.godungonline.utils.AESencrpUtils;
 import com.yeamgood.godungonline.utils.GenerateCodeUtils;
 
 @Service("employeeService")
@@ -24,31 +28,33 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 	@Autowired
 	private EmployeeRepository employeeRepository;
-
+	
+	@Autowired
+	private ProvinceRepository provinceRepository;
+	
+	@Autowired
+	private CountryRepository countryRepository;
+	
 	@Override
-	public Employee findById(Long id) {
+	public Employee findByIdEncrypt(String idEncrypt,User userSession) throws Exception {
 		logger.debug("I:");
 		logger.debug("O:");
-		return employeeRepository.findOne(id);
+		Employee employeeTemp = employeeRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
+		employeeTemp.setEmployeeIdEncrypt(idEncrypt);
+		checkGodungId(employeeTemp, userSession);
+		return employeeTemp;
 	}
 
 	@Override
-	public List<Employee> findAllOrderByEmployeeNameAsc() {
-		logger.debug("I:");
-		logger.debug("O:");
-		return employeeRepository.findAll(sortByEmployeeNameAsc());
-	}
-
-	@Override
-	public List<Employee> findAllByGodungGodungIdOrderByEmployeeNameAsc(Long godungId) {
+	public List<Employee> findAllByGodungGodungIdOrderByEmployeeNameAsc(Long godungId) throws Exception {
 		logger.debug("I:[godungId]:" + godungId);
 		logger.debug("O:");
-		return employeeRepository.findAllByGodungGodungIdOrderByEmployeeNameAsc(godungId);
+		List<Employee> employeeList = employeeRepository.findAllByGodungGodungIdOrderByEmployeeCodeAsc(godungId);
+		for (Employee employee : employeeList) {
+			employee.setEmployeeIdEncrypt(AESencrpUtils.encryptLong(employee.getEmployeeId()));
+		}
+		return employeeList;
 	}
-	
-	private Sort sortByEmployeeNameAsc() {
-        return new Sort(Sort.Direction.ASC, "employeeName");
-    }
 
 	@Override
 	public long count(Long godungId) {
@@ -58,65 +64,74 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
-	public List<Employee> findByGodungGodungIdAndEmployeeNameIgnoreCaseContaining(Long godungId, String employeeName, Pageable pageable) {
-		return employeeRepository.findByGodungGodungIdAndEmployeeNameIgnoreCaseContaining(godungId, employeeName, pageable);
-	}
-
-	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void save(Employee employee,User user) {
+	public void save(Employee employee,User userSession) throws Exception {
 		logger.debug("I:");
-		if(employee.getEmployeeId() == null) {
-			Employee maxEmployee = employeeRepository.findTopByGodungGodungIdOrderByEmployeeCodeDesc(user.getGodung().getGodungId());
+		logger.debug("I:" +  employee.toString());
+		if(StringUtils.isBlank(employee.getEmployeeIdEncrypt())) {
+			Employee maxEmployee = employeeRepository.findTopByGodungGodungIdOrderByEmployeeCodeDesc(userSession.getGodung().getGodungId());
 			if(maxEmployee == null) {
 				logger.debug("I:Null Max Data");
 				maxEmployee = new Employee();
 			}
 			String generateCode = GenerateCodeUtils.generateCode(GenerateCodeUtils.TYPE_EMPLOYEE, maxEmployee.getEmployeeCode());
-			
-			employee.setGodung(user.getGodung());
-			employee.setCreate(user.getEmail(), new Date());
 			employee.setEmployeeCode(generateCode);
-			employee.setGodung(user.getGodung());
-			employeeRepository.save(employee);
+			employee.setGodung(userSession.getGodung());
+			employee.setCreate(userSession.getEmail(), new Date());
+			
+			// PROVINCE
+			Province provinceTemp = employee.getAddress().getProvince();
+			provinceTemp =  provinceRepository.findByProvinceCode(provinceTemp.getProvinceCode());
+			employee.getAddress().setProvince(provinceTemp);
+			
+			// COUNTRY
+			Country countryTemp = employee.getAddress().getCountry();
+			countryTemp = countryRepository.findOne(countryTemp.getCountryId());
+			employee.getAddress().setCountry(countryTemp);
+			
+			employee = employeeRepository.save(employee);
+			employee.setEmployeeIdEncrypt(AESencrpUtils.encryptLong(employee.getEmployeeId()));
 		}else {
-			Employee employeeTemp = employeeRepository.findOne(employee.getEmployeeId());
-			employeeTemp.setEmployeeName(employee.getEmployeeName());
-			employeeTemp.setDescription(employee.getDescription());
-			employeeTemp.setUpdate(user.getEmail(), new Date());
-			employeeRepository.save(employeeTemp);
+			Long id = AESencrpUtils.decryptLong(employee.getEmployeeIdEncrypt());
+			Employee employeeTemp = employeeRepository.findOne(id);
+			employeeTemp.setObject(employee);
+			employeeTemp.setUpdate(userSession.getEmail(), new Date());
+			
+			// ADDRESS
+			employeeTemp.getAddress().setObject(employee.getAddress());
+			
+			// PROVINCE
+			Province provinceTemp = employee.getAddress().getProvince();
+			provinceTemp =  provinceRepository.findByProvinceCode(provinceTemp.getProvinceCode());
+			employeeTemp.getAddress().setProvince(provinceTemp);
+			
+			// COUNTRY
+			Country countryTemp = employee.getAddress().getCountry();
+			countryTemp = countryRepository.findOne(countryTemp.getCountryId());
+			employeeTemp.getAddress().setCountry(countryTemp);
+			
+			employee = employeeRepository.save(employeeTemp);
+			employee.setEmployeeIdEncrypt(AESencrpUtils.encryptLong(employee.getEmployeeId()));
+			logger.debug("I:Step6");
 		}
 		logger.debug("O:");
 	}
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void delete(Employee employee, User user) throws GodungIdException {
+	public void delete(String idEncrypt, User userSession) throws Exception,GodungIdException{
 		logger.debug("I:");
-		Employee employeeTemp = employeeRepository.findOne(employee.getEmployeeId());
-		long godungIdTemp = employeeTemp.getGodung().getGodungId().longValue();
-		long godungIdSession = user.getGodung().getGodungId().longValue();
-		
-		if(godungIdTemp ==  godungIdSession) {
-			employeeRepository.delete(employeeTemp);
-		}else {
-			 throw new GodungIdException("GodungId database is " + godungIdTemp + " not equals session user is" + godungIdSession);
-		}
+		Employee employeeTemp = employeeRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
+		checkGodungId(employeeTemp, userSession);
+		employeeRepository.delete(employeeTemp.getEmployeeId());
 		logger.debug("O:");
 	}
-
-	@Override
-	public Employee findById(Long id, User user) throws GodungIdException {
-		logger.debug("I:");
-		Employee employee = employeeRepository.findOne(id);
-		long godungIdTemp = employee.getGodung().getGodungId().longValue();
-		long godungIdSession = user.getGodung().getGodungId().longValue();
-		
+	
+	public void checkGodungId(Employee employeeTemp,User userSession) throws GodungIdException {
+		long godungIdTemp = employeeTemp.getGodung().getGodungId().longValue();
+		long godungIdSession = userSession.getGodung().getGodungId().longValue();
 		if(godungIdTemp !=  godungIdSession) {
 			 throw new GodungIdException("GodungId database is " + godungIdTemp + " not equals session user is" + godungIdSession);
 		}
-		
-		logger.debug("O:");
-		return employee;
 	}
 }

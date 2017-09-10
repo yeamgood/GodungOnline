@@ -98,6 +98,8 @@ public class LoginController {
 		User user = userService.findUserByEmail(auth.getName());
 		manageSelectGodungAndRole(user);
 		manageMenu(user);
+		Menu menu = menuService.findById(MENU_HOME_ID);
+		modelAndView.addObject("menu", menu);
 		modelAndView.addObject("user",user);
 		modelAndView.setViewName("home");
 		return modelAndView;

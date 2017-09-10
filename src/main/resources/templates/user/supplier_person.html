@@ -54,21 +54,23 @@
 
 			<!-- page content -->
 			<div class="right_col" role="main">
-				<!-- <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left"> -->
-				<form id="form" autocomplete="off" th:action="@{/user/supplier/individual}" th:object="${supplier}" method="post" class="form-horizontal" role="form" data-parsley-validate>
+				<form id="form" autocomplete="off" th:action="@{/user/supplier/manage/person}" th:object="${supplier}" method="post" class="form-horizontal" role="form" data-parsley-validate>
 				<div class="">
 				
-					<div class="col-md-12 col-sm-12 col-xs-12 x_panel search-head">
+						<div class="col-md-12 col-sm-12 col-xs-12 x_panel search-head">
 						<div class="title_left">
 							<div class="col-md-6">
 								<h2>
-									<i th:class="${menu.icon}"></i> <label th:text="#{${menu.code}}"></label>
+									<i th:class="${menu.icon}"></i> <span th:text="#{${menu.code}}"></span> [<span th:text="#{form.supplier.label.person}"></span>]
 								</h2>
 							</div>
 						</div>
 						<div class="title_right">
 							<div class="form-group pull-right title_right_button">
-								<button id="bt_delete" type="button" class="btn btn-danger" onclick="openModalMainDelete();" th:if="*{supplierCode} != null " >
+								<a id="bt_delete" type="button" class="btn btn-primary" th:href="@{/user/supplier}">
+									<i class="fa fa-reply"></i> <span class="span_white" th:text="#{bt.text.back}"></span>
+								</a>
+								<button id="bt_delete" type="button" class="btn btn-danger" onclick="openModalMainDelete();" th:if="*{supplierId} != null " >
 									<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
 								</button>
 								<button id="bt_save" type="submit" class="btn btn-success">
@@ -94,13 +96,14 @@
 									
 									
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<input type="hidden" th:field="*{supplierId}">
+										<input type="hidden" th:field="*{supplierIdEncrypt}">
 										<div class="form-group">
 											<div class="control-label col-md-4 col-sm-5 col-xs-12">
 												<label th:text="#{form.supplier.label.code}"></label>
 											</div>
 											<div class="col-md-8 col-sm-7 col-xs-12">
 												<input type="text" class="form-control" readonly="readonly" th:placeholder="#{label.generate.auto}" th:field="*{supplierCode}">
+												<label th:if="${#fields.hasErrors('supplierCode')}" th:errors="*{supplierCode}" class="validation-message"></label>
 											</div>
 										</div>
 										<div class="form-group">
@@ -109,7 +112,7 @@
 											</div>
 											<div class="col-md-8 col-sm-7 col-xs-12">
 												<input type="text" class="form-control" th:field="*{title}">
-												<label id="error_title" class="validation-message" style="display:none;"></label>
+												<label th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="validation-message"></label>
 											</div>
 										</div>
 										<div class="form-group">
@@ -119,7 +122,7 @@
 											</div>
 											<div class="col-md-8 col-sm-7 col-xs-12">
 												<input type="text" class="form-control" th:field="*{firstName}">
-												<label th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="validation-message">test</label>
+												<label th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="validation-message"></label>
 											</div>
 										</div>
 										<div class="form-group">
@@ -128,7 +131,7 @@
 											</div>
 											<div class="col-md-8 col-sm-7 col-xs-12">
 												<input type="text" class="form-control" th:field="*{lastName}">
-												<label id="error_lastName" class="validation-message" style="display:none;"></label>
+												<label th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="validation-message"></label>
 											</div>
 										</div>
 									</div>
@@ -139,7 +142,7 @@
 											</div>
 											<div class="col-md-8 col-sm-7 col-xs-12">
 												<input type="text" class="form-control" th:field=*{nationalNumber}>
-												<label id="error_nationalNumber" class="validation-message" style="display:none;"></label>
+												<label th:if="${#fields.hasErrors('nationalNumber')}" th:errors="*{nationalNumber}" class="validation-message"></label>
 											</div>
 										</div>
 										<div class="form-group">
@@ -148,7 +151,7 @@
 											</div>
 											<div class="col-md-8 col-sm-7 col-xs-12">
 												<input type="text" class="form-control" th:field="*{taxNumber}">
-												<label id="error_taxNumber" class="validation-message" style="display:none;"></label>
+												<label th:if="${#fields.hasErrors('taxNumber')}" th:errors="*{taxNumber}" class="validation-message"></label>
 											</div>
 										</div>
 										<div class="form-group">
@@ -157,7 +160,7 @@
 											</div>
 											<div class="col-md-8 col-sm-7 col-xs-12">
 												<input type="text" class="form-control" th:field="*{telephone}">
-												<label id="error_telephone" class="validation-message" style="display:none;"></label>
+												<label th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" class="validation-message"></label>
 											</div>
 										</div>
 										<div class="form-group">
@@ -166,7 +169,7 @@
 											</div>
 											<div class="col-md-8 col-sm-7 col-xs-12">
 												<input type="text" class="form-control" th:field="*{email}">
-												<label id="error_email" class="validation-message" style="display:none;"></label>
+												<label th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="validation-message"></label>
 											</div>
 										</div>
 									</div>
@@ -196,7 +199,7 @@
 														</div>
 														<div class="col-md-8 col-sm-8 col-xs-12">
 															<input id="address_street1" type="text" class="form-control" th:field="*{address.street1}">
-															<label id="error_address_street1" class="validation-message" style="display:none;"></label>
+															<label th:if="${#fields.hasErrors('address.street1')}" th:errors="*{address.street1}" class="validation-message"></label>
 														</div>
 													</div>
 													<div class="form-group">
@@ -205,7 +208,7 @@
 														</div>
 														<div class="col-md-8 col-sm-8 col-xs-12">
 															<input id="address_street2" type="text" class="form-control" th:field="*{address.street2}">
-															<label id="error_address_street2" class="validation-message" style="display:none;"></label>
+															<label th:if="${#fields.hasErrors('address.street2')}" th:errors="*{address.street2}" class="validation-message"></label>
 														</div>
 													</div>
 													<div class="form-group">
@@ -214,7 +217,7 @@
 														</div>
 														<div class="col-md-8 col-sm-8 col-xs-12">
 															<input id="address_city" type="text" class="form-control" th:field="*{address.city}">
-															<label id="error_address_city" class="validation-message" style="display:none;"></label>
+															<label th:if="${#fields.hasErrors('address.city')}" th:errors="*{address.city}" class="validation-message"></label>
 														</div>
 													</div>
 													<div class="form-group">
@@ -229,7 +232,7 @@
 									                           	 		 th:text="${obj.provinceName}">
 									                           	 </option>
 									                          </select>
-															<label id="error_address_province" class="validation-message" style="display:none;"></label>
+															<label th:if="${#fields.hasErrors('address.province.provinceCode')}" th:errors="*{address.province.provinceCode}" class="validation-message"></label>
 														</div>
 													</div>
 													<div class="form-group">
@@ -238,7 +241,22 @@
 														</div>
 														<div class="col-md-8 col-sm-8 col-xs-12">
 															<input id="address_postcode" type="text" class="form-control" th:field="*{address.postcode}">
-															<label id="error_address_postcode" class="validation-message" style="display:none;"></label>
+															<label th:if="${#fields.hasErrors('address.postcode')}" th:errors="*{address.postcode}" class="validation-message"></label>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="control-label col-md-4 col-sm-4 col-xs-12">
+															<label th:text="#{form.country.header}"></label>
+														</div>
+														<div class="col-md-8 col-sm-8 col-xs-12">
+															 <select id="countryDropdown1" style="width:100%"  th:field="*{address.country.countryId}">
+									                           	 <option value=""></option>
+									                           	 <option th:each="obj:${countryDropdown}" 
+									                           	 		 th:value="${obj.countryId}" 
+									                           	 		 th:text="${obj.countryName}">
+									                           	 </option>
+									                          </select>
+															<label th:if="${#fields.hasErrors('address.country.countryId')}" th:errors="*{address.country.countryId}" class="validation-message"></label>
 														</div>
 													</div>
 									</div>
@@ -269,7 +287,7 @@
 														</div>
 														<div class="col-md-8 col-sm-8 col-xs-12">
 															<input id="addressSend_street1" type="text" class="form-control" th:field="*{addressSend.street1}">
-															<label id="error_address_send_street1" class="validation-message" style="display:none;"></label>
+															<label th:if="${#fields.hasErrors('addressSend.street1')}" th:errors="*{addressSend.street1}" class="validation-message"></label>
 														</div>
 													</div>
 													<div class="form-group">
@@ -278,7 +296,7 @@
 														</div>
 														<div class="col-md-8 col-sm-8 col-xs-12">
 															<input id="addressSend_street2" type="text" class="form-control" th:field="*{addressSend.street2}">
-															<label id="error_address_send_street2" class="validation-message" style="display:none;"></label>
+															<label th:if="${#fields.hasErrors('addressSend.street2')}" th:errors="*{addressSend.street2}" class="validation-message"></label>
 														</div>
 													</div>
 													<div class="form-group">
@@ -287,7 +305,7 @@
 														</div>
 														<div class="col-md-8 col-sm-8 col-xs-12">
 															<input id="addressSend_city" type="text" class="form-control" th:field="*{addressSend.city}">
-															<label id="error_address_send_city" class="validation-message" style="display:none;"></label>
+															<label th:if="${#fields.hasErrors('addressSend.city')}" th:errors="*{addressSend.city}" class="validation-message"></label>
 														</div>
 													</div>
 													<div class="form-group">
@@ -302,7 +320,7 @@
 									                           	 		 th:text="${obj.provinceName}">
 									                           	 </option>
 									                          </select>
-															<label id="error_address_send_province" class="validation-message" style="display:none;"></label>
+															<label th:if="${#fields.hasErrors('addressSend.province.provinceCode')}" th:errors="*{addressSend.province.provinceCode}" class="validation-message"></label>
 														</div>
 													</div>
 													<div class="form-group">
@@ -311,7 +329,22 @@
 														</div>
 														<div class="col-md-8 col-sm-8 col-xs-12">
 															<input id="addressSend_postcode" type="text" class="form-control" th:field="*{addressSend.postcode}">
-															<label id="error_address_send_postcode" class="validation-message" style="display:none;"></label>
+															<label th:if="${#fields.hasErrors('addressSend.postcode')}" th:errors="*{addressSend.postcode}" class="validation-message"></label>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="control-label col-md-4 col-sm-4 col-xs-12">
+															<label th:text="#{form.country.header}"></label>
+														</div>
+														<div class="col-md-8 col-sm-8 col-xs-12">
+															 <select id="countryDropdown2" style="width:100%"  th:field="*{addressSend.country.countryId}">
+									                           	 <option value=""></option>
+									                           	 <option th:each="obj:${countryDropdown}" 
+									                           	 		 th:value="${obj.countryId}" 
+									                           	 		 th:text="${obj.countryName}">
+									                           	 </option>
+									                          </select>
+															<label th:if="${#fields.hasErrors('addressSend.country.countryId')}" th:errors="*{addressSend.country.countryId}" class="validation-message"></label>
 														</div>
 													</div>
 									</div>
@@ -355,7 +388,7 @@
                     <div class="modal-dialog ">
                       <div class="modal-content">
 
-						<form method="post" id="deleteForm" data-parsley-validate class="form-horizontal form-label-left" th:action="@{/user/supplier/individual/delete}">
+						<form method="post" id="deleteForm" data-parsley-validate class="form-horizontal form-label-left" th:action="@{/user/supplier/manage/person/delete}">
                         <div class="modal-header">
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                           </button>
@@ -364,7 +397,7 @@
 							</h4>
                         </div>
                         <div class="modal-body">
-                        			<input type="hidden" id="delete_id" name="supplierId" />
+                        			<input type="hidden" id="delete_id" name="supplierIdEncrypt" />
                         			<span id="modal_delete_content"></span>
                         </div>
                         <div class="modal-footer">
@@ -433,11 +466,11 @@
 	
 	<script th:inline="javascript">
 		var url_language = /*[[#{javascript.datatable.language.url}]]*/;
-		var url_product = /*[[@{/user/supplier/product/list/ajax}]]*/;
+		var url_product = /*[[@{/user/supplier/manage/product/list/ajax}]]*/;
 		var textView = /*[[#{bt.text.view}]]*/;
 		var textEdit = /*[[#{bt.text.edit}]]*/;
 		var textDelete = /*[[#{bt.text.delete}]]*/;
-		
+		var urlFlags = /*[[@{/images/flags/24/}]]*/;
 		<!-- --------------------------------------- -->
 		<!-- -------- Start datatables Main -------- -->
 		<!-- --------------------------------------- -->
@@ -484,7 +517,22 @@
 	    	  		placeholder: selectText
 	     	 });
 	      	
+	      	$("#countryDropdown1").select2({
+	      	  templateResult: formatState,
+	      	  templateSelection: formatState
+	      	});
+	      	
+	      	$("#countryDropdown2").select2({
+	      	  templateResult: formatState,
+	      	  templateSelection: formatState
+	      	});
 	    }); 
+		
+		function formatState (state) {
+		  if (!state.id) { return state.text; }
+		  var $state = $('<span><img src="' + urlFlags + state.text + '.png" class="img-flag" /> ' + state.text + '</span>');
+		  return $state;
+		};
 		<!-- -------------------------------- -->
 		<!-- -------- End Select2  -------- -->
 		<!-- -------------------------------- -->
@@ -500,17 +548,19 @@
 			$("#addressSend_postcode").val($("#address_postcode").val());
 			$('#provinceSendDropdown').val($('#provinceDropdown').val()); // Change the value or make some change to the internal state
 			$('#provinceSendDropdown').trigger('change.select2'); // Notify only Select2 of changes
+			$('#countryDropdown2').val($('#countryDropdown1').val()); // Change the value or make some change to the internal state
+			$('#countryDropdown2').trigger('change.select2'); // Notify only Select2 of changes
 		}
 		
 		function openModalMainDelete(){
 			var messageMain = /*[[#{label.delete.content.confirm}]]*/;
-			var id = $("#supplierId").val();
+			var id = $("#supplierIdEncrypt").val();
 			var code = $("#supplierCode").val();
 			var title = $("#title").val();
 			var firstname = $("#firstName").val();
 			var lastname = $("#lastName").val();
 			
-			var message = code + " " + title + firstname + " " + lastname;
+			var message = code + " " + firstname;
 			
 			$("#delete_id").val(id);
     			$("#modal_delete_content").html(messageMain + " : " + message);
@@ -522,7 +572,12 @@
 			openNotification(pnotify.type,pnotify.title,pnotify.text);
 		}
 		
-
+		// check active menu
+	    $(document).ready(function() {
+			var CURRENT_URL = /*[[@{${menu.action}}]]*/;
+			$('#sidebar-menu').find('a[href="' + CURRENT_URL + '"]').parent('li').parent('ul').parent('li').children('a').trigger("click");
+	    });
+		
 	  
 	</script>
 	

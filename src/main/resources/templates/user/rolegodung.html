@@ -65,17 +65,10 @@
 					</div>
 					<div class="title_right">
 						<div class="form-group pull-right title_right_button">
-							<div class="btn-group">
-								<button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button" aria-expanded="false">
-				                    <i class="fa" th:class="#{bt.icon.add}"></i> 
-				                    <span class="span_white" th:text="#{form.supplier.bt.add}"></span>
-				                    <span class="caret"></span>
-			                    </button>
-			                    <ul role="menu" class="dropdown-menu">
-			                       <li><a th:href="@{/user/supplier/manage/person}" th:text="#{form.supplier.label.person}"></a></li>
-			                      <li><a th:href="@{/user/supplier/manage/company}" th:text="#{form.supplier.label.company}"></a></li>
-			                    </ul>
-			                 </div>
+							<a th:href="@{/user/rolegodung/manage}" class="btn btn-success">
+			                    <i class="fa" th:class="#{bt.icon.add}"></i> 
+			                    <span class="span_white" th:text="#{form.rolegodung.bt.add}"></span>
+		                    </a>
 						</div>
 					</div>
 				</div>
@@ -114,10 +107,10 @@
 										<div class="col-md-12 col-sm-12 col-xs-12">
 											<div class="content-center">
 												<span th:text="#{label.search.by}"></span> 
-												<span th:text="#{form.supplier.label.code}"></span> ,
-												<span th:text="#{form.supplier.label.fullname}"></span> ,
-												<span th:text="#{form.supplier.label.telephone}"></span> ,
-												<span th:text="#{form.supplier.label.email}"></span>
+												<span th:text="#{form.rolegodung.label.code}"></span> ,
+												<span th:text="#{form.rolegodung.label.fullname}"></span> ,
+												<span th:text="#{form.rolegodung.label.telephone}"></span> ,
+												<span th:text="#{form.rolegodung.label.email}"></span>
 											</div>
 										</div>
 									</div>
@@ -125,27 +118,27 @@
 										<div class="col-md-12 col-sm-12 col-xs-12">
 												<form class="form-horizontal form-label-left input_mask">
 							                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.supplier.label.code}"></label>
+							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.rolegodung.label.code}"></label>
 							                         <div class="col-md-8 col-sm-8 col-xs-12">
 							                         <input id="input_advance_code" type="text" class="form-control" >
 							                         </div>
 							                      </div>
 							
 							                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-							                       <label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.supplier.label.fullname}"></label>
+							                       <label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.rolegodung.label.fullname}"></label>
 							                        <div class="col-md-8 col-sm-8 col-xs-12">
 							                          <input id="input_advance_fullname"  type="text" class="form-control" >
 							                        </div>
 							                      </div>
 							                      
 							                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.supplier.label.telephone}"></label>
+							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.rolegodung.label.telephone}"></label>
 							                         <div class="col-md-8 col-sm-8 col-xs-12">
 							                         <input id="input_advance_telephone"  type="text" class="form-control" >
 							                         </div>
 							                      </div>
 							                       <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.supplier.label.email}"></label>
+							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.rolegodung.label.email}"></label>
 							                         <div class="col-md-8 col-sm-8 col-xs-12">
 							                         <input id="input_advance_email"  type="text" class="form-control" >
 							                         </div>
@@ -166,9 +159,9 @@
 					
 					<div class="col-md-12 col-sm-12 col-xs-12">
 							<div class="x_panel">
-								<div class="x_title x_title_edit">
+								<div class="x_title x_title_edit ">
 									<h2>
-										<i class="fa fa-list"></i> <span th:text="#{form.supplier.label.list}"></span>
+										<i class="fa fa-list"></i> <span th:text="#{form.rolegodung.label.list}"></span>
 									</h2>
 									<div class="clearfix"></div>
 								</div>
@@ -177,10 +170,10 @@
 										<thead class="search-content-header">
 											<tr>
 												<th th:text="#{datatables.text.no}"></th>
-												<th th:text="#{form.supplier.label.code}" class="col-md-1"></th>
-												<th th:text="#{form.supplier.label.fullname}" class="col-md-2"></th>
-												<th th:text="#{form.supplier.label.telephone}" class="col-md-1"></th>
-												<th th:text="#{form.supplier.label.email}" class="col-md-1"></th>
+												<th th:text="#{form.rolegodung.label.code}" class="col-md-1"></th>
+												<th th:text="#{form.rolegodung.label.fullname}" class="col-md-2"></th>
+												<th th:text="#{form.rolegodung.label.telephone}" class="col-md-1"></th>
+												<th th:text="#{form.rolegodung.label.email}" class="col-md-1"></th>
 												<th th:text="#{form.brand.label.action}"></th>
 											</tr>
 										</thead>
@@ -207,7 +200,7 @@
 						</div>
 						<div class="modal-body">
 							<form id="deleteForm" data-parsley-validate class="form-horizontal form-label-left">
-								<input type="hidden" id="delete_id" name="supplierIdEncrypt" /> <span id="modal_delete_content"></span>
+								<input type="hidden" id="delete_id" name="rolegodungIdEncrypt" /> <span id="modal_delete_content"></span>
 							</form>
 						</div>
 						<div class="modal-footer">
@@ -272,17 +265,17 @@
 
 	<script th:inline="javascript">
 		var url_language = /*[[#{javascript.datatable.language.url}]]*/;
-		var url_supplier = /*[[@{/user/supplier/list/ajax}]]*/;
+		var url_rolegodung = /*[[@{/user/rolegodung/list/ajax}]]*/;
 		var textView = /*[[#{bt.text.view}]]*/;
 		var textEdit = /*[[#{bt.text.edit}]]*/;
 		var textDelete = /*[[#{bt.text.delete}]]*/;
-		var url_supplier_load = /*[[@{/user/supplier/manage}]]*/;
+		var url_rolegodung_load = /*[[@{/user/rolegodung/manage}]]*/;
 		
 		<!-- -------- Start datatables Main -------- -->
 	    $(document).ready(function() {
 		    	var table =  $('#datatablesMain').DataTable( {
 		    			"processing": true,
-		    	        "ajax": url_supplier,
+		    	        "ajax": url_rolegodung,
 		    	        "paging":   true,
 		    	        "ordering": true,
 		    	        "info":     true,
@@ -291,27 +284,27 @@
 		    	        "order": [[ 1, 'asc' ]],
 		    	        "columns": [
 		  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
-		  	            { 'data': 'supplierCode' },
+		  	            { 'data': 'rolegodungCode' },
 		  	            { 'data': 'firstName' },
 		  	            { 'data': 'telephone' },
 		  	            { 'data': 'email' },
-		  	            { 'data': 'supplierIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
+		  	            { 'data': 'rolegodungIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
 		  	        ],
 		  	      	"columnDefs": [{
 		                  "render": function ( data, type, row ) {
 		                		 return	'' +
 		                		   		'<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textEdit + '"' +
-		                			    '   onclick="loadAction(\''+ url_supplier_load +'\',\''+ row.supplierIdEncrypt + '\');" >' +
+		                			    '   onclick="loadAction(\''+ url_rolegodung_load +'\',\''+ row.rolegodungIdEncrypt + '\');" >' +
 		                		        '   <i class="fa fa-wrench"></i></button>' +
 		                		        ' ' +
 		                	  	 	    '<button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textDelete + '"' +
-		                	  	 	    '   onclick="openModalDelete(\''+data+'\',\''+row.supplierCode + " " + row.firstName + '\');" >' +
+		                	  	 	    '   onclick="openModalDelete(\''+data+'\',\''+row.rolegodungCode + " " + row.firstName + '\');" >' +
 		                	  	 	    '   <i class="fa fa-trash"></i></button>'; 
 		                  },
 		                  "targets": 5
 		             },{
 		            	 	 "render": function ( data, type, row ) {
-		            	 		 if(row.supplierType == "PERSON"){
+		            	 		 if(row.rolegodungType == "PERSON"){
 		            	 			 return	row.title + row.firstName + " " + row.lastName;
 		            	 		 }else{
 		            	 			 return	row.firstName;
@@ -400,9 +393,9 @@
 		
 		function openModalMainDelete(){
 			var messageMain = /*[[#{label.delete.content.confirm}]]*/;
-			var id = $("#supplierId").val();
-			var code = $("#supplierCode").val();
-			var name = $("#supplierName").val();
+			var id = $("#rolegodungId").val();
+			var code = $("#rolegodungCode").val();
+			var name = $("#rolegodungName").val();
 			var message = code + " " + name;
 			
 			$("#delete_id").val(id);
@@ -414,7 +407,7 @@
 	    
 		<!-- -------- Start Action -------- -->
 	    function deleteAction() {
-	 	   	var urlAction = /*[[@{/user/supplier/delete}]]*/;
+	 	   	var urlAction = /*[[@{/user/rolegodung/delete}]]*/;
 		    $.ajax({
 		        type: "POST",
 		        url: urlAction,
@@ -425,7 +418,7 @@
 		               	openNotification(response.result.type,response.result.title,response.result.text);
 		               	$('#modal_delete').modal('hide');
 		               	$('#modal_save').modal('hide');
-		               	$("#supplierModalForm").trigger('reset');
+		               	$("#rolegodungModalForm").trigger('reset');
 		              	var table =  $('#datatablesMain').DataTable();
 		                table.ajax.reload();
 		             }else{
