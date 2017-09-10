@@ -85,11 +85,11 @@
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<div class="x_panel">
 								<div class="x_title x_title_edit">
-									<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="col-md-6 col-sm-6 col-xs-6">
 										<h2><i class="fa fa-search"></i> <span th:text="#{label.search.label}"></span></h2>
 									</div>
-									<div class="col-md-6 col-sm-6 col-xs-12" style="padding-right: 5px;">
-										<div id="bt-advance" class="pull-right" style="margin-top: 5px; 
+									<div class="col-md-6 col-sm-6 col-xs-6" style="padding-right: 5px;">
+										<div id="bt-advance" class="pull-right" style="
 										     background: #fff; cursor: pointer; 
 										     padding: 5px 10px; border: 1px solid #E6E9ED;cursor: pointer;">
 											<i class="fa fa-filter"></i>
@@ -123,7 +123,7 @@
 									</div>
 									<div id="search-advance" style="display: none;">
 										<div class="col-md-12 col-sm-12 col-xs-12">
-												<form class="form-horizontal form-label-left input_mask">
+												<form autocomplete="off" class="form-horizontal form-label-left input_mask">
 							                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
 							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.customer.label.code}"></label>
 							                         <div class="col-md-8 col-sm-8 col-xs-12">
@@ -197,7 +197,7 @@
 				<div class="modal-dialog ">
 					<div class="modal-content">
 
-						<div class="modal-header">
+						<div class="modal-header modal-delete-header">
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">×</span>
 							</button>
@@ -206,7 +206,7 @@
 							</h4>
 						</div>
 						<div class="modal-body">
-							<form id="deleteForm" data-parsley-validate class="form-horizontal form-label-left">
+							<form autocomplete="off" id="deleteForm" data-parsley-validate class="form-horizontal form-label-left">
 								<input type="hidden" id="delete_id" name="customerIdEncrypt" /> <span id="modal_delete_content"></span>
 							</form>
 						</div>

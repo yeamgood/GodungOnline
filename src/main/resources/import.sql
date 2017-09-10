@@ -411,6 +411,10 @@ INSERT INTO `godung_online`.`product` (`product_id`,`product_code`, `create_date
 
 INSERT INTO `godung_online`.`warehouse` (`warehouse_id`,`warehouse_code`, `create_date`, `create_user`, `version`, `warehouse_name`, `godung_id`, `description`) VALUES ('1', 'WAR20170830-00001', SYSDATE(), 'SYSTEM', '0', 'คลังสินค้าฉะเชิงเทรา', '2','คลังสินค้า ที่จังหวัดฉะเชิงเทรา');
 
+INSERT INTO `godung_online`.`rolegodung` (`rolegodung_id`,`rolegodung_code`, `create_date`, `create_user`, `version`, `rolegodung_name`, `godung_id`, `description`) VALUES ('1', 'ROL20170830-00001', SYSDATE(), 'SYSTEM', '0', 'ผู้จัดการ', '2','');
+INSERT INTO `godung_online`.`rolegodung` (`rolegodung_id`,`rolegodung_code`, `create_date`, `create_user`, `version`, `rolegodung_name`, `godung_id`, `description`) VALUES ('2', 'ROL20170830-00002', SYSDATE(), 'SYSTEM', '0', 'พนักงานขายหน้าร้าน', '2','');
+INSERT INTO `godung_online`.`rolegodung` (`rolegodung_id`,`rolegodung_code`, `create_date`, `create_user`, `version`, `rolegodung_name`, `godung_id`, `description`) VALUES ('3', 'ROL20170830-00003', SYSDATE(), 'SYSTEM', '0', 'พนักงานคลังสินค้า', '2','');
+
 -- SUPPLIER --
 INSERT INTO `godung_online`.`address` (`address_id`,`street1`,`street2`,`city`,`province_code`,`postcode`,`country_id`,`version`) VALUES (1,'103/64 ถนนศุภกิจ','ต.หน้าเมือง','อ.เมือง',1,'24000',217,0);
 INSERT INTO `godung_online`.`address` (`address_id`,`street1`,`street2`,`city`,`province_code`,`postcode`,`country_id`,`version`) VALUES (2,'103/64 ถนนศุภกิจ','ต.หน้าเมือง','อ.เมือง',1,'24000',217,0);

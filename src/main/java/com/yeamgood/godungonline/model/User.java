@@ -40,6 +40,9 @@ public class User {
 	@NotEmpty(message = "{validation.required.password}")
 	private String password;
 	
+	@Transient
+	private String passwordConfirm;
+	
 	@Column(name = "name")
 	@NotEmpty(message = "{validation.required.name}")
 	private String name;
@@ -143,6 +146,14 @@ public class User {
 
 	public void setLanguage(String language) {
 		this.language = language;
+	}
+
+	public String getPasswordConfirm() {
+		return passwordConfirm;
+	}
+
+	public void setPasswordConfirm(String passwordConfirm) {
+		this.passwordConfirm = passwordConfirm;
 	}
 	
 }

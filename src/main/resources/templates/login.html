@@ -40,7 +40,7 @@
             <p><span th:text="#{app.version}"></span></p>
           </div>
           <section class="login_content">
-            	<form th:action="@{/login}" th:object="${user}" method="POST" class="form-signin">
+            	<form autocomplete="off" th:action="@{/login}" th:object="${user}" method="POST" class="form-signin">
               
               <h1><span th:text="#{form.login.loginform}"></span></h1>
      

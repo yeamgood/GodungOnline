@@ -93,84 +93,36 @@
 								</div>
 								<div class="x_content">
 
-									
-									
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<input type="hidden" th:field="*{rolegodungIdEncrypt}">
+									<input type="hidden" th:field="*{rolegodungIdEncrypt}">
+									<div class="modal-body validation-box">
+										<input type="hidden" id="rolegodungId" name="rolegodungId" >
 										<div class="form-group">
-											<div class="control-label col-md-4 col-sm-5 col-xs-12">
+											<div class="control-label col-md-3 col-sm-3 col-xs-12">
 												<label th:text="#{form.rolegodung.label.code}"></label>
 											</div>
-											<div class="col-md-8 col-sm-7 col-xs-12">
+											<div class="col-md-8 col-sm-8 col-xs-12">
 												<input type="text" class="form-control" readonly="readonly" th:placeholder="#{label.generate.auto}" th:field="*{rolegodungCode}">
+												<label th:if="${#fields.hasErrors('rolegodungCode')}" th:errors="*{rolegodungCode}" class="validation-message"></label>
 											</div>
 										</div>
 										<div class="form-group">
-											<div class="control-label col-md-4 col-sm-5 col-xs-12">
-												<label th:text="#{form.rolegodung.label.title}"></label>
+										
+											<div class="control-label col-md-3 col-sm-3 col-xs-12">
+												<label th:text="#{form.rolegodung.label.name}"></label>
 												<label class="validation-message" th:text="#{label.request}"></label>
 											</div>
-											<div class="col-md-8 col-sm-7 col-xs-12">
-												<input type="text" class="form-control" th:field="*{title}">
-												<label th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="validation-message"></label>
+											<div class="col-md-8 col-sm-8 col-xs-12">
+												<input type="text" class="form-control" th:field="*{rolegodungName}">
+												<label th:if="${#fields.hasErrors('rolegodungName')}" th:errors="*{rolegodungName}" class="validation-message"></label>
 											</div>
 										</div>
 										<div class="form-group">
-											<div class="control-label col-md-4 col-sm-5 col-xs-12">
-												<label th:text="#{form.rolegodung.label.firstname}"></label>
-												<label class="validation-message" th:text="#{label.request}"></label>
+											<div class="control-label col-md-3 col-sm-3 col-xs-12">
+												<label th:text="#{form.rolegodung.label.description}"></label>
 											</div>
-											<div class="col-md-8 col-sm-7 col-xs-12">
-												<input type="text" class="form-control" th:field="*{firstName}">
-												<label th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="validation-message"></label>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="control-label col-md-4 col-sm-5 col-xs-12">
-												<label th:text="#{form.rolegodung.label.lastname}"></label>
-												<label class="validation-message" th:text="#{label.request}"></label>
-											</div>
-											<div class="col-md-8 col-sm-7 col-xs-12">
-												<input type="text" class="form-control" th:field="*{lastName}">
-												<label th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="validation-message"></label>
-											</div>
-										</div>
-									</div>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<div class="form-group">
-											<div class="control-label col-md-4 col-sm-5 col-xs-12">
-												<label th:text="#{form.rolegodung.label.national.number}"></label>
-											</div>
-											<div class="col-md-8 col-sm-7 col-xs-12">
-												<input type="text" class="form-control" th:field=*{nationalNumber}>
-												<label th:if="${#fields.hasErrors('nationalNumber')}" th:errors="*{nationalNumber}" class="validation-message"></label>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="control-label col-md-4 col-sm-5 col-xs-12">
-												<label th:text="#{form.rolegodung.label.tax.number}"></label>
-											</div>
-											<div class="col-md-8 col-sm-7 col-xs-12">
-												<input type="text" class="form-control" th:field="*{taxNumber}">
-												<label th:if="${#fields.hasErrors('taxNumber')}" th:errors="*{taxNumber}" class="validation-message"></label>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="control-label col-md-4 col-sm-5 col-xs-12">
-												<label th:text="#{form.rolegodung.label.telephone}"></label>
-											</div>
-											<div class="col-md-8 col-sm-7 col-xs-12">
-												<input type="text" class="form-control" th:field="*{telephone}">
-												<label th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" class="validation-message"></label>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="control-label col-md-4 col-sm-5 col-xs-12">
-												<label th:text="#{form.rolegodung.label.email}"></label>
-											</div>
-											<div class="col-md-8 col-sm-7 col-xs-12">
-												<input type="text" class="form-control" th:field="*{email}">
-												<label th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="validation-message"></label>
+											<div class="col-md-8 col-sm-8 col-xs-12">
+												<textarea class="form-control" rows="3" th:field="*{description}"></textarea>
+												<label th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="validation-message"></label>
 											</div>
 										</div>
 									</div>
@@ -180,94 +132,7 @@
 							</div>
 						</div>
 						
-						
-						
-						<div class="col-md-6 col-sm-6 col-xs-12">
-							<div class="x_panel">
-								<div class="x_title x_title_edit">
-									<h2>
-										<i class="fa fa-home"></i> 
-										<span class="title_left_text" th:text="#{form.address.address}" ></span>
-									</h2>
-									<div class="clearfix"></div>
-								</div>
-								<div class="x_content">
-									
-									<div class="col-md-12 col-sm-12 col-xs-12">
-										<div class="form-group">
-														<div class="control-label col-md-4 col-sm-4 col-xs-12">
-															<label th:text="#{form.address.street1}"></label>
-														</div>
-														<div class="col-md-8 col-sm-8 col-xs-12">
-															<input id="address_street1" type="text" class="form-control" th:field="*{address.street1}">
-															<label th:if="${#fields.hasErrors('address.street1')}" th:errors="*{address.street1}" class="validation-message"></label>
-														</div>
-													</div>
-													<div class="form-group">
-														<div class="control-label col-md-4 col-sm-4 col-xs-12">
-															<label th:text="#{form.address.street2}"></label>
-														</div>
-														<div class="col-md-8 col-sm-8 col-xs-12">
-															<input id="address_street2" type="text" class="form-control" th:field="*{address.street2}">
-															<label th:if="${#fields.hasErrors('address.street2')}" th:errors="*{address.street2}" class="validation-message"></label>
-														</div>
-													</div>
-													<div class="form-group">
-														<div class="control-label col-md-4 col-sm-4 col-xs-12">
-															<label th:text="#{form.address.city}"></label>
-														</div>
-														<div class="col-md-8 col-sm-8 col-xs-12">
-															<input id="address_city" type="text" class="form-control" th:field="*{address.city}">
-															<label th:if="${#fields.hasErrors('address.city')}" th:errors="*{address.city}" class="validation-message"></label>
-														</div>
-													</div>
-													<div class="form-group">
-														<div class="control-label col-md-4 col-sm-4 col-xs-12">
-															<label th:text="#{form.address.state}"></label>
-														</div>
-														<div class="col-md-8 col-sm-8 col-xs-12">
-															 <select id="provinceDropdown" style="width:100%"  th:field="*{address.province.provinceCode}">
-									                           	 <option value=""></option>
-									                           	 <option th:each="obj:${provinceDropdown}" 
-									                           	 		 th:value="${obj.provinceCode}" 
-									                           	 		 th:text="${obj.provinceName}">
-									                           	 </option>
-									                          </select>
-															<label th:if="${#fields.hasErrors('address.province.provinceCode')}" th:errors="*{address.province.provinceCode}" class="validation-message"></label>
-														</div>
-													</div>
-													<div class="form-group">
-														<div class="control-label col-md-4 col-sm-4 col-xs-12">
-															<label th:text="#{form.address.postcode}"></label>
-														</div>
-														<div class="col-md-8 col-sm-8 col-xs-12">
-															<input id="address_postcode" type="text" class="form-control" th:field="*{address.postcode}">
-															<label th:if="${#fields.hasErrors('address.postcode')}" th:errors="*{address.postcode}" class="validation-message"></label>
-														</div>
-													</div>
-													<div class="form-group">
-														<div class="control-label col-md-4 col-sm-4 col-xs-12">
-															<label th:text="#{form.country.header}"></label>
-														</div>
-														<div class="col-md-8 col-sm-8 col-xs-12">
-															 <select id="countryDropdown" style="width:100%"  th:field="*{address.country.countryId}">
-									                           	 <option value=""></option>
-									                           	 <option th:each="obj:${countryDropdown}" 
-									                           	 		 th:value="${obj.countryId}" 
-									                           	 		 th:text="${obj.countryName}">
-									                           	 </option>
-									                          </select>
-															<label th:if="${#fields.hasErrors('address.country.countryId')}" th:errors="*{address.country.countryId}" class="validation-message"></label>
-														</div>
-													</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						
-
-						</div>
+					</div>
 					
 				</div>
 				</form>
@@ -278,8 +143,8 @@
                     <div class="modal-dialog ">
                       <div class="modal-content">
 
-						<form method="post" id="deleteForm" data-parsley-validate class="form-horizontal form-label-left" th:action="@{/user/rolegodung/manage/delete}">
-                        <div class="modal-header">
+						<form autocomplete="off" method="post" id="deleteForm" data-parsley-validate class="form-horizontal form-label-left" th:action="@{/user/rolegodung/manage/delete}">
+                        <div class="modal-header modal-delete-header">
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                           </button>
                           <h4 class="modal-title" id="myModalLabel">
@@ -363,28 +228,7 @@
 		<!-- -------------------------------- -->
 		<!-- -------- Start Select2  -------- -->
 		<!-- -------------------------------- -->
-		$(function(){
-			var selectText = /*[[#{dropdown.text.select}]]*/;
-	      	$('#provinceDropdown').select2({
-	    	  		placeholder: selectText
-	     	 });
-	      	
-	      	$('#provinceSendDropdown').select2({
-	    	  		placeholder: selectText
-	     	 });
-	      	
-	      	$("#countryDropdown").select2({
-	      	  templateResult: formatState,
-	      	  templateSelection: formatState
-	      	});
-	    }); 
 		
-		
-		function formatState (state) {
-		  if (!state.id) { return state.text; }
-		  var $state = $('<span><img src="' + urlFlags + state.text + '.png" class="img-flag" /> ' + state.text + '</span>');
-		  return $state;
-		};
 		<!-- -------------------------------- -->
 		<!-- -------- End Select2  -------- -->
 		<!-- -------------------------------- -->
@@ -393,24 +237,14 @@
 		<!-- -------------------------------- -->
 		<!-- -------- Start Action  -------- -->
 		<!-- -------------------------------- -->
-		function loadAddress(){
-			$("#addressSend_street1").val($("#address_street1").val());
-			$("#addressSend_street2").val($("#address_street2").val());
-			$("#addressSend_city").val($("#address_city").val());
-			$("#addressSend_postcode").val($("#address_postcode").val());
-			$('#provinceSendDropdown').val($('#provinceDropdown').val()); // Change the value or make some change to the internal state
-			$('#provinceSendDropdown').trigger('change.select2'); // Notify only Select2 of changes
-		}
 		
 		function openModalMainDelete(){
 			var messageMain = /*[[#{label.delete.content.confirm}]]*/;
 			var id = $("#rolegodungIdEncrypt").val();
 			var code = $("#rolegodungCode").val();
-			var title = $("#title").val();
-			var firstname = $("#firstName").val();
-			var lastname = $("#lastName").val();
+			var name = $("#rolegodungName").val();
 			
-			var message = code + " " + firstname;
+			var message = code + " " + name;
 			
 			$("#delete_id").val(id);
     			$("#modal_delete_content").html(messageMain + " : " + message);

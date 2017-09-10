@@ -47,26 +47,29 @@
 
 			<!-- page content -->
 			<div class="right_col" role="main">
+			
+				<div class="col-md-12 col-sm-12 col-xs-12 x_panel search-head">
+					<div class="title_left">
+						<div class="col-md-6">
+							<h2>
+								<i th:class="${menu.icon}"></i> <span th:text="#{${menu.code}}"></span>
+							</h2>
+						</div>
+					</div>
+				</div>
+			
 			  	<div class="clearfix"></div>
 	            <div class="row">
 	              <div class="col-md-12 col-sm-12 col-xs-12">
 	                <div class="x_panel">
-	                  <div class="x_title">
-	                    <h2><i th:class="${menu.icon}"></i> <label th:text="#{${menu.code}}"></label></h2>
-	                    <div class="clearfix"></div>
-	                  </div>
 	                  <div class="x_content">
-	                    <br />
-	                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" 
-	                    th:action="@{/user/profile}" th:object="${profileForm}" method="POST" >
+	                    <form autocomplete="off" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" 
+	                   	 	  th:action="@{/user/profile}" th:object="${profileForm}" method="POST" >
 	
 	                      <div class="form-group">
 	                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name" th:text="#{form.profile.label.email}"></label>
 	                        <div class="col-md-6 col-sm-6 col-xs-12">
-	                          <!-- <span th:text="${profileForm.email}"></span>
-	                          <input type="hidden" name="email" th:value="${profileForm.email}" /> -->
 	                          <input type="text" class="form-control" readonly="readonly" th:value="${profileForm.email}" >
-	                          
 	                        </div>
 	                      </div>
 	                      <div class="form-group">
@@ -152,39 +155,9 @@
     <!-- Custom Theme Scripts -->
     <script th:src="@{/build/js/custom.js}"></script>
     
-    <script>
-	function openNotification(inputType,inputTitle,inputText){
-		if(inputType == "success" || inputType == "info" || inputType == "error"){ /* SUCCESS,INFO,ERROR */
-			new PNotify({
-	            title: inputTitle,
-	            text: inputText,
-	            type: inputType,
-	            styling: 'bootstrap3'
-	        });
-		}else if(inputType == "notice"){ /* NOTICE */
-			new PNotify({
-				title: inputTitle,
-				text: inputText,
-	            styling: 'bootstrap3'
-	        });
-		}else if(inputType == "dark"){ /* DARK */
-			new PNotify({
-				title: inputTitle,
-				text: inputText,
-	            type: inputType,
-	            styling: 'bootstrap3',
-	            addclass: 'dark'
-	        });
-		}else{
-			new PNotify({ /* NOTICE */
-				title: inputTitle,
-				text: inputText,
-	            styling: 'bootstrap3'
-	        });
-		}
-	}	
-    </script>
-    
+    <!-- Custom Theme Scripts -->
+	<script th:src="@{/js/godung.js}"></script>
+	
     <script th:inline="javascript">
 		/*<![CDATA[*/
 		var pnotify = [[${pnotify}]];

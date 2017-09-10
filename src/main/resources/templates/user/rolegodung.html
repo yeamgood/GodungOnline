@@ -78,12 +78,12 @@
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<div class="x_panel">
 								<div class="x_title x_title_edit">
-									<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="col-md-6 col-sm-6 col-xs-6">
 										<h2><i class="fa fa-search"></i> <span th:text="#{label.search.label}"></span></h2>
 									</div>
-									<div class="col-md-6 col-sm-6 col-xs-12" style="padding-right: 5px;">
-										<div id="bt-advance" class="pull-right" style="margin-top: 5px; 
-										     background: #fff; cursor: pointer; 
+									<div class="col-md-6 col-sm-6 col-xs-6" style="padding-right: 5px;">
+										<div id="bt-advance" class="pull-right" 
+											 style="background: #fff; cursor: pointer; 
 										     padding: 5px 10px; border: 1px solid #E6E9ED;cursor: pointer;">
 											<i class="fa fa-filter"></i>
 											<span th:text="#{label.search.advance}"></span>
@@ -95,8 +95,6 @@
 								<!-- Start Search Box  -->
 								<div class="clearfix"></div>
 									<div id="search-basic">
-										
-										
 										<div class="col-md-6  col-md-offset-3 col-sm-6  col-sm-offset-3 col-xs-12">
 											<div class="input-group">
 												<input id="input_basic_search" type="text" class="form-control" th:placeholder="#{label.search.input}"> <span class="input-group-btn">
@@ -108,15 +106,14 @@
 											<div class="content-center">
 												<span th:text="#{label.search.by}"></span> 
 												<span th:text="#{form.rolegodung.label.code}"></span> ,
-												<span th:text="#{form.rolegodung.label.fullname}"></span> ,
-												<span th:text="#{form.rolegodung.label.telephone}"></span> ,
-												<span th:text="#{form.rolegodung.label.email}"></span>
+												<span th:text="#{form.rolegodung.label.name}"></span> ,
+												<span th:text="#{form.rolegodung.label.description}"></span>
 											</div>
 										</div>
 									</div>
 									<div id="search-advance" style="display: none;">
 										<div class="col-md-12 col-sm-12 col-xs-12">
-												<form class="form-horizontal form-label-left input_mask">
+												<form autocomplete="off" class="form-horizontal form-label-left input_mask">
 							                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
 							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.rolegodung.label.code}"></label>
 							                         <div class="col-md-8 col-sm-8 col-xs-12">
@@ -125,22 +122,16 @@
 							                      </div>
 							
 							                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-							                       <label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.rolegodung.label.fullname}"></label>
+							                       <label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.rolegodung.label.name}"></label>
 							                        <div class="col-md-8 col-sm-8 col-xs-12">
-							                          <input id="input_advance_fullname"  type="text" class="form-control" >
+							                          <input id="input_advance_name"  type="text" class="form-control" >
 							                        </div>
 							                      </div>
 							                      
 							                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.rolegodung.label.telephone}"></label>
+							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.rolegodung.label.description}"></label>
 							                         <div class="col-md-8 col-sm-8 col-xs-12">
-							                         <input id="input_advance_telephone"  type="text" class="form-control" >
-							                         </div>
-							                      </div>
-							                       <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.rolegodung.label.email}"></label>
-							                         <div class="col-md-8 col-sm-8 col-xs-12">
-							                         <input id="input_advance_email"  type="text" class="form-control" >
+							                         <input id="input_advance_description"  type="text" class="form-control" >
 							                         </div>
 							                      </div>
 							
@@ -171,10 +162,9 @@
 											<tr>
 												<th th:text="#{datatables.text.no}"></th>
 												<th th:text="#{form.rolegodung.label.code}" class="col-md-1"></th>
-												<th th:text="#{form.rolegodung.label.fullname}" class="col-md-2"></th>
-												<th th:text="#{form.rolegodung.label.telephone}" class="col-md-1"></th>
-												<th th:text="#{form.rolegodung.label.email}" class="col-md-1"></th>
-												<th th:text="#{form.brand.label.action}"></th>
+												<th th:text="#{form.rolegodung.label.name}" class="col-md-3"></th>
+												<th th:text="#{form.rolegodung.label.description}" class="col-md-3"></th>
+												<th th:text="#{form.rolegodung.label.action}"></th>
 											</tr>
 										</thead>
 									</table>
@@ -190,7 +180,7 @@
 				<div class="modal-dialog ">
 					<div class="modal-content">
 
-						<div class="modal-header">
+						<div class="modal-header modal-delete-header">
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">×</span>
 							</button>
@@ -199,7 +189,7 @@
 							</h4>
 						</div>
 						<div class="modal-body">
-							<form id="deleteForm" data-parsley-validate class="form-horizontal form-label-left">
+							<form autocomplete="off" id="deleteForm" data-parsley-validate class="form-horizontal form-label-left">
 								<input type="hidden" id="delete_id" name="rolegodungIdEncrypt" /> <span id="modal_delete_content"></span>
 							</form>
 						</div>
@@ -261,7 +251,6 @@
 	
 	<!-- Custom Theme Scripts -->
 	<script th:src="@{/js/godung.js}"></script>
-	
 
 	<script th:inline="javascript">
 		var url_language = /*[[#{javascript.datatable.language.url}]]*/;
@@ -285,9 +274,8 @@
 		    	        "columns": [
 		  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
 		  	            { 'data': 'rolegodungCode' },
-		  	            { 'data': 'firstName' },
-		  	            { 'data': 'telephone' },
-		  	            { 'data': 'email' },
+		  	            { 'data': 'rolegodungName' },
+		  	            { 'data': 'description' },
 		  	            { 'data': 'rolegodungIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
 		  	        ],
 		  	      	"columnDefs": [{
@@ -298,19 +286,10 @@
 		                		        '   <i class="fa fa-wrench"></i></button>' +
 		                		        ' ' +
 		                	  	 	    '<button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textDelete + '"' +
-		                	  	 	    '   onclick="openModalDelete(\''+data+'\',\''+row.rolegodungCode + " " + row.firstName + '\');" >' +
+		                	  	 	    '   onclick="openModalDelete(\''+data+'\',\''+row.rolegodungCode + " " + row.rolegodungName + '\');" >' +
 		                	  	 	    '   <i class="fa fa-trash"></i></button>'; 
 		                  },
-		                  "targets": 5
-		             },{
-		            	 	 "render": function ( data, type, row ) {
-		            	 		 if(row.rolegodungType == "PERSON"){
-		            	 			 return	row.title + row.firstName + " " + row.lastName;
-		            	 		 }else{
-		            	 			 return	row.firstName;
-		            	 		 }
-		                  },
-		                  "targets": 2
+		                  "targets": 4
 		             }
 		  	      	],
 		             "initComplete": function( settings, json ) {
@@ -355,7 +334,7 @@
 				});
 		        
 		        /* ADVANCE SEARCH */
-		        $('#input_advance_code,#input_advance_fullname,#input_advance_telephone,#input_advance_email').on( 'keyup change', function () {
+		        $('#input_advance_code,#input_advance_name,#input_advance_description').on( 'keyup change', function () {
 		       	 	searchDatatablesMain();
 				});
 		        
@@ -365,9 +344,8 @@
 		        
 		        $('#bt_advance_reset').on( 'click', function () {
 		        		$("#input_advance_code").val("");
-		        		$("#input_advance_fullname").val("");
-		        		$("#input_advance_telephone").val("");
-		        		$("#input_advance_email").val("");
+		        		$("#input_advance_name").val("");
+		        		$("#input_advance_description").val("");
 			    		searchDatatablesMain();
 			    });
 		});
@@ -376,12 +354,12 @@
 	   		var table = $('#datatablesMain').DataTable();
 	    		table
 	    		.columns(1).search($("#input_advance_code").val())
-	    		.columns(2).search($("#input_advance_fullname").val())
-	    		.columns(3).search($("#input_advance_telephone").val())
-	    		.columns(4).search($("#input_advance_email").val()).draw();
+	    		.columns(2).search($("#input_advance_name").val())
+	    		.columns(3).search($("#input_advance_description").val())
+	    		.draw();
 	    }
-		<!-- -------- End datatables Main -------- -->
 		
+		<!-- -------- End datatables Main -------- -->
 		
 		<!-- -------- Start Modal ----------- -->
 		function openModalDelete(id,message){
@@ -390,18 +368,6 @@
 	    		$("#modal_delete_content").html(messageMain + " : " + message);
 	    		$('#modal_delete').modal('show');
 	    }
-		
-		function openModalMainDelete(){
-			var messageMain = /*[[#{label.delete.content.confirm}]]*/;
-			var id = $("#rolegodungId").val();
-			var code = $("#rolegodungCode").val();
-			var name = $("#rolegodungName").val();
-			var message = code + " " + name;
-			
-			$("#delete_id").val(id);
-    			$("#modal_delete_content").html(messageMain + " : " + message);
-    			$('#modal_delete').modal('show');
-		}
 		<!-- -------- End Modal ----------- -->
 	    
 	    

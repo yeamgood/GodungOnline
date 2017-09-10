@@ -79,6 +79,10 @@ public class Employee extends ModelTemplate{
 	@JsonIgnore
 	private Godung godung;
 	
+	@ManyToOne()
+	@JoinColumn(name = "user_id")
+	private User user;
+	
 	public void setObject(Employee employee) {
 		this.title = employee.getTitle();
 		this.firstName = employee.getFirstName();
@@ -193,13 +197,21 @@ public class Employee extends ModelTemplate{
 		this.employeeIdEncrypt = employeeIdEncrypt;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	@Override
 	public String toString() {
 		return "Employee [employeeId=" + employeeId + ", employeeIdEncrypt=" + employeeIdEncrypt + ", employeeCode="
 				+ employeeCode + ", nationalNumber=" + nationalNumber + ", taxNumber=" + taxNumber + ", title=" + title
 				+ ", firstName=" + firstName + ", lastName=" + lastName + ", telephone=" + telephone + ", email="
-				+ email + ", description=" + description + ", address=" + address + ", godung=" + godung + "]";
+				+ email + ", description=" + description + ", address=" + address + ", godung=" + godung + ", user="
+				+ user + "]";
 	}
 
-	
 }

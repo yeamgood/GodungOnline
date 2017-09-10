@@ -11,13 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yeamgood.godungonline.exception.GodungIdException;
-import com.yeamgood.godungonline.model.Country;
 import com.yeamgood.godungonline.model.Rolegodung;
-import com.yeamgood.godungonline.model.Province;
 import com.yeamgood.godungonline.model.User;
-import com.yeamgood.godungonline.repository.CountryRepository;
 import com.yeamgood.godungonline.repository.RolegodungRepository;
-import com.yeamgood.godungonline.repository.ProvinceRepository;
 import com.yeamgood.godungonline.utils.AESencrpUtils;
 import com.yeamgood.godungonline.utils.GenerateCodeUtils;
 
@@ -28,12 +24,6 @@ public class RolegodungServiceImpl implements RolegodungService{
 
 	@Autowired
 	private RolegodungRepository rolegodungRepository;
-	
-	@Autowired
-	private ProvinceRepository provinceRepository;
-	
-	@Autowired
-	private CountryRepository countryRepository;
 	
 	@Override
 	public Rolegodung findByIdEncrypt(String idEncrypt,User userSession) throws Exception {
@@ -74,21 +64,10 @@ public class RolegodungServiceImpl implements RolegodungService{
 				logger.debug("I:Null Max Data");
 				maxRolegodung = new Rolegodung();
 			}
-			String generateCode = GenerateCodeUtils.generateCode(GenerateCodeUtils.TYPE_EMPLOYEE, maxRolegodung.getRolegodungCode());
+			String generateCode = GenerateCodeUtils.generateCode(GenerateCodeUtils.TYPE_ROLEGODUNG , maxRolegodung.getRolegodungCode());
 			rolegodung.setRolegodungCode(generateCode);
 			rolegodung.setGodung(userSession.getGodung());
 			rolegodung.setCreate(userSession.getEmail(), new Date());
-			
-			// PROVINCE
-			Province provinceTemp = rolegodung.getAddress().getProvince();
-			provinceTemp =  provinceRepository.findByProvinceCode(provinceTemp.getProvinceCode());
-			rolegodung.getAddress().setProvince(provinceTemp);
-			
-			// COUNTRY
-			Country countryTemp = rolegodung.getAddress().getCountry();
-			countryTemp = countryRepository.findOne(countryTemp.getCountryId());
-			rolegodung.getAddress().setCountry(countryTemp);
-			
 			rolegodung = rolegodungRepository.save(rolegodung);
 			rolegodung.setRolegodungIdEncrypt(AESencrpUtils.encryptLong(rolegodung.getRolegodungId()));
 		}else {
@@ -96,20 +75,6 @@ public class RolegodungServiceImpl implements RolegodungService{
 			Rolegodung rolegodungTemp = rolegodungRepository.findOne(id);
 			rolegodungTemp.setObject(rolegodung);
 			rolegodungTemp.setUpdate(userSession.getEmail(), new Date());
-			
-			// ADDRESS
-			rolegodungTemp.getAddress().setObject(rolegodung.getAddress());
-			
-			// PROVINCE
-			Province provinceTemp = rolegodung.getAddress().getProvince();
-			provinceTemp =  provinceRepository.findByProvinceCode(provinceTemp.getProvinceCode());
-			rolegodungTemp.getAddress().setProvince(provinceTemp);
-			
-			// COUNTRY
-			Country countryTemp = rolegodung.getAddress().getCountry();
-			countryTemp = countryRepository.findOne(countryTemp.getCountryId());
-			rolegodungTemp.getAddress().setCountry(countryTemp);
-			
 			rolegodung = rolegodungRepository.save(rolegodungTemp);
 			rolegodung.setRolegodungIdEncrypt(AESencrpUtils.encryptLong(rolegodung.getRolegodungId()));
 			logger.debug("I:Step6");

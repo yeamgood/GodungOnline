@@ -143,7 +143,7 @@ public class RolegodungController {
 	}
 	
 	// --------------------------------------------------------------------
-	// --- PERSON ---------------------------------------------------------
+	// --- Manage ---------------------------------------------------------
 	// --------------------------------------------------------------------
 	@RequestMapping(value="/user/rolegodung/manage", method = RequestMethod.GET)
 	public ModelAndView userRolegodungPerson(Model model,HttpSession session){
@@ -163,7 +163,6 @@ public class RolegodungController {
 			address.setCountry(country);
 			
 			Rolegodung rolegodung = new Rolegodung();
-			rolegodung.setAddress(address);
 			modelAndView.addObject("rolegodung",rolegodung);
 	    }
 		

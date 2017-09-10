@@ -128,6 +128,11 @@ label {
 	padding: 3px 10px;
 }
 
+.modal-delete-header{
+	background-color: #d9534f;
+    color: white;
+}
+
 /* Form */
 .control-span{
 	font-size: 14px;
