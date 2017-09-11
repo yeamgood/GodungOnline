@@ -83,6 +83,10 @@ public class Employee extends ModelTemplate{
 	@JoinColumn(name = "user_id")
 	private User user;
 	
+	@ManyToOne()
+	@JoinColumn(name = "rolegodung_id",nullable = true)
+	private Rolegodung rolegodung;
+	
 	public void setObject(Employee employee) {
 		this.title = employee.getTitle();
 		this.firstName = employee.getFirstName();
@@ -205,13 +209,21 @@ public class Employee extends ModelTemplate{
 		this.user = user;
 	}
 
+	public Rolegodung getRolegodung() {
+		return rolegodung;
+	}
+
+	public void setRolegodung(Rolegodung rolegodung) {
+		this.rolegodung = rolegodung;
+	}
+
 	@Override
 	public String toString() {
 		return "Employee [employeeId=" + employeeId + ", employeeIdEncrypt=" + employeeIdEncrypt + ", employeeCode="
 				+ employeeCode + ", nationalNumber=" + nationalNumber + ", taxNumber=" + taxNumber + ", title=" + title
 				+ ", firstName=" + firstName + ", lastName=" + lastName + ", telephone=" + telephone + ", email="
 				+ email + ", description=" + description + ", address=" + address + ", godung=" + godung + ", user="
-				+ user + "]";
+				+ user + ", rolegodung=" + rolegodung + "]";
 	}
 
 }

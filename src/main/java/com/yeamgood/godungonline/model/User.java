@@ -41,7 +41,7 @@ public class User {
 	private String password;
 	
 	@Transient
-	private String passwordConfirm;
+	private String confirmPassword;
 	
 	@Column(name = "name")
 	@NotEmpty(message = "{validation.required.name}")
@@ -148,12 +148,12 @@ public class User {
 		this.language = language;
 	}
 
-	public String getPasswordConfirm() {
-		return passwordConfirm;
+	public String getConfirmPassword() {
+		return confirmPassword;
 	}
 
-	public void setPasswordConfirm(String passwordConfirm) {
-		this.passwordConfirm = passwordConfirm;
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
 	}
 	
 }

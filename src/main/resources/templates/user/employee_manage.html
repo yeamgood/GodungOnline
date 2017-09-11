@@ -257,7 +257,7 @@
 							</div>
 						</div>
 						
-						<div class="col-md-6 col-sm-6 col-xs-12">
+						<!-- <div class="col-md-6 col-sm-6 col-xs-12">
 							<div class="x_panel">
 								<div class="x_title x_title_edit">
 									<h2>
@@ -267,6 +267,13 @@
 								</div>
 								<div class="x_content">
 									<div class="col-md-12 col-sm-12 col-xs-12">
+										<div class="form-group">
+											<div class="control-label col-md-4 col-sm-4 col-xs-12">
+											</div>
+											<div class="col-md-8 col-sm-8 col-xs-12">
+					                              <input type="checkbox" class="flat"> <span th:text="#{form.rolegodung.label.register}"></span>
+											</div>
+										</div>
 										<div class="form-group">
 											<div class="control-label col-md-4 col-sm-4 col-xs-12">
 												<label th:text="#{form.register.name}"></label>
@@ -299,16 +306,47 @@
 												<label th:text="#{form.register.password.confirm}"></label>
 											</div>
 											<div class="col-md-8 col-sm-8 col-xs-12">
-												<input type="password" class="form-control" th:field="*{user.passwordConfirm}"/>
-												<label th:if="${#fields.hasErrors('user.passwordConfirm')}" th:errors="*{user.password}" class="validation-message"></label>
+												<input type="password" class="form-control" th:field="*{user.confirmPassword}"/>
+												<label th:if="${#fields.hasErrors('user.confirmPassword')}" th:errors="*{user.confirmPassword" class="validation-message"></label>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="control-label col-md-4 col-sm-4 col-xs-12">
+											</div>
+											<div class="col-md-8 col-sm-8 col-xs-12">
+												<label th:text="#{form.rolegodung.label.remark.email}"></label>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
 						
-				
+						<div class="col-md-6 col-sm-6 col-xs-12">
+							<div class="x_panel">
+								<div class="x_title x_title_edit">
+									<h2>
+										<i th:class="#{form.rolegodung.icon}"></i> <span class="title_left_text" th:text="#{form.rolegodung.header}"></span>
+									</h2>
+									<div class="clearfix"></div>
+								</div>
+								<div class="x_content">
+									<div class="col-md-12 col-sm-12 col-xs-12">
+										<div class="form-group">
+											<div class="control-label col-md-4 col-sm-4 col-xs-12">
+												<label th:text="#{form.rolegodung.header}"></label>
+											</div>
+											<div class="col-md-8 col-sm-8 col-xs-12">
+												<select id="rolegodungDropdown" style="width: 100%" th:field="*{rolegodung.rolegodungIdEncrypt}">
+													<option value=" " th:text="#{dropdown.text.select}"></option>
+													<option th:each="obj:${rolegodungDropdown}" th:value="${obj.rolegodungIdEncrypt}" th:text="${obj.rolegodungName}"></option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div> 
 
 
 					</div>
@@ -413,6 +451,10 @@
 	     	 });
 	      	
 	      	$('#provinceSendDropdown').select2({
+	    	  		placeholder: selectText
+	     	 });
+	      	
+	      	$('#rolegodungDropdown').select2({
 	    	  		placeholder: selectText
 	     	 });
 	      	

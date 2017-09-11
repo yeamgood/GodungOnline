@@ -30,11 +30,13 @@ import com.yeamgood.godungonline.model.Country;
 import com.yeamgood.godungonline.model.Employee;
 import com.yeamgood.godungonline.model.Menu;
 import com.yeamgood.godungonline.model.Province;
+import com.yeamgood.godungonline.model.Rolegodung;
 import com.yeamgood.godungonline.model.User;
 import com.yeamgood.godungonline.service.CountryService;
 import com.yeamgood.godungonline.service.EmployeeService;
 import com.yeamgood.godungonline.service.MenuService;
 import com.yeamgood.godungonline.service.ProvinceService;
+import com.yeamgood.godungonline.service.RolegodungService;
 import com.yeamgood.godungonline.utils.AESencrpUtils;
 
 @Controller
@@ -58,6 +60,9 @@ public class EmployeeController {
 	
 	@Autowired
 	CountryService countryService;
+	
+	@Autowired
+	RolegodungService rolegodungService;
 	
 	@RequestMapping(value="/user/employee", method = RequestMethod.GET)
 	public ModelAndView userEmployee(HttpSession session) throws Exception{
@@ -132,11 +137,13 @@ public class EmployeeController {
 		Employee employee = employeeService.findByIdEncrypt(idEncrypt,userSession);
 		List<Province> provinceDropdown = provinceService.findAllByOrderByProvinceNameAsc();
 		List<Country> countryDropdown = countryService.findAllByOrderByCountryNameAsc();
+		List<Rolegodung> rolegodungDropdown = rolegodungService.findAllByGodungGodungIdOrderByRolegodungNameAsc(userSession.getGodung().getGodungId());
 		
 		modelAndView.addObject("menu", menu);
 		modelAndView.addObject("employee",employee);
 		modelAndView.addObject("provinceDropdown",provinceDropdown);
 		modelAndView.addObject("countryDropdown",countryDropdown);
+		modelAndView.addObject("rolegodungDropdown",rolegodungDropdown);
 		modelAndView.setViewName("user/employee_manage");
 		logger.debug("O:");
 		return modelAndView;
@@ -146,12 +153,14 @@ public class EmployeeController {
 	// --- PERSON ---------------------------------------------------------
 	// --------------------------------------------------------------------
 	@RequestMapping(value="/user/employee/manage", method = RequestMethod.GET)
-	public ModelAndView userEmployeePerson(Model model,HttpSession session){
+	public ModelAndView userEmployeePerson(Model model,HttpSession session) throws Exception{
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
 		Menu menu = menuService.findById(MENU_ID);
+		User userSession = (User) session.getAttribute("user");
 		List<Province> provinceDropdown = provinceService.findAllByOrderByProvinceNameAsc();
 		List<Country> countryDropdown = countryService.findAllByOrderByCountryNameAsc();
+		List<Rolegodung> rolegodungDropdown = rolegodungService.findAllByGodungGodungIdOrderByRolegodungNameAsc(userSession.getGodung().getGodungId());
 		
 		//CHECK ERROR BINDING AND INITIAL DATA
 		if (!model.containsAttribute("employee")) {
@@ -170,6 +179,7 @@ public class EmployeeController {
 		modelAndView.addObject("menu", menu);
 		modelAndView.addObject("countryDropdown",countryDropdown);
 		modelAndView.addObject("provinceDropdown",provinceDropdown);
+		modelAndView.addObject("rolegodungDropdown",rolegodungDropdown);
 		modelAndView.setViewName("user/employee_manage");
 		logger.debug("O");
 		return modelAndView;

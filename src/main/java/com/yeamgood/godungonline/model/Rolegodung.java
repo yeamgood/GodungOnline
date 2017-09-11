@@ -97,5 +97,12 @@ public class Rolegodung extends ModelTemplate{
 	public void setRolegodungIdEncrypt(String rolegodungIdEncrypt) {
 		this.rolegodungIdEncrypt = rolegodungIdEncrypt;
 	}
+
+	@Override
+	public String toString() {
+		return "Rolegodung [rolegodungId=" + rolegodungId + ", rolegodungIdEncrypt=" + rolegodungIdEncrypt
+				+ ", rolegodungCode=" + rolegodungCode + ", rolegodungName=" + rolegodungName + ", description="
+				+ description + ", godung=" + godung + "]";
+	}
 	
 }

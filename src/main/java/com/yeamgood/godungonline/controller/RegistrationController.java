@@ -48,6 +48,10 @@ public class RegistrationController {
 			logger.debug("userExists");
 			bindingResult.rejectValue("email", "error.user", messageSource.getMessage("validation.required.email.registered",null,LocaleContextHolder.getLocale()));
 		}
+		if(!bindingResult.hasErrors() && !user.getPassword().equals(user.getConfirmPassword())) {
+			String messageError = messageSource.getMessage("validation.required.password.compare",null,LocaleContextHolder.getLocale());
+			bindingResult.rejectValue("password", "error.resetPasswordForm", messageError);
+		}
 		if (bindingResult.hasErrors()) {
 			logger.debug("bindingResult error");
 			modelAndView.setViewName("registration");

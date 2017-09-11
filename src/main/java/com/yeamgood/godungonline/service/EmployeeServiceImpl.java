@@ -14,6 +14,7 @@ import com.yeamgood.godungonline.exception.GodungIdException;
 import com.yeamgood.godungonline.model.Country;
 import com.yeamgood.godungonline.model.Employee;
 import com.yeamgood.godungonline.model.Province;
+import com.yeamgood.godungonline.model.Rolegodung;
 import com.yeamgood.godungonline.model.User;
 import com.yeamgood.godungonline.repository.CountryRepository;
 import com.yeamgood.godungonline.repository.EmployeeRepository;
@@ -89,6 +90,11 @@ public class EmployeeServiceImpl implements EmployeeService{
 			countryTemp = countryRepository.findOne(countryTemp.getCountryId());
 			employee.getAddress().setCountry(countryTemp);
 			
+			//RoleGodung 
+			if(employee != null && StringUtils.isBlank(employee.getRolegodung().getRolegodungIdEncrypt())) {
+				employee.setRolegodung(null);
+			}
+			
 			employee = employeeRepository.save(employee);
 			employee.setEmployeeIdEncrypt(AESencrpUtils.encryptLong(employee.getEmployeeId()));
 		}else {
@@ -109,6 +115,15 @@ public class EmployeeServiceImpl implements EmployeeService{
 			Country countryTemp = employee.getAddress().getCountry();
 			countryTemp = countryRepository.findOne(countryTemp.getCountryId());
 			employeeTemp.getAddress().setCountry(countryTemp);
+			
+			//RoleGodung 
+			if(employee != null && StringUtils.isBlank(employee.getRolegodung().getRolegodungIdEncrypt())) {
+				employeeTemp.setRolegodung(null);
+			}else {
+				Rolegodung rolegodung = new Rolegodung();
+				rolegodung.setRolegodungId(AESencrpUtils.decryptLong(employee.getRolegodung().getRolegodungIdEncrypt()));
+				employeeTemp.setRolegodung(rolegodung);
+			}
 			
 			employee = employeeRepository.save(employeeTemp);
 			employee.setEmployeeIdEncrypt(AESencrpUtils.encryptLong(employee.getEmployeeId()));
