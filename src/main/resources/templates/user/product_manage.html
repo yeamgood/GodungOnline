@@ -155,6 +155,17 @@
 											</div>
 											<div class="form-group">
 												<div class="control-label col-md-4 col-sm-4 col-xs-12">
+													<label th:text="#{form.product.text.category}"></label>
+												</div>
+												<div class="col-md-8 col-sm-8 col-xs-12">
+													 <select id="categoryDropdown" name="brandList" class="" style="width:100%" >
+							                           	 <option value=""></option>
+							                           	 <option th:each="obj:${categoryList}" th:value="${obj.categoryId}" th:text="${obj.categoryName}"></option>
+							                          </select>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="control-label col-md-4 col-sm-4 col-xs-12">
 													<label th:text="#{form.product.text.shelflife}"></label>
 												</div>
 												<div class="col-md-8 col-sm-8 col-xs-12">
@@ -168,7 +179,7 @@
 								</div>
 							</div>
 						</div>
-						
+					<!-- 	
 						<div class="col-md-12 col-sm-12 col-xs-12">
 							<div class="x_panel">
 								<div class="x_title x_title_edit">
@@ -197,7 +208,7 @@
 
 								</div>
 							</div>
-						</div>
+						</div> -->
 
 
 						<div class="col-md-12 col-sm-12 col-xs-12">
@@ -275,7 +286,7 @@
 			<!-- ----------------------------- -->
 			<!-- -------- Start Modal -------- -->
 			<!-- ----------------------------- -->
-			<div id="modal_category" class="modal fade bs-example-modal-lg"  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+		<!-- 	<div id="modal_category" class="modal fade bs-example-modal-lg"  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 
@@ -304,7 +315,7 @@
 
 					</div>
 				</div>
-			</div>
+			</div> -->
 			
 			
 			<!-- price -->
@@ -500,7 +511,7 @@
 		<!-- --------------------------------------- -->
 		<!-- -------- Start datatables Main -------- -->
 		<!-- --------------------------------------- -->
-		 $(document).ready(function() {
+	/* 	 $(document).ready(function() {
 		    	var table =  $('#categoryDatatables').DataTable( {
 		    			"processing": true,
 		    	        "paging":   false,
@@ -525,7 +536,7 @@
 	     	var btDelete = '<button type="button" class="btn btn-danger btn-xs"><i class="fa fa-close"></i></button>';
 	     	table.row.add([btDelete,codeText,nameText]).draw();
 	     	closeCategoryModal();
-	    }
+	    } */
 		 
 		 $(document).ready(function() {
 		    	var table =  $('#priceDatatables').DataTable( {
@@ -654,6 +665,10 @@
 	     	 });
 	      	
 	      	$('#brandDropdown').select2({
+	    	  		placeholder: selectText
+	     	 });
+	      	
+	      	$('#categoryDropdown').select2({
 	    	  		placeholder: selectText
 	     	 });
 	      	

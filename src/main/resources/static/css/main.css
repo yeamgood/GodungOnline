@@ -177,3 +177,8 @@ label {
 .x_title_edit h2{
 	overflow: visible;
 }
+
+/* SELECT2 EDIT */
+.select2-container--default .select2-selection--single .select2-selection__rendered{
+	color: #555 !important;
+}

@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yeamgood.godungonline.exception.GodungIdException;
+import com.yeamgood.godungonline.model.Country;
 import com.yeamgood.godungonline.model.Province;
 import com.yeamgood.godungonline.model.Supplier;
 import com.yeamgood.godungonline.model.User;
+import com.yeamgood.godungonline.repository.CountryRepository;
 import com.yeamgood.godungonline.repository.ProvinceRepository;
 import com.yeamgood.godungonline.repository.SupplierRepository;
 import com.yeamgood.godungonline.utils.AESencrpUtils;
@@ -29,6 +31,9 @@ public class SupplierServiceImpl implements SupplierService{
 	
 	@Autowired
 	private ProvinceRepository provinceRepository;
+	
+	@Autowired 
+	private CountryRepository countryRepository;
 	
 	@Override
 	public Supplier findByIdEncrypt(String idEncrypt,User userSession) throws Exception {
@@ -78,10 +83,19 @@ public class SupplierServiceImpl implements SupplierService{
 			Province provinceTemp = supplier.getAddress().getProvince();
 			provinceTemp =  provinceRepository.findByProvinceCode(provinceTemp.getProvinceCode());
 			supplier.getAddress().setProvince(provinceTemp);
+			// COUNTRY
+			Country countryTemp = supplier.getAddress().getCountry();
+			countryTemp = countryRepository.findOne(countryTemp.getCountryId());
+			supplier.getAddress().setCountry(countryTemp);
 			
+			// PROVINCE SEND
 			Province provinceSendTemp = supplier.getAddressSend().getProvince();
 			provinceSendTemp =  provinceRepository.findByProvinceCode(provinceSendTemp.getProvinceCode());
 			supplier.getAddressSend().setProvince(provinceSendTemp);
+			// COUNTRY SEND
+			Country countrySendTemp = supplier.getAddressSend().getCountry();
+			countrySendTemp = countryRepository.findOne(countrySendTemp.getCountryId());
+			supplier.getAddressSend().setCountry(countrySendTemp);
 			
 			supplier = supplierRepository.save(supplier);
 			supplier.setSupplierIdEncrypt(AESencrpUtils.encryptLong(supplier.getSupplierId()));
@@ -99,10 +113,19 @@ public class SupplierServiceImpl implements SupplierService{
 			Province provinceTemp = supplier.getAddress().getProvince();
 			provinceTemp =  provinceRepository.findByProvinceCode(provinceTemp.getProvinceCode());
 			supplierTemp.getAddress().setProvince(provinceTemp);
+			// COUNTRY
+			Country countryTemp = supplier.getAddress().getCountry();
+			countryTemp = countryRepository.findOne(countryTemp.getCountryId());
+			supplierTemp.getAddress().setCountry(countryTemp);
 			
+			// PROVINCE SEND
 			Province provinceSendTemp = supplier.getAddressSend().getProvince();
 			provinceSendTemp =  provinceRepository.findByProvinceCode(provinceSendTemp.getProvinceCode());
 			supplierTemp.getAddressSend().setProvince(provinceSendTemp);
+			// COUNTRY SEND
+			Country countrySendTemp = supplier.getAddressSend().getCountry();
+			countrySendTemp = countryRepository.findOne(countrySendTemp.getCountryId());
+			supplierTemp.getAddressSend().setCountry(countrySendTemp);
 			
 			supplier = supplierRepository.save(supplierTemp);
 			supplier.setSupplierIdEncrypt(AESencrpUtils.encryptLong(supplier.getSupplierId()));

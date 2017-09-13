@@ -11,11 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yeamgood.godungonline.exception.GodungIdException;
-import com.yeamgood.godungonline.model.Province;
+import com.yeamgood.godungonline.model.Country;
 import com.yeamgood.godungonline.model.Customer;
+import com.yeamgood.godungonline.model.Province;
 import com.yeamgood.godungonline.model.User;
-import com.yeamgood.godungonline.repository.ProvinceRepository;
+import com.yeamgood.godungonline.repository.CountryRepository;
 import com.yeamgood.godungonline.repository.CustomerRepository;
+import com.yeamgood.godungonline.repository.ProvinceRepository;
 import com.yeamgood.godungonline.utils.AESencrpUtils;
 import com.yeamgood.godungonline.utils.GenerateCodeUtils;
 
@@ -29,6 +31,9 @@ public class CustomerServiceImpl implements CustomerService{
 	
 	@Autowired
 	private ProvinceRepository provinceRepository;
+	
+	@Autowired
+	private CountryRepository countryRepository;
 	
 	@Override
 	public Customer findByIdEncrypt(String idEncrypt,User userSession) throws Exception {
@@ -78,10 +83,19 @@ public class CustomerServiceImpl implements CustomerService{
 			Province provinceTemp = customer.getAddress().getProvince();
 			provinceTemp =  provinceRepository.findByProvinceCode(provinceTemp.getProvinceCode());
 			customer.getAddress().setProvince(provinceTemp);
+			// COUNTRY
+			Country countryTemp = customer.getAddress().getCountry();
+			countryTemp = countryRepository.findOne(countryTemp.getCountryId());
+			customer.getAddress().setCountry(countryTemp);
 			
+			// PROVINCE SEND
 			Province provinceSendTemp = customer.getAddressSend().getProvince();
 			provinceSendTemp =  provinceRepository.findByProvinceCode(provinceSendTemp.getProvinceCode());
 			customer.getAddressSend().setProvince(provinceSendTemp);
+			// COUNTRY SEND
+			Country countrySendTemp = customer.getAddressSend().getCountry();
+			countrySendTemp = countryRepository.findOne(countrySendTemp.getCountryId());
+			customer.getAddressSend().setCountry(countrySendTemp);
 			
 			customer = customerRepository.save(customer);
 			customer.setCustomerIdEncrypt(AESencrpUtils.encryptLong(customer.getCustomerId()));
@@ -99,11 +113,20 @@ public class CustomerServiceImpl implements CustomerService{
 			Province provinceTemp = customer.getAddress().getProvince();
 			provinceTemp =  provinceRepository.findByProvinceCode(provinceTemp.getProvinceCode());
 			customerTemp.getAddress().setProvince(provinceTemp);
+			// COUNTRY
+			Country countryTemp = customer.getAddress().getCountry();
+			countryTemp = countryRepository.findOne(countryTemp.getCountryId());
+			customerTemp.getAddress().setCountry(countryTemp);
 			
+			// PROVINCE SEND
 			Province provinceSendTemp = customer.getAddressSend().getProvince();
 			provinceSendTemp =  provinceRepository.findByProvinceCode(provinceSendTemp.getProvinceCode());
 			customerTemp.getAddressSend().setProvince(provinceSendTemp);
-			
+			// COUNTRY SEND
+			Country countrySendTemp = customer.getAddressSend().getCountry();
+			countrySendTemp = countryRepository.findOne(countrySendTemp.getCountryId());
+			customerTemp.getAddressSend().setCountry(countrySendTemp);
+						
 			customer = customerRepository.save(customerTemp);
 			customer.setCustomerIdEncrypt(AESencrpUtils.encryptLong(customer.getCustomerId()));
 			logger.debug("I:Step6");

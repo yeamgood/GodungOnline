@@ -208,7 +208,7 @@
 														</div>
 														<div class="col-md-8 col-sm-8 col-xs-12">
 															 <select id="provinceDropdown" style="width:100%"  th:field="*{address.province.provinceCode}">
-									                           	 <option value=""></option>
+									                           	 <option value=" " th:text="#{dropdown.text.select}"></option>
 									                           	 <option th:each="obj:${provinceDropdown}" 
 									                           	 		 th:value="${obj.provinceCode}" 
 									                           	 		 th:text="${obj.provinceName}">
@@ -232,7 +232,7 @@
 														</div>
 														<div class="col-md-8 col-sm-8 col-xs-12">
 															 <select id="countryDropdown1" style="width:100%"  th:field="*{address.country.countryId}">
-									                           	 <option value=""></option>
+									                           	 <option value="0" th:text="#{dropdown.text.select}"></option>
 									                           	 <option th:each="obj:${countryDropdown}" 
 									                           	 		 th:value="${obj.countryId}" 
 									                           	 		 th:text="${obj.countryName}">
@@ -296,7 +296,7 @@
 														</div>
 														<div class="col-md-8 col-sm-8 col-xs-12">
 															 <select id="provinceSendDropdown" style="width:100%" th:field="*{addressSend.province.provinceCode}">
-									                           	 <option value=""></option>
+									                           	 <option value=" " th:text="#{dropdown.text.select}"></option>
 									                           	 <option th:each="obj:${provinceDropdown}" 
 									                           	 		 th:value="${obj.provinceCode}" 
 									                           	 		 th:text="${obj.provinceName}">
@@ -319,14 +319,14 @@
 															<label th:text="#{form.country.header}"></label>
 														</div>
 														<div class="col-md-8 col-sm-8 col-xs-12">
-															 <select id="countryDropdown2" style="width:100%"  th:field="*{address.country.countryId}">
-									                           	 <option value=""></option>
+															 <select id="countryDropdown2" style="width:100%"  th:field="*{addressSend.country.countryId}">
+									                           	 <option value="0" th:text="#{dropdown.text.select}"></option>
 									                           	 <option th:each="obj:${countryDropdown}" 
 									                           	 		 th:value="${obj.countryId}" 
 									                           	 		 th:text="${obj.countryName}">
 									                           	 </option>
 									                          </select>
-															<label th:if="${#fields.hasErrors('address.country.countryId')}" th:errors="*{address.country.countryId}" class="validation-message"></label>
+															<label th:if="${#fields.hasErrors('addressSend.country.countryId')}" th:errors="*{addressSend.country.countryId}" class="validation-message"></label>
 														</div>
 													</div>
 									</div>
@@ -510,7 +510,7 @@
 	      	});
 	    }); 
 		function formatState (state) {
-		  if (!state.id) { return state.text; }
+		  if (!state.id || state.id == "0") { return state.text; }
 		  var $state = $('<span><img src="' + urlFlags + state.text + '.png" class="img-flag" /> ' + state.text + '</span>');
 		  return $state;
 		};
