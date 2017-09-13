@@ -58,36 +58,48 @@
 
 			<!-- page content -->
 			<div class="right_col" role="main">
-				<div class="clearfix"></div>
-				<div class="row">
-					<div class="col-md-12 col-sm-12 col-xs-12">
-						<div class="x_panel">
-								<div class="search-head col-md-12 col-sm-12 col-xs-12">
-									<div class="col-md-6">
-										<h2>
-											<i th:class="${menu.icon}"></i> <label th:text="#{${menu.code}}"></label>
-										</h2>
-									</div>
-									<!-- <div class="pull-right header-right">
-										<button id="bt_delete" type="button" class="btn btn-danger" onclick="openModalMainDelete();">
-											<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
-										</button>
-											<button id="bt_save" type="button" class="btn btn-success" onclick="saveAction();">
-												<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
-											</button>
-									</div> -->
-								</div>
-								
-								<div class="clearfix"></div>
-								<div class="col-md-6 col-sm-6 col-xs-12">
-									<div>
-										<h2><i class="fa fa-info-circle"></i> <span th:text="#{form.product.profile.main}"></span></h2>
-									</div>
-								</div>
+				<form id="form" autocomplete="off" th:action="@{/user/product/manage}" th:object="${product}" method="post" class="form-horizontal" role="form" data-parsley-validate>
+				<div class="">
+				
+					<div class="col-md-12 col-sm-12 col-xs-12 x_panel search-head">
+						<div class="title_left">
+							<div class="col-md-6">
+								<h2>
+									<i th:class="${menu.icon}"></i> <span th:text="#{${menu.code}}"></span>
+								</h2>
+							</div>
+						</div>
+						<div class="title_right">
+							<div class="form-group pull-right title_right_button">
+								<a id="bt_delete" type="button" class="btn btn-primary" th:href="@{/user/product}">
+									<i class="fa fa-reply"></i> <span class="span_white" th:text="#{bt.text.back}"></span>
+								</a>
+								<button id="bt_delete" type="button" class="btn btn-danger" onclick="openModalMainDelete();" th:if="*{productId} != null " >
+									<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
+								</button>
+								<button id="bt_save" type="submit" class="btn btn-success">
+									<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
+								</button>
+							</div>
+						</div>
+					</div>
 
-								<form autocomplete="off" id="productModalForm" data-parsley-validate class="form-horizontal form-label-left">
-								<!-- Start Search Box  -->
-								<div class="clearfix"></div>
+					<div class="clearfix"></div>
+					<div class="row">
+					
+					
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="x_panel">
+								<div class="x_title x_title_edit">
+									<h2>
+										<i class="fa fa-info-circle"></i> 
+										<span class="title_left_text" th:text="#{form.product.profile.main}"></span>
+									</h2>
+									<div class="clearfix"></div>
+								</div>
+								<div class="x_content">
+
+									
 									<div class="col-md-ุ6 col-sm-6 col-xs-12">
 											<input type="hidden" id="productId" name="productId" >
 											<div class="form-group">
@@ -151,23 +163,22 @@
 												</div>
 											</div>
 				                      	</div>
-								<!-- End Search Box  -->
-							</form>
-							
-							<!-- category -->
-							<div class="clearfix"></div>
-								<div class="col-md-6 col-sm-6 col-xs-12">
-									<h2 class="table-small-header"><i th:class="#{form.category.icon}"></i> <span th:text="#{form.category.header}"></span></h2>
+										
+
 								</div>
-								<div class="col-md-6 col-sm-6 col-xs-12 form-header-button-right">
-									<div class="pull-right">
-											<!-- <button type="button" class="btn btn-primary btn-sm" onclick="openCategoryModal();">
-												<i class="fa fa-plus"></i>
-												<span class="span_white" th:text="#{bt.text.add}"></span>
-											</button> -->
-									</div>
+							</div>
+						</div>
+						
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="x_panel">
+								<div class="x_title x_title_edit">
+									<h2 class="table-small-header">
+										<i th:class="#{form.category.icon}"></i> <span th:text="#{form.category.header}"></span>
+									</h2>
+									<div class="clearfix"></div>
 								</div>
-								
+								<div class="x_content">
+
 									<table id="categoryDatatables" class="table table-bordered table-small" style="width: 100%">
 										<thead class="search-content-header">
 											<tr>
@@ -181,20 +192,22 @@
 											</tr>
 										</thead>
 									</table>
-							
-							<!-- price -->
-							<div class="clearfix"></div>
-								<div class="col-md-6 col-sm-6 col-xs-12">
+								
+										
+
+								</div>
+							</div>
+						</div>
+
+
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="x_panel">
+								<div class="x_title x_title_edit">
 									<h2 class="table-small-header"><i th:class="#{form.price.icon}"></i> <span th:text="#{form.price.header}"></span></h2>
+									<div class="clearfix"></div>
 								</div>
-								<div class="col-md-6 col-sm-6 col-xs-12 form-header-button-right">
-									<div class="pull-right">
-											<!-- <button type="button" class="btn btn-primary btn-sm" onclick="openPriceModal();">
-												<i class="fa fa-plus"></i>
-												<span class="span_white" th:text="#{bt.text.add}"></span>
-											</button> -->
-									</div>
-								</div>
+								<div class="x_content">
+
 									<table id="priceDatatables" class="table table-bordered table-small" style="width: 100%">
 										<thead class="search-content-header">
 											<tr>
@@ -213,20 +226,21 @@
 											</tr>
 										</thead>
 									</table>
-							
-							<!-- warehouse -->
-							<div class="clearfix"></div>
-								<div class="col-md-6 col-sm-6 col-xs-12">
+								
+										
+
+								</div>
+							</div>
+						</div>
+						
+							<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="x_panel">
+								<div class="x_title x_title_edit">
 									<h2 class="table-small-header"><i th:class="#{form.warehouse.icon}"></i> <span th:text="#{form.warehouse.header}"></span></h2>
+									<div class="clearfix"></div>
 								</div>
-								<div class="col-md-6 col-sm-6 col-xs-12 form-header-button-right">
-									<div class="pull-right">
-											<!-- <button type="button" class="btn btn-primary btn-sm" onclick="openWarehouseModal();">
-												<i class="fa fa-plus"></i>
-												<span class="span_white" th:text="#{bt.text.add}"></span>
-											</button> -->
-									</div>
-								</div>
+								<div class="x_content">
+
 									<table id="warehouseDatatables" class="table table-bordered table-small" style="width: 100%">
 										<thead class="search-content-header">
 											<tr>
@@ -242,21 +256,18 @@
 											</tr>
 										</thead>
 									</table>
-									
-									
-									<!-- Button -->
-									<div class="modal-footer form-custom-footer">
-										<button id="bt_delete" type="button" class="btn btn-danger" style="float: left;"  onclick="openModalMainDelete();">
-											<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
-										</button>
-										
-										<button id="bt_save" type="button" class="btn btn-success" onclick="saveAction();">
-											<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
-										</button>
-									</div>
+
+								</div>
+							</div>
 						</div>
+						
+					
+					
+
+
 					</div>
 				</div>
+				</form>
 			</div>
 			<!-- /page content -->
 
@@ -737,6 +748,13 @@
 		         }
 		    });
         }
+        
+        
+    	 	// check active menu
+	    $(document).ready(function() {
+			var CURRENT_URL = /*[[@{${menu.action}}]]*/;
+			$('#sidebar-menu').find('a[href="' + CURRENT_URL + '"]').parent('li').parent('ul').parent('li').children('a').trigger("click");
+	    });
 		
 	</script>
 	

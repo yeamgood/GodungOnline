@@ -153,6 +153,15 @@ label {
 .form-header-button-right button{
 	  margin: 0px !important;
 }
+
+.title_box{
+	padding: 0px;
+}
+
+.title_box button{
+	margin: 0px;
+}
+
 .title_right_button{
 	text-align: right;
 	margin: 3px;

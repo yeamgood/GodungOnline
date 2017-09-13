@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<!-- Meta, title, CSS, favicons, etc. -->
+<!-- Meta, title, CSS, FAVICONS, etc. -->
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +19,7 @@
     <link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
     <!-- iCheck -->
     <link th:href="@{/vendors/iCheck/skins/flat/green.css}" rel="stylesheet">
-    <!-- Datatables -->
+    <!-- DATATABLES -->
     <link th:href="@{/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css}" rel="stylesheet">
@@ -65,26 +65,25 @@
 					</div>
 					<div class="title_right">
 						<div class="form-group pull-right title_right_button">
-							<button type="button" class="btn btn-success" onclick="openModalAdd();">
-								<i class="fa" th:class="#{bt.icon.add}"></i>
-								<span class="span_white" th:text="#{form.warehouse.bt.add}"></span>
-							</button>
+							<a th:href="@{/user/warehouse/manage}" class="btn btn-success">
+			                    <i class="fa" th:class="#{bt.icon.add}"></i> 
+			                    <span class="span_white" th:text="#{form.warehouse.bt.add}"></span>
+		                    </a>
 						</div>
 					</div>
 				</div>
-			
+					
 				<div class="clearfix"></div>
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<div class="x_panel">
-								
 								<div class="x_title x_title_edit">
 									<div class="col-md-6 col-sm-6 col-xs-6">
 										<h2><i class="fa fa-search"></i> <span th:text="#{label.search.label}"></span></h2>
 									</div>
 									<div class="col-md-6 col-sm-6 col-xs-6" style="padding-right: 5px;">
-										<div id="bt-advance" class="pull-right" style="
-										     background: #fff; cursor: pointer; 
+										<div id="bt-advance" class="pull-right" 
+											 style="background: #fff; cursor: pointer; 
 										     padding: 5px 10px; border: 1px solid #E6E9ED;cursor: pointer;">
 											<i class="fa fa-filter"></i>
 											<span th:text="#{label.search.advance}"></span>
@@ -94,13 +93,16 @@
 								</div>
 
 								<!-- Start Search Box  -->
+								<div class="clearfix"></div>
 									<div id="search-basic">
-										<div class="col-md-6  col-md-offset-3 col-sm-6 col-xs-12">
+										<div class="col-md-6  col-md-offset-3 col-sm-6  col-sm-offset-3 col-xs-12">
 											<div class="input-group">
 												<input id="input_basic_search" type="text" class="form-control" th:placeholder="#{label.search.input}"> <span class="input-group-btn">
 													<button id="bt_basic_search" type="button" class="btn btn-primary" th:text="#{bt.text.search}"></button>
 												</span>
 											</div>
+										</div>
+										<div class="col-md-12 col-sm-12 col-xs-12">
 											<div class="content-center">
 												<span th:text="#{label.search.by}"></span> 
 												<span th:text="#{form.warehouse.label.code}"></span> ,
@@ -111,7 +113,7 @@
 									</div>
 									<div id="search-advance" style="display: none;">
 										<div class="col-md-12 col-sm-12 col-xs-12">
-												<form autocomplete="off" class="form-horizontal form-label-left input_mask" autocomplete="off">
+												<form autocomplete="off" class="form-horizontal form-label-left input_mask">
 							                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
 							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.warehouse.label.code}"></label>
 							                         <div class="col-md-8 col-sm-8 col-xs-12">
@@ -135,8 +137,8 @@
 							
 							                      <div class="form-group">
 							                        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
+							                        	   <button id="bt_advance_reset" class="btn btn-default" type="button" th:text="#{bt.text.clear}"></button>
 													   <button id="bt_advance_search" class="btn btn-primary" type="button"  th:text="#{bt.text.search}"></button>
-													   <button id="bt_advance_reset" class="btn btn-default" type="button" th:text="#{bt.text.clear}"></button>
 							                        </div>
 							                      </div>
 							                    </form>
@@ -149,7 +151,9 @@
 					<div class="col-md-12 col-sm-12 col-xs-12">
 							<div class="x_panel">
 								<div class="x_title x_title_edit ">
-									<h2><i class="fa fa-list"></i> <span th:text="#{form.warehouse.label.list}"></span></h2>
+									<h2>
+										<i class="fa fa-list"></i> <span th:text="#{form.warehouse.label.list}"></span>
+									</h2>
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
@@ -167,121 +171,41 @@
 								</div>
 							</div>
 						</div>
-					
 				</div>
 			</div>
 			<!-- /page content -->
 
-
-			<!-- ----------------------------- -->
-			<!-- -------- Start Modal -------- -->
-			<!-- ----------------------------- -->
-			<div id="modal_save" class="modal fade bs-example-modal-lg"  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-				<div class="modal-dialog modal-lg">
+			<!-- page modal -->
+			<div id="modal_delete" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog ">
 					<div class="modal-content">
 
-						<div class="modal-header modal-custom-header">
-							<button type="button" class="close" data-dismiss="modal">
+						<div class="modal-header modal-delete-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">×</span>
 							</button>
 							<h4 class="modal-title" id="myModalLabel">
-								<i th:class="${menu.icon}"></i> <span th:text="#{${menu.code}}"></span>
+								<i class="fa fa-trash"></i> <span th:text="#{label.delete.head.confirm}"></span>
 							</h4>
 						</div>
-						
-						<div class="profile_title">
-	                        <div class="col-md-12">
-	                          <i class="fa fa-info-circle"></i> <span th:text="#{form.warehouse.profile.main}"></span>
-	                        </div>
-                      	</div>
-
-						<form autocomplete="off" id="warehouseModalForm" data-parsley-validate class="form-horizontal form-label-left" autocomplete="off">
-							<div class="modal-body validation-box">
-								<input type="hidden" id="warehouseId" name="warehouseId" >
-								<div class="form-group">
-									<div class="control-label col-md-3 col-sm-3 col-xs-12">
-										<label th:text="#{form.warehouse.label.code}"></label>
-									</div>
-									<div class="col-md-8 col-sm-8 col-xs-12">
-										<input type="text" id="warehouseCode" name="warehouseCode" class="form-control" readonly="readonly" th:placeholder="#{label.generate.auto}">
-									</div>
-								</div>
-								<div class="form-group">
-								
-									<div class="control-label col-md-3 col-sm-3 col-xs-12">
-										<label th:text="#{form.warehouse.label.name}"></label>
-										<label class="validation-message" th:text="#{label.request}"></label>
-									</div>
-									<div class="col-md-8 col-sm-8 col-xs-12">
-										<input type="text" id="warehouseName" name="warehouseName" required="required" class="form-control">
-										<label id="error_warehouseName" class="validation-message" style="display:none;"></label>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="control-label col-md-3 col-sm-3 col-xs-12">
-										<label th:text="#{form.warehouse.label.description}"></label>
-									</div>
-									<div class="col-md-8 col-sm-8 col-xs-12">
-										<textarea id="description" name="description" class="form-control" rows="3"></textarea>
-										<label id="error_description" class="validation-message" style="display:none;"></label>
-									</div>
-								</div>
-							</div>
-	                      	
-							<div class="clearfix"></div>
-							<div class="modal-footer modal-custom-footer">
-								<button id="bt_delete" type="button" class="btn btn-danger" style="float: left;display: none;"  onclick="openModalMainDelete();">
-									<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
-								</button>
-								
-								<button type="button" class="btn btn-default" data-dismiss="modal">
-									<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
-								</button>
-								<button id="bt_save" type="button" class="btn btn-success" onclick="saveAction();">
-									<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
-								</button>
-							</div>
-						</form>
+						<div class="modal-body">
+							<form autocomplete="off" id="deleteForm" data-parsley-validate class="form-horizontal form-label-left">
+								<input type="hidden" id="delete_id" name="warehouseIdEncrypt" /> <span id="modal_delete_content"></span>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
+							</button>
+							<button type="button" class="btn btn-danger" onclick="deleteAction();">
+								<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
+							</button>
+						</div>
 
 					</div>
 				</div>
 			</div>
-			
-			
-			
-			 <div id="modal_delete" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-                    <div class="modal-dialog ">
-                      <div class="modal-content">
-
-                        <div class="modal-header modal-delete-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-                          </button>
-                          <h4 class="modal-title" id="myModalLabel">
-								<i class="fa fa-trash"></i> <span th:text="#{label.delete.head.confirm}"></span>
-							</h4>
-                        </div>
-                        <div class="modal-body">
-                        		<form autocomplete="off" id="deleteForm" data-parsley-validate class="form-horizontal form-label-left" autocomplete="off">
-                        			<input type="hidden" id="delete_id" name="warehouseId" />
-                        			<span id="modal_delete_content"></span>
-                        		</form>
-                        </div>
-                        <div class="modal-footer">
-                         <button type="button" class="btn btn-default" data-dismiss="modal">
-							<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
-						 </button>
-                          <button type="button" class="btn btn-danger" onclick="deleteAction();">
-							<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
-						</button>
-                        </div>
-
-                      </div>
-                    </div>
-                  </div>
-			
-			<!-- --------------------------- -->
-			<!-- -------- End Modal -------- -->
-			<!-- --------------------------- -->
+			<!-- /page modal -->
 
 			<!-- footer content -->
 			<div th:replace="fragments/footer:: footer"></div>
@@ -327,7 +251,6 @@
 	
 	<!-- Custom Theme Scripts -->
 	<script th:src="@{/js/godung.js}"></script>
-	
 
 	<script th:inline="javascript">
 		var url_language = /*[[#{javascript.datatable.language.url}]]*/;
@@ -335,10 +258,9 @@
 		var textView = /*[[#{bt.text.view}]]*/;
 		var textEdit = /*[[#{bt.text.edit}]]*/;
 		var textDelete = /*[[#{bt.text.delete}]]*/;
+		var url_warehouse_load = /*[[@{/user/warehouse/manage}]]*/;
 		
-		<!-- --------------------------------------- -->
 		<!-- -------- Start datatables Main -------- -->
-		<!-- --------------------------------------- -->
 	    $(document).ready(function() {
 		    	var table =  $('#datatablesMain').DataTable( {
 		    			"processing": true,
@@ -354,19 +276,24 @@
 		  	            { 'data': 'warehouseCode' },
 		  	            { 'data': 'warehouseName' },
 		  	            { 'data': 'description' },
-		  	            { 'data': 'warehouseId' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
+		  	            { 'data': 'warehouseIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
 		  	        ],
 		  	      	"columnDefs": [{
 		                  "render": function ( data, type, row ) {
-		                		 return	'<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textEdit +
-		                	  	 	'" onclick="loadAction(\''+data+'\');"><i class="fa fa-wrench"></i></button>' + " " +
-		                	  	 	'<button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textDelete +
-		                	  	 	'" onclick="openModalDelete(\''+data+'\',\''+row.warehouseCode+ ' ' +row.warehouseName+ '\');" ><i class="fa fa-trash"></i></button>'; 
+		                		 return	'' +
+		                		   		'<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textEdit + '"' +
+		                			    '   onclick="loadAction(\''+ url_warehouse_load +'\',\''+ row.warehouseIdEncrypt + '\');" >' +
+		                		        '   <i class="fa fa-wrench"></i></button>' +
+		                		        ' ' +
+		                	  	 	    '<button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textDelete + '"' +
+		                	  	 	    '   onclick="openModalDelete(\''+data+'\',\''+row.warehouseCode + " " + row.warehouseName + '\');" >' +
+		                	  	 	    '   <i class="fa fa-trash"></i></button>'; 
 		                  },
 		                  "targets": 4
-		             }],
+		             }
+		  	      	],
 		             "initComplete": function( settings, json ) {
-		            	 		//fix bug datatables use dom not responsive html
+		            	 		//FIX BUG DATATABLES USE DOM NOT RESPONSIVE HTML
 		            			 $("#datatablesMain_filter").hide();
 		           		}
 		    	    } );
@@ -425,85 +352,26 @@
 		
 		function searchDatatablesMain(){
 	   		var table = $('#datatablesMain').DataTable();
-	    		table.columns(1).search($("#input_advance_code").val()).columns(2).search($("#input_advance_name").val()).columns(3).search($("#input_advance_description").val()).draw();
+	    		table
+	    		.columns(1).search($("#input_advance_code").val())
+	    		.columns(2).search($("#input_advance_name").val())
+	    		.columns(3).search($("#input_advance_description").val())
+	    		.draw();
 	    }
-		<!-- ------------------------------------- -->
+		
 		<!-- -------- End datatables Main -------- -->
-		<!-- ------------------------------------- -->
 		
-		
-	    <!-- -------------------------------- -->
 		<!-- -------- Start Modal ----------- -->
-		<!-- -------------------------------- -->
 		function openModalDelete(id,message){
 	    		var messageMain = /*[[#{label.delete.content.confirm}]]*/;
 	    		$("#delete_id").val(id);
 	    		$("#modal_delete_content").html(messageMain + " : " + message);
 	    		$('#modal_delete').modal('show');
 	    }
-		
-		function openModalMainDelete(){
-			var messageMain = /*[[#{label.delete.content.confirm}]]*/;
-			var id = $("#warehouseId").val();
-			var code = $("#warehouseCode").val();
-			var name = $("#warehouseName").val();
-			var message = code + " " + name;
-			
-			$("#delete_id").val(id);
-    			$("#modal_delete_content").html(messageMain + " : " + message);
-    			$('#modal_delete').modal('show');
-		}
-		
-	 	function resetModalForm(){
-			$("#warehouseId").val("");
-	   		$("#warehouseCode").val("");
-		   	$("#warehouseName").val("");
-		   	$("#description").val("");
-		   	$('#warehouseChildDatatable').DataTable().clear().draw();;
-		   	resetValidationError();
-		   	//$("#bt_save").focus();
-	    }
-	 	
-	 	function setModalForm(id,code,name,description){
-	 		$("#warehouseId").val(id);
-        		$("#warehouseCode").val(code);
-     		$("#warehouseName").val(name);
-     	   	$("#description").val(description);
-	 	}
-		<!-- -------------------------------- -->
 		<!-- -------- End Modal ----------- -->
-		<!-- -------------------------------- -->
 	    
 	    
-	    <!-- -------------------------------- -->
 		<!-- -------- Start Action -------- -->
-		<!-- -------------------------------- -->
-	    function saveAction() {
-	    		resetValidationError();
-	 	   	var urlAction = /*[[@{/user/warehouse/save}]]*/;
-		    $.ajax({
-		        type: "POST",
-		        url: urlAction,
-		        dataType: 'json',
-		        data: $("#warehouseModalForm").serialize(),
-		        success: function(response){
-		            if(response.status == "SUCCESS"){
-		               	openNotification(response.result.type,response.result.title,response.result.text);
-		               	$('#modal_save').modal('hide');
-		               	$("#warehouseModalForm").trigger('reset');
-		              	var table =  $('#datatablesMain').DataTable();
-		                table.ajax.reload();
-		             }else{
-		            	 	validationErrorShow(response.result);
-		            		//openNotification(response.result.type,response.result.title,response.result.text);
-		             }
-		         },
-		         error: function(e){
-		             openNotification("error","error",e);
-		         }
-		    });
-		}
-	    
 	    function deleteAction() {
 	 	   	var urlAction = /*[[@{/user/warehouse/delete}]]*/;
 		    $.ajax({
@@ -515,7 +383,7 @@
 		            if(response.status == "SUCCESS"){
 		               	openNotification(response.result.type,response.result.title,response.result.text);
 		               	$('#modal_delete').modal('hide');
-		            		$('#modal_save').modal('hide');
+		               	$('#modal_save').modal('hide');
 		               	$("#warehouseModalForm").trigger('reset');
 		              	var table =  $('#datatablesMain').DataTable();
 		                table.ajax.reload();
@@ -529,57 +397,30 @@
 		    });
 		}
 	    
-	    function loadAction(id) {
-	    		resetModalForm();
-	 	   	var urlAction = /*[[@{/user/warehouse/load}]]*/;
-		    $.ajax({
-		        type: "GET",
-		        url: urlAction,
-		        dataType: 'json',
-		        data: {"warehouseId": id},
-		        success: function(response){
-		            if(response.status == "SUCCESS"){
-			        	   var id = response.result.warehouseId;
-			        	   var code = response.result.warehouseCode;
-			        	   var name = response.result.warehouseName;
-			        	   var description = response.result.description;
-			        	   setModalForm(id,code,name,description);
-			        	   $("#bt_delete").show();
-		               $('#modal_save').modal('show');
-		             }else{
-		            		openNotification(response.result.type,response.result.title,response.result.text);
-		             }
-		         },
-		         error: function(e){
-		             openNotification("error","error",e);
-		         }
-		    });
-		}
-	    
-	    function openModalAdd(){
- 			resetModalForm();
-	    		var urlAction = /*[[@{/user/warehouse/load/add}]]*/;
-    		    $.ajax({
-    		        type: "GET",
-    		        url: urlAction,
-    		        dataType: 'json',
-    		        success: function(response){
-    		            if(response.status == "SUCCESS"){
-    		           	   $("#bt_delete").hide();
-    		               $('#modal_save').modal('show');
-    		             }else{
-    		            		openNotification(response.result.type,response.result.title,response.result.text);
-    		             }
-    		         },
-    		         error: function(e){
-    		             openNotification("error","error",e);
-    		         }
-    		    });
+	    function loadAction(url,id){
+	    	 	window.location.href = url + "/" + id;
 	    }
-	    <!-- -------------------------------- -->
 		<!-- ---------- End Action ---------- -->
-		<!-- -------------------------------- -->
-	  
+		
+		<!-- -------- Start Optional -------- -->
+		var pnotify = /*[[${pnotify}]]*/;
+		if(pnotify != null){
+			openNotification(pnotify.type,pnotify.title,pnotify.text);
+		}
+		
+		// check active menu
+	   	$(document).ready(function() {
+			var CURRENT_URL = /*[[${menu.action}]]*/;
+			var $SIDEBAR_MENU = $('#sidebar-menu');
+			$SIDEBAR_MENU.find('a[href="' + CURRENT_URL + '"]').parent('li').addClass('current-page');
+	
+			$SIDEBAR_MENU.find('a').filter(function () {
+				return this.href == CURRENT_URL;
+			}).parent('li').addClass('current-page').parents('ul').slideDown(function() {
+				setContentHeight();
+			}).parent().addClass('active');
+	   	});
+		<!-- ---------- End Optional ---------- -->
 	</script>
 
 </body>

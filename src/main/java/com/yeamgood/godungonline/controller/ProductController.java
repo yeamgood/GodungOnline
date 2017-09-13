@@ -83,6 +83,7 @@ public class ProductController {
 		ModelAndView modelAndView = new ModelAndView();
 		User userSession = (User) session.getAttribute("user");
 		Menu menu = menuService.findById(MENU_PRODUCT_ID);
+		Product product = new Product();
 		
 		Long godungId = userSession.getGodung().getGodungId();
 		List<Brand> brandList = brandService.findAllByGodungGodungIdOrderByBrandNameAsc(godungId);
@@ -90,10 +91,11 @@ public class ProductController {
 		List<Category> categoryList = categoryService.findAllByGodungGodungIdOrderByCategoryCodeAsc(godungId);
 		
 		modelAndView.addObject("menu", menu);
+		modelAndView.addObject("product", product);
 		modelAndView.addObject("brandList", brandList);
 		modelAndView.addObject("measureList", measureList);
 		modelAndView.addObject("categoryList", categoryList);
-		modelAndView.setViewName("user/product_detail");
+		modelAndView.setViewName("user/product_manage");
 		logger.debug("O");
 		return modelAndView;
 	}
@@ -240,5 +242,7 @@ public class ProductController {
 		logger.debug("O");
 		return jsonResponse;
 	}
+	
+	
 
 }

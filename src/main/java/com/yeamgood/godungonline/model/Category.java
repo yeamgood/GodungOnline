@@ -27,6 +27,9 @@ public class Category extends ModelTemplate{
 	@Column(name = "category_Id")
 	private Long categoryId;
 	
+	@Transient
+	private String categoryIdEncrypt;
+	
 	@Column(name = "category_code")
 	private String categoryCode;
 	
@@ -96,13 +99,19 @@ public class Category extends ModelTemplate{
 		this.catogoryBranchList = catogoryBranchList;
 	}
 
-	@Override
-	public String toString() {
-		return "Category [categoryId=" + categoryId + ", categoryCode=" + categoryCode + ", categoryName="
-				+ categoryName + ", description=" + description + ", godung=" + godung + ", catogoryBranchList="
-				+ catogoryBranchList + "]";
+	public String getCategoryIdEncrypt() {
+		return categoryIdEncrypt;
 	}
 
-	
+	public void setCategoryIdEncrypt(String categoryIdEncrypt) {
+		this.categoryIdEncrypt = categoryIdEncrypt;
+	}
+
+	@Override
+	public String toString() {
+		return "Category [categoryId=" + categoryId + ", categoryIdEncrypt=" + categoryIdEncrypt + ", categoryCode="
+				+ categoryCode + ", categoryName=" + categoryName + ", description=" + description + ", godung="
+				+ godung + ", catogoryBranchList=" + catogoryBranchList + "]";
+	}
 	
 }

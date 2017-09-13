@@ -1,13 +1,19 @@
 package com.yeamgood.godungonline.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -24,9 +30,11 @@ public class Warehouse extends ModelTemplate{
 	@Column(name = "warehouse_Id")
 	private Long warehouseId;
 	
+	@Transient
+	private String warehouseIdEncrypt;
+	
 	@Column(name = "warehouse_code")
 	private String warehouseCode;
-	
 	
 	@Column(name = "warehouse_name")
 	@NotEmpty(message = "{form.warehouse.valid.name}")
@@ -41,6 +49,16 @@ public class Warehouse extends ModelTemplate{
 	@JoinColumn(name = "godung_id")
 	@JsonIgnore
 	private Godung godung;
+	
+	@OneToMany(cascade = CascadeType.ALL,orphanRemoval=true)
+	@JoinTable(name = "warehouse_location", joinColumns = @JoinColumn(name = "warehouse_Id"), inverseJoinColumns = @JoinColumn(name = "location_id"))
+	private List<Location> locationList;
+	
+	public void setObject(Warehouse warehouse) {
+		this.warehouseName = warehouse.getWarehouseName();
+		this.description  = warehouse.getDescription();
+		//this.locationList = warehouse.getLocationList();
+	}
 
 	public Long getWarehouseId() {
 		return warehouseId;
@@ -82,11 +100,27 @@ public class Warehouse extends ModelTemplate{
 		this.godung = godung;
 	}
 
-	@Override
-	public String toString() {
-		return "Warehouse [warehouseId=" + warehouseId + ", warehouseCode=" + warehouseCode + ", warehouseName=" + warehouseName + ", description="
-				+ description + ", godung=" + godung + "]";
+	public String getWarehouseIdEncrypt() {
+		return warehouseIdEncrypt;
+	}
+
+	public void setWarehouseIdEncrypt(String warehouseIdEncrypt) {
+		this.warehouseIdEncrypt = warehouseIdEncrypt;
 	}
 	
-	
+	public List<Location> getLocationList() {
+		return locationList;
+	}
+
+	public void setLocationList(List<Location> locationList) {
+		this.locationList = locationList;
+	}
+
+	@Override
+	public String toString() {
+		return "Warehouse [warehouseId=" + warehouseId + ", warehouseIdEncrypt=" + warehouseIdEncrypt
+				+ ", warehouseCode=" + warehouseCode + ", warehouseName=" + warehouseName + ", description="
+				+ description + ", godung=" + godung + ", locationList=" + locationList + "]";
+	}
+
 }

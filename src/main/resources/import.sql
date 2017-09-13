@@ -410,6 +410,13 @@ INSERT INTO `godung_online`.`product` (`product_id`,`product_code`, `create_date
 INSERT INTO `godung_online`.`product` (`product_id`,`product_code`, `create_date`, `create_user`, `version`, `product_name`, `godung_id`, `description`) VALUES ('4', 'PRO20170830-00003', SYSDATE(), 'SYSTEM', '0', 'กระจกใสบานใหญ่', '2','');
 
 INSERT INTO `godung_online`.`warehouse` (`warehouse_id`,`warehouse_code`, `create_date`, `create_user`, `version`, `warehouse_name`, `godung_id`, `description`) VALUES ('1', 'WAR20170830-00001', SYSDATE(), 'SYSTEM', '0', 'คลังสินค้าฉะเชิงเทรา', '2','คลังสินค้า ที่จังหวัดฉะเชิงเทรา');
+INSERT INTO `godung_online`.`location` (`location_Id`,`location_code`, `aisle`,`unit`,`shelf`,`description`,`create_date`, `create_user`, `version`) VALUES ('1', '001-001-001','001','001','001','เก็บเหล็ก',SYSDATE(), 'SYSTEM', '0');
+INSERT INTO `godung_online`.`location` (`location_Id`,`location_code`, `aisle`,`unit`,`shelf`,`description`,`create_date`, `create_user`, `version`) VALUES ('2', '001-001-002','001','001','002','เก็บกระจก',SYSDATE(), 'SYSTEM', '0');
+INSERT INTO `godung_online`.`location` (`location_Id`,`location_code`, `aisle`,`unit`,`shelf`,`description`,`create_date`, `create_user`, `version`) VALUES ('3', '001-001-003','001','001','003','เก็บท่อ',SYSDATE(), 'SYSTEM', '0');
+INSERT INTO `godung_online`.`warehouse_location` (`warehouse_id`, `location_id`) VALUES ('1', '1');
+INSERT INTO `godung_online`.`warehouse_location` (`warehouse_id`, `location_id`) VALUES ('1', '2');
+INSERT INTO `godung_online`.`warehouse_location` (`warehouse_id`, `location_id`) VALUES ('1', '3');
+
 
 INSERT INTO `godung_online`.`rolegodung` (`rolegodung_id`,`rolegodung_code`, `create_date`, `create_user`, `version`, `rolegodung_name`, `godung_id`, `description`) VALUES ('1', 'ROL20170830-00001', SYSDATE(), 'SYSTEM', '0', 'ผู้จัดการ', '2','');
 INSERT INTO `godung_online`.`rolegodung` (`rolegodung_id`,`rolegodung_code`, `create_date`, `create_user`, `version`, `rolegodung_name`, `godung_id`, `description`) VALUES ('2', 'ROL20170830-00002', SYSDATE(), 'SYSTEM', '0', 'พนักงานขายหน้าร้าน', '2','');
