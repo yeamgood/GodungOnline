@@ -138,7 +138,7 @@
 										<div class="col-md-6 col-sm-6 col-xs-6 title_box">
 											<div class="pull-right">
 												<div class="btn-group">
-													<button class="btn btn-success dropdown-toggle" type="button" onclick="openModalLocation();">
+													<button class="btn btn-success dropdown-toggle" type="button" onclick="openModalLocationAdd();">
 														<i class="fa fa-plus"></i> <span class="span_white" th:text="#{form.location.bt.add}"></span>
 													</button>
 												</div>
@@ -236,7 +236,8 @@
 
 			<!-- LOCATION ONE -->
 			<form autocomplete="off" id="locationOneModalForm" data-parsley-validate class="form-horizontal form-label-left">
-				<input type="hidden" name="warehouseIdEncrypt" th:value="${warehouse.warehouseIdEncrypt}" class="form-control currency">
+				<input type="hidden" name="warehouseIdEncrypt" th:value="${warehouse.warehouseIdEncrypt}">
+				<input type="hidden" id="location_id_encrypt" name="locationIdEncrypt" >
 				<div id="modal_location" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 					<div class="modal-dialog ">
 						<div class="modal-content">
@@ -260,7 +261,7 @@
 											<label th:text="#{form.location.label.aisle}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-											<input type="text" id="aisle" name="aisle" class="form-control currency"> <label id="error_aisle" class="validation-message"
+											<input type="text" id="location_aisle" name="aisle" class="form-control currency"> <label id="error_aisle" class="validation-message"
 												style="display: none;"></label>
 										</div>
 									</div>
@@ -269,7 +270,7 @@
 											<label th:text="#{form.location.label.unit}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-											<input type="text" id="unit" name="unit" class="form-control currency"> <label id="error_unit" class="validation-message"
+											<input type="text" id="locaiton_unit" name="unit" class="form-control currency"> <label id="error_unit" class="validation-message"
 												style="display: none;"></label>
 										</div>
 									</div>
@@ -278,7 +279,7 @@
 											<label th:text="#{form.location.label.shelf}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-											<input type="text" id="shelf" name="shelf" class="form-control currency"> <label id="error_shelf" class="validation-message"
+											<input type="text" id="locaiton_shelf" name="shelf" class="form-control currency"> <label id="error_shelf" class="validation-message"
 												style="display: none;"></label>
 										</div>
 									</div>
@@ -288,7 +289,7 @@
 											<label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-											<input type="text" id="locationCode" name="locationCode" class="form-control currency"> <label id="error_locationCode"
+											<input type="text" id="location_code" name="locationCode" class="form-control currency"> <label id="error_locationCode"
 												class="validation-message" style="display: none;"></label>
 										</div>
 									</div>
@@ -297,7 +298,7 @@
 											<label th:text="#{form.location.label.description}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-											<textarea id="description" name="description" class="form-control" rows="3"></textarea>
+											<textarea id="locaiton_description" name="description" class="form-control" rows="3"></textarea>
 											<label id="error_description" class="validation-message" style="display: none;"></label>
 										</div>
 									</div>
@@ -305,8 +306,14 @@
 							</div>
 							<div class="clearfix"></div>
 							<div class="modal-footer modal-custom-footer">
-								<button id="bt_save" type="button" class="btn btn-primary" onclick="locationOneSaveAction();">
-									<i class="fa fa-check-square-o"></i> <span class="span_white" th:text="#{bt.text.add}"></span>
+								<button id="bt_location_delete" type="button" class="btn btn-danger" style="float: left;display: none;"  onclick="openLocationDeleteModal();">
+									<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
+								</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal">
+									<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
+								</button>
+								<button id="bt_save" type="button" class="btn btn-success" onclick="locationOneSaveAction();">
+									<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
 								</button>
 							</div>
 						</div>
@@ -496,7 +503,8 @@
 	    	        	   {"targets": 0,"className": "dt-body-no","searchable":false,"orderable":false},
 	    	        	   {"targets": 6,"className": "dt-body-close","searchable":false,"orderable":false,
 	    	        		   "render": function ( data, type, row ) {
-	                		 return	'<button type="button" class="btn btn-danger btn-xs" onclick="openModalDelete(\''+data+'\',\''+row.locationCode+ '\');" ><i class="fa fa-close"></i></button>';
+	                		 return	 '<button type="button" class="btn btn-primary btn-xs" onclick="locatoinLoadAction(\''+data+'\');" ><i class="fa fa-wrench"></i></button> ' +
+	                		 '<button type="button" class="btn btn-danger btn-xs" onclick="openModalDelete(\''+data+'\',\''+row.locationCode+ '\');" ><i class="fa fa-close"></i></button>';
 			            }   
 	    	        	   }
 	    	        ]
@@ -532,12 +540,18 @@
     			$('#modal_warehouse_delete').modal('show');
 		}
 		
+		function openModalLocationAdd(){
+			resetLocationModalForm();
+			openModalLocation();
+		}
+		
 		function openModalLocation(){
 			$('#modal_location').modal('show');
 		}
 		
 		function closeModalLocation(){
 			$('#modal_location').modal('hide');
+			resetLocationModalForm();
 		}
 		
 
@@ -549,6 +563,16 @@
 			$('#modal_location_group').modal('hide');
 		}
 		
+		function openLocationDeleteModal(){
+	    		var messageMain = /*[[#{label.delete.content.confirm}]]*/;
+			var id = $("#location_id_encrypt").val();
+			var code = $("#location_code").val();
+			var message = code;
+			
+			$("#delete_id").val(id);
+	    		$("#modal_delete_content").html(messageMain + " : " + message);
+	    		$('#modal_delete').modal('show');
+	    }
 		
 		function openModalDelete(id,message){
 	    		var messageMain = /*[[#{label.delete.content.confirm}]]*/;
@@ -562,11 +586,22 @@
 		}
 		
 		function resetLocationModalForm(){
+			$("#location_id_encrypt").val("");
 			$("#location_code").val("");
 	   		$("#location_aisle").val("");
-		   	$("#location_unit").val("");
-		   	$("#location_shelf").val("");
-		   	$("#location_description").val("");
+		   	$("#locaiton_unit").val("");
+		   	$("#locaiton_shelf").val("");
+		   	$("#locaiton_description").val("");
+		   	$("#bt_location_delete").hide();
+	    }
+		
+		function setLocationModalForm(idEncrypt,code,aisle,unit,shelf,description){
+			$("#location_id_encrypt").val(idEncrypt);
+			$("#location_code").val(code);
+	   		$("#location_aisle").val(aisle);
+		   	$("#locaiton_unit").val(unit);
+		   	$("#locaiton_shelf").val(shelf);
+		   	$("#locaiton_description").val(description);
 	    }
 	 	
 	 	function resetLocationGroupModalForm(){
@@ -581,16 +616,16 @@
 	    }
 	 	
 	 	//GENERATE CODE ONE
- 		$('#aisle,#unit,#shelf').on( 'keyup change', function () {
+ 		$('#location_aisle,#locaiton_unit,#locaiton_shelf').on( 'keyup change', function () {
 	 		generateCode();
 		});
 	 	function generateCode(){
-	 		var aisle = $('#aisle').val();
-	 		var unit  = $('#unit').val();
-	 		var shelf = $('#shelf').val();
+	 		var aisle = $('#location_aisle').val();
+	 		var unit  = $('#locaiton_unit').val();
+	 		var shelf = $('#locaiton_shelf').val();
 	 		if(unit != ""){unit = "-" + unit;}
 	 		if(shelf != ""){shelf = "-" + shelf;}
-	 		$('#locationCode').val(aisle + unit + shelf);
+	 		$('#location_code').val(aisle + unit + shelf);
 	 	}
 	 	
 	 	
@@ -648,6 +683,7 @@
 		               	openNotification(response.result.type,response.result.title,response.result.text);
 		            		$('#modal_delete').modal('hide');
 		               	$("#deleteForm").trigger('reset');
+		               	closeModalLocation();
 		               	var table =  $('#location_datatables').DataTable();
 		                table.ajax.reload();
 		             }else{
@@ -660,6 +696,36 @@
 		    });
 		}
 		
+		 
+	    function locatoinLoadAction(idEncrypt) {
+	   	 	resetLocationModalForm();
+	 	   	var urlAction = /*[[@{/user/warehouse/location/one/load}]]*/;
+		    $.ajax({
+		        type: "GET",
+		        url: urlAction,
+		        dataType: 'json',
+		        data: {"locationIdEncrypt": idEncrypt},
+		        success: function(response){
+		            if(response.status == "SUCCESS"){
+		            	
+			        	   var locationIdEncrypt = response.result.locationIdEncrypt;
+			        	   var locationCode = response.result.locationCode;
+			        	   var aisle = response.result.aisle;
+			        	   var unit = response.result.unit;
+			        	   var shelf = response.result.shelf;
+			        	   var description = response.result.description;
+			           setLocationModalForm(locationIdEncrypt,locationCode,aisle,unit,shelf,description);
+			        	   $("#bt_location_delete").show();
+			           openModalLocation();
+		             }else{
+		            		openNotification(response.result.type,response.result.title,response.result.text);
+		             }
+		         },
+		         error: function(e){
+		             openNotification("error","error",e);
+		         }
+		    });
+		}
 	 	<!-- -------------------------------- -->
 		<!-- --------- OTHER Action  -------- -->
 		<!-- -------------------------------- -->

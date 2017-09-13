@@ -48,6 +48,14 @@ public class Location extends ModelTemplate{
 	
 	@Transient
 	private String locationIdEncrypt;
+	
+	public void setObject(Location location) {
+		this.locationCode = location.getLocationCode();
+		this.aisle = location.getAisle();
+		this.unit = location.getUnit();
+		this.shelf = location.getShelf();
+		this.description = location.getDescription();
+	}
 
 	public Long getLocationId() {
 		return locationId;

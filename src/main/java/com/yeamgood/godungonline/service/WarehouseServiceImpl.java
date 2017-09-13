@@ -15,6 +15,7 @@ import com.yeamgood.godungonline.exception.GodungIdException;
 import com.yeamgood.godungonline.model.Location;
 import com.yeamgood.godungonline.model.User;
 import com.yeamgood.godungonline.model.Warehouse;
+import com.yeamgood.godungonline.repository.LocationRepository;
 import com.yeamgood.godungonline.repository.WarehouseRepository;
 import com.yeamgood.godungonline.utils.AESencrpUtils;
 import com.yeamgood.godungonline.utils.GenerateCodeUtils;
@@ -26,6 +27,9 @@ public class WarehouseServiceImpl implements WarehouseService{
 
 	@Autowired
 	private WarehouseRepository warehouseRepository;
+	
+	@Autowired
+	private LocationRepository locationRepository;
 	
 	@Override
 	public Warehouse findByIdEncrypt(String idEncrypt,User userSession) throws Exception {
@@ -119,13 +123,23 @@ public class WarehouseServiceImpl implements WarehouseService{
 	}
 
 	@Override
+	@Transactional(rollbackFor={Exception.class})
 	public void saveLocation(String warehouseIdEncrypt,List<Location> locationList,User userSession) throws Exception {
 		logger.debug("I:");
 		Warehouse warehouseTemp = warehouseRepository.findOne(AESencrpUtils.decryptLong(warehouseIdEncrypt));
+		
+		Location locaitonTemp;
 		for (Location location : locationList) {
-			location.setCreateAndUpdate(userSession.getEmail(), new Date());
+			if(StringUtils.isBlank(location.getLocationIdEncrypt())) {
+				location.setCreate(userSession.getEmail(), new Date());
+				warehouseTemp.getLocationList().add(location);
+			}else {
+				locaitonTemp = locationRepository.findOne(AESencrpUtils.decryptLong(location.getLocationIdEncrypt()));
+				locaitonTemp.setObject(location);
+				locaitonTemp.setUpdate(userSession.getEmail(), new Date());
+				locationRepository.save(locaitonTemp);
+			}
 		}
-		warehouseTemp.getLocationList().addAll(locationList);
 		warehouseRepository.save(warehouseTemp);
 		logger.debug("O:");
 	}

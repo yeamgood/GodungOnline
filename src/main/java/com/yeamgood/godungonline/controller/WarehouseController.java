@@ -317,4 +317,37 @@ public class WarehouseController {
 		logger.debug("O");
 		return jsonResponse;
 	}
+	
+	@RequestMapping(value="/user/warehouse/location/one/load", method=RequestMethod.GET)
+	public @ResponseBody JsonResponse locationOneLoad(Location location,HttpSession session){
+		logger.debug("I");
+		logger.debug("I" + location.toString());
+		Pnotify pnotify;
+		User userSession;
+		JsonResponse jsonResponse = new JsonResponse();
+		
+		if(location.getLocationIdEncrypt() == null) {
+			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.load.error");
+			jsonResponse.setStatus("FAIL");
+			jsonResponse.setResult(pnotify);
+			return jsonResponse;
+		}
+		
+		try {
+			userSession = (User) session.getAttribute("user");
+			Location locationLoad = locationService.findByIdEncrypt(location.getLocationIdEncrypt(), userSession);
+			
+			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.load.success");
+			jsonResponse.setStatus("SUCCESS");
+			jsonResponse.setResult(locationLoad);
+		} catch (Exception e) {
+			logger.error("error:",e);
+			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.load.error");
+			jsonResponse.setStatus("FAIL");
+			jsonResponse.setResult(pnotify);
+		}
+		
+		logger.debug("O");
+		return jsonResponse;
+	}
 }
