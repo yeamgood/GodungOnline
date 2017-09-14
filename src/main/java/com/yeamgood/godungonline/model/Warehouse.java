@@ -20,6 +20,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yeamgood.godungonline.model.template.ModelTemplate;
+import com.yeamgood.godungonline.utils.AESencrpUtils;
 
 @Entity
 @Table(name = "warehouse")
@@ -57,7 +58,11 @@ public class Warehouse extends ModelTemplate{
 	public void setObject(Warehouse warehouse) {
 		this.warehouseName = warehouse.getWarehouseName();
 		this.description  = warehouse.getDescription();
-		//this.locationList = warehouse.getLocationList();
+	}
+	
+	public void encryptData(Warehouse warehouse) throws Exception {
+		this.warehouseIdEncrypt = AESencrpUtils.encryptLong(warehouse.getWarehouseId());
+		this.warehouseId = null;
 	}
 
 	public Long getWarehouseId() {

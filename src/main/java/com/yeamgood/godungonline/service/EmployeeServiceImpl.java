@@ -40,10 +40,10 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public Employee findByIdEncrypt(String idEncrypt,User userSession) throws Exception {
 		logger.debug("I:");
 		logger.debug("O:");
-		Employee employeeTemp = employeeRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		employeeTemp.setEmployeeIdEncrypt(idEncrypt);
-		checkGodungId(employeeTemp, userSession);
-		return employeeTemp;
+		Employee employee = employeeRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
+		employee.encryptData(employee);
+		checkGodungId(employee, userSession);
+		return employee;
 	}
 
 	@Override
@@ -53,6 +53,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 		List<Employee> employeeList = employeeRepository.findAllByGodungGodungIdOrderByEmployeeCodeAsc(godungId);
 		for (Employee employee : employeeList) {
 			employee.setEmployeeIdEncrypt(AESencrpUtils.encryptLong(employee.getEmployeeId()));
+			employee.encryptData(employee);
 		}
 		return employeeList;
 	}

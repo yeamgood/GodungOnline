@@ -29,10 +29,10 @@ public class RolegodungServiceImpl implements RolegodungService{
 	public Rolegodung findByIdEncrypt(String idEncrypt,User userSession) throws Exception {
 		logger.debug("I:");
 		logger.debug("O:");
-		Rolegodung rolegodungTemp = rolegodungRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		rolegodungTemp.setRolegodungIdEncrypt(idEncrypt);
-		checkGodungId(rolegodungTemp, userSession);
-		return rolegodungTemp;
+		Rolegodung rolegodung = rolegodungRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
+		rolegodung.encryptData(rolegodung);
+		checkGodungId(rolegodung, userSession);
+		return rolegodung;
 	}
 
 	@Override
@@ -42,6 +42,7 @@ public class RolegodungServiceImpl implements RolegodungService{
 		List<Rolegodung> rolegodungList = rolegodungRepository.findAllByGodungGodungIdOrderByRolegodungCodeAsc(godungId);
 		for (Rolegodung rolegodung : rolegodungList) {
 			rolegodung.setRolegodungIdEncrypt(AESencrpUtils.encryptLong(rolegodung.getRolegodungId()));
+			rolegodung.encryptData(rolegodung);
 		}
 		return rolegodungList;
 	}

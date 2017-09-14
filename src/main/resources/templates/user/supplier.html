@@ -397,18 +397,6 @@
 	    		$("#modal_delete_content").html(messageMain + " : " + message);
 	    		$('#modal_delete').modal('show');
 	    }
-		
-		function openModalMainDelete(){
-			var messageMain = /*[[#{label.delete.content.confirm}]]*/;
-			var id = $("#supplierId").val();
-			var code = $("#supplierCode").val();
-			var name = $("#supplierName").val();
-			var message = code + " " + name;
-			
-			$("#delete_id").val(id);
-    			$("#modal_delete_content").html(messageMain + " : " + message);
-    			$('#modal_delete').modal('show');
-		}
 		<!-- -------- End Modal ----------- -->
 	    
 	    

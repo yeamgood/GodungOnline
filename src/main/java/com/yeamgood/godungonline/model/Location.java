@@ -12,6 +12,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.yeamgood.godungonline.model.template.ModelTemplate;
+import com.yeamgood.godungonline.utils.AESencrpUtils;
 
 @Entity
 @Table(name = "location")
@@ -55,6 +56,11 @@ public class Location extends ModelTemplate{
 		this.unit = location.getUnit();
 		this.shelf = location.getShelf();
 		this.description = location.getDescription();
+	}
+	
+	public void encryptData(Location location) throws Exception {
+		this.locationIdEncrypt = AESencrpUtils.encryptLong(location.getLocationId());
+		this.locationId = null;
 	}
 
 	public Long getLocationId() {

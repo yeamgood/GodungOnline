@@ -70,7 +70,7 @@
 									<a id="bt_back" type="button" class="btn btn-primary" th:href="@{/user/warehouse}"> <i class="fa fa-reply"></i> <span
 										class="span_white" th:text="#{bt.text.back}"></span>
 									</a>
-									<button id="bt_delete" type="button" class="btn btn-danger" onclick="openWarehouseDeleteModal();" th:if="*{warehouseId} != null ">
+									<button id="bt_delete" type="button" class="btn btn-danger" onclick="openWarehouseDeleteModal();" th:if="*{warehouseIdEncrypt} != null and  *{warehouseIdEncrypt} != '' ">
 										<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
 									</button>
 									<button id="bt_save" type="submit" class="btn btn-success">
@@ -92,8 +92,7 @@
 									</div>
 									<div class="x_content">
 										<input type="hidden" th:field="*{warehouseIdEncrypt}">
-										<div class="modal-body validation-box">
-											<input type="hidden" id="warehouseId" name="warehouseId">
+											<!-- <input type="hidden" id="warehouseIdEncrypt" name="warehouseIdEncrypt"> -->
 											<div class="form-group">
 												<div class="control-label col-md-3 col-sm-3 col-xs-12">
 													<label th:text="#{form.warehouse.label.code}"></label>
@@ -122,12 +121,11 @@
 													<label th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="validation-message"></label>
 												</div>
 											</div>
-										</div>
 									</div>
 								</div>
 							</div>
 							<!-- LOCATION BlOG  -->
-							<div class="col-md-12 col-sm-12 col-xs-12" th:if="${warehouse.warehouseId} != null ">
+							<div class="col-md-12 col-sm-12 col-xs-12" th:if="${warehouse.warehouseIdEncrypt} != null and ${warehouse.warehouseIdEncrypt} != '' ">
 								<div class="x_panel">
 									<div class="x_title">
 										<div class="col-md-6 col-sm-6 col-xs-6 title_left_box x_title_edit">

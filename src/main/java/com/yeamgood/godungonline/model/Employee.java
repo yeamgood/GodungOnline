@@ -18,6 +18,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yeamgood.godungonline.model.template.ModelTemplate;
+import com.yeamgood.godungonline.utils.AESencrpUtils;
 
 @Entity
 @Table(name = "employee")
@@ -95,6 +96,11 @@ public class Employee extends ModelTemplate{
 		this.taxNumber = employee.getTaxNumber();
 		this.telephone = employee.getTelephone();
 		this.email = employee.getEmail();
+	}
+	
+	public void encryptData(Employee employee) throws Exception {
+		this.employeeIdEncrypt = AESencrpUtils.encryptLong(employee.getEmployeeId());
+		this.employeeId = null;
 	}
 
 	public Long getEmployeeId() {

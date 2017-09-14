@@ -70,7 +70,7 @@
 								<a id="bt_delete" type="button" class="btn btn-primary" th:href="@{/user/employee}">
 									<i class="fa fa-reply"></i> <span class="span_white" th:text="#{bt.text.back}"></span>
 								</a>
-								<button id="bt_delete" type="button" class="btn btn-danger" onclick="openModalMainDelete();" th:if="*{employeeId} != null " >
+								<button id="bt_delete" type="button" class="btn btn-danger" onclick="openModalMainDelete();" th:if="*{employeeIdEncrypt} != null and *{employeeIdEncrypt} != '' " >
 									<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
 								</button>
 								<button id="bt_save" type="submit" class="btn btn-success">

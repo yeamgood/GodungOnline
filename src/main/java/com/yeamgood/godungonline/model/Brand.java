@@ -8,12 +8,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yeamgood.godungonline.model.template.ModelTemplate;
+import com.yeamgood.godungonline.utils.AESencrpUtils;
 
 @Entity
 @Table(name = "brand")
@@ -24,9 +26,11 @@ public class Brand extends ModelTemplate{
 	@Column(name = "brand_Id")
 	private Long brandId;
 	
+	@Transient
+	private String brandIdEncrypt;
+	
 	@Column(name = "brand_code")
 	private String brandCode;
-	
 	
 	@Column(name = "brand_name")
 	@NotEmpty(message = "{form.brand.valid.name}")
@@ -41,6 +45,11 @@ public class Brand extends ModelTemplate{
 	@JoinColumn(name = "godung_id")
 	@JsonIgnore
 	private Godung godung;
+	
+	public void encryptData(Brand brand) throws Exception {
+		this.brandIdEncrypt = AESencrpUtils.encryptLong(brand.getBrandId());
+		this.brandId = null;
+	}
 
 	public Long getBrandId() {
 		return brandId;
@@ -81,11 +90,19 @@ public class Brand extends ModelTemplate{
 	public void setGodung(Godung godung) {
 		this.godung = godung;
 	}
+	
+	public String getBrandIdEncrypt() {
+		return brandIdEncrypt;
+	}
+
+	public void setBrandIdEncrypt(String brandIdEncrypt) {
+		this.brandIdEncrypt = brandIdEncrypt;
+	}
 
 	@Override
 	public String toString() {
-		return "Brand [brandId=" + brandId + ", brandCode=" + brandCode + ", brandName=" + brandName + ", description="
-				+ description + ", godung=" + godung + "]";
+		return "Brand [brandId=" + brandId + ", brandIdEncrypt=" + brandIdEncrypt + ", brandCode=" + brandCode
+				+ ", brandName=" + brandName + ", description=" + description + ", godung=" + godung + "]";
 	}
 	
 	

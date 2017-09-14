@@ -1,7 +1,5 @@
 package com.yeamgood.godungonline.model;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +15,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yeamgood.godungonline.model.template.ModelTemplate;
+import com.yeamgood.godungonline.utils.AESencrpUtils;
 
 @Entity
 @Table(name = "category")
@@ -47,10 +46,11 @@ public class Category extends ModelTemplate{
 	@JsonIgnore
 	private Godung godung;
 	
-	@Transient
-	@JsonIgnore
-	List<Long> catogoryBranchList;
-	
+	public void encryptData(Category category) throws Exception {
+		this.categoryIdEncrypt = AESencrpUtils.encryptLong(category.getCategoryId());
+		this.categoryId = null;
+	}
+
 	public Long getCategoryId() {
 		return categoryId;
 	}
@@ -58,7 +58,7 @@ public class Category extends ModelTemplate{
 	public void setCategoryId(Long categoryId) {
 		this.categoryId = categoryId;
 	}
-	
+
 	public String getCategoryCode() {
 		return categoryCode;
 	}
@@ -82,7 +82,7 @@ public class Category extends ModelTemplate{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public Godung getGodung() {
 		return godung;
 	}
@@ -90,15 +90,7 @@ public class Category extends ModelTemplate{
 	public void setGodung(Godung godung) {
 		this.godung = godung;
 	}
-
-	public List<Long> getCatogoryBranchList() {
-		return catogoryBranchList;
-	}
-
-	public void setCatogoryBranchList(List<Long> catogoryBranchList) {
-		this.catogoryBranchList = catogoryBranchList;
-	}
-
+	
 	public String getCategoryIdEncrypt() {
 		return categoryIdEncrypt;
 	}
@@ -109,9 +101,9 @@ public class Category extends ModelTemplate{
 
 	@Override
 	public String toString() {
-		return "Category [categoryId=" + categoryId + ", categoryIdEncrypt=" + categoryIdEncrypt + ", categoryCode="
-				+ categoryCode + ", categoryName=" + categoryName + ", description=" + description + ", godung="
-				+ godung + ", catogoryBranchList=" + catogoryBranchList + "]";
+		return "Category [categoryId=" + categoryId + ", categoryIdEncrypt=" + categoryIdEncrypt + ", categoryCode=" + categoryCode
+				+ ", categoryName=" + categoryName + ", description=" + description + ", godung=" + godung + "]";
 	}
+	
 	
 }

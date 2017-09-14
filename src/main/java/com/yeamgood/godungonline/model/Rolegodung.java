@@ -15,6 +15,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yeamgood.godungonline.model.template.ModelTemplate;
+import com.yeamgood.godungonline.utils.AESencrpUtils;
 
 @Entity
 @Table(name = "rolegodung")
@@ -48,6 +49,11 @@ public class Rolegodung extends ModelTemplate{
 	public void setObject(Rolegodung rolegodung) {
 		this.rolegodungName = rolegodung.getRolegodungName();
 		this.description  = rolegodung.getDescription();
+	}
+	
+	public void encryptData(Rolegodung rolegodung) throws Exception {
+		this.rolegodungIdEncrypt = AESencrpUtils.encryptLong(rolegodung.getRolegodungId());
+		this.rolegodungId = null;
 	}
 
 	public Long getRolegodungId() {

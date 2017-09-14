@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yeamgood.godungonline.bean.JsonResponse;
 import com.yeamgood.godungonline.bean.Pnotify;
@@ -46,7 +45,7 @@ public class BrandController {
 	BrandService brandService;
 	
 	@RequestMapping(value="/user/brand", method = RequestMethod.GET)
-	public ModelAndView userBrand(HttpSession session){
+	public ModelAndView userBrand(HttpSession session) throws Exception{
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
 		User userSession = (User) session.getAttribute("user");
@@ -61,7 +60,7 @@ public class BrandController {
 	}
 	
 	@RequestMapping(value="/user/brand/list/ajax", method=RequestMethod.GET)
-	public @ResponseBody String userBrandListtest(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException{
+	public @ResponseBody String userBrandListtest(DataTablesRequest datatableRequest, HttpSession session) throws Exception{
 		logger.debug("I");
 		logger.debug("datatableRequest" + datatableRequest.toString());
 		
@@ -123,7 +122,7 @@ public class BrandController {
 		User userSession;
 		JsonResponse jsonResponse = new JsonResponse();
 		
-		if(brand.getBrandId() == null) {
+		if(brand.getBrandIdEncrypt() == null) {
 			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.save.error");
 			jsonResponse.setStatus("FAIL");
 			jsonResponse.setResult(pnotify);
@@ -157,7 +156,7 @@ public class BrandController {
 		User userSession;
 		JsonResponse jsonResponse = new JsonResponse();
 		
-		if(brand.getBrandId() == null) {
+		if(brand.getBrandIdEncrypt() == null) {
 			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.load.error");
 			jsonResponse.setStatus("FAIL");
 			jsonResponse.setResult(pnotify);
@@ -166,7 +165,7 @@ public class BrandController {
 		
 		try {
 			userSession = (User) session.getAttribute("user");
-			Brand brandTemp = brandService.findById(brand.getBrandId(), userSession);
+			Brand brandTemp = brandService.findByIdEncrypt(brand.getBrandIdEncrypt(), userSession);
 			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.load.success");
 			jsonResponse.setStatus("SUCCESS");
 			jsonResponse.setResult(brandTemp);

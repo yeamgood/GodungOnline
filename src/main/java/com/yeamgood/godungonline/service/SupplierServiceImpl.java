@@ -39,10 +39,10 @@ public class SupplierServiceImpl implements SupplierService{
 	public Supplier findByIdEncrypt(String idEncrypt,User userSession) throws Exception {
 		logger.debug("I:");
 		logger.debug("O:");
-		Supplier supplierTemp = supplierRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		supplierTemp.setSupplierIdEncrypt(idEncrypt);
-		checkGodungId(supplierTemp, userSession);
-		return supplierTemp;
+		Supplier supplier = supplierRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
+		supplier.encryptData(supplier);
+		checkGodungId(supplier, userSession);
+		return supplier;
 	}
 
 	@Override
@@ -52,6 +52,7 @@ public class SupplierServiceImpl implements SupplierService{
 		List<Supplier> supplierList = supplierRepository.findAllByGodungGodungIdOrderBySupplierCodeAsc(godungId);
 		for (Supplier supplier : supplierList) {
 			supplier.setSupplierIdEncrypt(AESencrpUtils.encryptLong(supplier.getSupplierId()));
+			supplier.encryptData(supplier);
 		}
 		return supplierList;
 	}

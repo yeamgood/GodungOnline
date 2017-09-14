@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yeamgood.godungonline.bean.JsonResponse;
 import com.yeamgood.godungonline.bean.Pnotify;
@@ -34,7 +33,7 @@ import com.yeamgood.godungonline.service.MenuService;
 public class MeasureController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	private final Long MENU_MEASURE_ID = (long) 12;
+	private final Long MENU_ID = (long) 12;
 	
 	@Autowired
     MessageSource messageSource;
@@ -46,11 +45,11 @@ public class MeasureController {
 	MeasureService measureService;
 	
 	@RequestMapping(value="/user/measure", method = RequestMethod.GET)
-	public ModelAndView userMeasure(HttpSession session){
+	public ModelAndView userMeasure(HttpSession session) throws Exception{
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
 		User userSession = (User) session.getAttribute("user");
-		Menu menu = menuService.findById(MENU_MEASURE_ID);
+		Menu menu = menuService.findById(MENU_ID);
 		List<Measure> measureList = measureService.findAllByGodungGodungIdOrderByMeasureNameAsc(userSession.getGodung().getGodungId());
 		
 		modelAndView.addObject("menu", menu);
@@ -60,9 +59,8 @@ public class MeasureController {
 		return modelAndView;
 	}
 	
-	
 	@RequestMapping(value="/user/measure/list/ajax", method=RequestMethod.GET)
-	public @ResponseBody String userMeasureListtest(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException{
+	public @ResponseBody String userMeasureListtest(DataTablesRequest datatableRequest, HttpSession session) throws Exception{
 		logger.debug("I");
 		logger.debug("datatableRequest" + datatableRequest.toString());
 		
@@ -124,7 +122,7 @@ public class MeasureController {
 		User userSession;
 		JsonResponse jsonResponse = new JsonResponse();
 		
-		if(measure.getMeasureId() == null) {
+		if(measure.getMeasureIdEncrypt() == null) {
 			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.save.error");
 			jsonResponse.setStatus("FAIL");
 			jsonResponse.setResult(pnotify);
@@ -158,7 +156,7 @@ public class MeasureController {
 		User userSession;
 		JsonResponse jsonResponse = new JsonResponse();
 		
-		if(measure.getMeasureId() == null) {
+		if(measure.getMeasureIdEncrypt() == null) {
 			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.load.error");
 			jsonResponse.setStatus("FAIL");
 			jsonResponse.setResult(pnotify);
@@ -167,7 +165,7 @@ public class MeasureController {
 		
 		try {
 			userSession = (User) session.getAttribute("user");
-			Measure measureTemp = measureService.findById(measure.getMeasureId(), userSession);
+			Measure measureTemp = measureService.findByIdEncrypt(measure.getMeasureIdEncrypt(), userSession);
 			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.load.success");
 			jsonResponse.setStatus("SUCCESS");
 			jsonResponse.setResult(measureTemp);

@@ -325,6 +325,9 @@ INSERT INTO `godung_online`.`country` (`country_id`, `sortname`, `country_name`,
 INSERT INTO `godung_online`.`country` (`country_id`, `sortname`, `country_name`, `phonecode`) VALUES  (245, 'ZM', 'Zambia', 260);
 INSERT INTO `godung_online`.`country` (`country_id`, `sortname`, `country_name`, `phonecode`) VALUES  (246, 'ZW', 'Zimbabwe', 263);
 
+INSERT INTO `godung_online`.`currency` (`CURRENCY_ID`, `CURRENCY_CODE`, `CURRENCY_NAME`, `DESCRIPTION`) VALUES (1, 'THB', '[THB] ไทย บาท', '');
+INSERT INTO `godung_online`.`currency` (`CURRENCY_ID`, `CURRENCY_CODE`, `CURRENCY_NAME`, `DESCRIPTION`) VALUES (2, 'USD', '[USD] US Dollar', '');
+
 -- ROLE ADMIN --
 INSERT INTO `godung_online`.`rolelogin` (`role_id`,`role`) VALUES ('1','ADMIN');
 INSERT INTO `godung_online`.`rolelogin` (`role_id`,`role`) VALUES ('2','USER');

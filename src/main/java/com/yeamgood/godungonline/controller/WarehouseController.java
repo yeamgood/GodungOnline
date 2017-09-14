@@ -179,8 +179,9 @@ public class WarehouseController {
 			locationList = warehouse.getLocationList();
 		}
 		
-		for (Location locationTemp : locationList) {
-			locationTemp.setLocationIdEncrypt(AESencrpUtils.encryptLong(locationTemp.getLocationId()));
+		for (Location location : locationList) {
+			location.setLocationIdEncrypt(AESencrpUtils.encryptLong(location.getLocationId()));
+			location.encryptData(location);
 		}
 		
 		logger.debug("O:locationList" + locationList.size());

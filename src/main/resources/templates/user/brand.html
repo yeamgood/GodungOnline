@@ -197,7 +197,7 @@
 
 						<form autocomplete="off" id="brandModalForm" data-parsley-validate class="form-horizontal form-label-left">
 							<div class="modal-body validation-box">
-								<input type="hidden" id="brandId" name="brandId" >
+								<input type="hidden" id="brandIdEncrypt" name="brandIdEncrypt" >
 								<div class="form-group">
 									<div class="control-label col-md-3 col-sm-3 col-xs-12">
 										<label th:text="#{form.brand.label.code}"></label>
@@ -261,7 +261,7 @@
                         </div>
                         <div class="modal-body">
                         		<form autocomplete="off" id="deleteForm" data-parsley-validate class="form-horizontal form-label-left">
-                        			<input type="hidden" id="delete_id" name="brandId" />
+                        			<input type="hidden" id="delete_id" name="brandIdEncrypt" />
                         			<span id="modal_delete_content"></span>
                         		</form>
                         </div>
@@ -353,7 +353,7 @@
 		  	            { 'data': 'brandCode' },
 		  	            { 'data': 'brandName' },
 		  	            { 'data': 'description' },
-		  	            { 'data': 'brandId' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
+		  	            { 'data': 'brandIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
 		  	        ],
 		  	      	"columnDefs": [{
 		                  "render": function ( data, type, row ) {
@@ -443,7 +443,7 @@
 		
 		function openModalMainDelete(){
 			var messageMain = /*[[#{label.delete.content.confirm}]]*/;
-			var id = $("#brandId").val();
+			var id = $("#brandIdEncrypt").val();
 			var code = $("#brandCode").val();
 			var name = $("#brandName").val();
 			var message = code + " " + name;
@@ -454,7 +454,7 @@
 		}
 		
 	 	function resetModalForm(){
-			$("#brandId").val("");
+			$("#brandIdEncrypt").val("");
 	   		$("#brandCode").val("");
 		   	$("#brandName").val("");
 		   	$("#description").val("");
@@ -464,7 +464,7 @@
 	    }
 	 	
 	 	function setModalForm(id,code,name,description){
-	 		$("#brandId").val(id);
+	 		$("#brandIdEncrypt").val(id);
         		$("#brandCode").val(code);
      		$("#brandName").val(name);
      	   	$("#description").val(description);
@@ -535,10 +535,10 @@
 		        type: "GET",
 		        url: urlAction,
 		        dataType: 'json',
-		        data: {"brandId": id},
+		        data: {"brandIdEncrypt": id},
 		        success: function(response){
 		            if(response.status == "SUCCESS"){
-			        	   var id = response.result.brandId;
+			        	   var id = response.result.brandIdEncrypt;
 			        	   var code = response.result.brandCode;
 			        	   var name = response.result.brandName;
 			        	   var description = response.result.description;

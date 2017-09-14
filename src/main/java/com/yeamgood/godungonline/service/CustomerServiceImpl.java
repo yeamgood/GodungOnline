@@ -39,10 +39,10 @@ public class CustomerServiceImpl implements CustomerService{
 	public Customer findByIdEncrypt(String idEncrypt,User userSession) throws Exception {
 		logger.debug("I:");
 		logger.debug("O:");
-		Customer customerTemp = customerRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		customerTemp.setCustomerIdEncrypt(idEncrypt);
-		checkGodungId(customerTemp, userSession);
-		return customerTemp;
+		Customer customer = customerRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
+		customer.encryptData(customer);
+		checkGodungId(customer, userSession);
+		return customer;
 	}
 
 	@Override
@@ -52,6 +52,7 @@ public class CustomerServiceImpl implements CustomerService{
 		List<Customer> customerList = customerRepository.findAllByGodungGodungIdOrderByCustomerCodeAsc(godungId);
 		for (Customer customer : customerList) {
 			customer.setCustomerIdEncrypt(AESencrpUtils.encryptLong(customer.getCustomerId()));
+			customer.encryptData(customer);
 		}
 		return customerList;
 	}

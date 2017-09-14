@@ -35,10 +35,10 @@ public class WarehouseServiceImpl implements WarehouseService{
 	public Warehouse findByIdEncrypt(String idEncrypt,User userSession) throws Exception {
 		logger.debug("I:");
 		logger.debug("O:");
-		Warehouse warehouseTemp = warehouseRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		warehouseTemp.setWarehouseIdEncrypt(idEncrypt);
-		checkGodungId(warehouseTemp, userSession);
-		return warehouseTemp;
+		Warehouse warehouse = warehouseRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
+		checkGodungId(warehouse, userSession);
+		warehouse.encryptData(warehouse);
+		return warehouse;
 	}
 
 	@Override
@@ -48,6 +48,7 @@ public class WarehouseServiceImpl implements WarehouseService{
 		List<Warehouse> warehouseList = warehouseRepository.findAllByGodungGodungIdOrderByWarehouseCodeAsc(godungId);
 		for (Warehouse warehouse : warehouseList) {
 			warehouse.setWarehouseIdEncrypt(AESencrpUtils.encryptLong(warehouse.getWarehouseId()));
+			warehouse.encryptData(warehouse);
 		}
 		return warehouseList;
 	}

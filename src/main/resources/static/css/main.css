@@ -37,8 +37,16 @@ label {
 	text-align: center !important;
 }
 
+.content-left {
+	text-align: left !important;
+}
+
 .content-center {
 	text-align: center !important;
+}
+
+.content-right {
+	text-align: right !important;
 }
 
 .profile_title_edit{

@@ -5,20 +5,19 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.yeamgood.godungonline.model.template.ModelTemplate;
+import com.yeamgood.godungonline.utils.AESencrpUtils;
 
 @Entity
 @Table(name = "price")
@@ -29,9 +28,8 @@ public class Price extends ModelTemplate{
 	@Column(name = "price_id")
 	private Long priceId;
 	
-	@Column(name = "price_type")
-	@NotEmpty(message = "{form.price.validation.currencytype}")
-	private String priceType;
+	@Transient
+	private String priceIdEncrypt;
 
 	@Column(name = "start_date")
 	@NotNull(message = "{form.price.validation.startdate}")
@@ -39,29 +37,32 @@ public class Price extends ModelTemplate{
 	private Date startDate;
 
 	@Column(name = "end_date")
-	@NotNull(message = "{form.price.validation.enddate}")
 	@DateTimeFormat(pattern="dd/MM/yyyy")
 	private Date endDate;
 	
 	@Column(name = "price")
-	@NotNull(message = "{form.price.validation.price}")
 	private BigDecimal price;
 	
-	@Transient
-	@Column(name = "measure_id")
-	@NotEmpty(message = "{form.price.validation.measure}")
-	private String measureId;
 	
-	@OneToOne(targetEntity = Measure.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "measure_id")
-    private Measure measure;
-
-	public String getPriceType() {
-		return priceType;
+	@ManyToOne()
+	@JoinColumn(name = "measure_id")
+	private Measure measure;
+	
+	
+	@ManyToOne()
+	@JoinColumn(name = "currency_id")
+	private Currency currency;
+	
+	
+	
+	public void setObject(Price price) {
+		this.startDate = price.getStartDate();
+		this.endDate = price.getEndDate();
 	}
-
-	public void setPriceType(String priceType) {
-		this.priceType = priceType;
+	
+	public void encryptData(Price price) throws Exception {
+		this.priceIdEncrypt = AESencrpUtils.encryptLong(price.getPriceId());
+		this.priceId = null;
 	}
 
 	public Long getPriceId() {
@@ -70,6 +71,14 @@ public class Price extends ModelTemplate{
 
 	public void setPriceId(Long priceId) {
 		this.priceId = priceId;
+	}
+
+	public String getPriceIdEncrypt() {
+		return priceIdEncrypt;
+	}
+
+	public void setPriceIdEncrypt(String priceIdEncrypt) {
+		this.priceIdEncrypt = priceIdEncrypt;
 	}
 
 	public Date getStartDate() {
@@ -104,18 +113,18 @@ public class Price extends ModelTemplate{
 		this.measure = measure;
 	}
 
-	public String getMeasureId() {
-		return measureId;
+	public Currency getCurrency() {
+		return currency;
 	}
 
-	public void setMeasureId(String measureId) {
-		this.measureId = measureId;
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
 	}
 
 	@Override
 	public String toString() {
-		return "Price [priceId=" + priceId + ", priceType=" + priceType + ", startDate=" + startDate + ", endDate="
-				+ endDate + ", price=" + price + ", measureId=" + measureId + ", measure=" + measure + "]";
+		return "Price [priceId=" + priceId + ", priceIdEncrypt=" + priceIdEncrypt + ", startDate=" + startDate
+				+ ", endDate=" + endDate + ", price=" + price + ", measure=" + measure + ", currency=" + currency + "]";
 	}
 	
 }

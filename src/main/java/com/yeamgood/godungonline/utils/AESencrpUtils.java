@@ -6,12 +6,15 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class AESencrpUtils {
 
 	private static final String ALGO = "AES";
 	private static final byte[] keyValue = new byte[] { 'T', 'e', 's', 't', 'S', 'e', 'r', 'v', 'l', 'e', 't', 'Y', 'e', 'a', 'm', '1' };
 
 	public static String encrypt(String Data) throws Exception {
+		if(StringUtils.isBlank(Data)) {return null;}
 		Key key = generateKey();
 		Cipher c = Cipher.getInstance(ALGO);
 		c.init(Cipher.ENCRYPT_MODE, key);
@@ -20,6 +23,7 @@ public class AESencrpUtils {
 	}
 
 	public static String decrypt(String encryptedData) throws Exception {
+		if(StringUtils.isBlank(encryptedData)) {return null;}
 		Key key = generateKey();
 		Cipher c = Cipher.getInstance(ALGO);
 		c.init(Cipher.DECRYPT_MODE, key);
@@ -30,6 +34,7 @@ public class AESencrpUtils {
 	}
 
 	public static String encryptLong(Long data) throws Exception {
+		if(data == null) {return null;}
 		Key key = generateKey();
 		Cipher c = Cipher.getInstance(ALGO);
 		c.init(Cipher.ENCRYPT_MODE, key);
@@ -38,6 +43,7 @@ public class AESencrpUtils {
 	}
 
 	public static Long decryptLong(String encryptedData) throws Exception {
+		if(StringUtils.isBlank(encryptedData)) {return (long) 0;}
 		Key key = generateKey();
 		Cipher c = Cipher.getInstance(ALGO);
 		c.init(Cipher.DECRYPT_MODE, key);
