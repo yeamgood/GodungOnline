@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yeamgood.godungonline.form.PriceForm;
-import com.yeamgood.godungonline.model.Currency;
-import com.yeamgood.godungonline.model.Measure;
 import com.yeamgood.godungonline.model.Price;
 import com.yeamgood.godungonline.model.Product;
 import com.yeamgood.godungonline.model.User;
@@ -47,25 +45,7 @@ public class PriceServiceImpl implements PriceService{
 		price.encryptData(price);
 		return price;
 	}
-//
-//	@Override
-//	public List<Price> findAllByGodungGodungIdOrderByPriceNameAsc(Long godungId) throws Exception {
-//		logger.debug("I:[godungId]:" + godungId);
-//		logger.debug("O:");
-//		List<Price> priceList = priceRepository.findAllByGodungGodungIdOrderByPriceCodeAsc(godungId);
-//		for (Price price : priceList) {
-//			price.setPriceIdEncrypt(AESencrpUtils.encryptLong(price.getPriceId()));
-//			price.encryptData(price);
-//		}
-//		return priceList;
-//	}
-//
-//	@Override
-//	public long count(Long godungId) {
-//		logger.debug("I:[godungId]:" + godungId);
-//		logger.debug("O:");
-//		return priceRepository.countByGodungGodungId(godungId);
-//	}
+
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
@@ -86,14 +66,12 @@ public class PriceServiceImpl implements PriceService{
 			product.getPriceList().add(price);
 			productRepository.save(product);
 		}else {
-			Price priceTemp = priceRepository.findOne(AESencrpUtils.decryptLong(price.getPriceIdEncrypt()));
-			priceTemp.setPrice(new BigDecimal(price.getPriceText().replace(",", "")));
-			Measure measure = measureRepository.findOne(AESencrpUtils.decryptLong(price.getMeasureIdEncrypt()));
-			priceTemp.setMeasure(measure);
-			Currency currency = currencyRepository.findOne(Long.valueOf(price.getCurrencyId()));
-			priceTemp.setCurrency(currency);
-			
-			priceTemp.setObject(price);
+			Price priceTemp = priceRepository.findOne(AESencrpUtils.decryptLong(priceForm.getPriceIdEncrypt()));
+			priceTemp.setStartDate(priceForm.getStartDate());
+			priceTemp.setEndDate(priceForm.getEndDate());
+			priceTemp.setPrice(new BigDecimal(priceForm.getPriceText().replace(",", "")));
+			priceTemp.setMeasure(measureRepository.findOne(AESencrpUtils.decryptLong(priceForm.getMeasureIdEncrypt())));
+			priceTemp.setCurrency(currencyRepository.findOne(Long.valueOf(priceForm.getCurrencyId())));
 			priceTemp.setCreate(userSession.getEmail(), new Date());
 			priceTemp = priceRepository.save(priceTemp);
 		}
@@ -103,11 +81,35 @@ public class PriceServiceImpl implements PriceService{
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void delete(String idEncrypt, User userSession) throws Exception{
+	public void delete(String productIdEncrypt,String priceIdEncrypt, User userSession) throws Exception{
 		logger.debug("I:");
-		Price priceTemp = priceRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		priceRepository.delete(priceTemp.getPriceId());
+		Product product = productRepository.findOne(AESencrpUtils.decryptLong(productIdEncrypt));
+		Long priceId = AESencrpUtils.decryptLong(priceIdEncrypt);
+		for(Price price: product.getPriceList()) {
+			if(price.getPriceId() == priceId) {
+				product.getPriceList().remove(price);
+				break;
+			}
+		}
+		productRepository.save(product);
 		logger.debug("O:");
 	}
 	
+	
+//	@Override
+//	public void deleteLocation(String warehouseIdEncrypt, String locationIdEncrypt, User userSession)throws Exception, GodungIdException {
+//		logger.debug("I:");
+//		Warehouse warehouseTemp = warehouseRepository.findOne(AESencrpUtils.decryptLong(warehouseIdEncrypt));
+//		Long locationId = AESencrpUtils.decryptLong(locationIdEncrypt);
+//		checkGodungId(warehouseTemp, userSession);
+//		for (Location locationTemp : warehouseTemp.getLocationList()) {
+//			if(locationTemp.getLocationId() == locationId) {
+//				warehouseTemp.getLocationList().remove(locationTemp);
+//				break;
+//			}
+//		}
+//		warehouseRepository.save(warehouseTemp);
+//		logger.debug("O:");
+//	}
+//	
 }

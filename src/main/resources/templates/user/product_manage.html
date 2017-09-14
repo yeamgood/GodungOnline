@@ -168,10 +168,6 @@
 						
 						<div class="col-md-12 col-sm-12 col-xs-12"  th:if="*{productIdEncrypt} != null and *{productIdEncrypt} != '' " >
 							<div class="x_panel">
-								<!-- <div class="x_title x_title_edit">
-									<h2 class="table-small-header"><i th:class="#{form.price.icon}"></i> <span th:text="#{form.price.header}"></span></h2>
-									<div class="clearfix"></div>
-								</div> -->
 								<div class="x_title">
 									<div class="col-md-6 col-sm-6 col-xs-6 title_left_box x_title_edit">
 										<h2 class="table-small-header">
@@ -197,7 +193,7 @@
 												<th th:text="#{form.price.label.startdate}"></th>
 												<th th:text="#{form.price.label.enddate}"></th>
 												<th th:text="#{form.price.label.price}"></th>
-												<th th:text="#{form.price.label.currencytype}"></th>
+												<th th:text="#{form.price.label.currencytype}"></th> 
 												<th th:text="#{form.price.label.measure}"></th>
 												<th></th>
 											</tr>
@@ -334,7 +330,7 @@
 						
 						<div class="clearfix"></div>
 							<div class="modal-footer modal-custom-footer">
-								<button id="bt_price_delete" type="button" class="btn btn-danger" style="float: left;display: none;"  onclick="openModalMainDelete();">
+								<button id="bt_price_delete" type="button" class="btn btn-danger" style="float: left;display: none;"  onclick="openPriceMainModalDelete();">
 									<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
 								</button>
 								<button type="button" class="btn btn-default" data-dismiss="modal">
@@ -348,7 +344,38 @@
 					</div>
 				</div>
 			</div>
-			
+
+			<div id="modal_delete_price" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog ">
+					<div class="modal-content">
+
+						<div class="modal-header modal-delete-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">×</span>
+							</button>
+							<h4 class="modal-title" id="myModalLabel">
+								<i class="fa fa-trash"></i> <span th:text="#{label.delete.head.confirm}"></span>
+							</h4>
+						</div>
+						<div class="modal-body">
+							<form autocomplete="off" id="deletePriceForm" data-parsley-validate class="form-horizontal form-label-left">
+								<input type="hidden" name="productIdEncrypt" th:value="${product.productIdEncrypt}">
+								<input type="hidden" id="delete_id_price" name="priceIdEncrypt" /> <span id="modal_delete_content_price"></span>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
+							</button>
+							<button type="button" class="btn btn-danger" onclick="priceDeleteAction();">
+								<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
+							</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
 			<!-- --------------------------- -->
 			<!-- -------- End Modal -------- -->
 			<!-- --------------------------- -->
@@ -419,41 +446,42 @@
 			var price_url = /*[[@{/user/price/list/ajax/}]]*/
 			var productIdEncrypt = /*[[${product.productIdEncrypt}]]*/;
 			var price_url_complete = price_url + productIdEncrypt;
-	    		var table =  $('#price_datatables').DataTable( {
+			var table =  $('#price_datatables').DataTable( {
 	    			"processing": true,
+	    			"ajax": price_url_complete,
 	    	        "paging":   false,
 	    	        "ordering": false,
 	    	        "info":     false,
-	    	        "searching":	false,
-	    	        "language": {"url": price_url_complete},
+	    	        "searching":	true,
+	    	        "language": {"url": url_language},
+	    	        "order": [[ 1, 'asc' ]],
 	    	        "columns": [
 	  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
-	  	            { 'data': 'startDate' },
-	  	          	{ 'data': 'endDate' },
-	  	        		{ 'data': 'startDate' },
-	  	      		{ 'data': 'startDate' },
-	  	            { 'data': 'startDate' },
-	  	            { 'data': 'priceIdEncrypt' ,'className': 'dt-body-close','searchable': false, 'orderable': false }
+	  	            { 'data': 'startDateText' },
+	  	          	{ 'data': 'endDateText' },
+	  	        		{ 'data': 'priceText' },
+	  	        		{ 'data': 'currencyName' },
+	  	      		{ 'data': 'measureName' },
+	  	            { 'data': 'priceIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
 	  	        ],
-	  	     /*  "columnDefs": [
-	  	    		 {"targets": 0, "className": "dt-body-close"},
-	  	    	 	 {"targets": 1, "className": "content-center"},
-	  	    	 	 {"targets": 2, "className": "content-center"},
-	  	    	 	 {"targets": 3, "className": "content-right"},
-	  	    	 	 {"targets": 4, "visible": false}, //currencyId
-	  	    	 	 {"targets": 5, "className": "content-center"},
-	  	    	 	 {"targets": 6, "visible": false}, //measureId
-	  	    	 	 {"targets": 7, "className": "content-center"}
-	  	      ] */
-		  	    "columnDefs": [
-		        	   {"targets": 0,"className": "dt-body-no","searchable":false,"orderable":false},
-		        	   {"targets": 6,"className": "dt-body-close","searchable":false,"orderable":false,
-		        		   "render": function ( data, type, row ) {
-	         		 return	 '<button type="button" class="btn btn-primary btn-xs" onclick="locatoinLoadAction(\''+data+'\');" ><i class="fa fa-wrench"></i></button> ' +
-	         		 '<button type="button" class="btn btn-danger btn-xs" onclick="openModalDelete(\''+data+'\',\''+row.locationCode+ '\');" ><i class="fa fa-close"></i></button>';
-		            }   
-		        	   }
-		        ]
+	    	        "columnDefs": [
+	    	        	   {"targets": 0,"className": "dt-body-no","searchable":false,"orderable":false},
+	    	        	   {"targets": 1,"className": "content-center"},
+	    	        	   {"targets": 2,"className": "content-center"},
+	    	        	   {"targets": 3,"className": "content-right"},
+	    	        	   {"targets": 4,"className": "content-center"},
+	    	        	   {"targets": 5,"className": "content-center"},
+	    	        	   {"targets": 6,"className": "dt-body-close","searchable":false,"orderable":false,
+	    	        		   "render": function ( data, type, row ) {
+	                		 return	 '<button type="button" class="btn btn-primary btn-xs" onclick="priceLoadAction(\''+data+'\');" ><i class="fa fa-wrench"></i></button> ' +
+	                		 '<button type="button" class="btn btn-danger btn-xs" onclick="openPriceModalDelete(\''+data+'\');" ><i class="fa fa-close"></i></button>';
+			            }   
+	    	        	   }
+	    	        ],
+	    	        "initComplete": function( settings, json ) {
+            	 		//fix bug datatables use dom not responsive html
+            			 $("#price_datatables_filter").hide();
+           		}
 	    	    } );
 	       
 	    		/* SET RELOAD TOOLTIP AFTER DATATABLE */
@@ -467,19 +495,9 @@
 	                cell.innerHTML = i+1;
 	            } );
 	        } ).draw(); 
-	       
-	       /*  $('#price_datatables tbody').on('click','i.fa-close', function () {
-	       	 	table.row( $(this).parents('tr') ).remove().draw();
-			}); */
+	
 		});
-	 
-	 /* 	function priceDatatablesAdd(currencyId,currncyName,startDate,endDate,price,measureId,measureName){
-     		var table = $('#price_datatables').DataTable();
-	     	var btDelete = '<button type="button" class="btn btn-danger btn-xs"><i class="fa fa-close"></i></button>';
-	     	table.row.add([btDelete,startDate,endDate,price,currencyId,currncyName,measureId,measureName]).draw();
-	     	closePriceModal();
-	    } */
-		
+
 		<!-- -------------------------------- -->
 		<!-- -------- Start Select2  -------- -->
 		<!-- -------------------------------- -->
@@ -539,13 +557,34 @@
 		
 		function resetPriceModal(){
 			var measureData = $('#measureDropdown').select2('data');
-			$("#priceCurrencyDropdown").val("1").trigger('change');
+			$("#price_id_encrypt").val("");
 			$("#startDate").val("");
 			$("#endDate").val("");
 			$("#priceText").val("0.00");
+			$("#priceCurrencyDropdown").val("1").trigger('change');
 			$("#priceMeasureDropdown").val(measureData[0].id).trigger('change');
 		}
 		
+		function setPriceModal(priceIdEncrypt,startDateText,endDateText,priceText,currencyId,measureIdEncrypt){
+			$("#price_id_encrypt").val(priceIdEncrypt);
+			$("#startDate").val(startDateText);
+			$("#endDate").val(endDateText);
+			$("#priceText").val(priceText);
+			$("#priceCurrencyDropdown").val(currencyId).trigger('change');
+			$("#priceMeasureDropdown").val(measureIdEncrypt).trigger('change');
+		}
+		
+		function openPriceMainModalDelete(){
+			var priceIdEncrypt = $("#price_id_encrypt").val();
+			openPriceModalDelete(priceIdEncrypt);
+		}
+		
+		function openPriceModalDelete(idEncrypt){
+	    		var messageMain = /*[[#{label.delete.content.confirm}]]*/;
+	    		$("#delete_id_price").val(idEncrypt);
+	    		$("#modal_delete_content_price").html(messageMain);
+	    		$('#modal_delete_price').modal('show');
+	    }
 	
 		
 		// Main
@@ -601,14 +640,13 @@
 			            if(response.status == "SUCCESS"){
 			            	
 				        	   var priceIdEncrypt = response.result.priceIdEncrypt;
-				        	   var startDate = response.result.startDate;
-				        	   var endDate = response.result.endDate;
-				        	   var price = response.result.price;
-				        	   var currencyId = response.result.currency.currencyId;
-				        	   var measureIdEncrypt = response.result.measure.measureIdEncrypt;
+				        	   var startDateText = response.result.startDateText;
+				        	   var endDateText = response.result.endDateText;
+				        	   var priceText = response.result.priceText;
+				        	   var currencyId = response.result.currencyId;
+				        	   var measureIdEncrypt = response.result.measureIdEncrypt;
 				        	   
-				        	   alert("priceIdEncrypt:" + priceIdEncrypt);
-				          // setLocationModalForm(locationIdEncrypt,locationCode,aisle,unit,shelf,description);
+				        	   setPriceModal(priceIdEncrypt,startDateText,endDateText,priceText,currencyId,measureIdEncrypt);
 				        	   $("#bt_price_delete").show();
 				        	   $('#modal_price').modal('show');
 			             }else{
@@ -637,6 +675,30 @@
 		                table.ajax.reload(); 
 		             }else{
 		            	 	validationErrorShow(response.result);
+		             }
+		         },
+		         error: function(e){
+		             openNotification("error","error",e);
+		         }
+		    });
+		}
+	  	
+	    function priceDeleteAction() {
+	 	   	var urlAction = /*[[@{/user/price/delete}]]*/;
+		    $.ajax({
+		        type: "POST",
+		        url: urlAction,
+		        dataType: 'json',
+		        data: $("#deletePriceForm").serialize(),
+		        success: function(response){
+		            if(response.status == "SUCCESS"){
+		               	openNotification(response.result.type,response.result.title,response.result.text);
+		               	$('#modal_delete_price').modal('hide');
+		               	closePriceModal();
+		              	var table =  $('#price_datatables').DataTable();
+		                 table.ajax.reload();
+		             }else{
+		            		openNotification(response.result.type,response.result.title,response.result.text);
 		             }
 		         },
 		         error: function(e){

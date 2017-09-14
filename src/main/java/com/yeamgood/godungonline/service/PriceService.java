@@ -9,5 +9,5 @@ public interface PriceService {
 //	public List<Price> findAllByGodungGodungIdOrderByPriceNameAsc(Long godungId) throws Exception;
 //	public long count(Long godungId);
 	public void save(String productIdEncrypt,PriceForm priceForm,User userSession) throws Exception;
-	public void delete(String idEncrypt,User userSession) throws Exception;
+	public void delete(String productIdEncrypt,String priceIdEncrypt,User userSession) throws Exception;
 }

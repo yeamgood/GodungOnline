@@ -1,5 +1,6 @@
 package com.yeamgood.godungonline.controller;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,8 @@ import com.yeamgood.godungonline.model.User;
 import com.yeamgood.godungonline.service.MenuService;
 import com.yeamgood.godungonline.service.PriceService;
 import com.yeamgood.godungonline.service.ProductService;
+import com.yeamgood.godungonline.utils.AESencrpUtils;
+import com.yeamgood.godungonline.utils.DateUtils;
 
 @Controller
 public class PriceController {
@@ -92,17 +95,32 @@ public class PriceController {
 		User userSession = (User) session.getAttribute("user");
 		
 		List<Price> priceList = new ArrayList<Price>();
+		List<PriceForm> priceFormList = new ArrayList<PriceForm>();
+		PriceForm priceForm;
+		
 		if(StringUtils.isNotBlank(idEncrypt) && !StringUtils.equalsAnyIgnoreCase(idEncrypt, "null")) {
 			Product product = productService.findByIdEncrypt(idEncrypt, userSession);
 			priceList = product.getPriceList();
 		}
+		
+	
+		DecimalFormat df = new DecimalFormat();
+		df.setMinimumFractionDigits(2);
 		for (Price price : priceList) {
 			price.encryptData(price);
+			priceForm = new PriceForm();
+			priceForm.setStartDateText(DateUtils.dateToString(price.getStartDate(), DateUtils.ddMMyyyy));
+			priceForm.setEndDateText(DateUtils.dateToString(price.getEndDate(), DateUtils.ddMMyyyy));
+			priceForm.setPriceText(df.format(price.getPrice()));
+			priceForm.setCurrencyName(price.getCurrency().getCurrencyName());
+			priceForm.setMeasureName(price.getMeasure().getMeasureName());
+			priceForm.setPriceIdEncrypt(price.getPriceIdEncrypt());
+			priceFormList.add(priceForm);
 		}
 		
-		logger.debug("O:priceList" + priceList.size());
+		logger.debug("O:priceList" + priceFormList.size());
 		DataTableObject dataTableObject = new DataTableObject();
-		dataTableObject.setAaData(priceList);
+		dataTableObject.setAaData(priceFormList);
 		String result = new ObjectMapper().writeValueAsString(dataTableObject);
 		return result;
 	}
@@ -146,9 +164,22 @@ public class PriceController {
 		try {
 			userSession = (User) session.getAttribute("user");
 			Price priceTemp = priceService.findByIdEncrypt(price.getPriceIdEncrypt(), userSession);
+			
+			DecimalFormat df = new DecimalFormat();
+			df.setMinimumFractionDigits(2);
+			PriceForm priceForm = new PriceForm();
+			priceForm.setStartDateText(DateUtils.dateToString(priceTemp.getStartDate(), DateUtils.ddMMyyyy));
+			priceForm.setEndDateText(DateUtils.dateToString(priceTemp.getEndDate(), DateUtils.ddMMyyyy));
+			priceForm.setPriceText(df.format(priceTemp.getPrice()));
+			priceForm.setCurrencyId(priceTemp.getCurrency().getCurrencyId());
+			priceForm.setCurrencyName(priceTemp.getCurrency().getCurrencyName());
+			priceForm.setMeasureIdEncrypt(AESencrpUtils.encryptLong(priceTemp.getMeasure().getMeasureId()));
+			priceForm.setMeasureName(priceTemp.getMeasure().getMeasureName());
+			priceForm.setPriceIdEncrypt(priceTemp.getPriceIdEncrypt());
+			
 			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.load.success");
 			jsonResponse.setStatus("SUCCESS");
-			jsonResponse.setResult(priceTemp);
+			jsonResponse.setResult(priceForm);
 		} catch (Exception e) {
 			logger.error("error:",e);
 			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.load.error");
@@ -200,14 +231,14 @@ public class PriceController {
 	}
 	
 	@RequestMapping(value="/user/price/delete", method=RequestMethod.POST)
-	public @ResponseBody JsonResponse userPriceDelete(Price price,HttpSession session){
+	public @ResponseBody JsonResponse userPriceDelete(PriceForm priceForm,HttpSession session){
 		logger.debug("I");
-		logger.debug("I" + price.toString());
+		logger.debug("I" + priceForm.toString());
 		Pnotify pnotify;
 		User userSession;
 		JsonResponse jsonResponse = new JsonResponse();
 		
-		if(price.getPriceIdEncrypt() == null) {
+		if(priceForm.getPriceIdEncrypt() == null) {
 			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.save.error");
 			jsonResponse.setStatus("FAIL");
 			jsonResponse.setResult(pnotify);
@@ -216,7 +247,7 @@ public class PriceController {
 		
 		try {
 			userSession = (User) session.getAttribute("user");
-			priceService.delete(price.getPriceIdEncrypt(), userSession);
+			priceService.delete(priceForm.getProductIdEncrypt(),priceForm.getPriceIdEncrypt(), userSession);
 			
 			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.delete.success");
 			jsonResponse.setStatus("SUCCESS");

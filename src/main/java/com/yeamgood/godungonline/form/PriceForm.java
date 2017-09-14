@@ -2,16 +2,12 @@ package com.yeamgood.godungonline.form;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.yeamgood.godungonline.model.template.ModelTemplate;
 
-@Entity
-@Table(name = "price")
 public class PriceForm extends ModelTemplate{
 
 	private Long priceId;
@@ -32,9 +28,17 @@ public class PriceForm extends ModelTemplate{
 	private String measureIdEncrypt;
 	
 	@NotNull(message = "{form.price.validation.currency}")
-	private String currencyId;
+	private Long currencyId;
 	
 	private String productIdEncrypt;
+	
+	private String startDateText;
+	
+	private String endDateText;
+	
+	private String measureName;
+	
+	private String currencyName;
 
 	public Long getPriceId() {
 		return priceId;
@@ -84,11 +88,11 @@ public class PriceForm extends ModelTemplate{
 		this.measureIdEncrypt = measureIdEncrypt;
 	}
 
-	public String getCurrencyId() {
+	public Long getCurrencyId() {
 		return currencyId;
 	}
 
-	public void setCurrencyId(String currencyId) {
+	public void setCurrencyId(Long currencyId) {
 		this.currencyId = currencyId;
 	}
 
@@ -100,11 +104,45 @@ public class PriceForm extends ModelTemplate{
 		this.productIdEncrypt = productIdEncrypt;
 	}
 
+	public String getStartDateText() {
+		return startDateText;
+	}
+
+	public void setStartDateText(String startDateText) {
+		this.startDateText = startDateText;
+	}
+
+	public String getEndDateText() {
+		return endDateText;
+	}
+
+	public void setEndDateText(String endDateText) {
+		this.endDateText = endDateText;
+	}
+
+	public String getMeasureName() {
+		return measureName;
+	}
+
+	public void setMeasureName(String measureName) {
+		this.measureName = measureName;
+	}
+
+	public String getCurrencyName() {
+		return currencyName;
+	}
+
+	public void setCurrencyName(String currencyName) {
+		this.currencyName = currencyName;
+	}
+
 	@Override
 	public String toString() {
 		return "PriceForm [priceId=" + priceId + ", priceIdEncrypt=" + priceIdEncrypt + ", startDate=" + startDate
 				+ ", endDate=" + endDate + ", priceText=" + priceText + ", measureIdEncrypt=" + measureIdEncrypt
-				+ ", currencyId=" + currencyId + ", productIdEncrypt=" + productIdEncrypt + "]";
+				+ ", currencyId=" + currencyId + ", productIdEncrypt=" + productIdEncrypt + ", startDateText="
+				+ startDateText + ", endDateText=" + endDateText + ", measureName=" + measureName + ", currencyName="
+				+ currencyName + "]";
 	}
 	
 }
