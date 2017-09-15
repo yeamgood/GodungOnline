@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.yeamgood.godungonline.model.template.ModelTemplate;
@@ -22,6 +23,7 @@ public class PriceForm extends ModelTemplate{
 	private Date endDate;
 	
 	@NotNull(message = "{form.price.validation.price}")
+	@Length(max = 16, message = "{currency.max.16}")
 	private String priceText;
 	
 	@NotNull(message = "{form.price.validation.measure}")

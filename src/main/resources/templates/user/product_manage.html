@@ -186,7 +186,7 @@
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
-									<table id="price_datatables" class="table table-bordered table-small" style="width: 100%">
+									<table id="price_datatables" class="table  table-bordered table-small" style="width: 100%">
 										<thead class="search-content-header">
 											<tr>
 												<th th:text="#{datatables.text.no}"></th>
@@ -203,6 +203,41 @@
 							</div>
 						</div>
 						
+						<div class="col-md-12 col-sm-12 col-xs-12"  th:if="*{productIdEncrypt} != null and *{productIdEncrypt} != '' " >
+							<div class="x_panel">
+								<div class="x_title">
+									<div class="col-md-6 col-sm-6 col-xs-6 title_left_box x_title_edit">
+										<h2 class="table-small-header">
+											<i th:class="#{form.stock.icon}"></i> <span th:text="#{form.stock.header}"></span>
+										</h2>
+									</div>
+									<div class="col-md-6 col-sm-6 col-xs-6 title_box">
+										<div class="pull-right">
+											<div class="btn-group">
+												<button class="btn btn-success dropdown-toggle" type="button" onclick="openStockNewModal();">
+													<i class="fa fa-plus"></i> <span class="span_white" th:text="#{bt.text.add}"></span>
+												</button>
+											</div>
+										</div>
+									</div>
+									<div class="clearfix"></div>
+								</div>
+								<div class="x_content">
+									<table id="stock_datatables" class="table  table-bordered table-small" style="width: 100%">
+										<thead class="search-content-header">
+											<tr>
+												<th th:text="#{datatables.text.no}"></th>
+												<th th:text="#{form.stock.label.warehouse}"></th>
+												<th th:text="#{form.stock.label.location}"></th>
+												<th th:text="#{form.stock.label.remind}"></th>
+												<th th:text="#{form.stock.label.remain}"></th>
+												<th></th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+							</div>
+						</div>
 						
 						
 					</div>
@@ -243,7 +278,7 @@
                   
                   
                   
-             <!-- price -->
+             <!-- Price -->
 			<div id="modal_price" class="modal fade "  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 				<div class="modal-dialog ">
 					<div class="modal-content">
@@ -265,6 +300,7 @@
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">
 											<label th:text="#{form.price.label.startdate}"></label>
+											<label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
 			                                <div class="input-group date" id="start_Datepicker">
@@ -293,6 +329,7 @@
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">
 											<label th:text="#{form.price.label.price}"></label>
+											<label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
 						                     <input type="text" id="priceText" name="priceText" class="form-control" style="text-align:right;" value="0.00">
@@ -302,6 +339,7 @@
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">
 											<label th:text="#{form.price.label.currencytype}"></label>
+											<label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
 					                           <select id="priceCurrencyDropdown" name="currencyId" style="width:100%" >
@@ -314,6 +352,7 @@
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">
 											<label th:text="#{form.price.label.measure}"></label>
+											<label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
 											 <select id="priceMeasureDropdown" name="measureIdEncrypt" class="" style="width:100%" >
@@ -368,6 +407,116 @@
 								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
 							</button>
 							<button type="button" class="btn btn-danger" onclick="priceDeleteAction();">
+								<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
+							</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			
+			
+			
+			
+			 <!-- Stock -->
+			<div id="modal_stock" class="modal fade "  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog ">
+					<div class="modal-content">
+
+						<div class="modal-header modal-custom-header">
+							<button type="button" class="close" data-dismiss="modal">
+								<span aria-hidden="true">×</span>
+							</button>
+							<h4 class="modal-title">
+								<i th:class="#{form.stock.icon}"></i> <span th:text="#{form.stock.header}"></span>
+							</h4>
+						</div>
+						
+						<div class="modal-body">
+							<form autocomplete="off" id="stockModalForm" data-parsley-validate class="form-horizontal form-label-left">
+								<input type="hidden" name="productIdEncrypt" th:value="${product.productIdEncrypt}">
+								<input type="hidden" id="stock_id_encrypt" name="stockIdEncrypt" >
+								<div class="col-md-ุ12 col-sm-12 col-xs-12">
+								
+									<div class="form-group">
+										<div class="control-label col-md-4 col-sm-4 col-xs-12">
+											<label th:text="#{form.stock.label.warehouse}"></label>
+											<label class="validation-message" th:text="#{label.request}"></label>
+										</div>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+					                           <select id="stockWarehouseDropdown" name="warehouseIdEncrypt" style="width:100%" >
+					                              <option value=""></option>
+					                           	 <option th:each="obj:${warehouseDropdown}" th:value="${obj.warehouseIdEncrypt}" th:text="${obj.warehouseName}"></option>
+					                          </select>
+											<label id="error_warehouseIdEncrypt" class="validation-message" style="display:none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-4 col-sm-4 col-xs-12">
+											<label th:text="#{form.stock.label.location}"></label>
+										</div>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+					                           <select id="stockLocationDropdown" name="locationIdEncrypt" style="width:100%" >
+					                            	 <option value=""></option>
+					                           	 <option th:each="obj:${locationDropdown}" th:value="${obj.locationIdEncrypt}" th:text="${obj.locationCode}"></option>
+					                          </select>
+											<label id="error_locationIdEncrypt" class="validation-message" style="display:none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-4 col-sm-4 col-xs-12">
+											<label th:text="#{form.stock.label.remind}"></label>
+										</div>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+				                             <input type="text" id="remindNumber" name="remindNumber" class="form-control" style="text-align:right;" value="0.00">
+											<label id="error_remindNumber" class="validation-message" style="display:none;"></label>
+										</div>
+									</div>
+		                      	</div>
+				               
+	                      	</form>
+						</div>
+						<div class="clearfix"></div>
+							<div class="modal-footer modal-custom-footer">
+								<button id="bt_stock_delete" type="button" class="btn btn-danger" style="float: left;display: none;"  onclick="openStockMainModalDelete();">
+									<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
+								</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal">
+									<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
+								</button>
+								<button id="bt_stock_save" type="button" class="btn btn-success" onclick="stockSaveAction();">
+									<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
+								</button>
+							</div>
+
+					</div>
+				</div>
+			</div>
+			
+			
+			<div id="modal_delete_stock" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog ">
+					<div class="modal-content">
+
+						<div class="modal-header modal-delete-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">×</span>
+							</button>
+							<h4 class="modal-title" id="myModalLabel">
+								<i class="fa fa-trash"></i> <span th:text="#{label.delete.head.confirm}"></span>
+							</h4>
+						</div>
+						<div class="modal-body">
+							<form autocomplete="off" id="deleteStockForm" data-parsley-validate class="form-horizontal form-label-left">
+								<input type="hidden" name="productIdEncrypt" th:value="${product.productIdEncrypt}">
+								<input type="hidden" id="delete_id_stock" name="stockIdEncrypt" /> <span id="modal_delete_content_stock"></span>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
+							</button>
+							<button type="button" class="btn btn-danger" onclick="stockDeleteAction();">
 								<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
 							</button>
 						</div>
@@ -438,6 +587,7 @@
 		var textEdit = /*[[#{bt.text.edit}]]*/;
 		var textDelete = /*[[#{bt.text.delete}]]*/;
 		var urlFlags = /*[[@{/images/flags/24/}]]*/;
+		var stockLocationSelect = "";
 		
 		<!-- ----------------------------------- -->
 		<!-- -------- Start Datatables  -------- -->
@@ -474,7 +624,7 @@
 	    	        	   {"targets": 6,"className": "dt-body-close","searchable":false,"orderable":false,
 	    	        		   "render": function ( data, type, row ) {
 	                		 return	 '<button type="button" class="btn btn-primary btn-xs" onclick="priceLoadAction(\''+data+'\');" ><i class="fa fa-wrench"></i></button> ' +
-	                		 '<button type="button" class="btn btn-danger btn-xs" onclick="openPriceModalDelete(\''+data+'\');" ><i class="fa fa-close"></i></button>';
+	                		 '<button type="button" class="btn btn-danger btn-xs" onclick="openPriceModalDelete(\''+data+'\');" ><i class="fa fa-trash"></i></button>';
 			            }   
 	    	        	   }
 	    	        ],
@@ -497,6 +647,62 @@
 	        } ).draw(); 
 	
 		});
+		
+		
+		$(document).ready(function() {
+			var stock_url = /*[[@{/user/stock/list/ajax/}]]*/
+			var productIdEncrypt = /*[[${product.productIdEncrypt}]]*/;
+			var stock_url_complete = stock_url + productIdEncrypt;
+			var table =  $('#stock_datatables').DataTable( {
+	    			"processing": true,
+	    			"ajax": stock_url_complete,
+	    	        "paging":   false,
+	    	        "ordering": false,
+	    	        "info":     false,
+	    	        "searching":	true,
+	    	        "language": {"url": url_language},
+	    	        "order": [[ 1, 'asc' ]],
+	    	        "columns": [
+	  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
+	  	            { 'data': 'warehouseName' },
+	  	          	{ 'data': 'locationCode' },
+	  	        		{ 'data': 'remindNumber' },
+	  	        		{ 'data': 'remainNumber' },
+	  	            { 'data': 'stockIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
+	  	        ],
+	    	        "columnDefs": [
+	    	        	   {"targets": 0,"className": "dt-body-no","searchable":false,"orderable":false},
+	    	        	   {"targets": 1,"className": "content-center"},
+	    	        	   {"targets": 2,"className": "content-center"},
+	    	        	   {"targets": 3,"className": "content-right"},
+	    	        	   {"targets": 4,"className": "content-right"},
+	    	        	   {"targets": 5,"className": "dt-body-close","searchable":false,"orderable":false,
+	    	        		   "render": function ( data, type, row ) {
+	                		 return	 '<button type="button" class="btn btn-primary btn-xs" onclick="stockLoadAction(\''+data+'\');" ><i class="fa fa-wrench"></i></button> ' +
+	                		 '<button type="button" class="btn btn-danger btn-xs" onclick="openStockModalDelete(\''+data+'\');" ><i class="fa fa-trash"></i></button>';
+			            }   
+	    	        	   }
+	    	        ],
+	    	        "initComplete": function( settings, json ) {
+            	 		//fix bug datatables use dom not responsive html
+            			 $("#stock_datatables_filter").hide();
+           		}
+	    	    } );
+	       
+	    		/* SET RELOAD TOOLTIP AFTER DATATABLE */
+		    	$('#stock_datatables').on( 'draw.dt', function () {
+		    		$('[data-toggle="tooltip"]').tooltip();
+		    	} );
+        
+	       /* SET INDEX COLUMN */
+	        table.on( 'order.dt search.dt', function () {
+	        	table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+	                cell.innerHTML = i+1;
+	            } );
+	        } ).draw(); 
+	
+		});
+
 
 		<!-- -------------------------------- -->
 		<!-- -------- Start Select2  -------- -->
@@ -524,24 +730,40 @@
 	      		placeholder: selectText,
 	      		dropdownParent: $('#modal_price')
 	      	});
+	      	
+	    		//var url_location;
+	      	//var locationList = /*[[@{/user/warehouse/location/list/ajax/}]]*/
+	      	$('#stockWarehouseDropdown').select2({
+	      		placeholder: selectText,
+	      		dropdownParent: $('#modal_stock')
+	      	}).on("change", function (e) {
+	      		if(this.value != ""){
+		      		var locationList = /*[[@{/user/warehouse/location/list/ajax/}]]*/;
+		      		var url_location =  locationList + this.value;
+		        	   reloadLocationSelect2(url_location);
+		      	}
+	      	});
+	      	 
+	      	
+	    		$('#stockLocationDropdown').select2({
+	      		placeholder: selectText,
+	      		dropdownParent: $('#modal_stock')
+	      	});
+	      	 
 	    }); 
-		<!-- -------------------------------- -->
-		<!-- -------- End Select2  ---------- -->
-		<!-- -------------------------------- -->
-		
+	
 		
 		<!-- -------------------------------- -->
 		<!-- -------- Start Price  -------- -->
 		<!-- -------------------------------- -->
 		$("#priceText").maskMoney();
-		<!-- -------------------------------- -->
-		<!-- -------- Start Price  -------- -->
-		<!-- -------------------------------- -->
+		$("#remindNumber").maskMoney();
+		
 		
 		<!-- -------------------------------- -->
 		<!-- -------- Start Modal  ---------- -->
 		<!-- -------------------------------- -->
-		
+
 		// price
 		function openPriceModal(){
 			resetPriceModal();
@@ -586,6 +808,44 @@
 	    		$('#modal_delete_price').modal('show');
 	    }
 	
+		// Stock
+		function openStockModal(){
+			resetStockModal();
+			resetValidationError();
+			$('#modal_stock').modal('show');
+		}
+		
+		function closeStockModal(){
+			resetStockModal();
+			resetValidationError();
+			$('#modal_stock').modal('hide');
+		}
+		function resetStockModal(){
+			$("#stock_id_encrypt").val("");
+			$("#stockWarehouseDropdown").val("").trigger('change');
+			$("#stockLocationDropdown").empty();
+			$("#remindNumber").val("0.00");
+		}
+		
+		function setStockModal(stockIdEncrypt,warehouseIdEncrypt,locationIdEncrypt,remindNumber){
+			stockLocationSelect = locationIdEncrypt;
+			$("#stock_id_encrypt").val(stockIdEncrypt);
+			$("#stockWarehouseDropdown").val(warehouseIdEncrypt).trigger('change');
+			$("#remindNumber").val(remindNumber);
+		}
+		
+		
+		function openStockMainModalDelete(){
+			var stockIdEncrypt = $("#stock_id_encrypt").val();
+			openStockModalDelete(stockIdEncrypt);
+		}
+		
+		function openStockModalDelete(idEncrypt){
+	    		var messageMain = /*[[#{label.delete.content.confirm}]]*/;
+	    		$("#delete_id_stock").val(idEncrypt);
+	    		$("#modal_delete_content_stock").html(messageMain);
+	    		$('#modal_delete_stock').modal('show');
+	    }
 		
 		// Main
 		function openModalMainDelete(){
@@ -609,7 +869,7 @@
 		
 		function openPriceNewModal(){
 		 	resetPriceModal();
-	    		var urlAction = /*[[@{/user/category/load/add}]]*/;
+	    		var urlAction = /*[[@{/user/price/load/new}]]*/;
     		    $.ajax({
     		        type: "GET",
     		        url: urlAction,
@@ -706,6 +966,134 @@
 		         }
 		    });
 		}
+	    
+	    <!-- ------------------------------------ -->
+		<!-- ----- Select Stock Action ------ -->
+		<!-- ------------------------------------ -->
+		function openStockNewModal(){
+		 	resetStockModal();
+	    		var urlAction = /*[[@{/user/stock/load/new}]]*/;
+    		    $.ajax({
+    		        type: "GET",
+    		        url: urlAction,
+    		        dataType: 'json',
+    		        success: function(response){
+    		            if(response.status == "SUCCESS"){
+    		            		$("#bt_stock_delete").hide();
+    		            		$('#modal_stock').modal('show');
+    		             }else{
+    		            		openNotification(response.result.type,response.result.title,response.result.text);
+    		             }
+    		         },
+    		         error: function(e){
+    		             openNotification("error","error",e);
+    		         }
+    		    });
+	    }
+		
+		 function stockLoadAction(idEncrypt) {
+			 	resetStockModal();
+		 	   	var urlAction = /*[[@{/user/stock/load}]]*/;
+			    $.ajax({
+			        type: "GET",
+			        url: urlAction,
+			        dataType: 'json',
+			        data: {"stockIdEncrypt": idEncrypt},
+			        success: function(response){
+			            if(response.status == "SUCCESS"){
+			            	
+				        	   var stockIdEncrypt = response.result.stockIdEncrypt;
+				        	   var warehouseIdEncrypt = response.result.warehouseIdEncrypt;
+				        	   var locationIdEncrypt = response.result.locationIdEncrypt;
+				        	   var remindNumber = response.result.remindNumber;
+				        	   
+				   		   setStockModal(stockIdEncrypt,warehouseIdEncrypt,locationIdEncrypt,remindNumber);
+				        	   $("#bt_stock_delete").show();
+				        	   $('#modal_stock').modal('show');
+			             }else{
+			            		openNotification(response.result.type,response.result.title,response.result.text);
+			             }
+			         },
+			         error: function(e){
+			             openNotification("error","error",e);
+			         }
+			    });
+			}
+		
+		function stockSaveAction() {
+	  		resetValidationError();
+	 	   	var urlAction = /*[[@{/user/stock/save}]]*/;
+		    $.ajax({
+		        type: "POST",
+		        url: urlAction,
+		        dataType: 'json',
+		        data: $("#stockModalForm").serialize(),
+		        success: function(response){
+		            if(response.status == "SUCCESS"){
+		               	openNotification(response.result.type,response.result.title,response.result.text);
+		               	closeStockModal();
+		              	var table =  $('#stock_datatables').DataTable();
+		                table.ajax.reload(); 
+		             }else{
+		            	 	validationErrorShow(response.result);
+		             }
+		         },
+		         error: function(e){
+		             openNotification("error","error",e);
+		         }
+		    });
+		}
+		
+		  function stockDeleteAction() {
+		 	   	var urlAction = /*[[@{/user/stock/delete}]]*/;
+			    $.ajax({
+			        type: "POST",
+			        url: urlAction,
+			        dataType: 'json',
+			        data: $("#deleteStockForm").serialize(),
+			        success: function(response){
+			            if(response.status == "SUCCESS"){
+			               	openNotification(response.result.type,response.result.title,response.result.text);
+			               	$('#modal_delete_stock').modal('hide');
+			               	closeStockModal();
+			              	var table =  $('#stock_datatables').DataTable();
+			                 table.ajax.reload();
+			             }else{
+			            		openNotification(response.result.type,response.result.title,response.result.text);
+			             }
+			         },
+			         error: function(e){
+			             openNotification("error","error",e);
+			         }
+			    });
+			}
+		
+		
+		function reloadLocationSelect2(url_location){
+    		    $.ajax({
+    		        type: "GET",
+    		        url: url_location,
+    		        dataType: 'json',
+    		        success: function(response){
+   		            	generateLocationSelect(response.aaData);
+    		         },
+    		         error: function(e){
+    		             openNotification("error","error",e);
+    		         }
+    		    });
+	    }
+		
+		
+	  function generateLocationSelect(obj){
+		  	var selectText = /*[[#{dropdown.text.select}]]*/;
+			$("#stockLocationDropdown").empty();
+			$('#stockLocationDropdown').append('<option value=" ">'+selectText+'</option>');
+            $(obj).each(function(i, item){
+        	   		$('#stockLocationDropdown').append('<option value="'+item.locationIdEncrypt+'" >'+item.locationCode+'</option>');
+             });
+            $("#stockLocationDropdown").val(stockLocationSelect).trigger('change');
+            stockLocationSelect = "";
+	    	}
         
         <!-- -------------------------------- -->
 		<!-- -------- Start Date  -------- -->
