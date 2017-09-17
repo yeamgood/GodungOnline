@@ -71,6 +71,11 @@ public class Product extends ModelTemplate{
 	@JoinTable(name = "product_stock", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "stock_id"))
 	private List<Stock> stockList;
 	
+	@OneToMany(cascade = CascadeType.ALL,orphanRemoval=true)
+	@JoinTable(name = "product_dealer", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "dealer_id"))
+	private List<Dealer> dealerList;
+	
+	
 	public void setObject(Product product) {
 		this.productName = product.getProductName();
 		this.description  = product.getDescription();
@@ -169,12 +174,20 @@ public class Product extends ModelTemplate{
 		this.stockList = stockList;
 	}
 
+	public List<Dealer> getDealerList() {
+		return dealerList;
+	}
+
+	public void setDealerList(List<Dealer> dealerList) {
+		this.dealerList = dealerList;
+	}
+
 	@Override
 	public String toString() {
 		return "Product [productId=" + productId + ", productIdEncrypt=" + productIdEncrypt + ", productCode="
 				+ productCode + ", productName=" + productName + ", description=" + description + ", godung=" + godung
 				+ ", brand=" + brand + ", measure=" + measure + ", category=" + category + ", priceList=" + priceList
-				+ "]";
+				+ ", stockList=" + stockList + ", dealerList=" + dealerList + "]";
 	}
 
 }

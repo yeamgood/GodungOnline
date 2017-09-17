@@ -407,11 +407,6 @@ INSERT INTO `godung_online`.`brand` (`brand_id`,`brand_code`, `create_date`, `cr
 INSERT INTO `godung_online`.`brand` (`brand_id`,`brand_code`, `create_date`, `create_user`, `version`, `brand_name`, `godung_id`, `description`) VALUES ('2', 'BRA20170830-00002', SYSDATE(), 'SYSTEM', '0', 'Lg', '2','');
 INSERT INTO `godung_online`.`brand` (`brand_id`,`brand_code`, `create_date`, `create_user`, `version`, `brand_name`, `godung_id`, `description`) VALUES ('3', 'BRA20170830-00003', SYSDATE(), 'SYSTEM', '0', 'Toyota', '2','');
 
-INSERT INTO `godung_online`.`product` (`product_id`,`product_code`, `create_date`, `create_user`, `version`, `product_name`, `godung_id`, `description`) VALUES ('1', 'PRO20170830-00001', SYSDATE(), 'SYSTEM', '0', 'เหล็กท่อ 1.5นิ้ว', '2','');
-INSERT INTO `godung_online`.`product` (`product_id`,`product_code`, `create_date`, `create_user`, `version`, `product_name`, `godung_id`, `description`) VALUES ('2', 'PRO20170830-00002', SYSDATE(), 'SYSTEM', '0', 'เหล็กท่อ 2นิ้ว', '2','');
-INSERT INTO `godung_online`.`product` (`product_id`,`product_code`, `create_date`, `create_user`, `version`, `product_name`, `godung_id`, `description`) VALUES ('3', 'PRO20170830-00003', SYSDATE(), 'SYSTEM', '0', 'เหล็กท่อ 3นิ้ว', '2','');
-INSERT INTO `godung_online`.`product` (`product_id`,`product_code`, `create_date`, `create_user`, `version`, `product_name`, `godung_id`, `description`) VALUES ('4', 'PRO20170830-00003', SYSDATE(), 'SYSTEM', '0', 'กระจกใสบานใหญ่', '2','');
-
 INSERT INTO `godung_online`.`warehouse` (`warehouse_id`,`warehouse_code`, `create_date`, `create_user`, `version`, `warehouse_name`, `godung_id`, `description`) VALUES ('1', 'WAR20170830-00001', SYSDATE(), 'SYSTEM', '0', 'คลังสินค้าฉะเชิงเทรา', '2','คลังสินค้า ที่จังหวัดฉะเชิงเทรา');
 INSERT INTO `godung_online`.`location` (`location_Id`,`location_code`, `aisle`,`unit`,`shelf`,`description`,`create_date`, `create_user`, `version`) VALUES ('1', '001-001-001','001','001','001','เก็บเหล็ก',SYSDATE(), 'SYSTEM', '0');
 INSERT INTO `godung_online`.`location` (`location_Id`,`location_code`, `aisle`,`unit`,`shelf`,`description`,`create_date`, `create_user`, `version`) VALUES ('2', '001-001-002','001','001','002','เก็บกระจก',SYSDATE(), 'SYSTEM', '0');
@@ -446,3 +441,14 @@ INSERT INTO `godung_online`.`address` (`address_id`,`street1`,`street2`,`city`,`
 INSERT INTO `godung_online`.`address` (`address_id`,`street1`,`street2`,`city`,`province_code`,`postcode`,`country_id`,`version`) VALUES (10,'103/64 ถนนศุภกิจ','ต.หน้าเมือง','อ.เมือง',1,'24000',217,0);
 INSERT INTO `godung_online`.`employee` (`employee_id`,`email`,`title`,`first_name`,`last_name`,`national_number`,`employee_code`,`tax_number`,`telephone`,`address_id`,`godung_id`,`version`) VALUES (1,'yeamgood@gmail.com','นาย','ธนรัฐ','นิยมตรง','1101500243245','EMP20170830-00001','','0878336750',9,2,0);
 INSERT INTO `godung_online`.`employee` (`employee_id`,`email`,`title`,`first_name`,`last_name`,`national_number`,`employee_code`,`tax_number`,`telephone`,`address_id`,`godung_id`,`version`) VALUES (2,'thailand@gmail.com','นาย','สมชาย','ใจดี','1101500243245','EMP20170830-00002','','0878336750',10,2,0);
+
+INSERT INTO `godung_online`.`product` (`product_id`,`product_code`, `brand_id`, `measure_id`, `category_id`, `version`, `product_name`, `godung_id`, `description`) VALUES ('1', 'PRO20170830-00001', '1','1','3', '0', 'เหล็กท่อ 1.5นิ้ว', '2','');
+INSERT INTO `godung_online`.`product` (`product_id`,`product_code`, `brand_id`, `measure_id`, `category_id`, `version`, `product_name`, `godung_id`, `description`) VALUES ('2', 'PRO20170830-00002', '1','1','3', '0', 'เหล็กท่อ 2นิ้ว', '2','');
+INSERT INTO `godung_online`.`product` (`product_id`,`product_code`, `brand_id`, `measure_id`, `category_id`, `version`, `product_name`, `godung_id`, `description`) VALUES ('3', 'PRO20170830-00003', '1','1','3', '0', 'เหล็กท่อ 3นิ้ว', '2','');
+INSERT INTO `godung_online`.`product` (`product_id`,`product_code`, `brand_id`, `measure_id`, `category_id`, `version`, `product_name`, `godung_id`, `description`) VALUES ('4', 'PRO20170830-00003', '2','2','2', '0', 'กระจกใสบานใหญ่', '2','');
+INSERT INTO `godung_online`.`price` (`price_id`, `create_date`, `create_user`, `version`, `end_date`, `price`, `start_date`, `currency_id`, `measure_id`) VALUES ('1', '2017-09-16 23:10:58', 'user@gmail.com', '0', '2017-09-15 00:00:00', '1000.00', '2017-09-15 00:00:00', '1', '2');
+INSERT INTO `godung_online`.`product_price` (`product_id`, `price_id`) VALUES ('1', '1');
+INSERT INTO `godung_online`.`dealer` (`dealer_id`, `create_date`, `create_user`, `version`, `end_date`, `price`, `start_date`, `measure_id`, `supplier_id`, `currency_id`) VALUES ('1', '2017-09-16 23:20:09', 'user@gmail.com', '0', '2017-09-23 00:00:00', '2000.00', '2017-09-16 00:00:00', '2', '2', '1');
+INSERT INTO `godung_online`.`product_dealer` (`product_id`, `dealer_id`) VALUES ('1', '1');
+INSERT INTO `godung_online`.`stock` (`stock_id`, `create_date`, `create_user`, `version`, `remind_number`, `location_id`, `warehouse_id`) VALUES ('1', '2017-09-16 23:21:43', 'user@gmail.com', '0', '10.00', '1', '1');
+INSERT INTO `godung_online`.`product_stock` (`product_id`, `stock_id`) VALUES ('1', '1');

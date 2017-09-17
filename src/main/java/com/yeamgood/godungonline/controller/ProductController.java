@@ -1,6 +1,5 @@
 package com.yeamgood.godungonline.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -35,17 +34,18 @@ import com.yeamgood.godungonline.model.Measure;
 import com.yeamgood.godungonline.model.Menu;
 import com.yeamgood.godungonline.model.Product;
 import com.yeamgood.godungonline.model.Province;
+import com.yeamgood.godungonline.model.Supplier;
 import com.yeamgood.godungonline.model.User;
 import com.yeamgood.godungonline.model.Warehouse;
 import com.yeamgood.godungonline.service.BrandService;
 import com.yeamgood.godungonline.service.CategoryService;
 import com.yeamgood.godungonline.service.CountryService;
 import com.yeamgood.godungonline.service.CurrencyService;
-import com.yeamgood.godungonline.service.LocationService;
 import com.yeamgood.godungonline.service.MeasureService;
 import com.yeamgood.godungonline.service.MenuService;
 import com.yeamgood.godungonline.service.ProductService;
 import com.yeamgood.godungonline.service.ProvinceService;
+import com.yeamgood.godungonline.service.SupplierService;
 import com.yeamgood.godungonline.service.WarehouseService;
 import com.yeamgood.godungonline.utils.AESencrpUtils;
 
@@ -87,7 +87,7 @@ public class ProductController {
 	private WarehouseService warehouseSerivce;
 	
 	@Autowired
-	private LocationService locationService;
+	private SupplierService supplierService;
 	
 	@RequestMapping(value="/user/product", method = RequestMethod.GET)
 	public ModelAndView userProduct(HttpSession session) throws Exception{
@@ -168,7 +168,7 @@ public class ProductController {
 		List<Category> categoryDropdown = categoryService.findAllByGodungGodungIdOrderByCategoryNameAsc(godungId);
 		List<Currency> currencyDropdown = currencyService.findAllByOrderByCurrencyNameAsc();
 		List<Warehouse> warehouseDropdown = warehouseSerivce.findAllByGodungGodungIdOrderByWarehouseNameAsc(godungId);
-		//ArrayList<Locaiton> locationDropdown = locationService.findByIdEncrypt(idEncrypt, userSession);
+		List<Supplier> supplierDropdown = supplierService.findAllByGodungGodungIdOrderBySupplierNameAsc(godungId);
 		
 		modelAndView.addObject("menu", menu);
 		modelAndView.addObject("product",product);
@@ -179,6 +179,7 @@ public class ProductController {
 		modelAndView.addObject("categoryDropdown",categoryDropdown);
 		modelAndView.addObject("currencyDropdown",currencyDropdown);
 		modelAndView.addObject("warehouseDropdown",warehouseDropdown);
+		modelAndView.addObject("supplierDropdown",supplierDropdown);
 		modelAndView.setViewName("user/product_manage");
 		logger.debug("O:");
 		return modelAndView;
@@ -202,6 +203,7 @@ public class ProductController {
 		List<Category> categoryDropdown = categoryService.findAllByGodungGodungIdOrderByCategoryNameAsc(godungId);
 		List<Currency> currencyDropdown = currencyService.findAllByOrderByCurrencyNameAsc();
 		List<Warehouse> warehouseDropdown = warehouseSerivce.findAllByGodungGodungIdOrderByWarehouseNameAsc(godungId);
+		List<Supplier> supplierDropdown = supplierService.findAllByGodungGodungIdOrderBySupplierNameAsc(godungId);
 		
 		//CHECK ERROR BINDING AND INITIAL DATA
 		if (!model.containsAttribute("product")) {
@@ -224,6 +226,7 @@ public class ProductController {
 		modelAndView.addObject("categoryDropdown",categoryDropdown);
 		modelAndView.addObject("currencyDropdown",currencyDropdown);
 		modelAndView.addObject("warehouseDropdown",warehouseDropdown);
+		modelAndView.addObject("supplierDropdown",supplierDropdown);
 		modelAndView.setViewName("user/product_manage");
 		logger.debug("O");
 		return modelAndView;

@@ -13,10 +13,12 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yeamgood.godungonline.bean.SupplierType;
 import com.yeamgood.godungonline.model.template.ModelTemplate;
 import com.yeamgood.godungonline.utils.AESencrpUtils;
 
@@ -86,6 +88,9 @@ public class Supplier extends ModelTemplate{
 	@JsonIgnore
 	private Godung godung;
 	
+	@Transient
+	private String fullname;
+
 	public void setObject(Supplier supplier) {
 		this.title = supplier.getTitle();
 		this.firstName = supplier.getFirstName();
@@ -95,7 +100,19 @@ public class Supplier extends ModelTemplate{
 		this.telephone = supplier.getTelephone();
 		this.email = supplier.getEmail();
 	}
+	
+	public void setFullname(String fullname) {
+		this.fullname = fullname;
+	}
 
+	public String getFullname() {
+		if(StringUtils.equalsAnyIgnoreCase(this.supplierType, SupplierType.PERSON.toString())) {
+			return this.title + this.firstName + " " + this.lastName;
+		}else {
+			return this.firstName;
+		}
+	}
+	
 	public void encryptData(Supplier supplier) throws Exception {
 		this.supplierIdEncrypt = AESencrpUtils.encryptLong(supplier.getSupplierId());
 		this.supplierId = null;
@@ -227,9 +244,9 @@ public class Supplier extends ModelTemplate{
 				+ supplierCode + ", supplierType=" + supplierType + ", nationalNumber=" + nationalNumber
 				+ ", taxNumber=" + taxNumber + ", title=" + title + ", firstName=" + firstName + ", lastName="
 				+ lastName + ", telephone=" + telephone + ", email=" + email + ", description=" + description
-				+ ", address=" + address + ", addressSend=" + addressSend + ", godung=" + godung + "]";
+				+ ", address=" + address + ", addressSend=" + addressSend + ", godung=" + godung + ", fullname="
+				+ fullname + "]";
 	}
-
 
 	
 }

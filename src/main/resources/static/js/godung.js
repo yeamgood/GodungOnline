@@ -10,6 +10,7 @@ function openNotification(inputType, inputTitle, inputText) {
 	var opts;
 	if (inputType == "success" || inputType == "info" || inputType == "error") { /* SUCCESS,INFO,ERROR */
 		opts = {
+			delay: 3000,
 			title : inputTitle,
 			text : inputText,
 			type : inputType,
@@ -19,6 +20,7 @@ function openNotification(inputType, inputTitle, inputText) {
 		};
 	} else if (inputType == "notice") { /* NOTICE */
 		opts = {
+			delay: 3000,
 			title : inputTitle,
 			text : inputText,
 			styling : 'bootstrap3',
@@ -27,6 +29,7 @@ function openNotification(inputType, inputTitle, inputText) {
 		};
 	} else if (inputType == "dark") { /* DARK */
 		opts = {
+			delay: 3000,
 			title : inputTitle,
 			text : inputText,
 			type : inputType,
@@ -37,6 +40,7 @@ function openNotification(inputType, inputTitle, inputText) {
 		};
 	} else {/* NOTICE */
 		opts = {
+			delay: 3000,
 			title : inputTitle,
 			text : inputText,
 			styling : 'bootstrap3',
@@ -63,9 +67,26 @@ function resetValidationError(){
 	$("[id^='error_']").html("");
 	$("[id^='error_']").hide();
 }
+
+function validationErrorShowWithPrefix(prefix,obj){
+	$(obj).each(function(i, item){
+		var messageOld = $("#" + prefix + item.field).html();
+		var concat = "";
+		if(messageOld != ""){concat = "<br/>";}
+		
+		$("#" + prefix + item.field).html(messageOld + concat + item.defaultMessage);
+		$("#" + prefix + item.field).show();
+	});
+}
+
+function resetValidationErrorWithPrefix(prefix){
+	$("[id^='"+prefix+"']").html("");
+	$("[id^='"+prefix+"']").hide();
+}
 /* End Validation */ 
 
 /* Start Modal */ 
+/* 
 $(document).ready(function() {
  	$('.modal').on('show.bs.modal', function() {
         var nModals = $('.modal.in').length;
@@ -95,4 +116,5 @@ $(document).ready(function() {
         });
     }
 });
+*/ 
 /* Start Modal */ 

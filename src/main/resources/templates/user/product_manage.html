@@ -9,111 +9,111 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Godung Online</title>
-	 <link rel="icon" type="image/gif" th:href="@{/images/logo_box.png}" />
+<link rel="icon" type="image/gif" th:href="@{/images/logo_box.png}" />
 
-	<!-- Bootstrap -->
-    <link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link th:href="@{/vendors/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
-    <!-- NProgress -->
-    <link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
-    <!-- iCheck -->
-    <link th:href="@{/vendors/iCheck/skins/flat/green.css}" rel="stylesheet">
-    <!-- bootstrap-date range picker -->
-    <link th:href="@{/vendors/bootstrap-daterangepicker/daterangepicker.css}" rel="stylesheet">
-    <!-- bootstrap-date time picker -->
-    <link th:href="@{/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css}" rel="stylesheet">
-    <!-- Datatables -->
-    <link th:href="@{/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css}" rel="stylesheet">
-    <!-- PNotify -->
-	<link type="text/css" th:href="@{/vendors/pnotify/dist/pnotify.css}" rel="stylesheet">
-	<link type="text/css" th:href="@{/vendors/pnotify/dist/pnotify.buttons.css}" rel="stylesheet">
-	<link type="text/css" th:href="@{/vendors/pnotify/dist/pnotify.nonblock.css}" rel="stylesheet">
-	<!-- Select2 -->
-	<link type="text/css" th:href="@{/vendors/select2/dist/css/select2.min.css}" rel="stylesheet">
-    <!-- Custom Theme Style -->
-    <link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
-	<!-- Main Theme Style -->
-	<link type="text/css" th:href="@{/css/main.css}" rel="stylesheet">
-	
+<!-- Bootstrap -->
+<link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
+<!-- Font Awesome -->
+<link th:href="@{/vendors/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+<!-- NProgress -->
+<link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
+<!-- iCheck -->
+<link th:href="@{/vendors/iCheck/skins/flat/green.css}" rel="stylesheet">
+<!-- bootstrap-date range picker -->
+<link th:href="@{/vendors/bootstrap-daterangepicker/daterangepicker.css}" rel="stylesheet">
+<!-- bootstrap-date time picker -->
+<link th:href="@{/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css}" rel="stylesheet">
+<!-- Datatables -->
+<link th:href="@{/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css}" rel="stylesheet">
+<!-- PNotify -->
+<link type="text/css" th:href="@{/vendors/pnotify/dist/pnotify.css}" rel="stylesheet">
+<link type="text/css" th:href="@{/vendors/pnotify/dist/pnotify.buttons.css}" rel="stylesheet">
+<link type="text/css" th:href="@{/vendors/pnotify/dist/pnotify.nonblock.css}" rel="stylesheet">
+<!-- Select2 -->
+<link type="text/css" th:href="@{/vendors/select2/dist/css/select2.min.css}" rel="stylesheet">
+<!-- Custom Theme Style -->
+<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
+<!-- Main Theme Style -->
+<link type="text/css" th:href="@{/css/main.css}" rel="stylesheet">
+
 </head>
 
 <body class="nav-md">
 	<div class="container body">
 		<div class="main_container">
-			
-			<!-- menu -->	
+
+			<!-- menu -->
 			<div th:replace="fragments/menu:: menu"></div>
 			<!-- /menu -->
 
-			<!-- header -->	
+			<!-- header -->
 			<div th:replace="fragments/header:: header"></div>
 			<!-- /header -->
 
 			<!-- page content -->
 			<div class="right_col" role="main">
-				<form id="form" autocomplete="off" th:action="@{/user/product/manage}" th:object="${product}" method="post" class="form-horizontal" role="form" data-parsley-validate>
-				<div class="">
-				
-					<div class="col-md-12 col-sm-12 col-xs-12 x_panel search-head">
-						<div class="title_left">
-							<div class="col-md-6">
-								<h2>
-									<i th:class="${menu.icon}"></i> <span th:text="#{${menu.code}}"></span>
-								</h2>
-							</div>
-						</div>
-						<div class="title_right">
-							<div class="form-group pull-right title_right_button">
-								<a id="bt_delete" type="button" class="btn btn-primary" th:href="@{/user/product}">
-									<i class="fa fa-reply"></i> <span class="span_white" th:text="#{bt.text.back}"></span>
-								</a>
-								<button id="bt_delete" type="button" class="btn btn-danger" onclick="openModalMainDelete();" th:if="*{productIdEncrypt} != null and *{productIdEncrypt} != '' " >
-									<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
-								</button>
-								<button id="bt_save" type="submit" class="btn btn-success">
-									<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
-								</button>
-							</div>
-						</div>
-					</div>
+				<form id="form" autocomplete="off" th:action="@{/user/product/manage}" th:object="${product}" method="post" class="form-horizontal" role="form"
+					data-parsley-validate>
+					<div class="">
 
-					<div class="clearfix"></div>
-					<div class="row">
-						<div class="col-md-12 col-sm-12 col-xs-12">
-							<div class="x_panel">
-								<div class="x_title x_title_edit">
+						<div class="col-md-12 col-sm-12 col-xs-12 x_panel search-head">
+							<div class="title_left">
+								<div class="col-md-6">
 									<h2>
-										<i class="fa fa-info-circle"></i> 
-										<span class="title_left_text" th:text="#{form.product.profile.main}"></span>
+										<i th:class="${menu.icon}"></i> <span th:text="#{${menu.code}}"></span>
 									</h2>
-									<div class="clearfix"></div>
 								</div>
-								<div class="x_content">
-									<div class="col-md-ุ6 col-sm-6 col-xs-12">
-										<input type="hidden" th:field="*{productIdEncrypt}">
+							</div>
+							<div class="title_right">
+								<div class="form-group pull-right title_right_button">
+									<a id="bt_delete" type="button" class="btn btn-primary" th:href="@{/user/product}"> <i class="fa fa-reply"></i> <span class="span_white"
+										th:text="#{bt.text.back}"></span>
+									</a>
+									<button id="bt_delete" type="button" class="btn btn-danger" onclick="openModalMainDelete();"
+										th:if="*{productIdEncrypt} != null and *{productIdEncrypt} != '' ">
+										<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
+									</button>
+									<button id="bt_save" type="submit" class="btn btn-success">
+										<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
+									</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="clearfix"></div>
+						<div class="row">
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<div class="x_panel">
+									<div class="x_title x_title_edit">
+										<h2>
+											<i class="fa fa-info-circle"></i> <span class="title_left_text" th:text="#{form.product.profile.main}"></span>
+										</h2>
+										<div class="clearfix"></div>
+									</div>
+									<div class="x_content">
+										<div class="col-md-ุ6 col-sm-6 col-xs-12">
+											<input type="hidden" th:field="*{productIdEncrypt}">
 											<div class="form-group">
 												<div class="control-label col-md-4 col-sm-4 col-xs-12">
 													<label th:text="#{form.product.label.code}"></label>
 												</div>
 												<div class="col-md-8 col-sm-8 col-xs-12">
-													<input type="text" class="form-control" readonly="readonly" th:placeholder="#{label.generate.auto}" th:field="*{productCode}">
-													<label th:if="${#fields.hasErrors('productCode')}" th:errors="*{productCode}" class="validation-message"></label>
+													<input type="text" class="form-control" readonly="readonly" th:placeholder="#{label.generate.auto}" th:field="*{productCode}"> <label
+														th:if="${#fields.hasErrors('productCode')}" th:errors="*{productCode}" class="validation-message"></label>
 												</div>
 											</div>
 											<div class="form-group">
-											
+
 												<div class="control-label col-md-4 col-sm-4 col-xs-12">
-													<label th:text="#{form.product.label.name}"></label>
-													<label class="validation-message" th:text="#{label.request}"></label>
+													<label th:text="#{form.product.label.name}"></label> <label class="validation-message" th:text="#{label.request}"></label>
 												</div>
 												<div class="col-md-8 col-sm-8 col-xs-12">
-													<input type="text" class="form-control" th:field="*{productName}">
-													<label th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}" class="validation-message"></label>
+													<input type="text" class="form-control" th:field="*{productName}"> <label th:if="${#fields.hasErrors('productName')}"
+														th:errors="*{productName}" class="validation-message"></label>
 												</div>
 											</div>
 											<div class="form-group">
@@ -125,161 +125,198 @@
 													<label th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="validation-message"></label>
 												</div>
 											</div>
-									</div>
-									<div class="col-md-ุ6 col-sm-6 col-xs-12">
+										</div>
+										<div class="col-md-ุ6 col-sm-6 col-xs-12">
 											<div class="form-group">
 												<div class="control-label col-md-4 col-sm-4 col-xs-12">
-													<label th:text="#{form.product.text.brand}"></label>
+													<label th:text="#{form.product.label.brand}"></label>
 												</div>
 												<div class="col-md-8 col-sm-8 col-xs-12">
-													 <select id="brandDropdown" th:field="*{brand.brandIdEncrypt}" style="width:100%" >
-							                           	 <option value=" " th:text="#{dropdown.text.select}"></option>
-							                           	 <option th:each="obj:${brandDropdown}" th:value="${obj.brandIdEncrypt}" th:text="${obj.brandName}"></option>
-							                          </select>
+													<select id="brandDropdown" th:field="*{brand.brandIdEncrypt}" style="width: 100%">
+														<option value=" " th:text="#{dropdown.text.select}"></option>
+														<option th:each="obj:${brandDropdown}" th:value="${obj.brandIdEncrypt}" th:text="${obj.brandName}"></option>
+													</select>
 												</div>
 											</div>
 											<div class="form-group">
 												<div class="control-label col-md-4 col-sm-4 col-xs-12">
-													<label th:text="#{form.product.text.measure}"></label>
+													<label th:text="#{form.product.label.measure}"></label>
 												</div>
 												<div class="col-md-8 col-sm-8 col-xs-12">
-													 <select id="measureDropdown" th:field="*{measure.measureIdEncrypt}" style="width:100%" >
-							                           	 <option value=" " th:text="#{dropdown.text.select}"></option>
-							                           	 <option th:each="obj:${measureDropdown}" th:value="${obj.measureIdEncrypt}" th:text="${obj.measureName}"></option>
-							                          </select>
+													<select id="measureDropdown" th:field="*{measure.measureIdEncrypt}" style="width: 100%">
+														<option value=" " th:text="#{dropdown.text.select}"></option>
+														<option th:each="obj:${measureDropdown}" th:value="${obj.measureIdEncrypt}" th:text="${obj.measureName}"></option>
+													</select>
 												</div>
 											</div>
 											<div class="form-group">
 												<div class="control-label col-md-4 col-sm-4 col-xs-12">
-													<label th:text="#{form.product.text.category}"></label>
+													<label th:text="#{form.product.label.category}"></label>
 												</div>
 												<div class="col-md-8 col-sm-8 col-xs-12">
-													 <select id="categoryDropdown" th:field="*{category.categoryIdEncrypt}" style="width:100%" >
-							                           	 <option value=" " th:text="#{dropdown.text.select}"></option>
-							                           	 <option th:each="obj:${categoryDropdown}" th:value="${obj.categoryIdEncrypt}" th:text="${obj.categoryName}"></option>
-							                          </select>
+													<select id="categoryDropdown" th:field="*{category.categoryIdEncrypt}" style="width: 100%">
+														<option value=" " th:text="#{dropdown.text.select}"></option>
+														<option th:each="obj:${categoryDropdown}" th:value="${obj.categoryIdEncrypt}" th:text="${obj.categoryName}"></option>
+													</select>
 												</div>
-											</div>
-				                      	</div>
-								</div>
-							</div>
-						</div>
-						
-						
-						<div class="col-md-12 col-sm-12 col-xs-12"  th:if="*{productIdEncrypt} != null and *{productIdEncrypt} != '' " >
-							<div class="x_panel">
-								<div class="x_title">
-									<div class="col-md-6 col-sm-6 col-xs-6 title_left_box x_title_edit">
-										<h2 class="table-small-header">
-											<i th:class="#{form.price.icon}"></i> <span th:text="#{form.price.header}"></span>
-										</h2>
-									</div>
-									<div class="col-md-6 col-sm-6 col-xs-6 title_box">
-										<div class="pull-right">
-											<div class="btn-group">
-												<button class="btn btn-success dropdown-toggle" type="button" onclick="openPriceNewModal();">
-													<i class="fa fa-plus"></i> <span class="span_white" th:text="#{bt.text.add}"></span>
-												</button>
 											</div>
 										</div>
 									</div>
-									<div class="clearfix"></div>
-								</div>
-								<div class="x_content">
-									<table id="price_datatables" class="table  table-bordered table-small" style="width: 100%">
-										<thead class="search-content-header">
-											<tr>
-												<th th:text="#{datatables.text.no}"></th>
-												<th th:text="#{form.price.label.startdate}"></th>
-												<th th:text="#{form.price.label.enddate}"></th>
-												<th th:text="#{form.price.label.price}"></th>
-												<th th:text="#{form.price.label.currencytype}"></th> 
-												<th th:text="#{form.price.label.measure}"></th>
-												<th></th>
-											</tr>
-										</thead>
-									</table>
 								</div>
 							</div>
-						</div>
-						
-						<div class="col-md-12 col-sm-12 col-xs-12"  th:if="*{productIdEncrypt} != null and *{productIdEncrypt} != '' " >
-							<div class="x_panel">
-								<div class="x_title">
-									<div class="col-md-6 col-sm-6 col-xs-6 title_left_box x_title_edit">
-										<h2 class="table-small-header">
-											<i th:class="#{form.stock.icon}"></i> <span th:text="#{form.stock.header}"></span>
-										</h2>
-									</div>
-									<div class="col-md-6 col-sm-6 col-xs-6 title_box">
-										<div class="pull-right">
-											<div class="btn-group">
-												<button class="btn btn-success dropdown-toggle" type="button" onclick="openStockNewModal();">
-													<i class="fa fa-plus"></i> <span class="span_white" th:text="#{bt.text.add}"></span>
-												</button>
+
+							<div class="col-md-12 col-sm-12 col-xs-12" th:if="*{productIdEncrypt} != null and *{productIdEncrypt} != '' ">
+								<div class="x_panel">
+									<div class="x_title">
+										<div class="col-md-6 col-sm-6 col-xs-6 title_left_box x_title_edit">
+											<h2 class="table-small-header">
+												<i th:class="#{form.price.icon}"></i> <span th:text="#{form.price.header}"></span>
+											</h2>
+										</div>
+										<div class="col-md-6 col-sm-6 col-xs-6 title_box">
+											<div class="pull-right">
+												<div class="btn-group">
+													<button class="btn btn-success dropdown-toggle" type="button" onclick="openPriceNewModal();">
+														<i class="fa fa-plus"></i> <span class="span_white" th:text="#{bt.text.add}"></span>
+													</button>
+												</div>
 											</div>
 										</div>
+										<div class="clearfix"></div>
 									</div>
-									<div class="clearfix"></div>
-								</div>
-								<div class="x_content">
-									<table id="stock_datatables" class="table  table-bordered table-small" style="width: 100%">
-										<thead class="search-content-header">
-											<tr>
-												<th th:text="#{datatables.text.no}"></th>
-												<th th:text="#{form.stock.label.warehouse}"></th>
-												<th th:text="#{form.stock.label.location}"></th>
-												<th th:text="#{form.stock.label.remind}"></th>
-												<th th:text="#{form.stock.label.remain}"></th>
-												<th></th>
-											</tr>
-										</thead>
-									</table>
+									<div class="x_content">
+										<table id="price_datatables" class="table  table-bordered table-small" style="width: 100%">
+											<thead class="search-content-header">
+												<tr>
+													<th th:text="#{datatables.text.no}"></th>
+													<th th:text="#{form.price.label.startdate}"></th>
+													<th th:text="#{form.price.label.enddate}"></th>
+													<th th:text="#{form.price.label.currencytype}"></th>
+													<th th:text="#{form.price.label.price}"></th>
+													<th th:text="#{form.price.label.measure}"></th>
+													<th></th>
+												</tr>
+											</thead>
+										</table>
+									</div>
 								</div>
 							</div>
+
+							<div class="col-md-12 col-sm-12 col-xs-12" th:if="*{productIdEncrypt} != null and *{productIdEncrypt} != '' ">
+								<div class="x_panel">
+									<div class="x_title">
+										<div class="col-md-6 col-sm-6 col-xs-6 title_left_box x_title_edit">
+											<h2 class="table-small-header">
+												<i th:class="#{form.dealer.icon}"></i> <span th:text="#{form.dealer.header}"></span>
+											</h2>
+										</div>
+										<div class="col-md-6 col-sm-6 col-xs-6 title_box">
+											<div class="pull-right">
+												<div class="btn-group">
+													<button class="btn btn-success dropdown-toggle" type="button" onclick="openDealerNewModal();">
+														<i class="fa fa-plus"></i> <span class="span_white" th:text="#{bt.text.add}"></span>
+													</button>
+												</div>
+											</div>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="x_content">
+										<table id="dealer_datatables" class="table  table-bordered table-small" style="width: 100%">
+											<thead class="search-content-header">
+												<tr>
+													<th th:text="#{datatables.text.no}"></th>
+													<th th:text="#{form.dealer.label.supplier}"></th>
+													<th th:text="#{form.dealer.label.startdate}"></th>
+													<th th:text="#{form.dealer.label.enddate}"></th>
+													<th th:text="#{form.dealer.label.currency}"></th>
+													<th th:text="#{form.dealer.label.price}"></th>
+													<th th:text="#{form.dealer.label.measure}"></th>
+													<th></th>
+												</tr>
+											</thead>
+										</table>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-12 col-sm-12 col-xs-12" th:if="*{productIdEncrypt} != null and *{productIdEncrypt} != '' ">
+								<div class="x_panel">
+									<div class="x_title">
+										<div class="col-md-6 col-sm-6 col-xs-6 title_left_box x_title_edit">
+											<h2 class="table-small-header">
+												<i th:class="#{form.stock.icon}"></i> <span th:text="#{form.stock.header}"></span>
+											</h2>
+										</div>
+										<div class="col-md-6 col-sm-6 col-xs-6 title_box">
+											<div class="pull-right">
+												<div class="btn-group">
+													<button class="btn btn-success dropdown-toggle" type="button" onclick="openStockNewModal();">
+														<i class="fa fa-plus"></i> <span class="span_white" th:text="#{bt.text.add}"></span>
+													</button>
+												</div>
+											</div>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="x_content">
+										<table id="stock_datatables" class="table  table-bordered table-small" style="width: 100%">
+											<thead class="search-content-header">
+												<tr>
+													<th th:text="#{datatables.text.no}"></th>
+													<th th:text="#{form.stock.label.warehouse}"></th>
+													<th th:text="#{form.stock.label.location}"></th>
+													<th th:text="#{form.stock.label.remind}"></th>
+													<th th:text="#{form.stock.label.remain}"></th>
+													<th></th>
+												</tr>
+											</thead>
+										</table>
+									</div>
+								</div>
+							</div>
+
 						</div>
-						
-						
+					</div>
+				</form>
+			</div>
+			<!-- /page content -->
+
+			<div id="modal_delete" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog ">
+					<div class="modal-content">
+
+						<form autocomplete="off" method="post" id="deleteForm" data-parsley-validate class="form-horizontal form-label-left"
+							th:action="@{/user/product/manage/delete}">
+							<div class="modal-header modal-delete-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">×</span>
+								</button>
+								<h4 class="modal-title" id="myModalLabel">
+									<i class="fa fa-trash"></i> <span th:text="#{label.delete.head.confirm}"></span>
+								</h4>
+							</div>
+							<div class="modal-body">
+								<input type="hidden" id="delete_id" name="productIdEncrypt" /> <span id="modal_delete_content"></span>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">
+									<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
+								</button>
+								<button type="submit" class="btn btn-danger">
+									<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
+								</button>
+							</div>
+						</form>
+
 					</div>
 				</div>
-				</form>
-				</div>
-				<!-- /page content -->
-				
-				 <div id="modal_delete" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-                    <div class="modal-dialog ">
-                      <div class="modal-content">
+			</div>
 
-						<form autocomplete="off" method="post" id="deleteForm" data-parsley-validate class="form-horizontal form-label-left" th:action="@{/user/product/manage/delete}">
-                        <div class="modal-header modal-delete-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-                          </button>
-                          <h4 class="modal-title" id="myModalLabel">
-								<i class="fa fa-trash"></i> <span th:text="#{label.delete.head.confirm}"></span>
-							</h4>
-                        </div>
-                        <div class="modal-body">
-                        			<input type="hidden" id="delete_id" name="productIdEncrypt" />
-                        			<span id="modal_delete_content"></span>
-                        </div>
-                        <div class="modal-footer">
-                         <button type="button" class="btn btn-default" data-dismiss="modal">
-							<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
-						 </button>
-                          <button type="submit" class="btn btn-danger" >
-							<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
-						</button>
-                        </div>
-						</form>
-						
-                      </div>
-                    </div>
-                  </div>
-                  
-                  
-                  
-             <!-- Price -->
-			<div id="modal_price" class="modal fade "  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+
+
+			<!-- Price -->
+			<div id="modal_price" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 				<div class="modal-dialog ">
 					<div class="modal-content">
 
@@ -291,25 +328,23 @@
 								<i th:class="#{form.price.icon}"></i> <span th:text="#{form.price.header}"></span>
 							</h4>
 						</div>
-						
+
 						<div class="modal-body">
 							<form autocomplete="off" id="priceModalForm" data-parsley-validate class="form-horizontal form-label-left">
-								<input type="hidden" name="productIdEncrypt" th:value="${product.productIdEncrypt}">
-								<input type="hidden" id="price_id_encrypt" name="priceIdEncrypt" >
+								<input type="hidden" name="productIdEncrypt" th:value="${product.productIdEncrypt}"> <input type="hidden" id="price_id_encrypt"
+									name="priceIdEncrypt">
 								<div class="col-md-ุ12 col-sm-12 col-xs-12">
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">
-											<label th:text="#{form.price.label.startdate}"></label>
-											<label class="validation-message" th:text="#{label.request}"></label>
+											<label th:text="#{form.price.label.startdate}"></label> <label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-			                                <div class="input-group date" id="start_Datepicker">
-					                            <input type="text" class="form-control" name="startDate" id="startDate" placeholder="dd/mm/yyyy">
-					                            <span class="input-group-addon">
-					                               <span class="glyphicon glyphicon-calendar"></span>
-					                            </span>
-					                        </div>
-											<label id="error_startDate" class="validation-message" style="display:none;"></label>
+											<div class="input-group date" id="start_Datepicker">
+												<input type="text" class="form-control" name="startDate" id="startDate" placeholder="dd/mm/yyyy"> <span class="input-group-addon">
+													<span class="glyphicon glyphicon-calendar"></span>
+												</span>
+											</div>
+											<label id="error_startDate" class="validation-message" style="display: none;"></label>
 										</div>
 									</div>
 									<div class="form-group">
@@ -318,67 +353,61 @@
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
 											<div class="input-group date" id="end_Datepicker">
-					                            <input type="text" class="form-control" name="endDate" id="endDate" placeholder="dd/mm/yyyy">
-					                            <span class="input-group-addon">
-					                               <span class="glyphicon glyphicon-calendar"></span>
-					                            </span>
-					                        </div>
-											<label id="error_endDate" class="validation-message" style="display:none;"></label>
+												<input type="text" class="form-control" name="endDate" id="endDate" placeholder="dd/mm/yyyy"> <span class="input-group-addon">
+													<span class="glyphicon glyphicon-calendar"></span>
+												</span>
+											</div>
+											<label id="error_endDate" class="validation-message" style="display: none;"></label>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">
-											<label th:text="#{form.price.label.price}"></label>
-											<label class="validation-message" th:text="#{label.request}"></label>
+											<label th:text="#{form.price.label.currencytype}"></label> <label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-						                     <input type="text" id="priceText" name="priceText" class="form-control" style="text-align:right;" value="0.00">
-											<label id="error_priceText" class="validation-message" style="display:none;"></label>
+											<select id="priceCurrencyDropdown" name="currencyId" style="width: 100%">
+												<option value=""></option>
+												<option th:each="obj:${currencyDropdown}" th:value="${obj.currencyId}" th:text="${obj.currencyName}"></option>
+											</select> <label id="error_currencyId" class="validation-message" style="display: none;"></label>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">
-											<label th:text="#{form.price.label.currencytype}"></label>
-											<label class="validation-message" th:text="#{label.request}"></label>
+											<label th:text="#{form.price.label.price}"></label> <label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-					                           <select id="priceCurrencyDropdown" name="currencyId" style="width:100%" >
-					                             <option value=""></option>
-					                           	 <option th:each="obj:${currencyDropdown}" th:value="${obj.currencyId}" th:text="${obj.currencyName}"></option>
-					                          </select>
-											<label id="error_currencyId" class="validation-message" style="display:none;"></label>
+											<input type="text" id="priceText" name="priceText" class="form-control" style="text-align: right;" value="0.00"> <label
+												id="error_priceText" class="validation-message" style="display: none;"></label>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">
-											<label th:text="#{form.price.label.measure}"></label>
-											<label class="validation-message" th:text="#{label.request}"></label>
+											<label th:text="#{form.price.label.measure}"></label> <label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-											 <select id="priceMeasureDropdown" name="measureIdEncrypt" class="" style="width:100%" >
-											 	 <option value=""></option>
-					                           	 <option th:each="obj:${measureDropdown}" th:value="${obj.measureIdEncrypt}" th:text="${obj.measureName}"></option>
-					                          </select>
-											<label id="error_measureIdEncrypt" class="validation-message" style="display:none;"></label>
+											<select id="priceMeasureDropdown" name="measureIdEncrypt" class="" style="width: 100%">
+												<option value=""></option>
+												<option th:each="obj:${measureDropdown}" th:value="${obj.measureIdEncrypt}" th:text="${obj.measureName}"></option>
+											</select> <label id="error_measureIdEncrypt" class="validation-message" style="display: none;"></label>
 										</div>
 									</div>
-		                      	</div>
-				               
-	                      	</form>
+								</div>
+
+							</form>
 						</div>
-						
+
 						<div class="clearfix"></div>
-							<div class="modal-footer modal-custom-footer">
-								<button id="bt_price_delete" type="button" class="btn btn-danger" style="float: left;display: none;"  onclick="openPriceMainModalDelete();">
-									<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
-								</button>
-								<button type="button" class="btn btn-default" data-dismiss="modal">
-									<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
-								</button>
-								<button id="bt_price_save" type="button" class="btn btn-success" onclick="priceSaveAction();">
-									<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
-								</button>
-							</div>
+						<div class="modal-footer modal-custom-footer">
+							<button id="bt_price_delete" type="button" class="btn btn-danger" style="float: left; display: none;" onclick="openPriceMainModalDelete();">
+								<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
+							</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
+							</button>
+							<button id="bt_price_save" type="button" class="btn btn-success" onclick="priceSaveAction();">
+								<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
+							</button>
+						</div>
 
 					</div>
 				</div>
@@ -398,8 +427,8 @@
 						</div>
 						<div class="modal-body">
 							<form autocomplete="off" id="deletePriceForm" data-parsley-validate class="form-horizontal form-label-left">
-								<input type="hidden" name="productIdEncrypt" th:value="${product.productIdEncrypt}">
-								<input type="hidden" id="delete_id_price" name="priceIdEncrypt" /> <span id="modal_delete_content_price"></span>
+								<input type="hidden" name="productIdEncrypt" th:value="${product.productIdEncrypt}"> <input type="hidden" id="delete_id_price"
+									name="priceIdEncrypt" /> <span id="modal_delete_content_price"></span>
 							</form>
 						</div>
 						<div class="modal-footer">
@@ -414,12 +443,12 @@
 					</div>
 				</div>
 			</div>
-			
-			
-			
-			
-			 <!-- Stock -->
-			<div id="modal_stock" class="modal fade "  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+
+
+
+
+			<!-- Stock -->
+			<div id="modal_stock" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 				<div class="modal-dialog ">
 					<div class="modal-content">
 
@@ -431,24 +460,22 @@
 								<i th:class="#{form.stock.icon}"></i> <span th:text="#{form.stock.header}"></span>
 							</h4>
 						</div>
-						
+
 						<div class="modal-body">
 							<form autocomplete="off" id="stockModalForm" data-parsley-validate class="form-horizontal form-label-left">
-								<input type="hidden" name="productIdEncrypt" th:value="${product.productIdEncrypt}">
-								<input type="hidden" id="stock_id_encrypt" name="stockIdEncrypt" >
+								<input type="hidden" name="productIdEncrypt" th:value="${product.productIdEncrypt}"> <input type="hidden" id="stock_id_encrypt"
+									name="stockIdEncrypt">
 								<div class="col-md-ุ12 col-sm-12 col-xs-12">
-								
+
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">
-											<label th:text="#{form.stock.label.warehouse}"></label>
-											<label class="validation-message" th:text="#{label.request}"></label>
+											<label th:text="#{form.stock.label.warehouse}"></label> <label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-					                           <select id="stockWarehouseDropdown" name="warehouseIdEncrypt" style="width:100%" >
-					                              <option value=""></option>
-					                           	 <option th:each="obj:${warehouseDropdown}" th:value="${obj.warehouseIdEncrypt}" th:text="${obj.warehouseName}"></option>
-					                          </select>
-											<label id="error_warehouseIdEncrypt" class="validation-message" style="display:none;"></label>
+											<select id="stockWarehouseDropdown" name="warehouseIdEncrypt" style="width: 100%">
+												<option value=""></option>
+												<option th:each="obj:${warehouseDropdown}" th:value="${obj.warehouseIdEncrypt}" th:text="${obj.warehouseName}"></option>
+											</select> <label id="error_warehouseIdEncrypt" class="validation-message" style="display: none;"></label>
 										</div>
 									</div>
 									<div class="form-group">
@@ -456,11 +483,10 @@
 											<label th:text="#{form.stock.label.location}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-					                           <select id="stockLocationDropdown" name="locationIdEncrypt" style="width:100%" >
-					                            	 <option value=""></option>
-					                           	 <option th:each="obj:${locationDropdown}" th:value="${obj.locationIdEncrypt}" th:text="${obj.locationCode}"></option>
-					                          </select>
-											<label id="error_locationIdEncrypt" class="validation-message" style="display:none;"></label>
+											<select id="stockLocationDropdown" name="locationIdEncrypt" style="width: 100%">
+												<option value=""></option>
+												<option th:each="obj:${locationDropdown}" th:value="${obj.locationIdEncrypt}" th:text="${obj.locationCode}"></option>
+											</select> <label id="error_locationIdEncrypt" class="validation-message" style="display: none;"></label>
 										</div>
 									</div>
 									<div class="form-group">
@@ -468,32 +494,32 @@
 											<label th:text="#{form.stock.label.remind}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-				                             <input type="text" id="remindNumber" name="remindNumber" class="form-control" style="text-align:right;" value="0.00">
-											<label id="error_remindNumber" class="validation-message" style="display:none;"></label>
+											<input type="text" id="remindNumber" name="remindNumber" class="form-control" style="text-align: right;" value="0.00"> <label
+												id="error_remindNumber" class="validation-message" style="display: none;"></label>
 										</div>
 									</div>
-		                      	</div>
-				               
-	                      	</form>
+								</div>
+
+							</form>
 						</div>
 						<div class="clearfix"></div>
-							<div class="modal-footer modal-custom-footer">
-								<button id="bt_stock_delete" type="button" class="btn btn-danger" style="float: left;display: none;"  onclick="openStockMainModalDelete();">
-									<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
-								</button>
-								<button type="button" class="btn btn-default" data-dismiss="modal">
-									<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
-								</button>
-								<button id="bt_stock_save" type="button" class="btn btn-success" onclick="stockSaveAction();">
-									<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
-								</button>
-							</div>
+						<div class="modal-footer modal-custom-footer">
+							<button id="bt_stock_delete" type="button" class="btn btn-danger" style="float: left; display: none;" onclick="openStockMainModalDelete();">
+								<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
+							</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
+							</button>
+							<button id="bt_stock_save" type="button" class="btn btn-success" onclick="stockSaveAction();">
+								<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
+							</button>
+						</div>
 
 					</div>
 				</div>
 			</div>
-			
-			
+
+
 			<div id="modal_delete_stock" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 				<div class="modal-dialog ">
 					<div class="modal-content">
@@ -508,8 +534,8 @@
 						</div>
 						<div class="modal-body">
 							<form autocomplete="off" id="deleteStockForm" data-parsley-validate class="form-horizontal form-label-left">
-								<input type="hidden" name="productIdEncrypt" th:value="${product.productIdEncrypt}">
-								<input type="hidden" id="delete_id_stock" name="stockIdEncrypt" /> <span id="modal_delete_content_stock"></span>
+								<input type="hidden" name="productIdEncrypt" th:value="${product.productIdEncrypt}"> <input type="hidden" id="delete_id_stock"
+									name="stockIdEncrypt" /> <span id="modal_delete_content_stock"></span>
 							</form>
 						</div>
 						<div class="modal-footer">
@@ -517,6 +543,145 @@
 								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
 							</button>
 							<button type="button" class="btn btn-danger" onclick="stockDeleteAction();">
+								<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
+							</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+
+			<!-- Dealer -->
+			<div id="modal_dealer" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog ">
+					<div class="modal-content">
+
+						<div class="modal-header modal-custom-header">
+							<button type="button" class="close" data-dismiss="modal">
+								<span aria-hidden="true">×</span>
+							</button>
+							<h4 class="modal-title">
+								<i th:class="#{form.dealer.icon}"></i> <span th:text="#{form.dealer.header}"></span>
+							</h4>
+						</div>
+
+						<div class="modal-body">
+							<form autocomplete="off" id="dealerModalForm" data-parsley-validate class="form-horizontal form-label-left">
+								<input type="hidden" name="productIdEncrypt" th:value="${product.productIdEncrypt}"> <input type="hidden" id="dealer_id_encrypt"
+									name="dealerIdEncrypt">
+								<div class="col-md-ุ12 col-sm-12 col-xs-12">
+									<div class="form-group">
+										<div class="control-label col-md-4 col-sm-4 col-xs-12">
+											<label th:text="#{form.dealer.label.supplier}"></label> <label class="validation-message" th:text="#{label.request}"></label>
+										</div>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+											<select id="dealer_supplier_dropdown" name="supplierIdEncrypt" class="" style="width: 100%">
+												<option value=""></option>
+												<option th:each="obj:${supplierDropdown}" th:value="${obj.supplierIdEncrypt}" th:text="${obj.supplierCode} + ' ' + ${obj.fullname}"></option>
+											</select> <label id="dealer_error_supplierIdEncrypt" class="validation-message" style="display: none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-4 col-sm-4 col-xs-12">
+											<label th:text="#{form.price.label.startdate}"></label> <label class="validation-message" th:text="#{label.request}"></label>
+										</div>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+											<div class="input-group date" id="dealer_startDate_Datepicker">
+												<input type="text" class="form-control" name="startDate" id="dealer_startDate" placeholder="dd/mm/yyyy"> <span
+													class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span>
+												</span>
+											</div>
+											<label id="dealer_error_startDate" class="validation-message" style="display: none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-4 col-sm-4 col-xs-12">
+											<label th:text="#{form.price.label.enddate}"></label>
+										</div>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+											<div class="input-group date" id="dealer_endDate_Datepicker">
+												<input type="text" class="form-control" name="endDate" id="dealer_endDate" placeholder="dd/mm/yyyy"> <span
+													class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span>
+												</span>
+											</div>
+											<label id="dealer_error_endDate" class="validation-message" style="display: none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-4 col-sm-4 col-xs-12">
+											<label th:text="#{form.price.label.currencytype}"></label> <label class="validation-message" th:text="#{label.request}"></label>
+										</div>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+											<select id="dealer_currency_dropdown" name="currencyId" style="width: 100%">
+												<option value=""></option>
+												<option th:each="obj:${currencyDropdown}" th:value="${obj.currencyId}" th:text="${obj.currencyName}"></option>
+											</select> <label id="dealer_error_currencyId" class="validation-message" style="display: none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-4 col-sm-4 col-xs-12">
+											<label th:text="#{form.price.label.price}"></label> <label class="validation-message" th:text="#{label.request}"></label>
+										</div>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+											<input type="text" id="dealer_price" name="price" class="form-control" style="text-align: right;" value="0.00"> <label
+												id="dealer_error_price" class="validation-message" style="display: none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-4 col-sm-4 col-xs-12">
+											<label th:text="#{form.price.label.measure}"></label> <label class="validation-message" th:text="#{label.request}"></label>
+										</div>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+											<select id="dealer_measure_dropdown" name="measureIdEncrypt" class="" style="width: 100%">
+												<option value=""></option>
+												<option th:each="obj:${measureDropdown}" th:value="${obj.measureIdEncrypt}" th:text="${obj.measureName}"></option>
+											</select> <label id="dealer_error_measureIdEncrypt" class="validation-message" style="display: none;"></label>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="clearfix"></div>
+						<div class="modal-footer modal-custom-footer">
+							<button id="bt_dealer_delete" type="button" class="btn btn-danger" style="float: left; display: none;" onclick="openDealerMainModalDelete();">
+								<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
+							</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
+							</button>
+							<button id="bt_dealer_save" type="button" class="btn btn-success" onclick="dealerSaveAction();">
+								<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
+							</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div id="modal_delete_dealer" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog ">
+					<div class="modal-content">
+
+						<div class="modal-header modal-delete-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">×</span>
+							</button>
+							<h4 class="modal-title" id="myModalLabel">
+								<i class="fa fa-trash"></i> <span th:text="#{label.delete.head.confirm}"></span>
+							</h4>
+						</div>
+						<div class="modal-body">
+							<form autocomplete="off" id="deleteDealerForm" data-parsley-validate class="form-horizontal form-label-left">
+								<input type="hidden" name="productIdEncrypt" th:value="${product.productIdEncrypt}"> <input type="hidden" id="delete_id_dealer"
+									name="dealerIdEncrypt" /> <span id="modal_delete_content_dealer"></span>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
+							</button>
+							<button type="button" class="btn btn-danger" onclick="dealerDeleteAction();">
 								<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
 							</button>
 						</div>
@@ -536,51 +701,51 @@
 	</div>
 
 	<!-- jQuery -->
-    <script th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
-    <!-- Bootstrap -->
-    <script th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
-    <!-- FastClick -->
-    <script th:src="@{/vendors/fastclick/lib/fastclick.js}"></script>
-    <!-- NProgress -->
-    <script th:src="@{/vendors/nprogress/nprogress.js}"></script>
-    <!-- iCheck -->
-    <script th:src="@{/vendors/iCheck/icheck.min.js}"></script>
-    <!-- bootstrap-date range picker -->
-    <script th:src="@{/vendors/moment/min/moment.min.js}"></script>
-    <script th:src="@{/vendors/moment/locale/th.js}"></script>
-    <script th:src="@{/vendors/bootstrap-daterangepicker/daterangepicker.js}"></script>
-    <!-- bootstrap-date time picker -->    
-    <script th:src="@{/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js}"></script>
-    <!-- Data tables -->
-    <script th:src="@{/vendors/datatables.net/js/jquery.dataTables.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-buttons/js/buttons.flash.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-buttons/js/buttons.html5.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-buttons/js/buttons.print.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
-    <script th:src="@{/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js}"></script>
-    <script th:src="@{/vendors/datatables.net-scroller/js/dataTables.scroller.min.js}"></script>
-    <script th:src="@{/vendors/jszip/dist/jszip.min.js}"></script>
-    <script th:src="@{/vendors/pdfmake/build/pdfmake.min.js}"></script>
-    <script th:src="@{/vendors/pdfmake/build/vfs_fonts.js}"></script>
-    	<!-- PNotify -->
-    <script th:src="@{/vendors/pnotify/dist/pnotify.js}"></script>
-    <script th:src="@{/vendors/pnotify/dist/pnotify.buttons.js}"></script>
-    <script th:src="@{/vendors/pnotify/dist/pnotify.nonblock.js}"></script>
-    <!-- Select2 -->
-    <script th:src="@{/vendors/select2/dist/js/select2.full.min.js}"></script>
-      <!-- price format -->
-    <script th:src="@{/js/jquery.maskMoney.min.js}"></script>
-    <!-- Custom Theme Scripts -->
-    <script th:src="@{/build/js/custom.js}"></script>
+	<script th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+	<!-- Bootstrap -->
+	<script th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+	<!-- FastClick -->
+	<script th:src="@{/vendors/fastclick/lib/fastclick.js}"></script>
+	<!-- NProgress -->
+	<script th:src="@{/vendors/nprogress/nprogress.js}"></script>
+	<!-- iCheck -->
+	<script th:src="@{/vendors/iCheck/icheck.min.js}"></script>
+	<!-- bootstrap-date range picker -->
+	<script th:src="@{/vendors/moment/min/moment.min.js}"></script>
+	<script th:src="@{/vendors/moment/locale/th.js}"></script>
+	<script th:src="@{/vendors/bootstrap-daterangepicker/daterangepicker.js}"></script>
+	<!-- bootstrap-date time picker -->
+	<script th:src="@{/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js}"></script>
+	<!-- Data tables -->
+	<script th:src="@{/vendors/datatables.net/js/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-buttons/js/buttons.flash.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-buttons/js/buttons.html5.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-buttons/js/buttons.print.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js}"></script>
+	<script th:src="@{/vendors/datatables.net-scroller/js/dataTables.scroller.min.js}"></script>
+	<script th:src="@{/vendors/jszip/dist/jszip.min.js}"></script>
+	<script th:src="@{/vendors/pdfmake/build/pdfmake.min.js}"></script>
+	<script th:src="@{/vendors/pdfmake/build/vfs_fonts.js}"></script>
+	<!-- PNotify -->
+	<script th:src="@{/vendors/pnotify/dist/pnotify.js}"></script>
+	<script th:src="@{/vendors/pnotify/dist/pnotify.buttons.js}"></script>
+	<script th:src="@{/vendors/pnotify/dist/pnotify.nonblock.js}"></script>
+	<!-- Select2 -->
+	<script th:src="@{/vendors/select2/dist/js/select2.full.min.js}"></script>
+	<!-- price format -->
+	<script th:src="@{/js/jquery.maskMoney.min.js}"></script>
+	<!-- Custom Theme Scripts -->
+	<script th:src="@{/build/js/custom.js}"></script>
 	<!-- Custom Theme Scripts -->
 	<script th:src="@{/js/godung.js}"></script>
-	
-	
+
+
 	<script th:inline="javascript">
 		var url_language = /*[[#{javascript.datatable.language.url}]]*/;
 		var textView = /*[[#{bt.text.view}]]*/;
@@ -609,8 +774,8 @@
 	  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
 	  	            { 'data': 'startDateText' },
 	  	          	{ 'data': 'endDateText' },
-	  	        		{ 'data': 'priceText' },
 	  	        		{ 'data': 'currencyName' },
+	  	        		{ 'data': 'priceText' },
 	  	      		{ 'data': 'measureName' },
 	  	            { 'data': 'priceIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
 	  	        ],
@@ -618,8 +783,8 @@
 	    	        	   {"targets": 0,"className": "dt-body-no","searchable":false,"orderable":false},
 	    	        	   {"targets": 1,"className": "content-center"},
 	    	        	   {"targets": 2,"className": "content-center"},
-	    	        	   {"targets": 3,"className": "content-right"},
-	    	        	   {"targets": 4,"className": "content-center"},
+	    	        	   {"targets": 3,"className": "content-center"},
+	    	        	   {"targets": 4,"className": "content-right"},
 	    	        	   {"targets": 5,"className": "content-center"},
 	    	        	   {"targets": 6,"className": "dt-body-close","searchable":false,"orderable":false,
 	    	        		   "render": function ( data, type, row ) {
@@ -647,7 +812,6 @@
 	        } ).draw(); 
 	
 		});
-		
 		
 		$(document).ready(function() {
 			var stock_url = /*[[@{/user/stock/list/ajax/}]]*/
@@ -700,7 +864,63 @@
 	                cell.innerHTML = i+1;
 	            } );
 	        } ).draw(); 
-	
+		});
+		
+		$(document).ready(function() {
+			var dealer_url = /*[[@{/user/dealer/list/ajax/}]]*/
+			var productIdEncrypt = /*[[${product.productIdEncrypt}]]*/;
+			var dealer_url_complete = dealer_url + productIdEncrypt;
+			var table =  $('#dealer_datatables').DataTable( {
+	    			"processing": true,
+	    			"ajax": dealer_url_complete,
+	    	        "paging":   false,
+	    	        "ordering": false,
+	    	        "info":     false,
+	    	        "searching":	true,
+	    	        "language": {"url": url_language},
+	    	        "order": [[ 1, 'asc' ]],
+	    	        "columns": [
+	  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
+	  	            { 'data': 'supplierName' },
+	  	          	{ 'data': 'startDate' },
+	  	        		{ 'data': 'endDate' },
+	  	        		{ 'data': 'currencyName' },
+	  	        		{ 'data': 'price' },
+	  	        		{ 'data': 'measureName' },
+	  	            { 'data': 'dealerIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
+	  	        ],
+	    	        "columnDefs": [
+	    	        	   {"targets": 0,"className": "dt-body-no","searchable":false,"orderable":false},
+	    	        	   {"targets": 1,"className": "content-left"},
+	    	        	   {"targets": 2,"className": "content-center"},
+	    	        	   {"targets": 3,"className": "content-center"},
+	    	        	   {"targets": 4,"className": "content-center"},
+	    	        	   {"targets": 5,"className": "content-right"},
+	    	        	   {"targets": 6,"className": "content-center"},
+	    	        	   {"targets": 7,"className": "dt-body-close","searchable":false,"orderable":false,
+	    	        		   "render": function ( data, type, row ) {
+	                		 return	 '<button type="button" class="btn btn-primary btn-xs" onclick="dealerLoadAction(\''+data+'\');" ><i class="fa fa-wrench"></i></button> ' +
+	                		 '<button type="button" class="btn btn-danger btn-xs" onclick="openDealerModalDelete(\''+data+'\');" ><i class="fa fa-trash"></i></button>';
+			            }   
+	    	        	   }
+	    	        ],
+	    	        "initComplete": function( settings, json ) {
+            	 		//fix bug datatables use dom not responsive html
+            			 $("#dealer_datatables_filter").hide();
+           		}
+	    	    } );
+	       
+	    		/* SET RELOAD TOOLTIP AFTER DATATABLE */
+		    	$('#dealer_datatables').on( 'draw.dt', function () {
+		    		$('[data-toggle="tooltip"]').tooltip();
+		    	} );
+        
+	       /* SET INDEX COLUMN */
+	        table.on( 'order.dt search.dt', function () {
+	        	table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+	                cell.innerHTML = i+1;
+	            } );
+	        } ).draw(); 
 		});
 
 
@@ -731,8 +951,6 @@
 	      		dropdownParent: $('#modal_price')
 	      	});
 	      	
-	    		//var url_location;
-	      	//var locationList = /*[[@{/user/warehouse/location/list/ajax/}]]*/
 	      	$('#stockWarehouseDropdown').select2({
 	      		placeholder: selectText,
 	      		dropdownParent: $('#modal_stock')
@@ -743,11 +961,25 @@
 		        	   reloadLocationSelect2(url_location);
 		      	}
 	      	});
-	      	 
 	      	
 	    		$('#stockLocationDropdown').select2({
 	      		placeholder: selectText,
 	      		dropdownParent: $('#modal_stock')
+	      	});
+	    		
+	    		$('#dealer_measure_dropdown').select2({
+	      		placeholder: selectText,
+	      		dropdownParent: $('#modal_dealer')
+	      	});
+	    		
+	    		$('#dealer_supplier_dropdown').select2({
+	      		placeholder: selectText,
+	      		dropdownParent: $('#modal_dealer')
+	      	});
+
+	      	$('#dealer_currency_dropdown').select2({
+	      		placeholder: selectText,
+	      		dropdownParent: $('#modal_dealer')
 	      	});
 	      	 
 	    }); 
@@ -758,6 +990,7 @@
 		<!-- -------------------------------- -->
 		$("#priceText").maskMoney();
 		$("#remindNumber").maskMoney();
+		$("#dealer_price").maskMoney();
 		
 		
 		<!-- -------------------------------- -->
@@ -846,6 +1079,55 @@
 	    		$("#modal_delete_content_stock").html(messageMain);
 	    		$('#modal_delete_stock').modal('show');
 	    }
+		
+		// ---------------------------------------------------------------
+		// --  DEALER
+		// ---------------------------------------------------------------
+		function openDealerModal(){
+			resetDealerModal();
+			resetValidationErrorWithPrefix("dealer_error_");
+			$('#modal_dealer').modal('show');
+		}
+		
+		function closeDealerModal(){
+			resetDealerModal();
+			resetValidationErrorWithPrefix("dealer_error_");
+			$('#modal_dealer').modal('hide');
+		}
+		function resetDealerModal(){
+			var measureData = $('#measureDropdown').select2('data');
+			$("#dealer_id_encrypt").val("");
+			$("#dealer_startDate").val("");
+			$("#dealer_endDate").val("");
+			$("#dealer_supplier_dropdown").val("").trigger('change');
+			$("#dealer_currency_dropdown").val("1").trigger('change');
+			$("#dealer_measure_dropdown").val(measureData[0].id).trigger('change');
+			$("#dealer_price").val("0.00");
+		}
+		
+		function setDealerModal(dealerIdEncrypt,startDate,endDate,supplierIdEncrypt,measureIdEncrypt,price,currencyId){
+			$("#dealer_id_encrypt").val(dealerIdEncrypt);
+			$("#dealer_startDate").val(startDate);
+			$("#dealer_endDate").val(endDate);
+			$("#dealer_supplier_dropdown").val(supplierIdEncrypt).trigger('change');
+			$("#dealer_currency_dropdown").val(currencyId).trigger('change');
+			$("#dealer_measure_dropdown").val(measureIdEncrypt).trigger('change');
+			$("#dealer_price").val(price);
+		}
+		
+		
+		function openDealerMainModalDelete(){
+			var dealerIdEncrypt = $("#dealer_id_encrypt").val();
+			openDealerModalDelete(dealerIdEncrypt);
+		}
+		
+		function openDealerModalDelete(idEncrypt){
+	    		var messageMain = /*[[#{label.delete.content.confirm}]]*/;
+	    		$("#delete_id_dealer").val(idEncrypt);
+	    		$("#modal_delete_content_dealer").html(messageMain);
+	    		$('#modal_delete_dealer').modal('show');
+	    }
+		
 		
 		// Main
 		function openModalMainDelete(){
@@ -1095,6 +1377,111 @@
             stockLocationSelect = "";
 	    	}
         
+	  	<!-- ------------------------------------ -->
+		<!-- ----- Select Dealer Action ------ -->
+		<!-- ------------------------------------ -->
+		function openDealerNewModal(){
+		 	resetDealerModal();
+	    		var urlAction = /*[[@{/user/dealer/load/new}]]*/;
+  		    $.ajax({
+  		        type: "GET",
+  		        url: urlAction,
+  		        dataType: 'json',
+  		        success: function(response){
+  		            if(response.status == "SUCCESS"){
+  		            		$("#bt_dealer_delete").hide();
+  		            		//$('#modal_dealer').modal('show');
+  		            		openDealerModal();
+  		             }else{
+  		            		openNotification(response.result.type,response.result.title,response.result.text);
+  		             }
+  		         },
+  		         error: function(e){
+  		             openNotification("error","error",e);
+  		         }
+  		    });
+	    }
+		
+		 function dealerLoadAction(idEncrypt) {
+			 	resetDealerModal();
+		 	   	var urlAction = /*[[@{/user/dealer/load}]]*/;
+			    $.ajax({
+			        type: "GET",
+			        url: urlAction,
+			        dataType: 'json',
+			        data: {"dealerIdEncrypt": idEncrypt},
+			        success: function(response){
+			            if(response.status == "SUCCESS"){
+			            	
+				        	   var dealerIdEncrypt = response.result.dealerIdEncrypt;
+				        	   var startDate = response.result.startDate;
+				        	   var endDate = response.result.endDate;
+				        	   var supplierIdEncrypt = response.result.supplierIdEncrypt;
+				        	   var measureIdEncrypt = response.result.measureIdEncrypt;
+				        	   var price = response.result.price;
+				        	   var currencyId = response.result.currencyId;
+				        	   
+				        	   setDealerModal(dealerIdEncrypt,startDate,endDate,supplierIdEncrypt,measureIdEncrypt,price,currencyId);
+				        	   $("#bt_dealer_delete").show();
+				        	   $('#modal_dealer').modal('show');
+			             }else{
+			            		openNotification(response.result.type,response.result.title,response.result.text);
+			             }
+			         },
+			         error: function(e){
+			             openNotification("error","error",e);
+			         }
+			    });
+			}
+		
+		function dealerSaveAction() {
+	  		resetValidationErrorWithPrefix("dealer_error_");
+	 	   	var urlAction = /*[[@{/user/dealer/save}]]*/;
+		    $.ajax({
+		        type: "POST",
+		        url: urlAction,
+		        dataType: 'json',
+		        data: $("#dealerModalForm").serialize(),
+		        success: function(response){
+		            if(response.status == "SUCCESS"){
+		               	openNotification(response.result.type,response.result.title,response.result.text);
+		               	closeDealerModal();
+		              	var table =  $('#dealer_datatables').DataTable();
+		                table.ajax.reload(); 
+		             }else{
+		            	 	validationErrorShowWithPrefix("dealer_error_",response.result);
+		             }
+		         },
+		         error: function(e){
+		             openNotification("error","error",e);
+		         }
+		    });
+		}
+		
+		  function dealerDeleteAction() {
+		 	   	var urlAction = /*[[@{/user/dealer/delete}]]*/;
+			    $.ajax({
+			        type: "POST",
+			        url: urlAction,
+			        dataType: 'json',
+			        data: $("#deleteDealerForm").serialize(),
+			        success: function(response){
+			            if(response.status == "SUCCESS"){
+			               	openNotification(response.result.type,response.result.title,response.result.text);
+			               	$('#modal_delete_dealer').modal('hide');
+			               	closeDealerModal();
+			              	var table =  $('#dealer_datatables').DataTable();
+			                 table.ajax.reload();
+			             }else{
+			            		openNotification(response.result.type,response.result.title,response.result.text);
+			             }
+			         },
+			         error: function(e){
+			             openNotification("error","error",e);
+			         }
+			    });
+			}
+		  
         <!-- -------------------------------- -->
 		<!-- -------- Start Date  -------- -->
 		<!-- -------------------------------- -->
@@ -1107,6 +1494,14 @@
             $('#end_Datepicker').datetimepicker({
 	        		format: 'DD/MM/YYYY',
             		locale: localeUser
+	        });
+            $('#dealer_startDate_Datepicker').datetimepicker({
+	        		format: 'DD/MM/YYYY',
+	        		locale: localeUser
+	        });
+	            $('#dealer_endDate_Datepicker').datetimepicker({
+	        		format: 'DD/MM/YYYY',
+	        		locale: localeUser
 	        });
         });
         
@@ -1127,7 +1522,7 @@
 		
 	  
 	</script>
-	
-	
+
+
 </body>
 </html>

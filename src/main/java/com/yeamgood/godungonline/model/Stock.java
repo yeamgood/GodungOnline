@@ -21,7 +21,7 @@ public class Stock extends ModelTemplate{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "stock")
+	@Column(name = "stock_id")
 	private Long stockId;
 	
 	@Transient

@@ -47,13 +47,20 @@
 
 			<!-- page content -->
 			<div class="right_col" role="main">
-			
+				<form autocomplete="off" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" 
+	                  th:action="@{/user/profile}" th:object="${profileForm}" method="POST" >
+	                   	 	  
 				<div class="col-md-12 col-sm-12 col-xs-12 x_panel search-head">
 					<div class="title_left">
 						<div class="col-md-6">
 							<h2>
 								<i th:class="${menu.icon}"></i> <span th:text="#{${menu.code}}"></span>
 							</h2>
+						</div>
+					</div>
+					<div class="title_right">
+						<div class="form-group pull-right title_right_button">
+							<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> <span th:text="#{bt.text.save}"></span></button>
 						</div>
 					</div>
 				</div>
@@ -63,13 +70,11 @@
 	              <div class="col-md-12 col-sm-12 col-xs-12">
 	                <div class="x_panel">
 	                  <div class="x_content">
-	                    <form autocomplete="off" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" 
-	                   	 	  th:action="@{/user/profile}" th:object="${profileForm}" method="POST" >
 	
 	                      <div class="form-group">
 	                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name" th:text="#{form.profile.label.email}"></label>
 	                        <div class="col-md-6 col-sm-6 col-xs-12">
-	                          <input type="text" class="form-control" readonly="readonly" th:value="${profileForm.email}" >
+	                          <input type="text" class="form-control" readonly="readonly" th:value="${session.user.email}" >
 	                        </div>
 	                      </div>
 	                      <div class="form-group">
@@ -100,18 +105,12 @@
 	                        </div>
 	                      </div>
 	                  
-	                      <div class="ln_solid"></div>
-	                      <div class="form-group">
-	                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-	                          <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> <span th:text="#{bt.text.save}"></span></button>
-	                        </div>
-	                      </div>
-	
-	                    </form>
 	                  </div>
 	                </div>
 	              </div>
 	            </div>
+	            
+	            </form>
             </div>
 			<!-- /page content -->
 

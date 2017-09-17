@@ -107,6 +107,8 @@
 												<span th:text="#{label.search.by}"></span> 
 												<span th:text="#{form.product.label.code}"></span> ,
 												<span th:text="#{form.product.label.name}"></span> ,
+												<span th:text="#{form.product.label.brand}"></span> ,
+												<span th:text="#{form.product.label.category}"></span> ,
 												<span th:text="#{form.product.label.description}"></span>
 											</div>
 										</div>
@@ -129,6 +131,20 @@
 							                      </div>
 							                      
 							                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+							                       <label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.product.label.brand}"></label>
+							                        <div class="col-md-8 col-sm-8 col-xs-12">
+							                          <input id="input_advance_brand"  type="text" class="form-control" >
+							                        </div>
+							                      </div>
+							                      
+							                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.product.label.category}"></label>
+							                         <div class="col-md-8 col-sm-8 col-xs-12">
+							                         <input id="input_advance_category"  type="text" class="form-control" >
+							                         </div>
+							                      </div>
+							                      
+						                          <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
 							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.product.label.description}"></label>
 							                         <div class="col-md-8 col-sm-8 col-xs-12">
 							                         <input id="input_advance_description"  type="text" class="form-control" >
@@ -161,9 +177,11 @@
 										<thead class="search-content-header">
 											<tr>
 												<th th:text="#{datatables.text.no}"></th>
-												<th th:text="#{form.product.label.code}" class="col-md-1"></th>
-												<th th:text="#{form.product.label.name}" class="col-md-3"></th>
-												<th th:text="#{form.product.label.description}" class="col-md-3"></th>
+												<th th:text="#{form.product.label.code}"></th>
+												<th th:text="#{form.product.label.name}"></th>
+												<th th:text="#{form.product.label.brand}" ></th>
+												<th th:text="#{form.product.label.category}" ></th>
+												<th th:text="#{form.product.label.description}"></th>
 												<th th:text="#{form.product.label.action}"></th>
 											</tr>
 										</thead>
@@ -275,11 +293,18 @@
 		  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
 		  	            { 'data': 'productCode' },
 		  	            { 'data': 'productName' },
+		  	            { 'data': 'brand.brandName' },
+		  	            { 'data': 'category.categoryName' },
 		  	            { 'data': 'description' },
 		  	            { 'data': 'productIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
 		  	        ],
-		  	      	"columnDefs": [{
-		                  "render": function ( data, type, row ) {
+		  	      	"columnDefs": [
+		  	      	  	   {"targets": 1,"className": "content-left"},
+			   	        	   {"targets": 2,"className": "content-left"},
+			   	        	   {"targets": 3,"className": "content-center"},
+			   	        	   {"targets": 4,"className": "content-center"},
+			   	        	   {"targets": 5,"className": "content-left"},
+		                   {"render": function ( data, type, row ) {
 		                		 return	'' +
 		                		   		'<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textEdit + '"' +
 		                			    '   onclick="loadAction(\''+ url_product_load +'\',\''+ row.productIdEncrypt + '\');" >' +
@@ -289,8 +314,7 @@
 		                	  	 	    '   onclick="openModalDelete(\''+data+'\',\''+row.productCode + " " + row.productName + '\');" >' +
 		                	  	 	    '   <i class="fa fa-trash"></i></button>'; 
 		                  },
-		                  "targets": 4
-		             }
+		                  "targets": 6}
 		  	      	],
 		             "initComplete": function( settings, json ) {
 		            	 		//FIX BUG DATATABLES USE DOM NOT RESPONSIVE HTML
@@ -334,7 +358,7 @@
 				});
 		        
 		        /* ADVANCE SEARCH */
-		        $('#input_advance_code,#input_advance_name,#input_advance_description').on( 'keyup change', function () {
+		        $('#input_advance_code,#input_advance_name,#input_advance_brand,#input_advance_category,#input_advance_description').on( 'keyup change', function () {
 		       	 	searchDatatablesMain();
 				});
 		        
@@ -345,6 +369,8 @@
 		        $('#bt_advance_reset').on( 'click', function () {
 		        		$("#input_advance_code").val("");
 		        		$("#input_advance_name").val("");
+		        		$("#input_advance_brand").val("");
+		        		$("#input_advance_category").val("");
 		        		$("#input_advance_description").val("");
 			    		searchDatatablesMain();
 			    });
@@ -355,7 +381,9 @@
 	    		table
 	    		.columns(1).search($("#input_advance_code").val())
 	    		.columns(2).search($("#input_advance_name").val())
-	    		.columns(3).search($("#input_advance_description").val())
+	    		.columns(3).search($("#input_advance_brand").val())
+	    		.columns(4).search($("#input_advance_category").val())
+	    		.columns(5).search($("#input_advance_description").val())
 	    		.draw();
 	    }
 		
