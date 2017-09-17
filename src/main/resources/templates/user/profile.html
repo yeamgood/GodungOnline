@@ -69,43 +69,51 @@
 	            <div class="row">
 	              <div class="col-md-12 col-sm-12 col-xs-12">
 	                <div class="x_panel">
-	                  <div class="x_content">
-	
-	                      <div class="form-group">
-	                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name" th:text="#{form.profile.label.email}"></label>
-	                        <div class="col-md-6 col-sm-6 col-xs-12">
-	                          <input type="text" class="form-control" readonly="readonly" th:value="${session.user.email}" >
-	                        </div>
-	                      </div>
-	                      <div class="form-group">
-	                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name" th:text="#{form.profile.label.name}"></label>
-	                        <div class="col-md-6 col-sm-6 col-xs-12">
-	                          <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="validation-message"></label>
-	                          <input type="text" th:field="*{name}" name="name" class="form-control col-md-7 col-xs-12" th:value="${profileForm.name}">
-	                        </div>
-	                      </div>
-	                       <div class="form-group">
-	                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name" th:text="#{form.profile.label.godungname}"></label>
-	                        <div class="col-md-6 col-sm-6 col-xs-12">
-	                          <label th:if="${#fields.hasErrors('godungName')}" th:errors="*{godungName}" class="validation-message"></label>
-	                          <input type="text" th:field="*{godungName}" name="godungName" class="form-control col-md-7 col-xs-12" th:value="${profileForm.godungName}">
-	                        </div>
-	                      </div>
-	                      <div class="form-group">
-	                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name" th:text="#{form.profile.label.language}"></label>
-	                        <div class="col-md-6 col-sm-6 col-xs-12">
-	                          <label th:if="${#fields.hasErrors('language')}" th:errors="*{language}" class="validation-message"></label>
-	                          <select th:field="*{language}" class="form-control" name="language">
-	                            	<option th:each="common :${languageList}" 
-			                            th:value="${common.key}" 
-			                            th:text="${common.value}" 
-	                                    th:selected="${common.key} == ${profileForm.language} ? true : false">
+	                
+		                	<div class="x_title x_title_edit">
+							<h2>
+								<i class="fa fa-info-circle"></i> <span class="title_left_text" th:text="#{form.profile.label.info}"></span>
+							</h2>
+							<div class="clearfix"></div>
+						</div>
+	                
+		                  <div class="x_content">
+		
+		                      <div class="form-group">
+		                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name" th:text="#{form.profile.label.email}"></label>
+		                        <div class="col-md-6 col-sm-6 col-xs-12">
+		                          <input type="text" class="form-control" readonly="readonly" th:value="${session.user.email}" >
+		                        </div>
+		                      </div>
+		                      <div class="form-group">
+		                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name" th:text="#{form.profile.label.name}"></label>
+		                        <div class="col-md-6 col-sm-6 col-xs-12">
+		                          <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="validation-message"></label>
+		                          <input type="text" th:field="*{name}" name="name" class="form-control col-md-7 col-xs-12" th:value="${profileForm.name}">
+		                        </div>
+		                      </div>
+		                       <div class="form-group">
+		                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name" th:text="#{form.profile.label.godungname}"></label>
+		                        <div class="col-md-6 col-sm-6 col-xs-12">
+		                          <label th:if="${#fields.hasErrors('godungName')}" th:errors="*{godungName}" class="validation-message"></label>
+		                          <input type="text" th:field="*{godungName}" name="godungName" class="form-control col-md-7 col-xs-12" th:value="${profileForm.godungName}">
+		                        </div>
+		                      </div>
+		                      <div class="form-group">
+		                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name" th:text="#{form.profile.label.language}"></label>
+		                        <div class="col-md-6 col-sm-6 col-xs-12">
+		                          <label th:if="${#fields.hasErrors('language')}" th:errors="*{language}" class="validation-message"></label>
+		                          <select th:field="*{language}" class="form-control" name="language">
+		                            	<option th:each="common :${languageList}" 
+				                            th:value="${common.key}" 
+				                            th:text="${common.value}" 
+		                                    th:selected="${common.key} == ${profileForm.language} ? true : false">
 	                          	</option>
-	                          </select>
-	                        </div>
-	                      </div>
+		                          </select>
+		                        </div>
+		                      </div>
+		                  </div>
 	                  
-	                  </div>
 	                </div>
 	              </div>
 	            </div>
