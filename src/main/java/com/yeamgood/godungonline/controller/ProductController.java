@@ -53,7 +53,7 @@ import com.yeamgood.godungonline.utils.AESencrpUtils;
 public class ProductController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	private final Long MENU_ID = (long) 8;
+	private final Long MENU_ID = (long) 10;
 	private final Long COUNTRY_THAILAND = (long) 217;
 	
 	@Autowired
