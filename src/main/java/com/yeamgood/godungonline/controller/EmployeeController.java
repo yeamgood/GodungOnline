@@ -1,5 +1,6 @@
 package com.yeamgood.godungonline.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -19,12 +20,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yeamgood.godungonline.bean.JsonResponse;
 import com.yeamgood.godungonline.bean.Pnotify;
 import com.yeamgood.godungonline.bean.PnotifyType;
+import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.datatable.DataTableObject;
 import com.yeamgood.godungonline.datatable.DataTablesRequest;
+import com.yeamgood.godungonline.exception.GodungIdException;
 import com.yeamgood.godungonline.model.Address;
 import com.yeamgood.godungonline.model.Country;
 import com.yeamgood.godungonline.model.Employee;
@@ -43,8 +47,12 @@ import com.yeamgood.godungonline.utils.AESencrpUtils;
 public class EmployeeController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	private final Long MENU_ID = (long) 33;
-	private final Long COUNTRY_THAILAND = (long) 217;
+	
+	private static final String LOG_EMPLOYEE = "employee:{}";
+	private static final String LOG_EMPLOYEE_IDENCRYPT = "employeeIdEncrypt:{}";
+	
+	
+	private static final String EMPLOYEE = "employee";
 	
 	@Autowired
     MessageSource messageSource;
@@ -65,14 +73,14 @@ public class EmployeeController {
 	RolegodungService rolegodungService;
 	
 	@RequestMapping(value="/user/employee", method = RequestMethod.GET)
-	public ModelAndView userEmployee(HttpSession session) throws Exception{
+	public ModelAndView userEmployee(HttpSession session) {
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
 		User userSession = (User) session.getAttribute("user");
-		Menu menu = menuService.findById(MENU_ID);
+		Menu menu = menuService.findById(Constants.MENU_EMPLOYEE_ID);
 		List<Employee> employeeList = employeeService.findAllByGodungGodungIdOrderByEmployeeNameAsc(userSession.getGodung().getGodungId());
 		
-		modelAndView.addObject("menu", menu);
+		modelAndView.addObject(Constants.MENU, menu);
 		modelAndView.addObject("employeeList", employeeList);
 		modelAndView.setViewName("user/employee");
 		logger.debug("O");
@@ -80,69 +88,55 @@ public class EmployeeController {
 	}
 	
 	@RequestMapping(value="/user/employee/list/ajax", method=RequestMethod.GET)
-	public @ResponseBody String userEmployeeListtest(DataTablesRequest datatableRequest, HttpSession session) throws Exception{
+	public @ResponseBody String userEmployeeListtest(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException {
 		logger.debug("I");
-		logger.debug("datatableRequest" + datatableRequest.toString());
+		logger.debug(Constants.LOG_INPUT, datatableRequest);
 		
 		User userSession = (User) session.getAttribute("user");
 		Long godungId = userSession.getGodung().getGodungId();
 		List<Employee> employeeList = employeeService.findAllByGodungGodungIdOrderByEmployeeNameAsc(godungId);
-		logger.debug("O:employeeList" + employeeList.size());
 		
 		DataTableObject dataTableObject = new DataTableObject();
-		dataTableObject.setAaData(employeeList);
-		String result = new ObjectMapper().writeValueAsString(dataTableObject);
-		return result;
+		dataTableObject.setAaData(new ArrayList<Object>(employeeList));
+		logger.debug("O");
+		return new ObjectMapper().writeValueAsString(dataTableObject);
 	}
 	
 	@RequestMapping(value="/user/employee/delete", method=RequestMethod.POST)
 	public @ResponseBody JsonResponse userEmployeeDelete(Employee employee,HttpSession session){
 		logger.debug("I");
-		logger.debug("I" + employee.toString());
-		Pnotify pnotify;
-		User userSession;
+		logger.debug(LOG_EMPLOYEE,employee);
 		JsonResponse jsonResponse = new JsonResponse();
-		
-		if(employee.getEmployeeIdEncrypt() == null) {
-			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.save.error");
-			jsonResponse.setStatus("FAIL");
-			jsonResponse.setResult(pnotify);
-			return jsonResponse;
-		}
 		try {
-			userSession = (User) session.getAttribute("user");
+			User userSession = (User) session.getAttribute("user");
 			employeeService.delete(employee.getEmployeeIdEncrypt(), userSession);
-			
-			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.delete.success");
-			jsonResponse.setStatus("SUCCESS");
-			jsonResponse.setResult(pnotify);
+			jsonResponse.setDeleteSuccess(messageSource);
 		} catch (Exception e) {
-			logger.error("error:",e);
-			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.delete.error");
-			jsonResponse.setStatus("FAIL");
-			jsonResponse.setResult(pnotify);
+			logger.error(Constants.MESSAGE_ERROR,e);
+			jsonResponse.setDeleteError(messageSource);
 		}
 		logger.debug("O");
 		return jsonResponse;
 	}
 	
-	@RequestMapping(value="/user/employee/manage/{idEncrypt}", method = RequestMethod.GET)
-	public ModelAndView userEmployeeLoad(Model model,HttpSession session, @PathVariable String idEncrypt) throws NumberFormatException, Exception{
+	@RequestMapping(value="/user/employee/manage/{employeeIdEncrypt}", method = RequestMethod.GET)
+	public ModelAndView userEmployeeLoad(Model model,HttpSession session, @PathVariable String employeeIdEncrypt) throws GodungIdException {
 		logger.debug("I:");
-		logger.debug("I:idEncrypt" + idEncrypt);
+		logger.debug(LOG_EMPLOYEE_IDENCRYPT,employeeIdEncrypt);
+		
 		ModelAndView modelAndView = new ModelAndView();
-		Menu menu = menuService.findById(MENU_ID);
+		Menu menu = menuService.findById(Constants.MENU_EMPLOYEE_ID);
 		User userSession = (User) session.getAttribute("user");
 		
-		Employee employee = employeeService.findByIdEncrypt(idEncrypt,userSession);
+		Employee employee = employeeService.findByIdEncrypt(employeeIdEncrypt,userSession);
 		List<Province> provinceDropdown = provinceService.findAllByOrderByProvinceNameAsc();
 		List<Country> countryDropdown = countryService.findAllByOrderByCountryNameAsc();
 		List<Rolegodung> rolegodungDropdown = rolegodungService.findAllByGodungGodungIdOrderByRolegodungNameAsc(userSession.getGodung().getGodungId());
 		
-		modelAndView.addObject("menu", menu);
-		modelAndView.addObject("employee",employee);
-		modelAndView.addObject("provinceDropdown",provinceDropdown);
-		modelAndView.addObject("countryDropdown",countryDropdown);
+		modelAndView.addObject(Constants.MENU, menu);
+		modelAndView.addObject(EMPLOYEE,employee);
+		modelAndView.addObject(Constants.PROVINCE_DROPDOWN,provinceDropdown);
+		modelAndView.addObject(Constants.COUNTRY_DROPDOWN,countryDropdown);
 		modelAndView.addObject("rolegodungDropdown",rolegodungDropdown);
 		modelAndView.setViewName("user/employee_manage");
 		logger.debug("O:");
@@ -153,32 +147,32 @@ public class EmployeeController {
 	// --- PERSON ---------------------------------------------------------
 	// --------------------------------------------------------------------
 	@RequestMapping(value="/user/employee/manage", method = RequestMethod.GET)
-	public ModelAndView userEmployeePerson(Model model,HttpSession session) throws Exception{
+	public ModelAndView userEmployeePerson(Model model,HttpSession session) {
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
-		Menu menu = menuService.findById(MENU_ID);
+		Menu menu = menuService.findById(Constants.MENU_EMPLOYEE_ID);
 		User userSession = (User) session.getAttribute("user");
 		List<Province> provinceDropdown = provinceService.findAllByOrderByProvinceNameAsc();
 		List<Country> countryDropdown = countryService.findAllByOrderByCountryNameAsc();
 		List<Rolegodung> rolegodungDropdown = rolegodungService.findAllByGodungGodungIdOrderByRolegodungNameAsc(userSession.getGodung().getGodungId());
 		
-		//CHECK ERROR BINDING AND INITIAL DATA
-		if (!model.containsAttribute("employee")) {
+		
+		if (!model.containsAttribute(EMPLOYEE)) {
 			logger.debug("New Object");
 			Country country = new Country();
-			country.setCountryId(COUNTRY_THAILAND);
+			country.setCountryId(Constants.COUNTRY_THAILAND);
 			
 			Address address = new Address();
 			address.setCountry(country);
 			
 			Employee employee = new Employee();
 			employee.setAddress(address);
-			modelAndView.addObject("employee",employee);
+			modelAndView.addObject(EMPLOYEE,employee);
 	    }
 		
-		modelAndView.addObject("menu", menu);
-		modelAndView.addObject("countryDropdown",countryDropdown);
-		modelAndView.addObject("provinceDropdown",provinceDropdown);
+		modelAndView.addObject(Constants.MENU, menu);
+		modelAndView.addObject(Constants.COUNTRY_DROPDOWN,countryDropdown);
+		modelAndView.addObject(Constants.PROVINCE_DROPDOWN,provinceDropdown);
 		modelAndView.addObject("rolegodungDropdown",rolegodungDropdown);
 		modelAndView.setViewName("user/employee_manage");
 		logger.debug("O");
@@ -193,20 +187,20 @@ public class EmployeeController {
 		if (bindingResult.hasErrors()) {
 			logger.debug("bindingResult error");
 			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.employee", bindingResult);
-			redirectAttributes.addFlashAttribute("employee", employee);
+			redirectAttributes.addFlashAttribute(EMPLOYEE, employee);
 			modelAndView.setViewName("redirect:/user/employee/manage");
 		} else {
 			try {
 				logger.debug("save");
 				userSession = (User) session.getAttribute("user");
 				employeeService.save(employee, userSession);
-				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,"action.save.success"));
+				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,Constants.ACTION_SAVE_SUCCESS));
 				modelAndView.setViewName("redirect:/user/employee/manage/" + employee.getEmployeeIdEncrypt());
 			} catch (Exception e) {
 				logger.error("error",e);
-				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,"action.save.error"));
+				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,Constants.ACTION_SAVE_ERROR));
 				redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.profileForm", bindingResult);
-				redirectAttributes.addFlashAttribute("employee", employee);
+				redirectAttributes.addFlashAttribute(EMPLOYEE, employee);
 				modelAndView.setViewName("redirect:/user/employee/manage");
 			}
 		}
@@ -215,24 +209,24 @@ public class EmployeeController {
 	}
 	
 	@RequestMapping(value="/user/employee/manage/delete", method=RequestMethod.POST)
-	public ModelAndView userEmployeeIndividualDelete(Employee employee,HttpSession session, RedirectAttributes redirectAttributes) throws Exception{
+	public ModelAndView userEmployeeIndividualDelete(Employee employee,HttpSession session, RedirectAttributes redirectAttributes) {
 		logger.debug("I");
-		logger.debug("I" + employee.toString());
+		logger.debug(LOG_EMPLOYEE,employee);
 		ModelAndView modelAndView = new ModelAndView();
 		User userSession;
 		
 		if(employee.getEmployeeId() == null) {
-			redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,"action.delete.error"));
+			redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,Constants.ACTION_DELETE_ERROR));
 			modelAndView.setViewName("redirect:/user/employee");
 		}
 		try {
 			userSession = (User) session.getAttribute("user");
 			employeeService.delete(employee.getEmployeeIdEncrypt(), userSession);
-			redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,"action.delete.success"));
+			redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,Constants.ACTION_DELETE_SUCCESS));
 			modelAndView.setViewName("redirect:/user/employee");
 		} catch (Exception e) {
-			logger.error("error:",e);
-			redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,"action.delete.error"));
+			logger.error(Constants.MESSAGE_ERROR,e);
+			redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,Constants.ACTION_DELETE_ERROR));
 			modelAndView.setViewName("redirect:/user/employee/manage/" + AESencrpUtils.encryptLong(employee.getEmployeeId()));
 		}
 		logger.debug("O");

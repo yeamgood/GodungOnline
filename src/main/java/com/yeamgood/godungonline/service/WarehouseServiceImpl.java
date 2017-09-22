@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.exception.GodungIdException;
 import com.yeamgood.godungonline.model.Location;
 import com.yeamgood.godungonline.model.User;
@@ -31,46 +32,51 @@ public class WarehouseServiceImpl implements WarehouseService{
 	@Autowired
 	private LocationRepository locationRepository;
 	
+	@Autowired
+	private GodungService godungService;
+	
 	@Override
-	public Warehouse findByIdEncrypt(String idEncrypt,User userSession) throws Exception {
+	public Warehouse findByIdEncrypt(String idEncrypt,User userSession) throws GodungIdException  {
 		logger.debug("I:");
-		logger.debug("O:");
 		Warehouse warehouse = warehouseRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		checkGodungId(warehouse, userSession);
+		godungService.checkGodungId(warehouse.getGodung().getGodungId(), userSession);
 		warehouse.encryptData(warehouse);
+		logger.debug("O:");
 		return warehouse;
 	}
 
 	@Override
-	public List<Warehouse> findAllByGodungGodungIdOrderByWarehouseNameAsc(Long godungId) throws Exception {
-		logger.debug("I:[godungId]:" + godungId);
-		logger.debug("O:");
+	public List<Warehouse> findAllByGodungGodungIdOrderByWarehouseNameAsc(Long godungId)  {
+		logger.debug("I:");
+		logger.debug(Constants.LOG_INPUT, godungId);
 		List<Warehouse> warehouseList = warehouseRepository.findAllByGodungGodungIdOrderByWarehouseCodeAsc(godungId);
 		for (Warehouse warehouse : warehouseList) {
 			warehouse.setWarehouseIdEncrypt(AESencrpUtils.encryptLong(warehouse.getWarehouseId()));
 			warehouse.encryptData(warehouse);
 		}
+		logger.debug("O:");
 		return warehouseList;
 	}
 
 	@Override
 	public long count(Long godungId) {
-		logger.debug("I:[godungId]:" + godungId);
+		logger.debug("I:");
+		logger.debug(Constants.LOG_INPUT, godungId);
 		logger.debug("O:");
 		return warehouseRepository.countByGodungGodungId(godungId);
 	}
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void save(Warehouse warehouse,User userSession) throws Exception {
+	public void save(Warehouse warehouse,User userSession)  {
 		logger.debug("I:");
-		logger.debug("I:" +  warehouse.toString());
+		logger.debug(Constants.LOG_INPUT, warehouse);
 		
 		if(warehouse.getLocationList() == null) {
-			warehouse.setLocationList(new ArrayList<Location>());
+			warehouse.setLocationList(new ArrayList<>());
 		}
 		
-		List<Location> locationTempList = new ArrayList<Location>();
+		List<Location> locationTempList = new ArrayList<>();
 		for (Location locationTemp : warehouse.getLocationList()) {
 			if(StringUtils.isNotBlank(locationTemp.getLocationCode())) {
 				locationTempList.add(locationTemp);
@@ -89,7 +95,7 @@ public class WarehouseServiceImpl implements WarehouseService{
 			warehouse.setCreate(userSession.getEmail(), new Date());
 			warehouse.getLocationList().clear();
 			warehouse.getLocationList().addAll(locationTempList);
-			warehouse = warehouseRepository.save(warehouse);
+			warehouseRepository.save(warehouse);
 			warehouse.setWarehouseIdEncrypt(AESencrpUtils.encryptLong(warehouse.getWarehouseId()));
 		}else {
 			Long id = AESencrpUtils.decryptLong(warehouse.getWarehouseIdEncrypt());
@@ -98,7 +104,7 @@ public class WarehouseServiceImpl implements WarehouseService{
 			warehouseTemp.setUpdate(userSession.getEmail(), new Date());
 			warehouseTemp.getLocationList().clear();
 			warehouseTemp.getLocationList().addAll(locationTempList);
-			warehouse = warehouseRepository.save(warehouseTemp);
+			warehouseRepository.save(warehouseTemp);
 			warehouse.setWarehouseIdEncrypt(AESencrpUtils.encryptLong(warehouse.getWarehouseId()));
 			logger.debug("I:Step6");
 		}
@@ -107,25 +113,17 @@ public class WarehouseServiceImpl implements WarehouseService{
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void delete(String idEncrypt, User userSession) throws Exception,GodungIdException{
+	public void delete(String idEncrypt, User userSession) throws GodungIdException{
 		logger.debug("I:");
 		Warehouse warehouseTemp = warehouseRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		checkGodungId(warehouseTemp, userSession);
+		godungService.checkGodungId(warehouseTemp.getGodung().getGodungId(), userSession);
 		warehouseRepository.delete(warehouseTemp.getWarehouseId());
 		logger.debug("O:");
-	}
-	
-	public void checkGodungId(Warehouse warehouseTemp,User userSession) throws GodungIdException {
-		long godungIdTemp = warehouseTemp.getGodung().getGodungId().longValue();
-		long godungIdSession = userSession.getGodung().getGodungId().longValue();
-		if(godungIdTemp !=  godungIdSession) {
-			 throw new GodungIdException("GodungId database is " + godungIdTemp + " not equals session user is" + godungIdSession);
-		}
 	}
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void saveLocation(String warehouseIdEncrypt,List<Location> locationList,User userSession) throws Exception {
+	public void saveLocation(String warehouseIdEncrypt,List<Location> locationList,User userSession)  {
 		logger.debug("I:");
 		Warehouse warehouseTemp = warehouseRepository.findOne(AESencrpUtils.decryptLong(warehouseIdEncrypt));
 		
@@ -146,11 +144,11 @@ public class WarehouseServiceImpl implements WarehouseService{
 	}
 
 	@Override
-	public void deleteLocation(String warehouseIdEncrypt, String locationIdEncrypt, User userSession)throws Exception, GodungIdException {
+	public void deleteLocation(String warehouseIdEncrypt, String locationIdEncrypt, User userSession) throws GodungIdException{
 		logger.debug("I:");
 		Warehouse warehouseTemp = warehouseRepository.findOne(AESencrpUtils.decryptLong(warehouseIdEncrypt));
 		Long locationId = AESencrpUtils.decryptLong(locationIdEncrypt);
-		checkGodungId(warehouseTemp, userSession);
+		godungService.checkGodungId(warehouseTemp.getGodung().getGodungId(), userSession);
 		for (Location locationTemp : warehouseTemp.getLocationList()) {
 			if(locationTemp.getLocationId() == locationId) {
 				warehouseTemp.getLocationList().remove(locationTemp);

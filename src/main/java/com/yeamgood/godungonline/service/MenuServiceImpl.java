@@ -17,10 +17,11 @@ public class MenuServiceImpl implements MenuService{
 	MenuRepository menuRepository;
 
 	@Override
-	public Menu findById(Long id) {
-		logger.debug("I:[id:" + id + "]");
-		logger.debug("O:");
-		return menuRepository.findOne(id);
+	public Menu findById(Long menuId) {
+		logger.debug("I");
+		logger.debug("menuId:{}", menuId);
+		logger.debug("O");
+		return menuRepository.findOne(menuId);
 	}
 	
 }

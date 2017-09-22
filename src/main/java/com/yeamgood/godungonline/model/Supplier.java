@@ -113,7 +113,7 @@ public class Supplier extends ModelTemplate{
 		}
 	}
 	
-	public void encryptData(Supplier supplier) throws Exception {
+	public void encryptData(Supplier supplier) {
 		this.supplierIdEncrypt = AESencrpUtils.encryptLong(supplier.getSupplierId());
 		this.supplierId = null;
 	}

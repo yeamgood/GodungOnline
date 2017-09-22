@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.exception.GodungIdException;
 import com.yeamgood.godungonline.model.Country;
 import com.yeamgood.godungonline.model.Province;
@@ -35,19 +36,22 @@ public class SupplierServiceImpl implements SupplierService{
 	@Autowired 
 	private CountryRepository countryRepository;
 	
+	@Autowired
+	private GodungService godungService;
+	
 	@Override
-	public Supplier findByIdEncrypt(String idEncrypt,User userSession) throws Exception {
+	public Supplier findByIdEncrypt(String idEncrypt,User userSession) throws GodungIdException  {
 		logger.debug("I:");
 		logger.debug("O:");
 		Supplier supplier = supplierRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
 		supplier.encryptData(supplier);
-		checkGodungId(supplier, userSession);
+		godungService.checkGodungId(supplier.getGodung().getGodungId(), userSession);
 		return supplier;
 	}
 
 	@Override
-	public List<Supplier> findAllByGodungGodungIdOrderBySupplierNameAsc(Long godungId) throws Exception {
-		logger.debug("I:[godungId]:" + godungId);
+	public List<Supplier> findAllByGodungGodungIdOrderBySupplierNameAsc(Long godungId)  {
+		logger.debug(Constants.LOG_INPUT, godungId);
 		logger.debug("O:");
 		List<Supplier> supplierList = supplierRepository.findAllByGodungGodungIdOrderBySupplierCodeAsc(godungId);
 		for (Supplier supplier : supplierList) {
@@ -59,16 +63,16 @@ public class SupplierServiceImpl implements SupplierService{
 
 	@Override
 	public long count(Long godungId) {
-		logger.debug("I:[godungId]:" + godungId);
+		logger.debug(Constants.LOG_INPUT, godungId);
 		logger.debug("O:");
 		return supplierRepository.countByGodungGodungId(godungId);
 	}
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void save(Supplier supplier,User userSession) throws Exception {
+	public void save(Supplier supplier,User userSession)  {
 		logger.debug("I:");
-		logger.debug("I:" +  supplier.toString());
+		logger.debug(Constants.LOG_INPUT, supplier);
 		if(StringUtils.isBlank(supplier.getSupplierIdEncrypt())) {
 			Supplier maxSupplier = supplierRepository.findTopByGodungGodungIdOrderBySupplierCodeDesc(userSession.getGodung().getGodungId());
 			if(maxSupplier == null) {
@@ -98,7 +102,7 @@ public class SupplierServiceImpl implements SupplierService{
 			countrySendTemp = countryRepository.findOne(countrySendTemp.getCountryId());
 			supplier.getAddressSend().setCountry(countrySendTemp);
 			
-			supplier = supplierRepository.save(supplier);
+			supplierRepository.save(supplier);
 			supplier.setSupplierIdEncrypt(AESencrpUtils.encryptLong(supplier.getSupplierId()));
 		}else {
 			Long id = AESencrpUtils.decryptLong(supplier.getSupplierIdEncrypt());
@@ -128,8 +132,8 @@ public class SupplierServiceImpl implements SupplierService{
 			countrySendTemp = countryRepository.findOne(countrySendTemp.getCountryId());
 			supplierTemp.getAddressSend().setCountry(countrySendTemp);
 			
-			supplier = supplierRepository.save(supplierTemp);
-			supplier.setSupplierIdEncrypt(AESencrpUtils.encryptLong(supplier.getSupplierId()));
+			supplierRepository.save(supplierTemp);
+			supplier.setSupplierIdEncrypt(AESencrpUtils.encryptLong(supplierTemp.getSupplierId()));
 			logger.debug("I:Step6");
 		}
 		logger.debug("O:");
@@ -137,19 +141,12 @@ public class SupplierServiceImpl implements SupplierService{
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void delete(String idEncrypt, User userSession) throws Exception,GodungIdException{
+	public void delete(String idEncrypt, User userSession) throws GodungIdException{
 		logger.debug("I:");
 		Supplier supplierTemp = supplierRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		checkGodungId(supplierTemp, userSession);
+		godungService.checkGodungId(supplierTemp.getGodung().getGodungId(), userSession);
 		supplierRepository.delete(supplierTemp.getSupplierId());
 		logger.debug("O:");
 	}
 	
-	public void checkGodungId(Supplier supplierTemp,User userSession) throws GodungIdException {
-		long godungIdTemp = supplierTemp.getGodung().getGodungId().longValue();
-		long godungIdSession = userSession.getGodung().getGodungId().longValue();
-		if(godungIdTemp !=  godungIdSession) {
-			 throw new GodungIdException("GodungId database is " + godungIdTemp + " not equals session user is" + godungIdSession);
-		}
-	}
 }

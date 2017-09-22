@@ -96,7 +96,7 @@ public class Customer extends ModelTemplate{
 		this.email = customer.getEmail();
 	}
 	
-	public void encryptData(Customer customer) throws Exception {
+	public void encryptData(Customer customer) {
 		this.customerIdEncrypt = AESencrpUtils.encryptLong(customer.getCustomerId());
 		this.customerId = null;
 	}

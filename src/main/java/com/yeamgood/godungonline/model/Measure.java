@@ -46,7 +46,7 @@ public class Measure extends ModelTemplate{
 	@JsonIgnore
 	private Godung godung;
 	
-	public void encryptData(Measure measure) throws Exception {
+	public void encryptData(Measure measure) {
 		this.measureIdEncrypt = AESencrpUtils.encryptLong(measure.getMeasureId());
 		this.measureId = null;
 	}

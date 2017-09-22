@@ -1,26 +1,27 @@
 package com.yeamgood.godungonline.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yeamgood.godungonline.bean.JsonResponse;
-import com.yeamgood.godungonline.bean.Pnotify;
-import com.yeamgood.godungonline.bean.PnotifyType;
+import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.datatable.DataTableObject;
 import com.yeamgood.godungonline.datatable.DataTablesRequest;
 import com.yeamgood.godungonline.model.Brand;
@@ -31,174 +32,103 @@ import com.yeamgood.godungonline.service.MenuService;
 
 @Controller
 public class BrandController {
-	
+
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	private final Long MENU_BRAND_ID = (long) 11;
 	
+	private static final String LOG_BRAND = "brand:{}";
+	
+
 	@Autowired
-    MessageSource messageSource;
-	
+	MessageSource messageSource;
+
 	@Autowired
 	MenuService menuService;
-	
+
 	@Autowired
 	BrandService brandService;
-	
-	@RequestMapping(value="/user/brand", method = RequestMethod.GET)
-	public ModelAndView userBrand(HttpSession session) throws Exception{
+
+	@RequestMapping(value = "/user/brand", method = RequestMethod.GET)
+	public ModelAndView brand(HttpSession session) {
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
-		User userSession = (User) session.getAttribute("user");
-		Menu menu = menuService.findById(MENU_BRAND_ID);
-		List<Brand> brandList = brandService.findAllByGodungGodungIdOrderByBrandNameAsc(userSession.getGodung().getGodungId());
-		
-		modelAndView.addObject("menu", menu);
-		modelAndView.addObject("brandList", brandList);
+		Menu menu = menuService.findById(Constants.MENU_BRAND_ID);
+		modelAndView.addObject(Constants.MENU, menu);
 		modelAndView.setViewName("user/brand");
 		logger.debug("O");
 		return modelAndView;
 	}
-	
-	@RequestMapping(value="/user/brand/list/ajax", method=RequestMethod.GET)
-	public @ResponseBody String userBrandListtest(DataTablesRequest datatableRequest, HttpSession session) throws Exception{
+
+	@RequestMapping(value = "/user/brand/list", method = RequestMethod.GET)
+	public @ResponseBody String brandList(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException  {
 		logger.debug("I");
-		logger.debug("datatableRequest" + datatableRequest.toString());
-		
-		User userSession = (User) session.getAttribute("user");
+		logger.debug(Constants.LOG_INPUT, datatableRequest);
+		User userSession = (User) session.getAttribute(Constants.SESSION_USER);
 		Long godungId = userSession.getGodung().getGodungId();
 		List<Brand> brandList = brandService.findAllByGodungGodungIdOrderByBrandNameAsc(godungId);
-		logger.debug("O:brandList" + brandList.size());
-		
+
 		DataTableObject dataTableObject = new DataTableObject();
-		dataTableObject.setAaData(brandList);
-		String result = new ObjectMapper().writeValueAsString(dataTableObject);
-		return result;
+		dataTableObject.setAaData(new ArrayList<Object>(brandList));
+		logger.debug("O");
+		return new ObjectMapper().writeValueAsString(dataTableObject);
 	}
 	
-	@RequestMapping(value="/user/brand/save", method=RequestMethod.POST)
-	public @ResponseBody JsonResponse userBrandAdd(@Valid Brand brand,BindingResult bindingResult,HttpSession session){
+	@RequestMapping(value = "/user/brand/load", method = RequestMethod.GET)
+	public @ResponseBody JsonResponse brandLoad(Brand brand, HttpSession session) {
 		logger.debug("I");
-		logger.debug("I" + brand.toString());
-		Pnotify pnotify;
-		User userSession;
+		logger.debug(LOG_BRAND, brand);
 		JsonResponse jsonResponse = new JsonResponse();
-		
+		User userSession = (User) session.getAttribute(Constants.SESSION_USER);
+		try {
+			Brand brandTemp = new Brand();
+			if (!StringUtils.isBlank(brand.getBrandIdEncrypt())) {
+				brandTemp = brandService.findByIdEncrypt(brand.getBrandIdEncrypt(), userSession);
+			}
+			jsonResponse.setObject(Constants.STATUS_SUCCESS, brandTemp);
+		} catch (Exception e) {
+			logger.error(Constants.MESSAGE_ERROR, e);
+			jsonResponse.setLoadError(messageSource);
+		}
+		logger.debug("O");
+		return jsonResponse;
+	}
+
+	@RequestMapping(value = "/user/brand/save", method = RequestMethod.POST)
+	public @ResponseBody JsonResponse brandSave(@Valid Brand brand, BindingResult bindingResult,HttpSession session) {
+		logger.debug("I");
+		logger.debug(LOG_BRAND, brand);
+		JsonResponse jsonResponse = new JsonResponse();
+		User userSession = (User) session.getAttribute(Constants.SESSION_USER);
 		if (bindingResult.hasErrors()) {
-			String errorMsg = "";
-			List<FieldError> errors = bindingResult.getFieldErrors();
-		    for (FieldError error : errors ) {
-		    		errorMsg += error.getField() + " - " + error.getDefaultMessage();
-		    }
-		    pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.save.error");
-		    pnotify.setText(errorMsg);
-		    
-			jsonResponse.setStatus("FAIL");
-			jsonResponse.setResult(errors);
-		}else {
+			jsonResponse.setBinddingResultError(bindingResult);
+		} else {
 			try {
-				userSession = (User) session.getAttribute("user");
 				brandService.save(brand, userSession);
-				
-				pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.save.success");
-				jsonResponse.setStatus("SUCCESS");
-				jsonResponse.setResult(pnotify);
-				
+				jsonResponse.setSaveSuccess(messageSource);
 			} catch (Exception e) {
-				logger.error("error:",e);
-				pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.save.error");
-				jsonResponse.setStatus("FAIL");
-				jsonResponse.setResult(pnotify);
+				logger.error(Constants.MESSAGE_ERROR, e);
+				jsonResponse.setSaveError(messageSource);
 			}
 		}
 		logger.debug("O");
 		return jsonResponse;
 	}
-	
-	@RequestMapping(value="/user/brand/delete", method=RequestMethod.POST)
-	public @ResponseBody JsonResponse userBrandDelete(Brand brand,HttpSession session){
+
+	@RequestMapping(value = "/user/brand/delete", method = RequestMethod.POST)
+	public @ResponseBody JsonResponse brandDelete(Brand brand, HttpSession session) {
 		logger.debug("I");
-		logger.debug("I" + brand.toString());
-		Pnotify pnotify;
-		User userSession;
+		logger.debug(LOG_BRAND, brand);
 		JsonResponse jsonResponse = new JsonResponse();
-		
-		if(brand.getBrandIdEncrypt() == null) {
-			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.save.error");
-			jsonResponse.setStatus("FAIL");
-			jsonResponse.setResult(pnotify);
-			return jsonResponse;
-		}
-		
+		User userSession = (User) session.getAttribute(Constants.SESSION_USER);
 		try {
-			userSession = (User) session.getAttribute("user");
 			brandService.delete(brand, userSession);
-			
-			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.delete.success");
-			jsonResponse.setStatus("SUCCESS");
-			jsonResponse.setResult(pnotify);
-			
+			jsonResponse.setDeleteSuccess(messageSource);
 		} catch (Exception e) {
-			logger.error("error:",e);
-			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.delete.error");
-			jsonResponse.setStatus("FAIL");
-			jsonResponse.setResult(pnotify);
+			logger.error(Constants.MESSAGE_ERROR, e);
+			jsonResponse.setDeleteError(messageSource);
 		}
-		
 		logger.debug("O");
 		return jsonResponse;
 	}
-	
-	@RequestMapping(value="/user/brand/load", method=RequestMethod.GET)
-	public @ResponseBody JsonResponse load(Brand brand,HttpSession session){
-		logger.debug("I");
-		logger.debug("I" + brand.toString());
-		Pnotify pnotify;
-		User userSession;
-		JsonResponse jsonResponse = new JsonResponse();
-		
-		if(brand.getBrandIdEncrypt() == null) {
-			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.load.error");
-			jsonResponse.setStatus("FAIL");
-			jsonResponse.setResult(pnotify);
-			return jsonResponse;
-		}
-		
-		try {
-			userSession = (User) session.getAttribute("user");
-			Brand brandTemp = brandService.findByIdEncrypt(brand.getBrandIdEncrypt(), userSession);
-			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.load.success");
-			jsonResponse.setStatus("SUCCESS");
-			jsonResponse.setResult(brandTemp);
-		} catch (Exception e) {
-			logger.error("error:",e);
-			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.load.error");
-			jsonResponse.setStatus("FAIL");
-			jsonResponse.setResult(pnotify);
-		}
-		
-		logger.debug("O");
-		return jsonResponse;
-	}
-	
-	@RequestMapping(value="/user/brand/load/add", method=RequestMethod.GET)
-	public @ResponseBody JsonResponse loadAdd(HttpSession session){
-		logger.debug("I");
-		Pnotify pnotify;
-		JsonResponse jsonResponse = new JsonResponse();
-		try {
-			Brand brand = new Brand();
-			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.load.success");
-			jsonResponse.setStatus("SUCCESS");
-			jsonResponse.setResult(brand);
-		} catch (Exception e) {
-			logger.error("error:",e);
-			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.load.error");
-			jsonResponse.setStatus("FAIL");
-			jsonResponse.setResult(pnotify);
-		}
-		
-		logger.debug("O");
-		return jsonResponse;
-	}
+
 
 }

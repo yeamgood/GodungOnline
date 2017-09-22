@@ -28,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.yeamgood.godungonline.bean.Pnotify;
 import com.yeamgood.godungonline.bean.PnotifyType;
+import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.model.Menu;
 import com.yeamgood.godungonline.model.User;
 import com.yeamgood.godungonline.service.MenuService;
@@ -38,8 +39,6 @@ import com.yeamgood.godungonline.service.UserService;
 public class LoginController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	
-	private final Long MENU_HOME_ID = (long) 5;;
 	
 	@Autowired
 	private UserService userService;
@@ -79,7 +78,7 @@ public class LoginController {
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Set<String> roles = AuthorityUtils.authorityListToSet(auth.getAuthorities());
-		logger.info("[USER][Loggin] email:" + auth.getName() + " role:" + roles.toString());
+		logger.info("[USER][Loggin] email:{} role:{}",auth.getName(),roles);
 		User user = userService.findUserByEmail(auth.getName());
 		if(roles.contains("ADMIN")) {
 			modelAndView.setViewName("redirect:/admin/home?lang="+user.getLanguage());
@@ -93,27 +92,22 @@ public class LoginController {
 	
 	@RequestMapping(value="/admin/home", method = RequestMethod.GET)
 	public ModelAndView adminHome(RedirectAttributes redirectAttributes){
-		ModelAndView modelAndView = new ModelAndView();
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User user = userService.findUserByEmail(auth.getName());
-		manageSelectGodungAndRole(user);
-		manageMenu(user);
-		Menu menu = menuService.findById(MENU_HOME_ID);
-		modelAndView.addObject("menu", menu);
-		modelAndView.addObject("user",user);
-		modelAndView.setViewName("home");
-		return modelAndView;
+		return homePage();
 	}
 
 	@RequestMapping(value="/user/home", method = RequestMethod.GET)
 	public ModelAndView userHome(RedirectAttributes redirectAttributes){
+		return homePage();
+	}
+	
+	public ModelAndView homePage() {
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findUserByEmail(auth.getName());
 		manageSelectGodungAndRole(user);
 		manageMenu(user);
-		Menu menu = menuService.findById(MENU_HOME_ID);
-		modelAndView.addObject("menu", menu);
+		Menu menu = menuService.findById(Constants.MENU_HOME_ID);
+		modelAndView.addObject(Constants.MENU, menu);
 		modelAndView.addObject("user",user);
 		modelAndView.setViewName("home");
 		return modelAndView;
@@ -121,7 +115,6 @@ public class LoginController {
 	
 	@RequestMapping(value="/logoutSuccess", method = RequestMethod.GET)
 	public ModelAndView logoutPage (HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttributes) {
-		System.out.println("logout logout logout logout logout");
 		ModelAndView modelAndView = new ModelAndView(); 
 	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	    if (auth != null){    
@@ -134,14 +127,14 @@ public class LoginController {
 	
 	private void manageMenu(User user) {
 		List<Menu> subMenuList;
-		List<Menu> menuList = new ArrayList<Menu>();
+		List<Menu> menuList = new ArrayList<>();
 		for (Menu menu : user.getRole().getMenuList()) {
 			if(menu.getParentId() == null) {
 				menuList.add(menu);
 			}
 		}
 		for(Menu menu : menuList) {
-			subMenuList = new ArrayList<Menu>();
+			subMenuList = new ArrayList<>();
 			for (Menu subMenu : user.getRole().getMenuList()) {
 				if(subMenu.getParentId() != null && subMenu.getParentId().equals(menu.getId())) {
 					subMenuList.add(subMenu);
@@ -157,10 +150,6 @@ public class LoginController {
 		if(user.getGodungUserRoleList().size() == 1) {
 			user.setGodung(user.getGodungUserRoleList().get(0).getGodung());
 			user.setRole(user.getGodungUserRoleList().get(0).getRole());
-		}else if(user.getGodungUserRoleList().size() > 1) {
-			//TODO MULTI
-		}else {
-			//TODO ERROR
 		}
 	}
 	

@@ -65,7 +65,7 @@
 					</div>
 					<div class="title_right">
 						<div class="form-group pull-right title_right_button">
-							<a th:href="@{/user/rolegodung/manage}" class="btn btn-success">
+							<a id="bt_rolegodung_create" th:href="@{/user/rolegodung/manage}" class="btn btn-success">
 			                    <i class="fa" th:class="#{bt.icon.add}"></i> 
 			                    <span class="span_white" th:text="#{form.rolegodung.bt.add}"></span>
 		                    </a>
@@ -197,7 +197,7 @@
 							<button type="button" class="btn btn-default" data-dismiss="modal">
 								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
 							</button>
-							<button type="button" class="btn btn-danger" onclick="deleteAction();">
+							<button id="bt_delete_main" type="button" class="btn btn-danger" onclick="deleteAction();">
 								<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
 							</button>
 						</div>
@@ -281,11 +281,11 @@
 		  	      	"columnDefs": [{
 		                  "render": function ( data, type, row ) {
 		                		 return	'' +
-		                		   		'<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textEdit + '"' +
+		                		   		'<button id="bt_edit_'+row.rolegodungCode+'" type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textEdit + '"' +
 		                			    '   onclick="loadAction(\''+ url_rolegodung_load +'\',\''+ row.rolegodungIdEncrypt + '\');" >' +
 		                		        '   <i class="fa fa-wrench"></i></button>' +
 		                		        ' ' +
-		                	  	 	    '<button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textDelete + '"' +
+		                	  	 	    '<button id="bt_delete_'+row.rolegodungCode+'" type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textDelete + '"' +
 		                	  	 	    '   onclick="openModalDelete(\''+data+'\',\''+row.rolegodungCode + " " + row.rolegodungName + '\');" >' +
 		                	  	 	    '   <i class="fa fa-trash"></i></button>'; 
 		                  },

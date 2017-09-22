@@ -9,20 +9,13 @@ public class Pnotify {
     	private String title;
 	private String text;
 	
-	public Pnotify() {};
-	
 	public Pnotify(MessageSource messageSource,PnotifyType pnotifyType,String messageI18n) {
 		  switch (pnotifyType) {
 	          case SUCCESS:
 	        	  	  this.type = messageSource.getMessage("pnotify.type.success",null,LocaleContextHolder.getLocale());
 	      		  this.title = messageSource.getMessage("pnotify.title.success",null,LocaleContextHolder.getLocale());
 	              break;
-	                  
-	          case INFO:
-	        	  	  this.type = messageSource.getMessage("pnotify.type.info",null,LocaleContextHolder.getLocale());
-	      		  this.title = messageSource.getMessage("pnotify.title.info",null,LocaleContextHolder.getLocale());
-	              break;
-	                       
+	              
 	          case NOTICE:
 	        	      this.type = messageSource.getMessage("pnotify.type.notice",null,LocaleContextHolder.getLocale());
 	      		  this.title = messageSource.getMessage("pnotify.title.notice",null,LocaleContextHolder.getLocale());

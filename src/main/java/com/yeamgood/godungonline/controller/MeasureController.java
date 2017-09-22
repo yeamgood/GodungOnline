@@ -1,26 +1,27 @@
 package com.yeamgood.godungonline.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yeamgood.godungonline.bean.JsonResponse;
-import com.yeamgood.godungonline.bean.Pnotify;
-import com.yeamgood.godungonline.bean.PnotifyType;
+import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.datatable.DataTableObject;
 import com.yeamgood.godungonline.datatable.DataTablesRequest;
 import com.yeamgood.godungonline.model.Measure;
@@ -31,174 +32,103 @@ import com.yeamgood.godungonline.service.MenuService;
 
 @Controller
 public class MeasureController {
-	
+
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	private final Long MENU_ID = (long) 12;
 	
+	private static final String LOG_MEASURE = "measure:{}";
+	
+
 	@Autowired
-    MessageSource messageSource;
-	
+	MessageSource messageSource;
+
 	@Autowired
 	MenuService menuService;
-	
+
 	@Autowired
 	MeasureService measureService;
-	
-	@RequestMapping(value="/user/measure", method = RequestMethod.GET)
-	public ModelAndView userMeasure(HttpSession session) throws Exception{
+
+	@RequestMapping(value = "/user/measure", method = RequestMethod.GET)
+	public ModelAndView measure(HttpSession session) {
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
-		User userSession = (User) session.getAttribute("user");
-		Menu menu = menuService.findById(MENU_ID);
-		List<Measure> measureList = measureService.findAllByGodungGodungIdOrderByMeasureNameAsc(userSession.getGodung().getGodungId());
-		
-		modelAndView.addObject("menu", menu);
-		modelAndView.addObject("measureList", measureList);
+		Menu menu = menuService.findById(Constants.MENU_MEASURE_ID);
+		modelAndView.addObject(Constants.MENU, menu);
 		modelAndView.setViewName("user/measure");
 		logger.debug("O");
 		return modelAndView;
 	}
-	
-	@RequestMapping(value="/user/measure/list/ajax", method=RequestMethod.GET)
-	public @ResponseBody String userMeasureListtest(DataTablesRequest datatableRequest, HttpSession session) throws Exception{
+
+	@RequestMapping(value = "/user/measure/list", method = RequestMethod.GET)
+	public @ResponseBody String measureList(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException  {
 		logger.debug("I");
-		logger.debug("datatableRequest" + datatableRequest.toString());
-		
-		User userSession = (User) session.getAttribute("user");
+		logger.debug(Constants.LOG_INPUT, datatableRequest);
+		User userSession = (User) session.getAttribute(Constants.SESSION_USER);
 		Long godungId = userSession.getGodung().getGodungId();
 		List<Measure> measureList = measureService.findAllByGodungGodungIdOrderByMeasureNameAsc(godungId);
-		logger.debug("O:measureList" + measureList.size());
-		
+
 		DataTableObject dataTableObject = new DataTableObject();
-		dataTableObject.setAaData(measureList);
-		String result = new ObjectMapper().writeValueAsString(dataTableObject);
-		return result;
+		dataTableObject.setAaData(new ArrayList<Object>(measureList));
+		logger.debug("O");
+		return new ObjectMapper().writeValueAsString(dataTableObject);
 	}
 	
-	@RequestMapping(value="/user/measure/save", method=RequestMethod.POST)
-	public @ResponseBody JsonResponse userMeasureAdd(@Valid Measure measure,BindingResult bindingResult,HttpSession session){
+	@RequestMapping(value = "/user/measure/load", method = RequestMethod.GET)
+	public @ResponseBody JsonResponse measureLoad(Measure measure, HttpSession session) {
 		logger.debug("I");
-		logger.debug("I" + measure.toString());
-		Pnotify pnotify;
-		User userSession;
+		logger.debug(LOG_MEASURE, measure);
 		JsonResponse jsonResponse = new JsonResponse();
-		
+		User userSession = (User) session.getAttribute(Constants.SESSION_USER);
+		try {
+			Measure measureTemp = new Measure();
+			if (!StringUtils.isBlank(measure.getMeasureIdEncrypt())) {
+				measureTemp = measureService.findByIdEncrypt(measure.getMeasureIdEncrypt(), userSession);
+			}
+			jsonResponse.setObject(Constants.STATUS_SUCCESS, measureTemp);
+		} catch (Exception e) {
+			logger.error(Constants.MESSAGE_ERROR, e);
+			jsonResponse.setLoadError(messageSource);
+		}
+		logger.debug("O");
+		return jsonResponse;
+	}
+
+	@RequestMapping(value = "/user/measure/save", method = RequestMethod.POST)
+	public @ResponseBody JsonResponse measureSave(@Valid Measure measure, BindingResult bindingResult,HttpSession session) {
+		logger.debug("I");
+		logger.debug(LOG_MEASURE, measure);
+		JsonResponse jsonResponse = new JsonResponse();
+		User userSession = (User) session.getAttribute(Constants.SESSION_USER);
 		if (bindingResult.hasErrors()) {
-			String errorMsg = "";
-			List<FieldError> errors = bindingResult.getFieldErrors();
-		    for (FieldError error : errors ) {
-		    		errorMsg += error.getField() + " - " + error.getDefaultMessage();
-		    }
-		    pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.save.error");
-		    pnotify.setText(errorMsg);
-		    
-			jsonResponse.setStatus("FAIL");
-			jsonResponse.setResult(errors);
-		}else {
+			jsonResponse.setBinddingResultError(bindingResult);
+		} else {
 			try {
-				userSession = (User) session.getAttribute("user");
 				measureService.save(measure, userSession);
-				
-				pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.save.success");
-				jsonResponse.setStatus("SUCCESS");
-				jsonResponse.setResult(pnotify);
-				
+				jsonResponse.setSaveSuccess(messageSource);
 			} catch (Exception e) {
-				logger.error("error:",e);
-				pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.save.error");
-				jsonResponse.setStatus("FAIL");
-				jsonResponse.setResult(pnotify);
+				logger.error(Constants.MESSAGE_ERROR, e);
+				jsonResponse.setSaveError(messageSource);
 			}
 		}
 		logger.debug("O");
 		return jsonResponse;
 	}
-	
-	@RequestMapping(value="/user/measure/delete", method=RequestMethod.POST)
-	public @ResponseBody JsonResponse userMeasureDelete(Measure measure,HttpSession session){
+
+	@RequestMapping(value = "/user/measure/delete", method = RequestMethod.POST)
+	public @ResponseBody JsonResponse measureDelete(Measure measure, HttpSession session) {
 		logger.debug("I");
-		logger.debug("I" + measure.toString());
-		Pnotify pnotify;
-		User userSession;
+		logger.debug(LOG_MEASURE, measure);
 		JsonResponse jsonResponse = new JsonResponse();
-		
-		if(measure.getMeasureIdEncrypt() == null) {
-			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.save.error");
-			jsonResponse.setStatus("FAIL");
-			jsonResponse.setResult(pnotify);
-			return jsonResponse;
-		}
-		
+		User userSession = (User) session.getAttribute(Constants.SESSION_USER);
 		try {
-			userSession = (User) session.getAttribute("user");
 			measureService.delete(measure, userSession);
-			
-			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.delete.success");
-			jsonResponse.setStatus("SUCCESS");
-			jsonResponse.setResult(pnotify);
-			
+			jsonResponse.setDeleteSuccess(messageSource);
 		} catch (Exception e) {
-			logger.error("error:",e);
-			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.delete.error");
-			jsonResponse.setStatus("FAIL");
-			jsonResponse.setResult(pnotify);
+			logger.error(Constants.MESSAGE_ERROR, e);
+			jsonResponse.setDeleteError(messageSource);
 		}
-		
 		logger.debug("O");
 		return jsonResponse;
 	}
-	
-	@RequestMapping(value="/user/measure/load", method=RequestMethod.GET)
-	public @ResponseBody JsonResponse load(Measure measure,HttpSession session){
-		logger.debug("I");
-		logger.debug("I" + measure.toString());
-		Pnotify pnotify;
-		User userSession;
-		JsonResponse jsonResponse = new JsonResponse();
-		
-		if(measure.getMeasureIdEncrypt() == null) {
-			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.load.error");
-			jsonResponse.setStatus("FAIL");
-			jsonResponse.setResult(pnotify);
-			return jsonResponse;
-		}
-		
-		try {
-			userSession = (User) session.getAttribute("user");
-			Measure measureTemp = measureService.findByIdEncrypt(measure.getMeasureIdEncrypt(), userSession);
-			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.load.success");
-			jsonResponse.setStatus("SUCCESS");
-			jsonResponse.setResult(measureTemp);
-		} catch (Exception e) {
-			logger.error("error:",e);
-			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.load.error");
-			jsonResponse.setStatus("FAIL");
-			jsonResponse.setResult(pnotify);
-		}
-		
-		logger.debug("O");
-		return jsonResponse;
-	}
-	
-	@RequestMapping(value="/user/measure/load/add", method=RequestMethod.GET)
-	public @ResponseBody JsonResponse loadAdd(HttpSession session){
-		logger.debug("I");
-		Pnotify pnotify;
-		JsonResponse jsonResponse = new JsonResponse();
-		try {
-			Measure measure = new Measure();
-			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.load.success");
-			jsonResponse.setStatus("SUCCESS");
-			jsonResponse.setResult(measure);
-		} catch (Exception e) {
-			logger.error("error:",e);
-			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.load.error");
-			jsonResponse.setStatus("FAIL");
-			jsonResponse.setResult(pnotify);
-		}
-		
-		logger.debug("O");
-		return jsonResponse;
-	}
+
 
 }

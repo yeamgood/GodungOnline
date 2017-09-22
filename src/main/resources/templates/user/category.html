@@ -330,7 +330,7 @@
 
 	<script th:inline="javascript">
 		var url_language = /*[[#{javascript.datatable.language.url}]]*/;
-		var url_category = /*[[@{/user/category/list/ajax}]]*/;
+		var url_category = /*[[@{/user/category/list}]]*/;
 		var textView = /*[[#{bt.text.view}]]*/;
 		var textEdit = /*[[#{bt.text.edit}]]*/;
 		var textDelete = /*[[#{bt.text.delete}]]*/;
@@ -557,7 +557,7 @@
 	    
 	    function openModalAdd(){
  			resetModalForm();
-	    		var urlAction = /*[[@{/user/category/load/add}]]*/;
+	    		var urlAction = /*[[@{/user/category/load}]]*/;
     		    $.ajax({
     		        type: "GET",
     		        url: urlAction,

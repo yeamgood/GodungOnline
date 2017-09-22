@@ -5,6 +5,6 @@ import com.yeamgood.godungonline.model.User;
 
 public interface LocationService {
 
-	Location findByIdEncrypt(String idEncrypt, User userSession) throws Exception;
+	Location findByIdEncrypt(String idEncrypt, User userSession);
 	
 }

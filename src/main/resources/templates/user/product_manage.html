@@ -170,7 +170,7 @@
 									<div class="x_title">
 										<div class="col-md-6 col-sm-6 col-xs-6 title_left_box x_title_edit">
 											<h2 class="table-small-header">
-												<i th:class="#{form.price.icon}"></i> <span th:text="#{form.price.header}"></span>
+												<i th:class="#{form.sale.icon}"></i> <span th:text="#{form.sale.header}"></span>
 											</h2>
 										</div>
 										<div class="col-md-6 col-sm-6 col-xs-6 title_box">
@@ -185,15 +185,15 @@
 										<div class="clearfix"></div>
 									</div>
 									<div class="x_content">
-										<table id="price_datatables" class="table  table-bordered table-small" style="width: 100%">
+										<table id="sale_datatables" class="table  table-bordered table-small" style="width: 100%">
 											<thead class="search-content-header">
 												<tr>
 													<th th:text="#{datatables.text.no}"></th>
-													<th th:text="#{form.price.label.startdate}"></th>
-													<th th:text="#{form.price.label.enddate}"></th>
-													<th th:text="#{form.price.label.currencytype}"></th>
-													<th th:text="#{form.price.label.price}"></th>
-													<th th:text="#{form.price.label.measure}"></th>
+													<th th:text="#{form.sale.label.startdate}"></th>
+													<th th:text="#{form.sale.label.enddate}"></th>
+													<th th:text="#{form.sale.label.currencytype}"></th>
+													<th th:text="#{form.sale.label.price}"></th>
+													<th th:text="#{form.sale.label.measure}"></th>
 													<th></th>
 												</tr>
 											</thead>
@@ -316,7 +316,7 @@
 
 
 			<!-- Price -->
-			<div id="modal_price" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+			<div id="modal_sale" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 				<div class="modal-dialog ">
 					<div class="modal-content">
 
@@ -325,18 +325,18 @@
 								<span aria-hidden="true">×</span>
 							</button>
 							<h4 class="modal-title">
-								<i th:class="#{form.price.icon}"></i> <span th:text="#{form.price.header}"></span>
+								<i th:class="#{form.sale.icon}"></i> <span th:text="#{form.sale.header}"></span>
 							</h4>
 						</div>
 
 						<div class="modal-body">
-							<form autocomplete="off" id="priceModalForm" data-parsley-validate class="form-horizontal form-label-left">
-								<input type="hidden" name="productIdEncrypt" th:value="${product.productIdEncrypt}"> <input type="hidden" id="price_id_encrypt"
-									name="priceIdEncrypt">
+							<form autocomplete="off" id="saleModalForm" data-parsley-validate class="form-horizontal form-label-left">
+								<input type="hidden" name="productIdEncrypt" th:value="${product.productIdEncrypt}"> <input type="hidden" id="sale_id_encrypt"
+									name="saleIdEncrypt">
 								<div class="col-md-ุ12 col-sm-12 col-xs-12">
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">
-											<label th:text="#{form.price.label.startdate}"></label> <label class="validation-message" th:text="#{label.request}"></label>
+											<label th:text="#{form.sale.label.startdate}"></label> <label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
 											<div class="input-group date" id="start_Datepicker">
@@ -349,7 +349,7 @@
 									</div>
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">
-											<label th:text="#{form.price.label.enddate}"></label>
+											<label th:text="#{form.sale.label.enddate}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
 											<div class="input-group date" id="end_Datepicker">
@@ -362,10 +362,10 @@
 									</div>
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">
-											<label th:text="#{form.price.label.currencytype}"></label> <label class="validation-message" th:text="#{label.request}"></label>
+											<label th:text="#{form.sale.label.currencytype}"></label> <label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-											<select id="priceCurrencyDropdown" name="currencyId" style="width: 100%">
+											<select id="saleCurrencyDropdown" name="currencyId" style="width: 100%">
 												<option value=""></option>
 												<option th:each="obj:${currencyDropdown}" th:value="${obj.currencyId}" th:text="${obj.currencyName}"></option>
 											</select> <label id="error_currencyId" class="validation-message" style="display: none;"></label>
@@ -373,19 +373,19 @@
 									</div>
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">
-											<label th:text="#{form.price.label.price}"></label> <label class="validation-message" th:text="#{label.request}"></label>
+											<label th:text="#{form.sale.label.price}"></label> <label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-											<input type="text" id="priceText" name="priceText" class="form-control" style="text-align: right;" value="0.00"> <label
-												id="error_priceText" class="validation-message" style="display: none;"></label>
+											<input type="text" id="price" name="price" class="form-control" style="text-align: right;" value="0.00"> <label
+												id="error_price" class="validation-message" style="display: none;"></label>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">
-											<label th:text="#{form.price.label.measure}"></label> <label class="validation-message" th:text="#{label.request}"></label>
+											<label th:text="#{form.sale.label.measure}"></label> <label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-											<select id="priceMeasureDropdown" name="measureIdEncrypt" class="" style="width: 100%">
+											<select id="saleMeasureDropdown" name="measureIdEncrypt" class="" style="width: 100%">
 												<option value=""></option>
 												<option th:each="obj:${measureDropdown}" th:value="${obj.measureIdEncrypt}" th:text="${obj.measureName}"></option>
 											</select> <label id="error_measureIdEncrypt" class="validation-message" style="display: none;"></label>
@@ -398,13 +398,13 @@
 
 						<div class="clearfix"></div>
 						<div class="modal-footer modal-custom-footer">
-							<button id="bt_price_delete" type="button" class="btn btn-danger" style="float: left; display: none;" onclick="openPriceMainModalDelete();">
+							<button id="bt_sale_delete" type="button" class="btn btn-danger" style="float: left; display: none;" onclick="openPriceMainModalDelete();">
 								<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
 							</button>
 							<button type="button" class="btn btn-default" data-dismiss="modal">
 								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
 							</button>
-							<button id="bt_price_save" type="button" class="btn btn-success" onclick="priceSaveAction();">
+							<button id="bt_sale_save" type="button" class="btn btn-success" onclick="saleSaveAction();">
 								<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
 							</button>
 						</div>
@@ -413,7 +413,7 @@
 				</div>
 			</div>
 
-			<div id="modal_delete_price" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+			<div id="modal_delete_sale" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 				<div class="modal-dialog ">
 					<div class="modal-content">
 
@@ -427,15 +427,15 @@
 						</div>
 						<div class="modal-body">
 							<form autocomplete="off" id="deletePriceForm" data-parsley-validate class="form-horizontal form-label-left">
-								<input type="hidden" name="productIdEncrypt" th:value="${product.productIdEncrypt}"> <input type="hidden" id="delete_id_price"
-									name="priceIdEncrypt" /> <span id="modal_delete_content_price"></span>
+								<input type="hidden" name="productIdEncrypt" th:value="${product.productIdEncrypt}"> <input type="hidden" id="delete_id_sale"
+									name="saleIdEncrypt" /> <span id="modal_delete_content_sale"></span>
 							</form>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default" data-dismiss="modal">
 								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
 							</button>
-							<button type="button" class="btn btn-danger" onclick="priceDeleteAction();">
+							<button type="button" class="btn btn-danger" onclick="saleDeleteAction();">
 								<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
 							</button>
 						</div>
@@ -584,7 +584,7 @@
 									</div>
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">
-											<label th:text="#{form.price.label.startdate}"></label> <label class="validation-message" th:text="#{label.request}"></label>
+											<label th:text="#{form.sale.label.startdate}"></label> <label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
 											<div class="input-group date" id="dealer_startDate_Datepicker">
@@ -597,7 +597,7 @@
 									</div>
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">
-											<label th:text="#{form.price.label.enddate}"></label>
+											<label th:text="#{form.sale.label.enddate}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
 											<div class="input-group date" id="dealer_endDate_Datepicker">
@@ -610,7 +610,7 @@
 									</div>
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">
-											<label th:text="#{form.price.label.currencytype}"></label> <label class="validation-message" th:text="#{label.request}"></label>
+											<label th:text="#{form.sale.label.currencytype}"></label> <label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
 											<select id="dealer_currency_dropdown" name="currencyId" style="width: 100%">
@@ -621,7 +621,7 @@
 									</div>
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">
-											<label th:text="#{form.price.label.price}"></label> <label class="validation-message" th:text="#{label.request}"></label>
+											<label th:text="#{form.sale.label.price}"></label> <label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
 											<input type="text" id="dealer_price" name="price" class="form-control" style="text-align: right;" value="0.00"> <label
@@ -630,7 +630,7 @@
 									</div>
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">
-											<label th:text="#{form.price.label.measure}"></label> <label class="validation-message" th:text="#{label.request}"></label>
+											<label th:text="#{form.sale.label.measure}"></label> <label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
 											<select id="dealer_measure_dropdown" name="measureIdEncrypt" class="" style="width: 100%">
@@ -758,12 +758,12 @@
 		<!-- -------- Start Datatables  -------- -->
 		<!-- ----------------------------------- -->
 		$(document).ready(function() {
-			var price_url = /*[[@{/user/price/list/ajax/}]]*/
+			var sale_url = /*[[@{/user/sale/list/ajax/}]]*/
 			var productIdEncrypt = /*[[${product.productIdEncrypt}]]*/;
-			var price_url_complete = price_url + productIdEncrypt;
-			var table =  $('#price_datatables').DataTable( {
+			var sale_url_complete = sale_url + productIdEncrypt;
+			var table =  $('#sale_datatables').DataTable( {
 	    			"processing": true,
-	    			"ajax": price_url_complete,
+	    			"ajax": sale_url_complete,
 	    	        "paging":   false,
 	    	        "ordering": false,
 	    	        "info":     false,
@@ -775,9 +775,9 @@
 	  	            { 'data': 'startDateText' },
 	  	          	{ 'data': 'endDateText' },
 	  	        		{ 'data': 'currencyName' },
-	  	        		{ 'data': 'priceText' },
+	  	        		{ 'data': 'price' },
 	  	      		{ 'data': 'measureName' },
-	  	            { 'data': 'priceIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
+	  	            { 'data': 'saleIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
 	  	        ],
 	    	        "columnDefs": [
 	    	        	   {"targets": 0,"className": "dt-body-no","searchable":false,"orderable":false},
@@ -788,19 +788,19 @@
 	    	        	   {"targets": 5,"className": "content-center"},
 	    	        	   {"targets": 6,"className": "dt-body-close","searchable":false,"orderable":false,
 	    	        		   "render": function ( data, type, row ) {
-	                		 return	 '<button type="button" class="btn btn-primary btn-xs" onclick="priceLoadAction(\''+data+'\');" ><i class="fa fa-wrench"></i></button> ' +
+	                		 return	 '<button type="button" class="btn btn-primary btn-xs" onclick="saleLoadAction(\''+data+'\');" ><i class="fa fa-wrench"></i></button> ' +
 	                		 '<button type="button" class="btn btn-danger btn-xs" onclick="openPriceModalDelete(\''+data+'\');" ><i class="fa fa-trash"></i></button>';
 			            }   
 	    	        	   }
 	    	        ],
 	    	        "initComplete": function( settings, json ) {
             	 		//fix bug datatables use dom not responsive html
-            			 $("#price_datatables_filter").hide();
+            			 $("#sale_datatables_filter").hide();
            		}
 	    	    } );
 	       
 	    		/* SET RELOAD TOOLTIP AFTER DATATABLE */
-		    	$('#price_datatables').on( 'draw.dt', function () {
+		    	$('#sale_datatables').on( 'draw.dt', function () {
 		    		$('[data-toggle="tooltip"]').tooltip();
 		    	} );
         
@@ -941,14 +941,14 @@
 	    	  		placeholder: selectText
 	     	 });
 	      	
-	      	$('#priceCurrencyDropdown').select2({
+	      	$('#saleCurrencyDropdown').select2({
 	      		placeholder: selectText,
-	      		dropdownParent: $('#modal_price')
+	      		dropdownParent: $('#modal_sale')
 	      	});
 	      	
-	      	$('#priceMeasureDropdown').select2({
+	      	$('#saleMeasureDropdown').select2({
 	      		placeholder: selectText,
-	      		dropdownParent: $('#modal_price')
+	      		dropdownParent: $('#modal_sale')
 	      	});
 	      	
 	      	$('#stockWarehouseDropdown').select2({
@@ -988,7 +988,7 @@
 		<!-- -------------------------------- -->
 		<!-- -------- Start Price  -------- -->
 		<!-- -------------------------------- -->
-		$("#priceText").maskMoney();
+		$("#price").maskMoney();
 		$("#remindNumber").maskMoney();
 		$("#dealer_price").maskMoney();
 		
@@ -997,48 +997,48 @@
 		<!-- -------- Start Modal  ---------- -->
 		<!-- -------------------------------- -->
 
-		// price
+		// sale
 		function openPriceModal(){
 			resetPriceModal();
 			resetValidationError();
-			$('#modal_price').modal('show');
+			$('#modal_sale').modal('show');
 		}
 		
 		function closePriceModal(){
 			resetPriceModal();
 			resetValidationError();
-			$('#modal_price').modal('hide');
+			$('#modal_sale').modal('hide');
 		}
 		
 		function resetPriceModal(){
 			var measureData = $('#measureDropdown').select2('data');
-			$("#price_id_encrypt").val("");
+			$("#sale_id_encrypt").val("");
 			$("#startDate").val("");
 			$("#endDate").val("");
-			$("#priceText").val("0.00");
-			$("#priceCurrencyDropdown").val("1").trigger('change');
-			$("#priceMeasureDropdown").val(measureData[0].id).trigger('change');
+			$("#price").val("0.00");
+			$("#saleCurrencyDropdown").val("1").trigger('change');
+			$("#saleMeasureDropdown").val(measureData[0].id).trigger('change');
 		}
 		
-		function setPriceModal(priceIdEncrypt,startDateText,endDateText,priceText,currencyId,measureIdEncrypt){
-			$("#price_id_encrypt").val(priceIdEncrypt);
+		function setPriceModal(saleIdEncrypt,startDateText,endDateText,price,currencyId,measureIdEncrypt){
+			$("#sale_id_encrypt").val(saleIdEncrypt);
 			$("#startDate").val(startDateText);
 			$("#endDate").val(endDateText);
-			$("#priceText").val(priceText);
-			$("#priceCurrencyDropdown").val(currencyId).trigger('change');
-			$("#priceMeasureDropdown").val(measureIdEncrypt).trigger('change');
+			$("#price").val(price);
+			$("#saleCurrencyDropdown").val(currencyId).trigger('change');
+			$("#saleMeasureDropdown").val(measureIdEncrypt).trigger('change');
 		}
 		
 		function openPriceMainModalDelete(){
-			var priceIdEncrypt = $("#price_id_encrypt").val();
-			openPriceModalDelete(priceIdEncrypt);
+			var saleIdEncrypt = $("#sale_id_encrypt").val();
+			openPriceModalDelete(saleIdEncrypt);
 		}
 		
 		function openPriceModalDelete(idEncrypt){
 	    		var messageMain = /*[[#{label.delete.content.confirm}]]*/;
-	    		$("#delete_id_price").val(idEncrypt);
-	    		$("#modal_delete_content_price").html(messageMain);
-	    		$('#modal_delete_price').modal('show');
+	    		$("#delete_id_sale").val(idEncrypt);
+	    		$("#modal_delete_content_sale").html(messageMain);
+	    		$('#modal_delete_sale').modal('show');
 	    }
 	
 		// Stock
@@ -1151,15 +1151,15 @@
 		
 		function openPriceNewModal(){
 		 	resetPriceModal();
-	    		var urlAction = /*[[@{/user/price/load/new}]]*/;
+	    		var urlAction = /*[[@{/user/sale/load/new}]]*/;
     		    $.ajax({
     		        type: "GET",
     		        url: urlAction,
     		        dataType: 'json',
     		        success: function(response){
     		            if(response.status == "SUCCESS"){
-    		            		$("#bt_price_delete").hide();
-    		            		$('#modal_price').modal('show');
+    		            		$("#bt_sale_delete").hide();
+    		            		$('#modal_sale').modal('show');
     		             }else{
     		            		openNotification(response.result.type,response.result.title,response.result.text);
     		             }
@@ -1170,27 +1170,27 @@
     		    });
 	    }
 		
-		 function priceLoadAction(idEncrypt) {
+		 function saleLoadAction(idEncrypt) {
 			 	resetPriceModal();
-		 	   	var urlAction = /*[[@{/user/price/load}]]*/;
+		 	   	var urlAction = /*[[@{/user/sale/load}]]*/;
 			    $.ajax({
 			        type: "GET",
 			        url: urlAction,
 			        dataType: 'json',
-			        data: {"priceIdEncrypt": idEncrypt},
+			        data: {"saleIdEncrypt": idEncrypt},
 			        success: function(response){
 			            if(response.status == "SUCCESS"){
 			            	
-				        	   var priceIdEncrypt = response.result.priceIdEncrypt;
+				        	   var saleIdEncrypt = response.result.saleIdEncrypt;
 				        	   var startDateText = response.result.startDateText;
 				        	   var endDateText = response.result.endDateText;
-				        	   var priceText = response.result.priceText;
+				        	   var price = response.result.price;
 				        	   var currencyId = response.result.currencyId;
 				        	   var measureIdEncrypt = response.result.measureIdEncrypt;
 				        	   
-				        	   setPriceModal(priceIdEncrypt,startDateText,endDateText,priceText,currencyId,measureIdEncrypt);
-				        	   $("#bt_price_delete").show();
-				        	   $('#modal_price').modal('show');
+				        	   setPriceModal(saleIdEncrypt,startDateText,endDateText,price,currencyId,measureIdEncrypt);
+				        	   $("#bt_sale_delete").show();
+				        	   $('#modal_sale').modal('show');
 			             }else{
 			            		openNotification(response.result.type,response.result.title,response.result.text);
 			             }
@@ -1201,19 +1201,19 @@
 			    });
 			}
 		
-	  	function priceSaveAction() {
+	  	function saleSaveAction() {
 	  		resetValidationError();
-	 	   	var urlAction = /*[[@{/user/price/save}]]*/;
+	 	   	var urlAction = /*[[@{/user/sale/save}]]*/;
 		    $.ajax({
 		        type: "POST",
 		        url: urlAction,
 		        dataType: 'json',
-		        data: $("#priceModalForm").serialize(),
+		        data: $("#saleModalForm").serialize(),
 		        success: function(response){
 		            if(response.status == "SUCCESS"){
 		               	openNotification(response.result.type,response.result.title,response.result.text);
 		               	closePriceModal();
-		              	var table =  $('#price_datatables').DataTable();
+		              	var table =  $('#sale_datatables').DataTable();
 		                table.ajax.reload(); 
 		             }else{
 		            	 	validationErrorShow(response.result);
@@ -1225,8 +1225,8 @@
 		    });
 		}
 	  	
-	    function priceDeleteAction() {
-	 	   	var urlAction = /*[[@{/user/price/delete}]]*/;
+	    function saleDeleteAction() {
+	 	   	var urlAction = /*[[@{/user/sale/delete}]]*/;
 		    $.ajax({
 		        type: "POST",
 		        url: urlAction,
@@ -1235,9 +1235,9 @@
 		        success: function(response){
 		            if(response.status == "SUCCESS"){
 		               	openNotification(response.result.type,response.result.title,response.result.text);
-		               	$('#modal_delete_price').modal('hide');
+		               	$('#modal_delete_sale').modal('hide');
 		               	closePriceModal();
-		              	var table =  $('#price_datatables').DataTable();
+		              	var table =  $('#sale_datatables').DataTable();
 		                 table.ajax.reload();
 		             }else{
 		            		openNotification(response.result.type,response.result.title,response.result.text);

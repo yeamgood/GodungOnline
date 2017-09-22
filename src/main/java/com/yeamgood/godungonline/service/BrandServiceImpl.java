@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,77 +25,70 @@ public class BrandServiceImpl implements BrandService{
 
 	@Autowired
 	private BrandRepository brandRepository;
+	
+	@Autowired
+	private GodungService godungService;
 
 	@Override
-	public Brand findByIdEncrypt(String idEncrypt) throws Exception {
-		logger.debug("I:");
-		Brand brand = brandRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
+	public Brand findByIdEncrypt(String brandIdEncrypt){
+		logger.debug("I");
+		logger.debug("brandIdEncrypt:{}",brandIdEncrypt);
+		Brand brand = brandRepository.findOne(AESencrpUtils.decryptLong(brandIdEncrypt));
 		brand.encryptData(brand);
-		logger.debug("O:");
+		logger.debug("O");
 		return brand;
 	}
 	
 	@Override
-	public Brand findByIdEncrypt(String idEncrypt, User userSession) throws Exception {
-		logger.debug("I:");
-		Brand brand = brandRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		checkGodungId(brand, userSession);
+	public Brand findByIdEncrypt(String brandIdEncrypt, User userSession) throws GodungIdException {
+		logger.debug("I");
+		logger.debug("brandIdEncrypt:{}",brandIdEncrypt);
+		Brand brand = brandRepository.findOne(AESencrpUtils.decryptLong(brandIdEncrypt));
+		godungService.checkGodungId(brand.getGodung().getGodungId(), userSession);
 		brand.encryptData(brand);
-		logger.debug("O:");
+		logger.debug("O");
 		return brand;
 	}
 
 	@Override
-	public List<Brand> findAllOrderByBrandNameAsc() throws Exception {
-		logger.debug("I:");
-		List<Brand> brandList = brandRepository.findAll(sortByBrandNameAsc());
+	public List<Brand> findAllOrderByBrandNameAsc()  {
+		logger.debug("I");
+		List<Brand> brandList = brandRepository.findAll(new Sort(Sort.Direction.ASC, "brandName"));
 		for (Brand brand : brandList) {
 			brand.setBrandIdEncrypt(AESencrpUtils.encryptLong(brand.getBrandId()));
 			brand.encryptData(brand);
 		}
-		logger.debug("O:");
+		logger.debug("O");
 		return brandList;
 	}
 
 	@Override
-	public List<Brand> findAllByGodungGodungIdOrderByBrandNameAsc(Long godungId) throws Exception {
-		logger.debug("I:[godungId]:" + godungId);
+	public List<Brand> findAllByGodungGodungIdOrderByBrandNameAsc(Long godungId)  {
+		logger.debug("I");
+		logger.debug("godungId:{}",godungId);
 		List<Brand> brandList = brandRepository.findAllByGodungGodungIdOrderByBrandNameAsc(godungId);
 		for (Brand brand : brandList) {
 			brand.setBrandIdEncrypt(AESencrpUtils.encryptLong(brand.getBrandId()));
 			brand.encryptData(brand);
 		}
-		logger.debug("O:");
+		logger.debug("O");
 		return brandList;
 	}
-	
-	private Sort sortByBrandNameAsc() {
-        return new Sort(Sort.Direction.ASC, "brandName");
-    }
 
 	@Override
 	public long count(Long godungId) {
-		logger.debug("I:[godungId]:" + godungId);
-		logger.debug("O:");
+		logger.debug("I");
+		logger.debug("godungId:{}",godungId);
+		logger.debug("O");
 		return brandRepository.countByGodungGodungId(godungId);
 	}
 
 	@Override
-	public List<Brand> findByGodungGodungIdAndBrandNameIgnoreCaseContaining(Long godungId, String brandName, Pageable pageable) throws Exception {
-		logger.debug("I:");
-		List<Brand> brandList = brandRepository.findByGodungGodungIdAndBrandNameIgnoreCaseContaining(godungId, brandName, pageable);
-		for (Brand brand : brandList) {
-			brand.setBrandIdEncrypt(AESencrpUtils.encryptLong(brand.getBrandId()));
-			brand.encryptData(brand);
-		}
-		logger.debug("O:");
-		return brandList;
-	}
-
-	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void save(Brand brand,User user) throws Exception {
-		logger.debug("I:");
+	public void save(Brand brand,User user)  {
+		logger.debug("I");
+		logger.debug("brand:{}",brand);
+		logger.debug("user:{}",user);
 		if(StringUtils.isBlank(brand.getBrandIdEncrypt())) {
 			Brand maxBrand = brandRepository.findTopByGodungGodungIdOrderByBrandCodeDesc(user.getGodung().getGodungId());
 			if(maxBrand == null) {
@@ -116,25 +108,19 @@ public class BrandServiceImpl implements BrandService{
 			brandTemp.setUpdate(user.getEmail(), new Date());
 			brandRepository.save(brandTemp);
 		}
-		logger.debug("O:");
+		logger.debug("O");
 	}
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void delete(Brand brand, User user) throws Exception{
-		logger.debug("I:");
+	public void delete(Brand brand, User user) throws GodungIdException {
+		logger.debug("I");
+		logger.debug("brand:{}",brand);
+		logger.debug("user:{}",user);
 		Brand brandTemp = brandRepository.findOne(AESencrpUtils.decryptLong(brand.getBrandIdEncrypt()));
-		checkGodungId(brandTemp, user);
+		godungService.checkGodungId(brandTemp.getGodung().getGodungId(), user);
 		brandRepository.delete(brandTemp);
-		logger.debug("O:");
+		logger.debug("O");
 	}
 
-	public void checkGodungId(Brand brand,User userSession) throws GodungIdException {
-		long godungIdTemp = brand.getGodung().getGodungId().longValue();
-		long godungIdSession = userSession.getGodung().getGodungId().longValue();
-		if(godungIdTemp !=  godungIdSession) {
-			 throw new GodungIdException("GodungId database is " + godungIdTemp + " not equals session user is" + godungIdSession);
-		}
-	}
-	
 }

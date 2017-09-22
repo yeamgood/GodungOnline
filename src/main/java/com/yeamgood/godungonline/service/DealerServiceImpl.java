@@ -1,6 +1,7 @@
 package com.yeamgood.godungonline.service;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.form.DealerForm;
 import com.yeamgood.godungonline.model.Dealer;
 import com.yeamgood.godungonline.model.Product;
@@ -43,7 +45,7 @@ public class DealerServiceImpl implements DealerService{
 	private CurrencyRepository currencyRepository;
 	
 	@Override
-	public Dealer findByIdEncrypt(String idEncrypt,User userSession) throws Exception {
+	public Dealer findByIdEncrypt(String idEncrypt,User userSession)  {
 		logger.debug("I:");
 		logger.debug("O:");
 		Dealer dealer = dealerRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
@@ -53,14 +55,14 @@ public class DealerServiceImpl implements DealerService{
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void save(String productIdEncrypt,DealerForm dealerForm,User userSession) throws Exception {
+	public void save(String productIdEncrypt,DealerForm dealerForm,User userSession) throws ParseException  {
 		logger.debug("I:");
-		logger.debug("I:productIdEncrypt:" + productIdEncrypt);
+		logger.debug(Constants.LOG_INPUT, productIdEncrypt);
 		if(StringUtils.isBlank(dealerForm.getDealerIdEncrypt())) {
 			Dealer dealer = new Dealer();
 			dealer.setPrice(new BigDecimal(dealerForm.getPrice().replace(",", "")));
-			dealer.setStartDate(DateUtils.StringToDate(dealerForm.getStartDate(), DateUtils.ddMMyyyy));
-			dealer.setEndDate(DateUtils.StringToDate(dealerForm.getEndDate(), DateUtils.ddMMyyyy));
+			dealer.setStartDate(DateUtils.stringToDate(dealerForm.getStartDate(), DateUtils.DDMMYYYY));
+			dealer.setEndDate(DateUtils.stringToDate(dealerForm.getEndDate(), DateUtils.DDMMYYYY));
 			dealer.setSupplier(supplierRepository.findOne(AESencrpUtils.decryptLong(dealerForm.getSupplierIdEncrypt())));
 			dealer.setMeasure(measureRepository.findOne(AESencrpUtils.decryptLong(dealerForm.getMeasureIdEncrypt())));
 			dealer.setCurrency(currencyRepository.findOne(dealerForm.getCurrencyId()));
@@ -72,8 +74,8 @@ public class DealerServiceImpl implements DealerService{
 		}else {
 			Dealer dealerTemp = dealerRepository.findOne(AESencrpUtils.decryptLong(dealerForm.getDealerIdEncrypt()));
 			dealerTemp.setPrice(new BigDecimal(dealerForm.getPrice().replace(",", "")));
-			dealerTemp.setStartDate(DateUtils.StringToDate(dealerForm.getStartDate(), DateUtils.ddMMyyyy));
-			dealerTemp.setEndDate(DateUtils.StringToDate(dealerForm.getEndDate(), DateUtils.ddMMyyyy));
+			dealerTemp.setStartDate(DateUtils.stringToDate(dealerForm.getStartDate(), DateUtils.DDMMYYYY));
+			dealerTemp.setEndDate(DateUtils.stringToDate(dealerForm.getEndDate(), DateUtils.DDMMYYYY));
 			dealerTemp.setSupplier(supplierRepository.findOne(AESencrpUtils.decryptLong(dealerForm.getSupplierIdEncrypt())));
 			dealerTemp.setMeasure(measureRepository.findOne(AESencrpUtils.decryptLong(dealerForm.getMeasureIdEncrypt())));
 			dealerTemp.setCurrency(currencyRepository.findOne(dealerForm.getCurrencyId()));
@@ -85,7 +87,7 @@ public class DealerServiceImpl implements DealerService{
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void delete(String productIdEncrypt,String dealerIdEncrypt, User userSession) throws Exception{
+	public void delete(String productIdEncrypt,String dealerIdEncrypt, User userSession) {
 		logger.debug("I:");
 		Product product = productRepository.findOne(AESencrpUtils.decryptLong(productIdEncrypt));
 		Long dealerId = AESencrpUtils.decryptLong(dealerIdEncrypt);

@@ -20,14 +20,14 @@
 				<div class="menu_section">
 					<ul class="nav side-menu">
 						<li th:each="menu : ${session.user.role.menuList}">
-							<a th:href="@{${menu.action}}"> 
+							<a th:id="${menu.code}" th:href="@{${menu.action}}"> 
 								<i class="fa" th:class="${menu.icon}"></i> 
 								<span th:text="#{${menu.code}}"></span> 
 								<span class="fa fa-chevron-down" th:if="${!menu.menuList.empty}"></span>
 							</a>
 							<ul class="nav child_menu">
 								<li th:each="menuChild : ${menu.menuList}">
-									<a th:href="@{${menuChild.action}}">
+									<a th:id="${menuChild.code}" th:href="@{${menuChild.action}}">
 										<i class="fa" th:class="${menuChild.icon}" style="width: auto!important;"></i>
 										<span th:text="#{${menuChild.code}}"></span>
 									</a>

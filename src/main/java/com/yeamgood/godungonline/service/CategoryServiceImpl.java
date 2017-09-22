@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.exception.GodungIdException;
 import com.yeamgood.godungonline.model.Category;
 import com.yeamgood.godungonline.model.User;
@@ -26,9 +27,12 @@ public class CategoryServiceImpl implements CategoryService{
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	private GodungService godungService;
 
 	@Override
-	public Category findByIdEncrypt(String idEncrypt) throws Exception {
+	public Category findByIdEncrypt(String idEncrypt)  {
 		logger.debug("I:");
 		Category category = categoryRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
 		category.encryptData(category);
@@ -37,17 +41,17 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 	
 	@Override
-	public Category findByIdEncrypt(String idEncrypt, User userSession) throws Exception {
+	public Category findByIdEncrypt(String idEncrypt, User userSession) throws GodungIdException  {
 		logger.debug("I:");
 		Category category = categoryRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		checkGodungId(category, userSession);
+		godungService.checkGodungId(category.getGodung().getGodungId(), userSession);
 		category.encryptData(category);
 		logger.debug("O:");
 		return category;
 	}
 
 	@Override
-	public List<Category> findAllOrderByCategoryNameAsc() throws Exception {
+	public List<Category> findAllOrderByCategoryNameAsc()  {
 		logger.debug("I:");
 		List<Category> categoryList = categoryRepository.findAll(sortByCategoryNameAsc());
 		for (Category category : categoryList) {
@@ -59,8 +63,8 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 
 	@Override
-	public List<Category> findAllByGodungGodungIdOrderByCategoryNameAsc(Long godungId) throws Exception {
-		logger.debug("I:[godungId]:" + godungId);
+	public List<Category> findAllByGodungGodungIdOrderByCategoryNameAsc(Long godungId)  {
+		logger.debug(Constants.LOG_INPUT, godungId);
 		List<Category> categoryList = categoryRepository.findAllByGodungGodungIdOrderByCategoryNameAsc(godungId);
 		for (Category category : categoryList) {
 			category.setCategoryIdEncrypt(AESencrpUtils.encryptLong(category.getCategoryId()));
@@ -76,13 +80,13 @@ public class CategoryServiceImpl implements CategoryService{
 
 	@Override
 	public long count(Long godungId) {
-		logger.debug("I:[godungId]:" + godungId);
+		logger.debug(Constants.LOG_INPUT, godungId);
 		logger.debug("O:");
 		return categoryRepository.countByGodungGodungId(godungId);
 	}
 
 	@Override
-	public List<Category> findByGodungGodungIdAndCategoryNameIgnoreCaseContaining(Long godungId, String categoryName, Pageable pageable) throws Exception {
+	public List<Category> findByGodungGodungIdAndCategoryNameIgnoreCaseContaining(Long godungId, String categoryName, Pageable pageable)  {
 		logger.debug("I:");
 		List<Category> categoryList = categoryRepository.findByGodungGodungIdAndCategoryNameIgnoreCaseContaining(godungId, categoryName, pageable);
 		for (Category category : categoryList) {
@@ -95,7 +99,7 @@ public class CategoryServiceImpl implements CategoryService{
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void save(Category category,User user) throws Exception {
+	public void save(Category category,User user)  {
 		logger.debug("I:");
 		if(StringUtils.isBlank(category.getCategoryIdEncrypt())) {
 			Category maxCategory = categoryRepository.findTopByGodungGodungIdOrderByCategoryCodeDesc(user.getGodung().getGodungId());
@@ -121,20 +125,12 @@ public class CategoryServiceImpl implements CategoryService{
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void delete(Category category, User user) throws Exception{
+	public void delete(Category category, User user) throws GodungIdException {
 		logger.debug("I:");
 		Category categoryTemp = categoryRepository.findOne(AESencrpUtils.decryptLong(category.getCategoryIdEncrypt()));
-		checkGodungId(categoryTemp, user);
+		godungService.checkGodungId(categoryTemp.getGodung().getGodungId(), user);
 		categoryRepository.delete(categoryTemp);
 		logger.debug("O:");
-	}
-
-	public void checkGodungId(Category category,User userSession) throws GodungIdException {
-		long godungIdTemp = category.getGodung().getGodungId().longValue();
-		long godungIdSession = userSession.getGodung().getGodungId().longValue();
-		if(godungIdTemp !=  godungIdSession) {
-			 throw new GodungIdException("GodungId database is " + godungIdTemp + " not equals session user is" + godungIdSession);
-		}
 	}
 	
 }

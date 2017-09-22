@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.exception.GodungIdException;
 import com.yeamgood.godungonline.model.Measure;
 import com.yeamgood.godungonline.model.User;
@@ -26,9 +27,12 @@ public class MeasureServiceImpl implements MeasureService{
 
 	@Autowired
 	private MeasureRepository measureRepository;
+	
+	@Autowired
+	private GodungService godungService;
 
 	@Override
-	public Measure findByIdEncrypt(String idEncrypt) throws Exception {
+	public Measure findByIdEncrypt(String idEncrypt)  {
 		logger.debug("I:");
 		Measure measure = measureRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
 		measure.encryptData(measure);
@@ -37,17 +41,17 @@ public class MeasureServiceImpl implements MeasureService{
 	}
 	
 	@Override
-	public Measure findByIdEncrypt(String idEncrypt, User userSession) throws Exception {
+	public Measure findByIdEncrypt(String idEncrypt, User userSession) throws GodungIdException  {
 		logger.debug("I:");
 		Measure measure = measureRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		checkGodungId(measure, userSession);
+		godungService.checkGodungId(measure.getGodung().getGodungId(), userSession);
 		measure.encryptData(measure);
 		logger.debug("O:");
 		return measure;
 	}
 
 	@Override
-	public List<Measure> findAllOrderByMeasureNameAsc() throws Exception {
+	public List<Measure> findAllOrderByMeasureNameAsc()  {
 		logger.debug("I:");
 		List<Measure> measureList = measureRepository.findAll(sortByMeasureNameAsc());
 		for (Measure measure : measureList) {
@@ -59,8 +63,8 @@ public class MeasureServiceImpl implements MeasureService{
 	}
 
 	@Override
-	public List<Measure> findAllByGodungGodungIdOrderByMeasureNameAsc(Long godungId) throws Exception {
-		logger.debug("I:[godungId]:" + godungId);
+	public List<Measure> findAllByGodungGodungIdOrderByMeasureNameAsc(Long godungId)  {
+		logger.debug(Constants.LOG_INPUT, godungId);
 		List<Measure> measureList = measureRepository.findAllByGodungGodungIdOrderByMeasureNameAsc(godungId);
 		for (Measure measure : measureList) {
 			measure.setMeasureIdEncrypt(AESencrpUtils.encryptLong(measure.getMeasureId()));
@@ -76,13 +80,13 @@ public class MeasureServiceImpl implements MeasureService{
 
 	@Override
 	public long count(Long godungId) {
-		logger.debug("I:[godungId]:" + godungId);
+		logger.debug(Constants.LOG_INPUT, godungId);
 		logger.debug("O:");
 		return measureRepository.countByGodungGodungId(godungId);
 	}
 
 	@Override
-	public List<Measure> findByGodungGodungIdAndMeasureNameIgnoreCaseContaining(Long godungId, String measureName, Pageable pageable) throws Exception {
+	public List<Measure> findByGodungGodungIdAndMeasureNameIgnoreCaseContaining(Long godungId, String measureName, Pageable pageable)  {
 		logger.debug("I:");
 		List<Measure> measureList = measureRepository.findByGodungGodungIdAndMeasureNameIgnoreCaseContaining(godungId, measureName, pageable);
 		for (Measure measure : measureList) {
@@ -95,7 +99,7 @@ public class MeasureServiceImpl implements MeasureService{
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void save(Measure measure,User user) throws Exception {
+	public void save(Measure measure,User user)  {
 		logger.debug("I:");
 		if(StringUtils.isBlank(measure.getMeasureIdEncrypt())) {
 			Measure maxMeasure = measureRepository.findTopByGodungGodungIdOrderByMeasureCodeDesc(user.getGodung().getGodungId());
@@ -121,20 +125,13 @@ public class MeasureServiceImpl implements MeasureService{
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void delete(Measure measure, User user) throws Exception{
+	public void delete(Measure measure, User user) throws GodungIdException {
 		logger.debug("I:");
 		Measure measureTemp = measureRepository.findOne(AESencrpUtils.decryptLong(measure.getMeasureIdEncrypt()));
-		checkGodungId(measureTemp, user);
+		godungService.checkGodungId(measureTemp.getGodung().getGodungId(), user);
 		measureRepository.delete(measureTemp);
 		logger.debug("O:");
 	}
 
-	public void checkGodungId(Measure measure,User userSession) throws GodungIdException {
-		long godungIdTemp = measure.getGodung().getGodungId().longValue();
-		long godungIdSession = userSession.getGodung().getGodungId().longValue();
-		if(godungIdTemp !=  godungIdSession) {
-			 throw new GodungIdException("GodungId database is " + godungIdTemp + " not equals session user is" + godungIdSession);
-		}
-	}
 	
 }

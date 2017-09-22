@@ -11,7 +11,7 @@ public class DataTableObject {
 
 	String sColumns;
 
-	List<?> aaData;
+	List<Object> aaData;
 
 	public int getiTotalRecords() {
 		return iTotalRecords;
@@ -45,11 +45,11 @@ public class DataTableObject {
 		this.sColumns = sColumns;
 	}
 
-	public List<?> getAaData() {
+	public List<Object> getAaData() {
 		return aaData;
 	}
 
-	public void setAaData(List<?> aaData) {
+	public void setAaData(List<Object> aaData) {
 		this.aaData = aaData;
 	}
 

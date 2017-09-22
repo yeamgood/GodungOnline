@@ -51,10 +51,10 @@ public class UserServiceImpl implements UserService{
 		return userRepository.findByEmail(email);
 	}
 	
-	private final String ROLELOGIN_USER = "USER";
-	private final Long ROLE_ADMIN_FREE = (long) 2;
-	private final String USER_SYSTEM = "SYSTEM";
-	private final int ACTIVE = 1;
+	private static final String ROLELOGIN_USER = "USER";
+	private static final Long ROLE_ADMIN_FREE = (long) 2;
+	private static final String USER_SYSTEM = "SYSTEM";
+	private static final int ACTIVE = 1;
 	
 	@Override
 	@Transactional(rollbackFor={Exception.class})
@@ -86,11 +86,6 @@ public class UserServiceImpl implements UserService{
 	public void changeUserPassword(User user, String password) {
 		user.setPassword(bCryptPasswordEncoder.encode(password));
 		userRepository.save(user);
-	}
-
-	@Override
-	public void updateProfile(User user) {
-		
 	}
 
 }

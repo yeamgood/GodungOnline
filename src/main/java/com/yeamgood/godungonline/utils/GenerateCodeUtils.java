@@ -7,22 +7,31 @@ import org.apache.commons.lang3.StringUtils;
 
 public class GenerateCodeUtils {
 	
-	private final static String CONCAT = "-";
-	private final static String TEXT_PAD = "0";
-	private final static String DEFAUT_CODE = "00000";
-	private final static int START_ID = 1;
+	private GenerateCodeUtils() {
+		throw new IllegalStateException("Utility class");
+	}
+
 	
-	public final static String TYPE_CATEGORY = "CAT";
-	public final static String TYPE_BRAND = "BRA";
-	public final static String TYPE_MEASURE = "MEA";
-	public final static String TYPE_WAREHOUSE = "WAR";
-	public final static String TYPE_PRODUCT = "PRO";
-	public final static String TYPE_SUPPLIER = "SUP";
-	public final static String TYPE_CUSTOMER = "CUS";
-	public final static String TYPE_EMPLOYEE = "EMP";
-	public final static String TYPE_ROLEGODUNG = "ROL";
+	private static final String CONCAT = "-";
+	private static final String TEXT_PAD = "0";
+	private static final String DEFAUT_CODE = "00000";
+	private static final int START_ID = 1;
+	
+	public static final String TYPE_CATEGORY = "CAT";
+	public static final String TYPE_BRAND = "BRA";
+	public static final String TYPE_MEASURE = "MEA";
+	public static final String TYPE_WAREHOUSE = "WAR";
+	public static final String TYPE_PRODUCT = "PRO";
+	public static final String TYPE_SUPPLIER = "SUP";
+	public static final String TYPE_CUSTOMER = "CUS";
+	public static final String TYPE_EMPLOYEE = "EMP";
+	public static final String TYPE_ROLEGODUNG = "ROL";
+	
 	
 	public static String generateCode(String title,String maxCode) {
+		if(StringUtils.isBlank(title)) {
+			throw new IllegalArgumentException("Title don't have null");
+		}
 		String yyyyMMdd = new SimpleDateFormat("yyyyMMdd").format(new Date());
 		String maxTextId= "";
 		if(StringUtils.isBlank(maxCode)) {

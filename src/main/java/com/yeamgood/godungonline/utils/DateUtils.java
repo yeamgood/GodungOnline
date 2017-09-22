@@ -4,24 +4,27 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.commons.lang3.StringUtils;
-
 public class DateUtils {
 	
-	public final static String ddMMyyyy = "dd/MM/yyyy";
+	private DateUtils() {
+		throw new IllegalStateException("Utility class");
+	}
+	
+	public static final String DDMMYYYY = "dd/MM/yyyy";
 	
 	public static String dateToString(Date date,String format) {
-		if(date == null) return "";
-		SimpleDateFormat sdf = new SimpleDateFormat(format);
-		String dateStr = sdf.format(date);
-		return dateStr;
+		if(date == null || format == null) {
+			return null;
+		}
+		return new SimpleDateFormat(format).format(date);
 	}
 	
-	public static Date StringToDate(String dateString,String format) throws ParseException {
-		if(StringUtils.isBlank(dateString)) return null;
-		SimpleDateFormat sdf = new SimpleDateFormat(format);
-		Date date = sdf.parse(dateString);
-		return date;
+	public static Date stringToDate(String dateString,String format) throws ParseException {
+		if(dateString == null || format == null) {
+			return null;
+		}
+		return new SimpleDateFormat(format).parse(dateString);
 	}
 
+	
 }

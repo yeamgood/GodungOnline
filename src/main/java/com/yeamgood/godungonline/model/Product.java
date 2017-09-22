@@ -64,8 +64,8 @@ public class Product extends ModelTemplate{
 	private Category category;
 	
 	@OneToMany(cascade = CascadeType.ALL,orphanRemoval=true)
-	@JoinTable(name = "product_price", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "price_id"))
-	private List<Price> priceList;
+	@JoinTable(name = "product_sale", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "sale_id"))
+	private List<Sale> saleList;
 	
 	@OneToMany(cascade = CascadeType.ALL,orphanRemoval=true)
 	@JoinTable(name = "product_stock", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "stock_id"))
@@ -81,7 +81,7 @@ public class Product extends ModelTemplate{
 		this.description  = product.getDescription();
 	}
 	
-	public void encryptData(Product product) throws Exception {
+	public void encryptData(Product product) {
 		this.productIdEncrypt = AESencrpUtils.encryptLong(product.getProductId());
 		this.productId = null;
 	}
@@ -158,12 +158,12 @@ public class Product extends ModelTemplate{
 		this.category = category;
 	}
 
-	public List<Price> getPriceList() {
-		return priceList;
+	public List<Sale> getSaleList() {
+		return saleList;
 	}
 
-	public void setPriceList(List<Price> priceList) {
-		this.priceList = priceList;
+	public void setSaleList(List<Sale> saleList) {
+		this.saleList = saleList;
 	}
 	
 	public List<Stock> getStockList() {
@@ -186,7 +186,7 @@ public class Product extends ModelTemplate{
 	public String toString() {
 		return "Product [productId=" + productId + ", productIdEncrypt=" + productIdEncrypt + ", productCode="
 				+ productCode + ", productName=" + productName + ", description=" + description + ", godung=" + godung
-				+ ", brand=" + brand + ", measure=" + measure + ", category=" + category + ", priceList=" + priceList
+				+ ", brand=" + brand + ", measure=" + measure + ", category=" + category + ", saleList=" + saleList
 				+ ", stockList=" + stockList + ", dealerList=" + dealerList + "]";
 	}
 

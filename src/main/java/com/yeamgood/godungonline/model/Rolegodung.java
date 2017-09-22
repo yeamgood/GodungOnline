@@ -51,7 +51,7 @@ public class Rolegodung extends ModelTemplate{
 		this.description  = rolegodung.getDescription();
 	}
 	
-	public void encryptData(Rolegodung rolegodung) throws Exception {
+	public void encryptData(Rolegodung rolegodung) {
 		this.rolegodungIdEncrypt = AESencrpUtils.encryptLong(rolegodung.getRolegodungId());
 		this.rolegodungId = null;
 	}

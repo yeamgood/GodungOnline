@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.exception.GodungIdException;
 import com.yeamgood.godungonline.model.Brand;
 import com.yeamgood.godungonline.model.Category;
@@ -40,95 +41,103 @@ public class ProductServiceImpl implements ProductService{
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
+	@Autowired
+	private GodungService godungService;
+	
 	@Override
-	public Product findByIdEncrypt(String idEncrypt,User userSession) throws Exception {
+	public Product findByIdEncrypt(String idEncrypt,User userSession) throws GodungIdException  {
 		logger.debug("I:");
 		logger.debug("O:");
-		Product product = productRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		product.encryptData(product);
-		checkGodungId(product, userSession);
-		return product;
+		Product productTemp = productRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
+		godungService.checkGodungId(productTemp.getGodung().getGodungId(), userSession);
+		productTemp.encryptData(productTemp);
+		return productTemp;
 	}
 
 	@Override
-	public List<Product> findAllByGodungGodungIdOrderByProductNameAsc(Long godungId) throws Exception {
-		logger.debug("I:[godungId]:" + godungId);
+	public List<Product> findAllByGodungGodungIdOrderByProductNameAsc(Long godungId)  {
+		logger.debug(Constants.LOG_INPUT, godungId);
 		logger.debug("O:");
 		List<Product> productList = productRepository.findAllByGodungGodungIdOrderByProductCodeAsc(godungId);
 		for (Product product : productList) {
-			product.setProductIdEncrypt(AESencrpUtils.encryptLong(product.getProductId()));
 			product.encryptData(product);
+			if(product.getBrand() == null) {product.setBrand(new Brand());}
+			if(product.getCategory() == null) {product.setCategory(new Category());}
 		}
 		return productList;
 	}
 
 	@Override
 	public long count(Long godungId) {
-		logger.debug("I:[godungId]:" + godungId);
+		logger.debug(Constants.LOG_INPUT, godungId);
 		logger.debug("O:");
 		return productRepository.countByGodungGodungId(godungId);
 	}
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void save(Product product,User userSession) throws Exception {
+	public void save(Product product,User userSession)  {
 		logger.debug("I:");
-		logger.debug("I:" +  product.toString());
+		logger.debug(Constants.LOG_INPUT, product);
+		Product productTemp;
+		
 		if(StringUtils.isBlank(product.getProductIdEncrypt())) {
-			Product maxProduct = productRepository.findTopByGodungGodungIdOrderByProductCodeDesc(userSession.getGodung().getGodungId());
-			if(maxProduct == null) {
-				logger.debug("I:Null Max Data");
-				maxProduct = new Product();
-			}
-			String generateCode = GenerateCodeUtils.generateCode(GenerateCodeUtils.TYPE_PRODUCT , maxProduct.getProductCode());
-			product.setProductCode(generateCode);
-			product.setGodung(userSession.getGodung());
-			product.setCreate(userSession.getEmail(), new Date());
-			
-			Brand brand = brandRepository.findOne(AESencrpUtils.decryptLong(product.getBrand().getBrandIdEncrypt()));
-			Measure measure = measureRepository.findOne(AESencrpUtils.decryptLong(product.getMeasure().getMeasureIdEncrypt()));
-			Category category = categoryRepository.findOne(AESencrpUtils.decryptLong(product.getCategory().getCategoryIdEncrypt()));
-			product.setBrand(brand);
-			product.setMeasure(measure);
-			product.setCategory(category);
-			
-			product = productRepository.save(product);
-			product.setProductIdEncrypt(AESencrpUtils.encryptLong(product.getProductId()));
+			productTemp = new Product();
+			productTemp.setProductCode(generateCode(userSession));
+			productTemp.setGodung(userSession.getGodung());
+			productTemp.setCreate(userSession.getEmail(), new Date());
 		}else {
-			Long id = AESencrpUtils.decryptLong(product.getProductIdEncrypt());
-			Product productTemp = productRepository.findOne(id);
-			productTemp.setObject(product);
+			productTemp = productRepository.findOne(AESencrpUtils.decryptLong(product.getProductIdEncrypt()));
 			productTemp.setUpdate(userSession.getEmail(), new Date());
-			
-			Brand brand = brandRepository.findOne(AESencrpUtils.decryptLong(product.getBrand().getBrandIdEncrypt()));
-			Measure measure = measureRepository.findOne(AESencrpUtils.decryptLong(product.getMeasure().getMeasureIdEncrypt()));
-			Category category = categoryRepository.findOne(AESencrpUtils.decryptLong(product.getCategory().getCategoryIdEncrypt()));
-			productTemp.setBrand(brand);
-			productTemp.setMeasure(measure);
-			productTemp.setCategory(category);
-			
-			product = productRepository.save(productTemp);
-			product.setProductIdEncrypt(AESencrpUtils.encryptLong(product.getProductId()));
-			logger.debug("I:Step6");
 		}
+		
+		Brand brand = null;
+		if(!StringUtils.isBlank(product.getBrand().getBrandIdEncrypt())) {
+			brand = brandRepository.findOne(AESencrpUtils.decryptLong(product.getBrand().getBrandIdEncrypt()));
+		}
+		
+		Measure measure = null;
+		if(!StringUtils.isBlank(product.getMeasure().getMeasureIdEncrypt())) {
+			measure = measureRepository.findOne(AESencrpUtils.decryptLong(product.getMeasure().getMeasureIdEncrypt()));
+		}
+		
+		Category category = null;
+		if(!StringUtils.isBlank(product.getCategory().getCategoryIdEncrypt())) {
+			category = categoryRepository.findOne(AESencrpUtils.decryptLong(product.getCategory().getCategoryIdEncrypt()));
+		}
+		
+		productTemp.setBrand(brand);
+		productTemp.setMeasure(measure);
+		productTemp.setCategory(category);
+		productTemp.setObject(product);
+		productRepository.save(productTemp);
+		product.setProductIdEncrypt(AESencrpUtils.encryptLong(productTemp.getProductId()));
+		
 		logger.debug("O:");
+	}
+	
+	public String generateCode(User userSession) {
+		logger.debug("I");
+		Product maxProduct = productRepository.findTopByGodungGodungIdOrderByProductCodeDesc(userSession.getGodung().getGodungId());
+		if(maxProduct == null) {
+			logger.debug("I:Null Max Data");
+			maxProduct = new Product();
+		}
+		String generateCode = GenerateCodeUtils.generateCode(GenerateCodeUtils.TYPE_PRODUCT , maxProduct.getProductCode());
+		logger.debug(Constants.LOG_INPUT, generateCode);
+		logger.debug("O");
+		return generateCode;
 	}
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void delete(String idEncrypt, User userSession) throws Exception,GodungIdException{
+	public void delete(String idEncrypt, User userSession) throws GodungIdException{
 		logger.debug("I:");
 		Product productTemp = productRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		checkGodungId(productTemp, userSession);
+		godungService.checkGodungId(productTemp.getGodung().getGodungId(), userSession);
+		godungService.checkGodungId(productTemp.getGodung().getGodungId(), userSession);
 		productRepository.delete(productTemp.getProductId());
 		logger.debug("O:");
 	}
 	
-	public void checkGodungId(Product productTemp,User userSession) throws GodungIdException {
-		long godungIdTemp = productTemp.getGodung().getGodungId().longValue();
-		long godungIdSession = userSession.getGodung().getGodungId().longValue();
-		if(godungIdTemp !=  godungIdSession) {
-			 throw new GodungIdException("GodungId database is " + godungIdTemp + " not equals session user is" + godungIdSession);
-		}
-	}
 }

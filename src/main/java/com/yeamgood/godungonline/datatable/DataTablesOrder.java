@@ -2,7 +2,7 @@ package com.yeamgood.godungonline.datatable;
 
 public class DataTablesOrder {
 	public enum Direction {
-        asc, desc
+        ASC, DESC
     }
 
     private int column;

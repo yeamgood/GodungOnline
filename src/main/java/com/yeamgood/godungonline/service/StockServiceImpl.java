@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.form.StockForm;
 import com.yeamgood.godungonline.model.Product;
 import com.yeamgood.godungonline.model.Stock;
@@ -38,7 +39,7 @@ public class StockServiceImpl implements StockService{
 	private LocationRepository locationRepository;
 	
 	@Override
-	public Stock findByIdEncrypt(String idEncrypt,User userSession) throws Exception {
+	public Stock findByIdEncrypt(String idEncrypt,User userSession)  {
 		logger.debug("I:");
 		logger.debug("O:");
 		Stock stock = stockRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
@@ -46,12 +47,11 @@ public class StockServiceImpl implements StockService{
 		return stock;
 	}
 
-
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void save(String productIdEncrypt,StockForm stockForm,User userSession) throws Exception {
+	public void save(String productIdEncrypt,StockForm stockForm,User userSession)  {
 		logger.debug("I:");
-		logger.debug("I:productIdEncrypt:" + productIdEncrypt);
+		logger.debug(Constants.LOG_INPUT, productIdEncrypt);
 		if(StringUtils.isBlank(stockForm.getStockIdEncrypt())) {
 			Stock stock = new Stock();
 			stock.setRemindNumber(new BigDecimal(stockForm.getRemindNumber().replace(",", "")));
@@ -76,7 +76,7 @@ public class StockServiceImpl implements StockService{
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void delete(String productIdEncrypt,String stockIdEncrypt, User userSession) throws Exception{
+	public void delete(String productIdEncrypt,String stockIdEncrypt, User userSession) {
 		logger.debug("I:");
 		Product product = productRepository.findOne(AESencrpUtils.decryptLong(productIdEncrypt));
 		Long stockId = AESencrpUtils.decryptLong(stockIdEncrypt);

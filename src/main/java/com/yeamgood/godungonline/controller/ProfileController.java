@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.yeamgood.godungonline.bean.CommonType;
 import com.yeamgood.godungonline.bean.Pnotify;
 import com.yeamgood.godungonline.bean.PnotifyType;
+import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.form.ProfileForm;
 import com.yeamgood.godungonline.model.Common;
 import com.yeamgood.godungonline.model.Menu;
@@ -32,7 +33,6 @@ import com.yeamgood.godungonline.service.ProfileService;
 public class ProfileController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	private final Long MENU_PROFILE_ID = (long) 51;
 	
 	@Autowired
     MessageSource messageSource;
@@ -46,23 +46,25 @@ public class ProfileController {
 	@Autowired
 	CommonService commonService;
 	
+	private static final String PROFILE_FORM = "profileForm";
+	
 	@RequestMapping(value="/user/profile", method = RequestMethod.GET)
 	public ModelAndView userProfile(Model model,HttpSession session){
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
 		
 		//INITIAL DATA
-		Menu menu = menuService.findById(MENU_PROFILE_ID);
-		modelAndView.addObject("menu",menu);
+		Menu menu = menuService.findById(Constants.MENU_PROFILE_ID);
+		modelAndView.addObject(Constants.MENU,menu);
 		List<Common> languageList = commonService.findByType(CommonType.LANGUAGE.toString());
 		modelAndView.addObject("languageList",languageList);
 		
 		//CHECK ERROR BINDING AND INITIAL DATA
-		if (!model.containsAttribute("profileForm")) {
+		if (!model.containsAttribute(PROFILE_FORM)) {
 			ProfileForm profileForm = new ProfileForm();
 			User userSession = (User) session.getAttribute("user");
 			profileService.loadProfile(profileForm, userSession.getId(),userSession.getGodung().getGodungId());
-			modelAndView.addObject("profileForm",profileForm);
+			modelAndView.addObject(PROFILE_FORM,profileForm);
 	    }
 		modelAndView.setViewName("user/profile");
 		logger.debug("O");
@@ -76,7 +78,7 @@ public class ProfileController {
 		ModelAndView modelAndView = new ModelAndView();
 		if (bindingResult.hasErrors()) {
 			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.profileForm", bindingResult);
-			redirectAttributes.addFlashAttribute("profileForm", profileForm);
+			redirectAttributes.addFlashAttribute(PROFILE_FORM, profileForm);
 		} else {
 			try {
 				User userSession = (User) session.getAttribute("user");
@@ -84,13 +86,13 @@ public class ProfileController {
 				userSession.setName(profileForm.getName());
 				userSession.getGodung().setGodungName(profileForm.getGodungName());
 				userSession.setLanguage(profileForm.getLanguage());
-				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,"action.save.success"));
+				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,Constants.ACTION_SAVE_SUCCESS));
 				language = "?lang=" + profileForm.getLanguage();
 			} catch (Exception e) {
 				logger.error("error",e);
-				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,"action.save.error"));
+				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,Constants.ACTION_SAVE_ERROR));
 				redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.profileForm", bindingResult);
-				redirectAttributes.addFlashAttribute("profileForm", profileForm);
+				redirectAttributes.addFlashAttribute(PROFILE_FORM, profileForm);
 			}
 		}
 		modelAndView.setViewName("redirect:/user/profile" + language);

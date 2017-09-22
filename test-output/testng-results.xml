@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="0" total="26" passed="26">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="65620" started-at="2017-09-22T20:56:39Z" finished-at="2017-09-22T20:57:44Z">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="65620" started-at="2017-09-22T20:56:39Z" finished-at="2017-09-22T20:57:44Z">
+      <class name="com.yeamgood.godungonline.web.TestProfile">
+        <test-method status="PASS" signature="setUp()[pri:0, instance:com.yeamgood.godungonline.web.TestProfile@5e853265]" name="setUp" is-config="true" duration-ms="1678" started-at="2017-09-23T03:56:39Z" finished-at="2017-09-23T03:56:40Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestProfile@5e853265]" name="login" is-config="true" duration-ms="2228" started-at="2017-09-23T03:56:40Z" finished-at="2017-09-23T03:56:43Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="mainPageInputGodungNameMaxLenght()[pri:0, instance:com.yeamgood.godungonline.web.TestProfile@5e853265]" name="mainPageInputGodungNameMaxLenght" duration-ms="1506" started-at="2017-09-23T03:56:43Z" finished-at="2017-09-23T03:56:44Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- mainPageInputGodungNameMaxLenght -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestProfile@5e853265]" name="login" is-config="true" duration-ms="735" started-at="2017-09-23T03:56:44Z" finished-at="2017-09-23T03:56:45Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="mainPageInputGodungNameNull()[pri:0, instance:com.yeamgood.godungonline.web.TestProfile@5e853265]" name="mainPageInputGodungNameNull" duration-ms="951" started-at="2017-09-23T03:56:45Z" finished-at="2017-09-23T03:56:46Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- mainPageInputGodungNameNull -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestProfile@5e853265]" name="login" is-config="true" duration-ms="741" started-at="2017-09-23T03:56:46Z" finished-at="2017-09-23T03:56:47Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="mainPageInputNameMaxLenght()[pri:0, instance:com.yeamgood.godungonline.web.TestProfile@5e853265]" name="mainPageInputNameMaxLenght" duration-ms="1227" started-at="2017-09-23T03:56:47Z" finished-at="2017-09-23T03:56:48Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- mainPageInputNameMaxLenght -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestProfile@5e853265]" name="login" is-config="true" duration-ms="745" started-at="2017-09-23T03:56:48Z" finished-at="2017-09-23T03:56:49Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="mainPageInputNameNull()[pri:0, instance:com.yeamgood.godungonline.web.TestProfile@5e853265]" name="mainPageInputNameNull" duration-ms="906" started-at="2017-09-23T03:56:49Z" finished-at="2017-09-23T03:56:50Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- mainPageInputNameNull -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestProfile@5e853265]" name="login" is-config="true" duration-ms="853" started-at="2017-09-23T03:56:50Z" finished-at="2017-09-23T03:56:50Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="mainPageSave()[pri:0, instance:com.yeamgood.godungonline.web.TestProfile@5e853265]" name="mainPageSave" duration-ms="1316" started-at="2017-09-23T03:56:50Z" finished-at="2017-09-23T03:56:52Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- mainPageSave -->
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:com.yeamgood.godungonline.web.TestProfile@5e853265]" name="tearDown" is-config="true" duration-ms="127" started-at="2017-09-23T03:56:52Z" finished-at="2017-09-23T03:56:52Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- com.yeamgood.godungonline.web.TestProfile -->
+      <class name="com.yeamgood.godungonline.web.TestRolegodung">
+        <test-method status="PASS" signature="setUp()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="setUp" is-config="true" duration-ms="916" started-at="2017-09-23T03:57:00Z" finished-at="2017-09-23T03:57:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="login" is-config="true" duration-ms="1482" started-at="2017-09-23T03:57:01Z" finished-at="2017-09-23T03:57:02Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="mainPage()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="mainPage" duration-ms="1200" started-at="2017-09-23T03:57:02Z" finished-at="2017-09-23T03:57:04Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- mainPage -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="login" is-config="true" duration-ms="710" started-at="2017-09-23T03:57:04Z" finished-at="2017-09-23T03:57:04Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="managePage()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="managePage" duration-ms="1618" started-at="2017-09-23T03:57:04Z" finished-at="2017-09-23T03:57:06Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- managePage -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="login" is-config="true" duration-ms="709" started-at="2017-09-23T03:57:06Z" finished-at="2017-09-23T03:57:07Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="managePageClickBack()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="managePageClickBack" duration-ms="1802" started-at="2017-09-23T03:57:07Z" finished-at="2017-09-23T03:57:08Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- managePageClickBack -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="login" is-config="true" duration-ms="738" started-at="2017-09-23T03:57:08Z" finished-at="2017-09-23T03:57:09Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="managePageSave00001()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="managePageSave00001" duration-ms="2363" started-at="2017-09-23T03:57:09Z" finished-at="2017-09-23T03:57:12Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- managePageSave00001 -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="login" is-config="true" duration-ms="676" started-at="2017-09-23T03:57:12Z" finished-at="2017-09-23T03:57:12Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="managePageSave00002()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="managePageSave00002" duration-ms="2243" started-at="2017-09-23T03:57:12Z" finished-at="2017-09-23T03:57:14Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- managePageSave00002 -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="login" is-config="true" duration-ms="713" started-at="2017-09-23T03:57:14Z" finished-at="2017-09-23T03:57:15Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="managePageSave00003()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="managePageSave00003" duration-ms="2218" started-at="2017-09-23T03:57:15Z" finished-at="2017-09-23T03:57:17Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- managePageSave00003 -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="login" is-config="true" duration-ms="754" started-at="2017-09-23T03:57:17Z" finished-at="2017-09-23T03:57:18Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="managePageSave00004()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="managePageSave00004" duration-ms="2157" started-at="2017-09-23T03:57:18Z" finished-at="2017-09-23T03:57:20Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- managePageSave00004 -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="login" is-config="true" duration-ms="810" started-at="2017-09-23T03:57:20Z" finished-at="2017-09-23T03:57:21Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="managePageSaveInputAllMaxLenght()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="managePageSaveInputAllMaxLenght" duration-ms="3350" started-at="2017-09-23T03:57:21Z" finished-at="2017-09-23T03:57:24Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- managePageSaveInputAllMaxLenght -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="login" is-config="true" duration-ms="774" started-at="2017-09-23T03:57:24Z" finished-at="2017-09-23T03:57:25Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="managePageSaveInputAllNull()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="managePageSaveInputAllNull" duration-ms="1698" started-at="2017-09-23T03:57:25Z" finished-at="2017-09-23T03:57:27Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- managePageSaveInputAllNull -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="login" is-config="true" duration-ms="678" started-at="2017-09-23T03:57:27Z" finished-at="2017-09-23T03:57:28Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="mainPageDatatables()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="mainPageDatatables" duration-ms="1038" started-at="2017-09-23T03:57:28Z" depends-on-methods="com.yeamgood.godungonline.web.TestRolegodung.managePageSave00001" finished-at="2017-09-23T03:57:29Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- mainPageDatatables -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="login" is-config="true" duration-ms="685" started-at="2017-09-23T03:57:29Z" finished-at="2017-09-23T03:57:29Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="mainPageDatatablesSearchByCode000001()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="mainPageDatatablesSearchByCode000001" duration-ms="1270" started-at="2017-09-23T03:57:29Z" depends-on-methods="com.yeamgood.godungonline.web.TestRolegodung.managePageSave00001" finished-at="2017-09-23T03:57:31Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- mainPageDatatablesSearchByCode000001 -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="login" is-config="true" duration-ms="743" started-at="2017-09-23T03:57:31Z" finished-at="2017-09-23T03:57:31Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="mainPageDatatablesSearchByDescription00001()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="mainPageDatatablesSearchByDescription00001" duration-ms="1357" started-at="2017-09-23T03:57:31Z" depends-on-methods="com.yeamgood.godungonline.web.TestRolegodung.managePageSave00001" finished-at="2017-09-23T03:57:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- mainPageDatatablesSearchByDescription00001 -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="login" is-config="true" duration-ms="674" started-at="2017-09-23T03:57:33Z" finished-at="2017-09-23T03:57:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="mainPageDatatablesSearchByName00001()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="mainPageDatatablesSearchByName00001" duration-ms="1365" started-at="2017-09-23T03:57:33Z" depends-on-methods="com.yeamgood.godungonline.web.TestRolegodung.managePageSave00001" finished-at="2017-09-23T03:57:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- mainPageDatatablesSearchByName00001 -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="login" is-config="true" duration-ms="650" started-at="2017-09-23T03:57:35Z" finished-at="2017-09-23T03:57:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="managePageEdit00002()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="managePageEdit00002" duration-ms="2453" started-at="2017-09-23T03:57:35Z" depends-on-methods="com.yeamgood.godungonline.web.TestRolegodung.managePageSave00002" finished-at="2017-09-23T03:57:38Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- managePageEdit00002 -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="login" is-config="true" duration-ms="739" started-at="2017-09-23T03:57:38Z" finished-at="2017-09-23T03:57:39Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="mainPageDelete00003()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="mainPageDelete00003" duration-ms="2523" started-at="2017-09-23T03:57:39Z" depends-on-methods="com.yeamgood.godungonline.web.TestRolegodung.managePageSave00003" finished-at="2017-09-23T03:57:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- mainPageDelete00003 -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="login" is-config="true" duration-ms="687" started-at="2017-09-23T03:57:41Z" finished-at="2017-09-23T03:57:42Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="managePageDelete00004()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="managePageDelete00004" duration-ms="2509" started-at="2017-09-23T03:57:42Z" depends-on-methods="com.yeamgood.godungonline.web.TestRolegodung.managePageSave00004" finished-at="2017-09-23T03:57:44Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- managePageDelete00004 -->
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:com.yeamgood.godungonline.web.TestRolegodung@67205a84]" name="tearDown" is-config="true" duration-ms="110" started-at="2017-09-23T03:57:44Z" finished-at="2017-09-23T03:57:44Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- com.yeamgood.godungonline.web.TestRolegodung -->
+      <class name="com.yeamgood.godungonline.web.TestLogin">
+        <test-method status="PASS" signature="setUp()[pri:0, instance:com.yeamgood.godungonline.web.TestLogin@5d76b067]" name="setUp" is-config="true" duration-ms="908" started-at="2017-09-23T03:56:52Z" finished-at="2017-09-23T03:56:53Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestLogin@5d76b067]" name="login" is-config="true" duration-ms="1492" started-at="2017-09-23T03:56:53Z" finished-at="2017-09-23T03:56:54Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="pageLogin()[pri:0, instance:com.yeamgood.godungonline.web.TestLogin@5d76b067]" name="pageLogin" duration-ms="140" started-at="2017-09-23T03:56:54Z" finished-at="2017-09-23T03:56:54Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- pageLogin -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestLogin@5d76b067]" name="login" is-config="true" duration-ms="873" started-at="2017-09-23T03:56:54Z" finished-at="2017-09-23T03:56:55Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="pageLoginErrorCaseEmailAndPasswordError()[pri:0, instance:com.yeamgood.godungonline.web.TestLogin@5d76b067]" name="pageLoginErrorCaseEmailAndPasswordError" duration-ms="555" started-at="2017-09-23T03:56:55Z" finished-at="2017-09-23T03:56:56Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- pageLoginErrorCaseEmailAndPasswordError -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestLogin@5d76b067]" name="login" is-config="true" duration-ms="599" started-at="2017-09-23T03:56:56Z" finished-at="2017-09-23T03:56:56Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="pageLoginErrorCaseEmailAndPasswordNull()[pri:0, instance:com.yeamgood.godungonline.web.TestLogin@5d76b067]" name="pageLoginErrorCaseEmailAndPasswordNull" duration-ms="525" started-at="2017-09-23T03:56:56Z" finished-at="2017-09-23T03:56:57Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- pageLoginErrorCaseEmailAndPasswordNull -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestLogin@5d76b067]" name="login" is-config="true" duration-ms="641" started-at="2017-09-23T03:56:57Z" finished-at="2017-09-23T03:56:58Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="pageLoginErrorCasePasswordWrong()[pri:0, instance:com.yeamgood.godungonline.web.TestLogin@5d76b067]" name="pageLoginErrorCasePasswordWrong" duration-ms="603" started-at="2017-09-23T03:56:58Z" finished-at="2017-09-23T03:56:58Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- pageLoginErrorCasePasswordWrong -->
+        <test-method status="PASS" signature="login()[pri:0, instance:com.yeamgood.godungonline.web.TestLogin@5d76b067]" name="login" is-config="true" duration-ms="680" started-at="2017-09-23T03:56:58Z" finished-at="2017-09-23T03:56:59Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login -->
+        <test-method status="PASS" signature="pageLoginSuccess()[pri:0, instance:com.yeamgood.godungonline.web.TestLogin@5d76b067]" name="pageLoginSuccess" duration-ms="1001" started-at="2017-09-23T03:56:59Z" finished-at="2017-09-23T03:57:00Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- pageLoginSuccess -->
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:com.yeamgood.godungonline.web.TestLogin@5d76b067]" name="tearDown" is-config="true" duration-ms="103" started-at="2017-09-23T03:57:00Z" finished-at="2017-09-23T03:57:00Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- com.yeamgood.godungonline.web.TestLogin -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>

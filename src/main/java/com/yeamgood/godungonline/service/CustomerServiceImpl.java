@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.exception.GodungIdException;
 import com.yeamgood.godungonline.model.Country;
 import com.yeamgood.godungonline.model.Customer;
@@ -35,19 +36,22 @@ public class CustomerServiceImpl implements CustomerService{
 	@Autowired
 	private CountryRepository countryRepository;
 	
+	@Autowired
+	private GodungService godungService;
+	
 	@Override
-	public Customer findByIdEncrypt(String idEncrypt,User userSession) throws Exception {
+	public Customer findByIdEncrypt(String idEncrypt,User userSession) throws GodungIdException  {
 		logger.debug("I:");
 		logger.debug("O:");
 		Customer customer = customerRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
 		customer.encryptData(customer);
-		checkGodungId(customer, userSession);
+		godungService.checkGodungId(customer.getGodung().getGodungId(), userSession);
 		return customer;
 	}
 
 	@Override
-	public List<Customer> findAllByGodungGodungIdOrderByCustomerNameAsc(Long godungId) throws Exception {
-		logger.debug("I:[godungId]:" + godungId);
+	public List<Customer> findAllByGodungGodungIdOrderByCustomerNameAsc(Long godungId)  {
+		logger.debug(Constants.LOG_INPUT, godungId);
 		logger.debug("O:");
 		List<Customer> customerList = customerRepository.findAllByGodungGodungIdOrderByCustomerCodeAsc(godungId);
 		for (Customer customer : customerList) {
@@ -59,16 +63,16 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Override
 	public long count(Long godungId) {
-		logger.debug("I:[godungId]:" + godungId);
+		logger.debug(Constants.LOG_INPUT, godungId);
 		logger.debug("O:");
 		return customerRepository.countByGodungGodungId(godungId);
 	}
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void save(Customer customer,User userSession) throws Exception {
+	public void save(Customer customer,User userSession)  {
 		logger.debug("I:");
-		logger.debug("I:" +  customer.toString());
+		logger.debug(Constants.LOG_INPUT, customer);
 		if(StringUtils.isBlank(customer.getCustomerIdEncrypt())) {
 			Customer maxCustomer = customerRepository.findTopByGodungGodungIdOrderByCustomerCodeDesc(userSession.getGodung().getGodungId());
 			if(maxCustomer == null) {
@@ -98,7 +102,7 @@ public class CustomerServiceImpl implements CustomerService{
 			countrySendTemp = countryRepository.findOne(countrySendTemp.getCountryId());
 			customer.getAddressSend().setCountry(countrySendTemp);
 			
-			customer = customerRepository.save(customer);
+			customerRepository.save(customer);
 			customer.setCustomerIdEncrypt(AESencrpUtils.encryptLong(customer.getCustomerId()));
 		}else {
 			Long id = AESencrpUtils.decryptLong(customer.getCustomerIdEncrypt());
@@ -128,8 +132,8 @@ public class CustomerServiceImpl implements CustomerService{
 			countrySendTemp = countryRepository.findOne(countrySendTemp.getCountryId());
 			customerTemp.getAddressSend().setCountry(countrySendTemp);
 						
-			customer = customerRepository.save(customerTemp);
-			customer.setCustomerIdEncrypt(AESencrpUtils.encryptLong(customer.getCustomerId()));
+			customerRepository.save(customerTemp);
+			customer.setCustomerIdEncrypt(AESencrpUtils.encryptLong(customerTemp.getCustomerId()));
 			logger.debug("I:Step6");
 		}
 		logger.debug("O:");
@@ -137,19 +141,12 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void delete(String idEncrypt, User userSession) throws Exception,GodungIdException{
+	public void delete(String idEncrypt, User userSession) throws GodungIdException {
 		logger.debug("I:");
 		Customer customerTemp = customerRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		checkGodungId(customerTemp, userSession);
+		godungService.checkGodungId(customerTemp.getGodung().getGodungId(), userSession);
 		customerRepository.delete(customerTemp.getCustomerId());
 		logger.debug("O:");
 	}
 	
-	public void checkGodungId(Customer customerTemp,User userSession) throws GodungIdException {
-		long godungIdTemp = customerTemp.getGodung().getGodungId().longValue();
-		long godungIdSession = userSession.getGodung().getGodungId().longValue();
-		if(godungIdTemp !=  godungIdSession) {
-			 throw new GodungIdException("GodungId database is " + godungIdTemp + " not equals session user is" + godungIdSession);
-		}
-	}
 }

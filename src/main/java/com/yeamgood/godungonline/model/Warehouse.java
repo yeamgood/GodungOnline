@@ -60,7 +60,7 @@ public class Warehouse extends ModelTemplate{
 		this.description  = warehouse.getDescription();
 	}
 	
-	public void encryptData(Warehouse warehouse) throws Exception {
+	public void encryptData(Warehouse warehouse) {
 		this.warehouseIdEncrypt = AESencrpUtils.encryptLong(warehouse.getWarehouseId());
 		this.warehouseId = null;
 	}

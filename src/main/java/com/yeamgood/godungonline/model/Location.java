@@ -58,7 +58,7 @@ public class Location extends ModelTemplate{
 		this.description = location.getDescription();
 	}
 	
-	public void encryptData(Location location) throws Exception {
+	public void encryptData(Location location) {
 		this.locationIdEncrypt = AESencrpUtils.encryptLong(location.getLocationId());
 		this.locationId = null;
 	}
@@ -134,21 +134,4 @@ public class Location extends ModelTemplate{
 				+ warehouseIdEncrypt + ", locationIdEncrypt=" + locationIdEncrypt + "]";
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((aisle == null) ? 0 : aisle.hashCode());
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((locationCode == null) ? 0 : locationCode.hashCode());
-		result = prime * result + ((locationId == null) ? 0 : locationId.hashCode());
-		result = prime * result + ((locationIdEncrypt == null) ? 0 : locationIdEncrypt.hashCode());
-		result = prime * result + ((shelf == null) ? 0 : shelf.hashCode());
-		result = prime * result + ((unit == null) ? 0 : unit.hashCode());
-		result = prime * result + ((warehouseIdEncrypt == null) ? 0 : warehouseIdEncrypt.hashCode());
-		return result;
-	}
-	
-
-	
 }

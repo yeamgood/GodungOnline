@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.exception.GodungIdException;
 import com.yeamgood.godungonline.model.Rolegodung;
 import com.yeamgood.godungonline.model.User;
@@ -25,19 +26,22 @@ public class RolegodungServiceImpl implements RolegodungService{
 	@Autowired
 	private RolegodungRepository rolegodungRepository;
 	
+	@Autowired
+	private GodungService godungService;
+	
 	@Override
-	public Rolegodung findByIdEncrypt(String idEncrypt,User userSession) throws Exception {
+	public Rolegodung findByIdEncrypt(String idEncrypt,User userSession) throws GodungIdException  {
 		logger.debug("I:");
 		logger.debug("O:");
 		Rolegodung rolegodung = rolegodungRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
 		rolegodung.encryptData(rolegodung);
-		checkGodungId(rolegodung, userSession);
+		godungService.checkGodungId(rolegodung.getGodung().getGodungId(), userSession);
 		return rolegodung;
 	}
 
 	@Override
-	public List<Rolegodung> findAllByGodungGodungIdOrderByRolegodungNameAsc(Long godungId) throws Exception {
-		logger.debug("I:[godungId]:" + godungId);
+	public List<Rolegodung> findAllByGodungGodungIdOrderByRolegodungNameAsc(Long godungId)  {
+		logger.debug(Constants.LOG_INPUT, godungId);
 		logger.debug("O:");
 		List<Rolegodung> rolegodungList = rolegodungRepository.findAllByGodungGodungIdOrderByRolegodungCodeAsc(godungId);
 		for (Rolegodung rolegodung : rolegodungList) {
@@ -49,16 +53,16 @@ public class RolegodungServiceImpl implements RolegodungService{
 
 	@Override
 	public long count(Long godungId) {
-		logger.debug("I:[godungId]:" + godungId);
+		logger.debug(Constants.LOG_INPUT, godungId);
 		logger.debug("O:");
 		return rolegodungRepository.countByGodungGodungId(godungId);
 	}
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void save(Rolegodung rolegodung,User userSession) throws Exception {
+	public void save(Rolegodung rolegodung,User userSession)  {
 		logger.debug("I:");
-		logger.debug("I:" +  rolegodung.toString());
+		logger.debug(Constants.LOG_INPUT, rolegodung);
 		if(StringUtils.isBlank(rolegodung.getRolegodungIdEncrypt())) {
 			Rolegodung maxRolegodung = rolegodungRepository.findTopByGodungGodungIdOrderByRolegodungCodeDesc(userSession.getGodung().getGodungId());
 			if(maxRolegodung == null) {
@@ -69,15 +73,15 @@ public class RolegodungServiceImpl implements RolegodungService{
 			rolegodung.setRolegodungCode(generateCode);
 			rolegodung.setGodung(userSession.getGodung());
 			rolegodung.setCreate(userSession.getEmail(), new Date());
-			rolegodung = rolegodungRepository.save(rolegodung);
+			rolegodungRepository.save(rolegodung);
 			rolegodung.setRolegodungIdEncrypt(AESencrpUtils.encryptLong(rolegodung.getRolegodungId()));
 		}else {
 			Long id = AESencrpUtils.decryptLong(rolegodung.getRolegodungIdEncrypt());
 			Rolegodung rolegodungTemp = rolegodungRepository.findOne(id);
 			rolegodungTemp.setObject(rolegodung);
 			rolegodungTemp.setUpdate(userSession.getEmail(), new Date());
-			rolegodung = rolegodungRepository.save(rolegodungTemp);
-			rolegodung.setRolegodungIdEncrypt(AESencrpUtils.encryptLong(rolegodung.getRolegodungId()));
+			rolegodungRepository.save(rolegodungTemp);
+			rolegodung.setRolegodungIdEncrypt(AESencrpUtils.encryptLong(rolegodungTemp.getRolegodungId()));
 			logger.debug("I:Step6");
 		}
 		logger.debug("O:");
@@ -85,19 +89,12 @@ public class RolegodungServiceImpl implements RolegodungService{
 
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void delete(String idEncrypt, User userSession) throws Exception,GodungIdException{
+	public void delete(String idEncrypt, User userSession) throws GodungIdException{
 		logger.debug("I:");
 		Rolegodung rolegodungTemp = rolegodungRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		checkGodungId(rolegodungTemp, userSession);
+		godungService.checkGodungId(rolegodungTemp.getGodung().getGodungId(), userSession);
 		rolegodungRepository.delete(rolegodungTemp.getRolegodungId());
 		logger.debug("O:");
 	}
 	
-	public void checkGodungId(Rolegodung rolegodungTemp,User userSession) throws GodungIdException {
-		long godungIdTemp = rolegodungTemp.getGodung().getGodungId().longValue();
-		long godungIdSession = userSession.getGodung().getGodungId().longValue();
-		if(godungIdTemp !=  godungIdSession) {
-			 throw new GodungIdException("GodungId database is " + godungIdTemp + " not equals session user is" + godungIdSession);
-		}
-	}
 }

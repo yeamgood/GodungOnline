@@ -32,7 +32,6 @@ public class ProfileServiceImpl implements ProfileService{
 		profileForm.setName(user.getName());
 		profileForm.setGodungName(godung.getGodungName());
 		profileForm.setLanguage(user.getLanguage());
-		logger.debug("O: profileForm:" + profileForm);
 		logger.debug("O:");
 	}
 

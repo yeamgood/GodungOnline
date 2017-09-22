@@ -104,6 +104,49 @@
 		    <artifactId>urlrewritefilter</artifactId>
 		    <version>4.0.4</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<!-- <dependency>
+		    <groupId>junit</groupId>
+		    <artifactId>junit</artifactId>
+		    <version>4.12</version>
+		    <scope>test</scope>
+		</dependency> -->
+				
+		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+		<dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>selenium-java</artifactId>
+		    <version>3.5.3</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-firefox-driver -->
+		<!-- <dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>selenium-firefox-driver</artifactId>
+		    <version>3.5.3</version>
+		</dependency> -->
+		
+		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver -->
+		<!-- <dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>selenium-chrome-driver</artifactId>
+		    <version>3.5.3</version>
+		</dependency> -->
+		
+		<!-- https://mvnrepository.com/artifact/org.testng/testng -->
+		<!-- <dependency>
+		    <groupId>org.testng</groupId>
+		    <artifactId>testng</artifactId>
+		    <version>6.11</version>
+		    <scope>test</scope>
+		</dependency> -->
+		
+		<dependency>
+	        <groupId>com.google.guava</groupId>
+	        <artifactId>guava</artifactId>
+	        <version>22.0</version>
+	    </dependency>
 
 
 		<dependency>
@@ -111,6 +154,16 @@
 			<artifactId>scala-library</artifactId>
 			<version>2.11.0</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.testng/testng -->
+		<dependency>
+		    <groupId>org.testng</groupId>
+		    <artifactId>testng</artifactId>
+		    <version>6.11</version>
+		    <scope>test</scope>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>

@@ -19,7 +19,7 @@ public class LocationServiceImpl implements LocationService{
 	LocationRepository locationRepository;
 	
 	@Override
-	public Location findByIdEncrypt(String idEncrypt,User userSession) throws Exception {
+	public Location findByIdEncrypt(String idEncrypt,User userSession) {
 		logger.debug("I:");
 		logger.debug("O:");
 		Location location = locationRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));

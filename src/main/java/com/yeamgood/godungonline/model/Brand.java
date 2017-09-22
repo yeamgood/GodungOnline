@@ -46,7 +46,7 @@ public class Brand extends ModelTemplate{
 	@JsonIgnore
 	private Godung godung;
 	
-	public void encryptData(Brand brand) throws Exception {
+	public void encryptData(Brand brand) {
 		this.brandIdEncrypt = AESencrpUtils.encryptLong(brand.getBrandId());
 		this.brandId = null;
 	}

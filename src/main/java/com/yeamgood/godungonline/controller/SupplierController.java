@@ -27,8 +27,10 @@ import com.yeamgood.godungonline.bean.JsonResponse;
 import com.yeamgood.godungonline.bean.Pnotify;
 import com.yeamgood.godungonline.bean.PnotifyType;
 import com.yeamgood.godungonline.bean.SupplierType;
+import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.datatable.DataTableObject;
 import com.yeamgood.godungonline.datatable.DataTablesRequest;
+import com.yeamgood.godungonline.exception.GodungIdException;
 import com.yeamgood.godungonline.model.Address;
 import com.yeamgood.godungonline.model.Country;
 import com.yeamgood.godungonline.model.Menu;
@@ -46,8 +48,12 @@ import com.yeamgood.godungonline.utils.AESencrpUtils;
 public class SupplierController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	private final Long MENU_ID = (long) 31;
-	private final Long COUNTRY_THAILAND = (long) 217;
+	
+	private static final String SUPPLIER = "supplier";
+	
+	private static final String REDIRECT_SUPPLIER = "redirect:/user/supplier";
+	private static final String REDIRECT_SUPPLIER_MANAGE = "redirect:/user/supplier/manage/";
+	private static final String REDIRECT_SUPPLIER_MANAGE_COMPANY = "redirect:/user/supplier/manage/company";
 	
 	@Autowired
     MessageSource messageSource;
@@ -65,14 +71,14 @@ public class SupplierController {
 	CountryService countryService;
 	
 	@RequestMapping(value="/user/supplier", method = RequestMethod.GET)
-	public ModelAndView userSupplier(HttpSession session) throws Exception{
+	public ModelAndView userSupplier(HttpSession session) {
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
 		User userSession = (User) session.getAttribute("user");
-		Menu menu = menuService.findById(MENU_ID);
+		Menu menu = menuService.findById(Constants.MENU_SUPPLIER_ID);
 		List<Supplier> supplierList = supplierService.findAllByGodungGodungIdOrderBySupplierNameAsc(userSession.getGodung().getGodungId());
 		
-		modelAndView.addObject("menu", menu);
+		modelAndView.addObject(Constants.MENU, menu);
 		modelAndView.addObject("supplierList", supplierList);
 		modelAndView.setViewName("user/supplier");
 		logger.debug("O");
@@ -80,68 +86,53 @@ public class SupplierController {
 	}
 	
 	@RequestMapping(value="/user/supplier/list/ajax", method=RequestMethod.GET)
-	public @ResponseBody String userSupplierListtest(DataTablesRequest datatableRequest, HttpSession session) throws Exception{
+	public @ResponseBody String userSupplierListtest(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException {
 		logger.debug("I");
-		logger.debug("datatableRequest" + datatableRequest.toString());
+		logger.debug(Constants.LOG_INPUT, datatableRequest);
 		
 		User userSession = (User) session.getAttribute("user");
 		Long godungId = userSession.getGodung().getGodungId();
 		List<Supplier> supplierList = supplierService.findAllByGodungGodungIdOrderBySupplierNameAsc(godungId);
-		logger.debug("O:supplierList" + supplierList.size());
 		
 		DataTableObject dataTableObject = new DataTableObject();
-		dataTableObject.setAaData(supplierList);
-		String result = new ObjectMapper().writeValueAsString(dataTableObject);
-		return result;
+		dataTableObject.setAaData(new ArrayList<Object>(supplierList));
+		logger.debug("O");
+		return new ObjectMapper().writeValueAsString(dataTableObject);
 	}
 	
 	@RequestMapping(value="/user/supplier/delete", method=RequestMethod.POST)
 	public @ResponseBody JsonResponse userSupplierDelete(Supplier supplier,HttpSession session){
 		logger.debug("I");
-		logger.debug("I" + supplier.toString());
-		Pnotify pnotify;
-		User userSession;
+		logger.debug(Constants.LOG_INPUT, supplier);
 		JsonResponse jsonResponse = new JsonResponse();
-		
-		if(supplier.getSupplierIdEncrypt() == null) {
-			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.save.error");
-			jsonResponse.setStatus("FAIL");
-			jsonResponse.setResult(pnotify);
-			return jsonResponse;
-		}
 		try {
-			userSession = (User) session.getAttribute("user");
+			User userSession = (User) session.getAttribute("user");
 			supplierService.delete(supplier.getSupplierIdEncrypt(), userSession);
-			
-			pnotify = new Pnotify(messageSource,PnotifyType.SUCCESS,"action.delete.success");
-			jsonResponse.setStatus("SUCCESS");
-			jsonResponse.setResult(pnotify);
+			jsonResponse.setDeleteSuccess(messageSource);
 		} catch (Exception e) {
-			logger.error("error:",e);
-			pnotify = new Pnotify(messageSource,PnotifyType.ERROR,"action.delete.error");
-			jsonResponse.setStatus("FAIL");
-			jsonResponse.setResult(pnotify);
+			logger.error(Constants.MESSAGE_ERROR,e);
+			jsonResponse.setDeleteError(messageSource);
 		}
 		logger.debug("O");
 		return jsonResponse;
 	}
 	
 	@RequestMapping(value="/user/supplier/manage/{idEncrypt}", method = RequestMethod.GET)
-	public ModelAndView userSupplierLoad(Model model,HttpSession session, @PathVariable String idEncrypt) throws NumberFormatException, Exception{
+	public ModelAndView userSupplierLoad(Model model,HttpSession session, @PathVariable String idEncrypt) throws GodungIdException {
 		logger.debug("I:");
-		logger.debug("I:idEncrypt" + idEncrypt);
+		logger.debug(Constants.LOG_INPUT, idEncrypt);
 		ModelAndView modelAndView = new ModelAndView();
-		Menu menu = menuService.findById(MENU_ID);
+		Menu menu = menuService.findById(Constants.MENU_SUPPLIER_ID);
 		User userSession = (User) session.getAttribute("user");
 		
 		List<Province> provinceDropdown = provinceService.findAllByOrderByProvinceNameAsc();
 		List<Country> countryDropdown = countryService.findAllByOrderByCountryNameAsc();
 		Supplier supplier = supplierService.findByIdEncrypt(idEncrypt,userSession);
 		
-		modelAndView.addObject("menu", menu);
-		modelAndView.addObject("supplier",supplier);
-		modelAndView.addObject("provinceDropdown",provinceDropdown);
-		modelAndView.addObject("countryDropdown",countryDropdown);
+		modelAndView.addObject(SUPPLIER,supplier);
+		modelAndView.addObject(Constants.MENU, menu);
+		modelAndView.addObject(Constants.PROVINCE_DROPDOWN,provinceDropdown);
+		modelAndView.addObject(Constants.COUNTRY_DROPDOWN,countryDropdown);
 		
 		if(StringUtils.equals(supplier.getSupplierType(), SupplierType.PERSON.toString())) {
 			modelAndView.setViewName("user/supplier_person");
@@ -155,15 +146,12 @@ public class SupplierController {
 	@RequestMapping(value="/user/supplier/manage/product/list/ajax", method=RequestMethod.GET)
 	public @ResponseBody String userSupplierProductList(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException{
 		logger.debug("I");
-		logger.debug("datatableRequest" + datatableRequest.toString());
-		
-		//TODO add function load list product of supplier
-		List<Product> productList = new ArrayList<Product>();
+		logger.debug(Constants.LOG_INPUT, datatableRequest);
+		List<Product> productList = new ArrayList<>();
 		DataTableObject dataTableObject = new DataTableObject();
-		dataTableObject.setAaData(productList);
-		String result = new ObjectMapper().writeValueAsString(dataTableObject);
+		dataTableObject.setAaData(new ArrayList<Object>(productList));
 		logger.debug("O");
-		return result;
+		return new ObjectMapper().writeValueAsString(dataTableObject);
 	}
 	
 	// --------------------------------------------------------------------
@@ -173,15 +161,15 @@ public class SupplierController {
 	public ModelAndView userSupplierPerson(Model model,HttpSession session){
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
-		Menu menu = menuService.findById(MENU_ID);
+		Menu menu = menuService.findById(Constants.MENU_SUPPLIER_ID);
 		List<Province> provinceDropdown = provinceService.findAllByOrderByProvinceNameAsc();
 		List<Country> countryDropdown = countryService.findAllByOrderByCountryNameAsc();
 		
 		//CHECK ERROR BINDING AND INITIAL DATA
-		if (!model.containsAttribute("supplier")) {
+		if (!model.containsAttribute(SUPPLIER)) {
 			logger.debug("New Object");
 			Country country = new Country();
-			country.setCountryId(COUNTRY_THAILAND);
+			country.setCountryId(Constants.COUNTRY_THAILAND);
 			
 			Address address = new Address();
 			address.setCountry(country);
@@ -189,13 +177,13 @@ public class SupplierController {
 			Supplier supplier = new Supplier();
 			supplier.setAddress(address);
 			supplier.setAddressSend(address);
-			modelAndView.addObject("supplier",supplier);
+			modelAndView.addObject(SUPPLIER,supplier);
 	    }
 		
-		modelAndView.addObject("menu", menu);
-		modelAndView.addObject("provinceDropdown",provinceDropdown);
+		modelAndView.addObject(Constants.MENU, menu);
+		modelAndView.addObject(Constants.PROVINCE_DROPDOWN,provinceDropdown);
 		modelAndView.setViewName("user/supplier_person");
-		modelAndView.addObject("countryDropdown",countryDropdown);
+		modelAndView.addObject(Constants.COUNTRY_DROPDOWN,countryDropdown);
 		logger.debug("O");
 		return modelAndView;
 	}
@@ -208,7 +196,7 @@ public class SupplierController {
 		if (bindingResult.hasErrors()) {
 			logger.debug("bindingResult error");
 			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.supplier", bindingResult);
-			redirectAttributes.addFlashAttribute("supplier", supplier);
+			redirectAttributes.addFlashAttribute(SUPPLIER, supplier);
 			modelAndView.setViewName("redirect:/user/supplier/manage/person");
 		} else {
 			try {
@@ -216,13 +204,13 @@ public class SupplierController {
 				supplier.setSupplierType(SupplierType.PERSON.toString());
 				userSession = (User) session.getAttribute("user");
 				supplierService.save(supplier, userSession);
-				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,"action.save.success"));
-				modelAndView.setViewName("redirect:/user/supplier/manage/" + supplier.getSupplierIdEncrypt());
+				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,Constants.ACTION_SAVE_SUCCESS));
+				modelAndView.setViewName(REDIRECT_SUPPLIER_MANAGE + supplier.getSupplierIdEncrypt());
 			} catch (Exception e) {
 				logger.error("error",e);
-				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,"action.save.error"));
+				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,Constants.ACTION_SAVE_ERROR));
 				redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.profileForm", bindingResult);
-				redirectAttributes.addFlashAttribute("supplier", supplier);
+				redirectAttributes.addFlashAttribute(SUPPLIER, supplier);
 				modelAndView.setViewName("redirect:/user/supplier/manage/person");
 			}
 		}
@@ -231,25 +219,25 @@ public class SupplierController {
 	}
 	
 	@RequestMapping(value="/user/supplier/manage/person/delete", method=RequestMethod.POST)
-	public ModelAndView userSupplierIndividualDelete(Supplier supplier,HttpSession session, RedirectAttributes redirectAttributes) throws Exception{
+	public ModelAndView userSupplierIndividualDelete(Supplier supplier,HttpSession session, RedirectAttributes redirectAttributes) {
 		logger.debug("I");
-		logger.debug("I" + supplier.toString());
+		logger.debug(Constants.LOG_INPUT, supplier);
 		ModelAndView modelAndView = new ModelAndView();
 		User userSession;
 		
 		if(supplier.getSupplierId() == null) {
-			redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,"action.delete.error"));
-			modelAndView.setViewName("redirect:/user/supplier");
+			redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,Constants.ACTION_DELETE_ERROR));
+			modelAndView.setViewName(REDIRECT_SUPPLIER);
 		}
 		try {
 			userSession = (User) session.getAttribute("user");
 			supplierService.delete(supplier.getSupplierIdEncrypt(), userSession);
-			redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,"action.delete.success"));
-			modelAndView.setViewName("redirect:/user/supplier");
+			redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,Constants.ACTION_DELETE_SUCCESS));
+			modelAndView.setViewName(REDIRECT_SUPPLIER);
 		} catch (Exception e) {
-			logger.error("error:",e);
-			redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,"action.delete.error"));
-			modelAndView.setViewName("redirect:/user/supplier/manage/" + AESencrpUtils.encryptLong(supplier.getSupplierId()));
+			logger.error(Constants.MESSAGE_ERROR,e);
+			redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,Constants.ACTION_DELETE_ERROR));
+			modelAndView.setViewName(REDIRECT_SUPPLIER_MANAGE + AESencrpUtils.encryptLong(supplier.getSupplierId()));
 		}
 		logger.debug("O");
 		return modelAndView;
@@ -262,15 +250,15 @@ public class SupplierController {
 	public ModelAndView userSupplierCompany(Model model,HttpSession session){
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
-		Menu menu = menuService.findById(MENU_ID);
+		Menu menu = menuService.findById(Constants.MENU_SUPPLIER_ID);
 		List<Province> provinceDropdown = provinceService.findAllByOrderByProvinceNameAsc();
 		List<Country> countryDropdown = countryService.findAllByOrderByCountryNameAsc();
 		
 		//CHECK ERROR BINDING AND INITIAL DATA
-		if (!model.containsAttribute("supplier")) {
+		if (!model.containsAttribute(SUPPLIER)) {
 			logger.debug("New Object");
 			Country country = new Country();
-			country.setCountryId(COUNTRY_THAILAND);
+			country.setCountryId(Constants.COUNTRY_THAILAND);
 			
 			Address address = new Address();
 			address.setCountry(country);
@@ -278,13 +266,13 @@ public class SupplierController {
 			Supplier supplier = new Supplier();
 			supplier.setAddress(address);
 			supplier.setAddressSend(address);
-			modelAndView.addObject("supplier",supplier);
+			modelAndView.addObject(SUPPLIER,supplier);
 	    }
 		
-		modelAndView.addObject("menu", menu);
-		modelAndView.addObject("provinceDropdown",provinceDropdown);
+		modelAndView.addObject(Constants.MENU, menu);
+		modelAndView.addObject(Constants.PROVINCE_DROPDOWN,provinceDropdown);
 		modelAndView.setViewName("user/supplier_company");
-		modelAndView.addObject("countryDropdown",countryDropdown);
+		modelAndView.addObject(Constants.COUNTRY_DROPDOWN,countryDropdown);
 		logger.debug("O");
 		return modelAndView;
 	}
@@ -297,23 +285,22 @@ public class SupplierController {
 		if (bindingResult.hasErrors()) {
 			logger.debug("bindingResult error");
 			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.supplier", bindingResult);
-			redirectAttributes.addFlashAttribute("supplier", supplier);
-			modelAndView.setViewName("redirect:/user/supplier/manage/company");
+			redirectAttributes.addFlashAttribute(SUPPLIER, supplier);
+			modelAndView.setViewName(REDIRECT_SUPPLIER_MANAGE_COMPANY);
 		} else {
 			try {
 				logger.debug("save");
 				supplier.setSupplierType(SupplierType.COMPANY.toString());
 				userSession = (User) session.getAttribute("user");
 				supplierService.save(supplier, userSession);
-				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,"action.save.success"));
-				modelAndView.setViewName("redirect:/user/supplier/manage/" + supplier.getSupplierIdEncrypt());
+				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,Constants.ACTION_SAVE_SUCCESS));
+				modelAndView.setViewName(REDIRECT_SUPPLIER_MANAGE + supplier.getSupplierIdEncrypt());
 			} catch (Exception e) {
-				e.printStackTrace();
 				logger.error("error",e);
-				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,"action.save.error"));
+				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,Constants.ACTION_SAVE_ERROR));
 				redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.profileForm", bindingResult);
-				redirectAttributes.addFlashAttribute("supplier", supplier);
-				modelAndView.setViewName("redirect:/user/supplier/manage/company");
+				redirectAttributes.addFlashAttribute(SUPPLIER, supplier);
+				modelAndView.setViewName(REDIRECT_SUPPLIER_MANAGE_COMPANY);
 			}
 		}
 		logger.debug("O:");
@@ -321,26 +308,26 @@ public class SupplierController {
 	}
 	
 	@RequestMapping(value="/user/supplier/manage/company/delete", method=RequestMethod.POST)
-	public ModelAndView userSupplierCompanyDelete(Supplier supplier,HttpSession session, RedirectAttributes redirectAttributes) throws Exception{
+	public ModelAndView userSupplierCompanyDelete(Supplier supplier,HttpSession session, RedirectAttributes redirectAttributes) {
 		logger.debug("I");
-		logger.debug("I" + supplier.toString());
+		logger.debug(Constants.LOG_INPUT, supplier);
 		ModelAndView modelAndView = new ModelAndView();
 		User userSession;
 		
 		if(supplier.getSupplierId() == null) {
-			redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,"action.delete.error"));
-			modelAndView.setViewName("redirect:/user/supplier");
+			redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,Constants.ACTION_DELETE_ERROR));
+			modelAndView.setViewName(REDIRECT_SUPPLIER);
 		}
 		
 		try {
 			userSession = (User) session.getAttribute("user");
 			supplierService.delete(supplier.getSupplierIdEncrypt(), userSession);
-			redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,"action.delete.success"));
-			modelAndView.setViewName("redirect:/user/supplier");
+			redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,Constants.ACTION_DELETE_SUCCESS));
+			modelAndView.setViewName(REDIRECT_SUPPLIER);
 		} catch (Exception e) {
-			logger.error("error:",e);
-			redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,"action.delete.error"));
-			modelAndView.setViewName("redirect:/user/supplier/manage/" + AESencrpUtils.encryptLong(supplier.getSupplierId()));
+			logger.error(Constants.MESSAGE_ERROR,e);
+			redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.ERROR,Constants.ACTION_DELETE_ERROR));
+			modelAndView.setViewName(REDIRECT_SUPPLIER_MANAGE + AESencrpUtils.encryptLong(supplier.getSupplierId()));
 		}
 		logger.debug("O");
 		return modelAndView;

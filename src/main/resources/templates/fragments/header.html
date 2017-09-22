@@ -11,14 +11,14 @@
 				</div>
 				<ul class="nav navbar-nav navbar-right">
 					<li class="">
-						<a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> 
+						<a id="header_profile" href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> 
 							<img th:src="@{/images/user.png}" alt="">
 							<span th:text="${session.user.name}"></span> 
 							<span class=" fa fa-angle-down"></span>
 						</a>
 						<ul class="dropdown-menu dropdown-usermenu pull-right">
 							<li><a th:href="@{/user/profile}" th:text="#{text.profile}"></a></li>
-							<li><a th:href="@{/logout}"><i class="fa fa-sign-out pull-right"></i><span th:text="#{text.logout}">></span></a></li>
+							<li><a th:href="@{/logout}" id="bt_logout"><i class="fa fa-sign-out pull-right"></i><span th:text="#{text.logout}">></span></a></li>
 						</ul>
 					</li>
 				  	<!-- <li role="presentation" class="dropdown"> -->

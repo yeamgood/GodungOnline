@@ -30,12 +30,14 @@ public class RegistrationController {
 	@Autowired
     MessageSource messageSource;
 	
+	private static final String REGISTRATION = "registration";
+	
 	@RequestMapping(value="/registration", method = RequestMethod.GET)
 	public ModelAndView registration(){
 		ModelAndView modelAndView = new ModelAndView();
 		User user = new User();
 		modelAndView.addObject("user", user);
-		modelAndView.setViewName("registration");
+		modelAndView.setViewName(REGISTRATION);
 		return modelAndView;
 	}
 	
@@ -54,7 +56,7 @@ public class RegistrationController {
 		}
 		if (bindingResult.hasErrors()) {
 			logger.debug("bindingResult error");
-			modelAndView.setViewName("registration");
+			modelAndView.setViewName(REGISTRATION);
 		} else {
 			try {
 				logger.debug("save");
@@ -62,10 +64,9 @@ public class RegistrationController {
 				redirectAttributes.addFlashAttribute(new Pnotify(messageSource,PnotifyType.SUCCESS,"message.user.register.success"));
 				modelAndView.setViewName("redirect:/login");
 			} catch (Exception e) {
-				e.printStackTrace();
 				logger.error("error",e);
 				modelAndView.addObject("pnotify",new Pnotify(messageSource,PnotifyType.ERROR,"message.error.system"));
-				modelAndView.setViewName("registration");
+				modelAndView.setViewName(REGISTRATION);
 			}
 		}
 		logger.debug("O:");

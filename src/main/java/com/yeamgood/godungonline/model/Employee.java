@@ -98,7 +98,7 @@ public class Employee extends ModelTemplate{
 		this.email = employee.getEmail();
 	}
 	
-	public void encryptData(Employee employee) throws Exception {
+	public void encryptData(Employee employee) {
 		this.employeeIdEncrypt = AESencrpUtils.encryptLong(employee.getEmployeeId());
 		this.employeeId = null;
 	}

@@ -41,7 +41,7 @@ public class Stock extends ModelTemplate{
 	@Column(name = "remind_number")
 	private BigDecimal remindNumber;
 	
-	public void encryptData(Stock stock) throws Exception {
+	public void encryptData(Stock stock) {
 		this.stockIdEncrypt = AESencrpUtils.encryptLong(stock.getStockId());
 		this.stockId = null;
 	}

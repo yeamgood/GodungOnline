@@ -403,9 +403,9 @@ INSERT INTO `godung_online`.`measure` (`measure_id`,`measure_code`, `create_date
 INSERT INTO `godung_online`.`measure` (`measure_id`,`measure_code`, `create_date`, `create_user`, `version`, `measure_name`, `godung_id`, `description`) VALUES ('2', 'MEA20170830-00002', SYSDATE(), 'SYSTEM', '0', 'แผ่น', '2','อุปกรณ์กระจก');
 INSERT INTO `godung_online`.`measure` (`measure_id`,`measure_code`, `create_date`, `create_user`, `version`, `measure_name`, `godung_id`, `description`) VALUES ('3', 'MEA20170830-00003', SYSDATE(), 'SYSTEM', '0', 'ท่อ', '2','อุปกรณ์อลูมิเนียม');
 
-INSERT INTO `godung_online`.`brand` (`brand_id`,`brand_code`, `create_date`, `create_user`, `version`, `brand_name`, `godung_id`, `description`) VALUES ('1', 'BRA20170830-00001', SYSDATE(), 'SYSTEM', '0', 'Sony', '2','');
-INSERT INTO `godung_online`.`brand` (`brand_id`,`brand_code`, `create_date`, `create_user`, `version`, `brand_name`, `godung_id`, `description`) VALUES ('2', 'BRA20170830-00002', SYSDATE(), 'SYSTEM', '0', 'Lg', '2','');
-INSERT INTO `godung_online`.`brand` (`brand_id`,`brand_code`, `create_date`, `create_user`, `version`, `brand_name`, `godung_id`, `description`) VALUES ('3', 'BRA20170830-00003', SYSDATE(), 'SYSTEM', '0', 'Toyota', '2','');
+INSERT INTO `godung_online`.`brand` (`brand_id`,`brand_code`, `create_date`, `create_user`, `version`, `brand_name`, `godung_id`, `description`) VALUES ('1', 'BRA20170830-00001', SYSDATE(), 'SYSTEM', '0', 'KingSteel', '2','');
+INSERT INTO `godung_online`.`brand` (`brand_id`,`brand_code`, `create_date`, `create_user`, `version`, `brand_name`, `godung_id`, `description`) VALUES ('2', 'BRA20170830-00002', SYSDATE(), 'SYSTEM', '0', 'TSG', '2','');
+INSERT INTO `godung_online`.`brand` (`brand_id`,`brand_code`, `create_date`, `create_user`, `version`, `brand_name`, `godung_id`, `description`) VALUES ('3', 'BRA20170830-00003', SYSDATE(), 'SYSTEM', '0', 'Alumet', '2','');
 
 INSERT INTO `godung_online`.`warehouse` (`warehouse_id`,`warehouse_code`, `create_date`, `create_user`, `version`, `warehouse_name`, `godung_id`, `description`) VALUES ('1', 'WAR20170830-00001', SYSDATE(), 'SYSTEM', '0', 'คลังสินค้าฉะเชิงเทรา', '2','คลังสินค้า ที่จังหวัดฉะเชิงเทรา');
 INSERT INTO `godung_online`.`location` (`location_Id`,`location_code`, `aisle`,`unit`,`shelf`,`description`,`create_date`, `create_user`, `version`) VALUES ('1', '001-001-001','001','001','001','เก็บเหล็ก',SYSDATE(), 'SYSTEM', '0');
@@ -452,3 +452,9 @@ INSERT INTO `godung_online`.`dealer` (`dealer_id`, `create_date`, `create_user`,
 INSERT INTO `godung_online`.`product_dealer` (`product_id`, `dealer_id`) VALUES ('1', '1');
 INSERT INTO `godung_online`.`stock` (`stock_id`, `create_date`, `create_user`, `version`, `remind_number`, `location_id`, `warehouse_id`) VALUES ('1', '2017-09-16 23:21:43', 'user@gmail.com', '0', '10.00', '1', '1');
 INSERT INTO `godung_online`.`product_stock` (`product_id`, `stock_id`) VALUES ('1', '1');
+
+-- ADD USER USER SELENIUM --
+INSERT INTO `godung_online`.`user` (`user_id`,`active`, `email`, `name`, `password`,`language`) VALUES ('3','1', 'user2@gmail.com', 'Selenium User', '$2a$10$2ENrJAZwLxRopqim.mRDgOCK9BzDUDNxk38EUot/2wQ90KgqHLGX6','en');
+INSERT INTO `godung_online`.`user_rolelogin` (`user_id`, `role_id`) VALUES ('3', '2');
+INSERT INTO `godung_online`.`godung` (`godung_id`, `godung_name`, `create_date`, `create_user`, `version`, `active`) VALUES ('3', 'Selenium Godung', SYSDATE() , 'SYSTEM', '0', '1');
+INSERT INTO `godung_online`.`godung_user_role` (`id`, `godung_id`, `role_id`, `user_id`) VALUES ('3', '3', '2', '3');
