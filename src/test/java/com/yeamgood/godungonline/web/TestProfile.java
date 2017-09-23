@@ -1,9 +1,8 @@
 package com.yeamgood.godungonline.web;
 
-import static org.junit.Assert.assertTrue;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class TestProfile extends TestSetup{
@@ -18,7 +17,7 @@ public class TestProfile extends TestSetup{
 		openMainPage();
 		driver.findElement(By.name("name")).clear();
 		driver.findElement(By.id("bt_save")).click();
-		assertTrue(driver.getPageSource().contains("*Please provide your name."));
+		Assert.assertTrue(driver.getPageSource().contains("*Please provide your name."));
 	}
 	
 	@Test
@@ -27,7 +26,7 @@ public class TestProfile extends TestSetup{
 		driver.findElement(By.name("name")).clear();
 		driver.findElement(By.name("name")).sendKeys("123456789012345678901234567890123456789012345678901");
 		driver.findElement(By.id("bt_save")).click();
-		assertTrue(driver.getPageSource().contains("The field must be less than 50 characters."));
+		Assert.assertTrue(driver.getPageSource().contains("The field must be less than 50 characters."));
 	}
 	
 	@Test
@@ -35,7 +34,7 @@ public class TestProfile extends TestSetup{
 		openMainPage();
 		driver.findElement(By.name("godungName")).clear();
 		driver.findElement(By.id("bt_save")).click();
-		assertTrue(driver.getPageSource().contains("*Please provide your Godung name."));
+		Assert.assertTrue(driver.getPageSource().contains("*Please provide your Godung name."));
 	}
 
 	@Test
@@ -44,7 +43,7 @@ public class TestProfile extends TestSetup{
 		driver.findElement(By.name("godungName")).clear();
 		driver.findElement(By.name("godungName")).sendKeys("12345678901234567890123456");
 		driver.findElement(By.id("bt_save")).click();
-		assertTrue(driver.getPageSource().contains("The field must be less than 25 characters."));
+		Assert.assertTrue(driver.getPageSource().contains("The field must be less than 25 characters."));
 	}
 	
 	@Test
@@ -55,7 +54,7 @@ public class TestProfile extends TestSetup{
 		driver.findElement(By.name("godungName")).clear();
 		driver.findElement(By.name("godungName")).sendKeys("yeam godung");
 		driver.findElement(By.id("bt_save")).click();
-		assertTrue(driver.getPageSource().contains("Save success."));
+		Assert.assertTrue(driver.getPageSource().contains("Save success."));
 	}
 	
 }

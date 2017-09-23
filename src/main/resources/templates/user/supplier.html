@@ -66,14 +66,14 @@
 					<div class="title_right">
 						<div class="form-group pull-right title_right_button">
 							<div class="btn-group">
-								<button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button" aria-expanded="false">
+								<button id="bt_create" data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button" aria-expanded="false">
 				                    <i class="fa" th:class="#{bt.icon.add}"></i> 
 				                    <span class="span_white" th:text="#{form.supplier.bt.add}"></span>
 				                    <span class="caret"></span>
 			                    </button>
 			                    <ul role="menu" class="dropdown-menu">
-			                       <li><a th:href="@{/user/supplier/manage/person}" th:text="#{form.supplier.label.person}"></a></li>
-			                      <li><a th:href="@{/user/supplier/manage/company}" th:text="#{form.supplier.label.company}"></a></li>
+			                      <li><a id="bt_create_person" th:href="@{/user/supplier/manage/person}" th:text="#{form.supplier.label.person}"></a></li>
+			                      <li><a id="bt_create_company" th:href="@{/user/supplier/manage/company}" th:text="#{form.supplier.label.company}"></a></li>
 			                    </ul>
 			                 </div>
 						</div>

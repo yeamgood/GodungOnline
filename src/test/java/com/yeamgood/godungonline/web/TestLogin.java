@@ -1,9 +1,8 @@
 package com.yeamgood.godungonline.web;
 
-import static org.junit.Assert.assertTrue;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class TestLogin extends TestSetup{
@@ -13,7 +12,7 @@ public class TestLogin extends TestSetup{
 	@Test
 	public void pageLogin() {
 		driver.navigate().to(url);
-		assertTrue(driver.getPageSource().contains("Login Form"));
+		Assert.assertTrue(driver.getPageSource().contains("Login Form"));
 	}
 	
 	@Test
@@ -27,7 +26,7 @@ public class TestLogin extends TestSetup{
 		elementInputEmail.sendKeys("");
 		elementInputPassword.sendKeys("");
 		elementInputBtSubmit.click();
-		assertTrue(driver.getPageSource().contains("Invalid username and password!"));
+		Assert.assertTrue(driver.getPageSource().contains("Invalid username and password!"));
 	}
 	
 	@Test
@@ -41,7 +40,7 @@ public class TestLogin extends TestSetup{
 		elementInputEmail.sendKeys("test1");
 		elementInputPassword.sendKeys("test1");
 		elementInputBtSubmit.click();
-		assertTrue(driver.getPageSource().contains("Invalid username and password!"));
+		Assert.assertTrue(driver.getPageSource().contains("Invalid username and password!"));
 	}
 	
 	@Test
@@ -55,7 +54,7 @@ public class TestLogin extends TestSetup{
 		elementInputEmail.sendKeys("user@gmail.com");
 		elementInputPassword.sendKeys("test1");
 		elementInputBtSubmit.click();
-		assertTrue(driver.getPageSource().contains("Invalid username and password!"));
+		Assert.assertTrue(driver.getPageSource().contains("Invalid username and password!"));
 	}
 	
 	@Test
@@ -69,7 +68,7 @@ public class TestLogin extends TestSetup{
 		elementInputEmail.sendKeys("user@gmail.com");
 		elementInputPassword.sendKeys("123456");
 		elementInputBtSubmit.click();
-		assertTrue(driver.getPageSource().contains("Home"));
+		Assert.assertTrue(driver.getPageSource().contains("Home"));
 		
 		WebElement elementInputBtHeaderProfile = driver.findElement(By.id("header_profile"));
 		elementInputBtHeaderProfile.click();

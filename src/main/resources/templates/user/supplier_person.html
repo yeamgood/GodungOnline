@@ -67,7 +67,7 @@
 						</div>
 						<div class="title_right">
 							<div class="form-group pull-right title_right_button">
-								<a id="bt_delete" type="button" class="btn btn-primary" th:href="@{/user/supplier}">
+								<a id="bt_back" type="button" class="btn btn-primary" th:href="@{/user/supplier}">
 									<i class="fa fa-reply"></i> <span class="span_white" th:text="#{bt.text.back}"></span>
 								</a>
 								<button id="bt_delete" type="button" class="btn btn-danger" onclick="openModalMainDelete();" th:if="*{supplierIdEncrypt} != null and *{supplierIdEncrypt} != '' " >
