@@ -1,7 +1,7 @@
 package com.yeamgood.godungonline.controller;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -36,6 +36,7 @@ import com.yeamgood.godungonline.service.MenuService;
 import com.yeamgood.godungonline.service.ProductService;
 import com.yeamgood.godungonline.utils.AESencrpUtils;
 import com.yeamgood.godungonline.utils.DateUtils;
+import com.yeamgood.godungonline.utils.NumberUtils;
 
 @Controller
 public class DealerController {
@@ -74,13 +75,13 @@ public class DealerController {
 		DealerDatatables dealerDatatables;
 		List<DealerDatatables> dealerDatatablesList = new ArrayList<>();
 		
-		DecimalFormat df = new DecimalFormat();
-		df.setMinimumFractionDigits(2);
+		Collections.sort(dealerList, (o1, o2) -> o1.getStartDate().compareTo(o2.getStartDate()));
+	
 		for (Dealer dealer : dealerList) {
 			dealerDatatables = new DealerDatatables();
 			dealerDatatables.setDealerIdEncrypt(AESencrpUtils.encryptLong(dealer.getDealerId()));
 			dealerDatatables.setSupplierName(dealer.getSupplier().getFullname());
-			dealerDatatables.setPrice(df.format(dealer.getPrice()));
+			dealerDatatables.setPrice(NumberUtils.bigDecimalToString(dealer.getPrice()));
 			dealerDatatables.setStartDate(DateUtils.dateToString(dealer.getStartDate(), DateUtils.DDMMYYYY));
 			dealerDatatables.setEndDate(DateUtils.dateToString(dealer.getEndDate(), DateUtils.DDMMYYYY));
 			dealerDatatables.setMeasureName(dealer.getMeasure().getMeasureName());
@@ -120,18 +121,17 @@ public class DealerController {
 			userSession = (User) session.getAttribute("user");
 			Dealer dealer = dealerService.findByIdEncrypt(dealerForm.getDealerIdEncrypt(), userSession);
 			
-			DecimalFormat df = new DecimalFormat();
-			df.setMinimumFractionDigits(2);
 			DealerForm dealerFormTemp = new DealerForm();
 			dealerFormTemp.setDealerIdEncrypt(dealer.getDealerIdEncrypt());
 			dealerFormTemp.setSupplierIdEncrypt(AESencrpUtils.encryptLong(dealer.getSupplier().getSupplierId()));
-			dealerFormTemp.setPrice(df.format(dealer.getPrice()));
+			dealerFormTemp.setPrice(NumberUtils.bigDecimalToString(dealer.getPrice()));
 			dealerFormTemp.setStartDate(DateUtils.dateToString(dealer.getStartDate(), DateUtils.DDMMYYYY));
 			dealerFormTemp.setEndDate(DateUtils.dateToString(dealer.getEndDate(), DateUtils.DDMMYYYY));
 			dealerFormTemp.setMeasureIdEncrypt(AESencrpUtils.encryptLong(dealer.getMeasure().getMeasureId()));
 			dealerFormTemp.setCurrencyId(dealer.getCurrency().getCurrencyId());
 			
-			jsonResponse.setLoadSuccess(messageSource);
+			jsonResponse.setStatus(Constants.STATUS_SUCCESS);
+			jsonResponse.setResult(dealerFormTemp);
 		} catch (Exception e) {
 			logger.error(Constants.MESSAGE_ERROR,e);
 			jsonResponse.setLoadError(messageSource);

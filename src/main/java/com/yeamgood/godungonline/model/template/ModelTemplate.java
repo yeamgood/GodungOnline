@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
+import com.yeamgood.godungonline.model.User;
+
 @MappedSuperclass 
 public class ModelTemplate {
 
@@ -25,21 +27,21 @@ public class ModelTemplate {
 	@Column(name = "version")
 	public int version;
 	
-	public void setCreate(String user,Date date) {
-		this.createUser = user;
-		this.createDate = date;
+	public void setCreate(User user) {
+		this.createUser = user.getEmail();
+		this.createDate = new Date();
 	}
 	
-	public void setUpdate(String user,Date date) {
-		this.updateUser = user;
-		this.updateDate = date;
+	public void setUpdate(User user) {
+		this.updateUser = user.getEmail();
+		this.updateDate = new Date();
 	}
 	
-	public void setCreateAndUpdate(String user,Date date) {
-		this.createUser = user;
-		this.createDate = date;
-		this.updateUser = user;
-		this.updateDate = date;
+	public void setCreateAndUpdate(User user) {
+		this.createUser = user.getEmail();
+		this.createDate = new Date();
+		this.updateUser = user.getEmail();
+		this.updateDate = new Date();
 	}
 
 	public String getCreateUser() {

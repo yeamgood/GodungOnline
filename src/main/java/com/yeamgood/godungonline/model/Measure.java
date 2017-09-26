@@ -46,8 +46,8 @@ public class Measure extends ModelTemplate{
 	@JsonIgnore
 	private Godung godung;
 	
-	public void encryptData(Measure measure) {
-		this.measureIdEncrypt = AESencrpUtils.encryptLong(measure.getMeasureId());
+	public void encryptData() {
+		this.measureIdEncrypt = AESencrpUtils.encryptLong(this.measureId);
 		this.measureId = null;
 	}
 

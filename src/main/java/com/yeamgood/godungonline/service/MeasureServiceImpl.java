@@ -1,6 +1,5 @@
 package com.yeamgood.godungonline.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -35,7 +34,7 @@ public class MeasureServiceImpl implements MeasureService{
 	public Measure findByIdEncrypt(String idEncrypt)  {
 		logger.debug("I:");
 		Measure measure = measureRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		measure.encryptData(measure);
+		measure.encryptData();
 		logger.debug("O:");
 		return measure;
 	}
@@ -45,7 +44,7 @@ public class MeasureServiceImpl implements MeasureService{
 		logger.debug("I:");
 		Measure measure = measureRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
 		godungService.checkGodungId(measure.getGodung().getGodungId(), userSession);
-		measure.encryptData(measure);
+		measure.encryptData();
 		logger.debug("O:");
 		return measure;
 	}
@@ -56,7 +55,7 @@ public class MeasureServiceImpl implements MeasureService{
 		List<Measure> measureList = measureRepository.findAll(sortByMeasureNameAsc());
 		for (Measure measure : measureList) {
 			measure.setMeasureIdEncrypt(AESencrpUtils.encryptLong(measure.getMeasureId()));
-			measure.encryptData(measure);
+			measure.encryptData();
 		}
 		logger.debug("O:");
 		return measureList;
@@ -68,7 +67,7 @@ public class MeasureServiceImpl implements MeasureService{
 		List<Measure> measureList = measureRepository.findAllByGodungGodungIdOrderByMeasureNameAsc(godungId);
 		for (Measure measure : measureList) {
 			measure.setMeasureIdEncrypt(AESencrpUtils.encryptLong(measure.getMeasureId()));
-			measure.encryptData(measure);
+			measure.encryptData();
 		}
 		logger.debug("O:");
 		return measureList;
@@ -91,7 +90,7 @@ public class MeasureServiceImpl implements MeasureService{
 		List<Measure> measureList = measureRepository.findByGodungGodungIdAndMeasureNameIgnoreCaseContaining(godungId, measureName, pageable);
 		for (Measure measure : measureList) {
 			measure.setMeasureIdEncrypt(AESencrpUtils.encryptLong(measure.getMeasureId()));
-			measure.encryptData(measure);
+			measure.encryptData();
 		}
 		logger.debug("O:");
 		return measureList;
@@ -109,7 +108,7 @@ public class MeasureServiceImpl implements MeasureService{
 			}
 			String generateCode = GenerateCodeUtils.generateCode(GenerateCodeUtils.TYPE_MEASURE, maxMeasure.getMeasureCode());
 			measure.setGodung(user.getGodung());
-			measure.setCreate(user.getEmail(), new Date());
+			measure.setCreate(user);
 			measure.setMeasureCode(generateCode);
 			measure.setGodung(user.getGodung());
 			measureRepository.save(measure);
@@ -117,7 +116,7 @@ public class MeasureServiceImpl implements MeasureService{
 			Measure measureTemp = measureRepository.findOne(AESencrpUtils.decryptLong(measure.getMeasureIdEncrypt()));
 			measureTemp.setMeasureName(measure.getMeasureName());
 			measureTemp.setDescription(measure.getDescription());
-			measureTemp.setUpdate(user.getEmail(), new Date());
+			measureTemp.setUpdate(user);
 			measureRepository.save(measureTemp);
 		}
 		logger.debug("O:");

@@ -75,14 +75,16 @@ public class Product extends ModelTemplate{
 	@JoinTable(name = "product_dealer", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "dealer_id"))
 	private List<Dealer> dealerList;
 	
+	@Transient
+	private String price;
 	
 	public void setObject(Product product) {
 		this.productName = product.getProductName();
 		this.description  = product.getDescription();
 	}
 	
-	public void encryptData(Product product) {
-		this.productIdEncrypt = AESencrpUtils.encryptLong(product.getProductId());
+	public void encryptData() {
+		this.productIdEncrypt = AESencrpUtils.encryptLong(this.productId);
 		this.productId = null;
 	}
 
@@ -92,6 +94,14 @@ public class Product extends ModelTemplate{
 
 	public void setProductId(Long productId) {
 		this.productId = productId;
+	}
+
+	public String getProductIdEncrypt() {
+		return productIdEncrypt;
+	}
+
+	public void setProductIdEncrypt(String productIdEncrypt) {
+		this.productIdEncrypt = productIdEncrypt;
 	}
 
 	public String getProductCode() {
@@ -126,14 +136,6 @@ public class Product extends ModelTemplate{
 		this.godung = godung;
 	}
 
-	public String getProductIdEncrypt() {
-		return productIdEncrypt;
-	}
-
-	public void setProductIdEncrypt(String productIdEncrypt) {
-		this.productIdEncrypt = productIdEncrypt;
-	}
-
 	public Brand getBrand() {
 		return brand;
 	}
@@ -165,7 +167,7 @@ public class Product extends ModelTemplate{
 	public void setSaleList(List<Sale> saleList) {
 		this.saleList = saleList;
 	}
-	
+
 	public List<Stock> getStockList() {
 		return stockList;
 	}
@@ -182,12 +184,20 @@ public class Product extends ModelTemplate{
 		this.dealerList = dealerList;
 	}
 
+	public String getPrice() {
+		return price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
+	}
+
 	@Override
 	public String toString() {
 		return "Product [productId=" + productId + ", productIdEncrypt=" + productIdEncrypt + ", productCode="
 				+ productCode + ", productName=" + productName + ", description=" + description + ", godung=" + godung
 				+ ", brand=" + brand + ", measure=" + measure + ", category=" + category + ", saleList=" + saleList
-				+ ", stockList=" + stockList + ", dealerList=" + dealerList + "]";
+				+ ", stockList=" + stockList + ", dealerList=" + dealerList + ", price=" + price + "]";
 	}
 
 }

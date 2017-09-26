@@ -1,7 +1,7 @@
 package com.yeamgood.godungonline.controller;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -35,6 +35,7 @@ import com.yeamgood.godungonline.service.ProductService;
 import com.yeamgood.godungonline.service.SaleService;
 import com.yeamgood.godungonline.utils.AESencrpUtils;
 import com.yeamgood.godungonline.utils.DateUtils;
+import com.yeamgood.godungonline.utils.NumberUtils;
 
 @Controller
 public class SaleController {
@@ -54,30 +55,30 @@ public class SaleController {
 	ProductService productService;
 	
 	
-	@RequestMapping(value="/user/sale/list/ajax/{saleIdEncrypt}", method=RequestMethod.GET)
-	public @ResponseBody String userSaleList(DataTablesRequest datatableRequest, HttpSession session,@PathVariable String saleIdEncrypt) throws GodungIdException, JsonProcessingException {
+	@RequestMapping(value="/user/sale/list/ajax/{productIdEncrypt}", method=RequestMethod.GET)
+	public @ResponseBody String userSaleList(DataTablesRequest datatableRequest, HttpSession session,@PathVariable String productIdEncrypt) throws GodungIdException, JsonProcessingException {
 		logger.debug("I");
 		logger.debug(Constants.LOG_INPUT, datatableRequest);
-		logger.debug(Constants.LOG_INPUT, saleIdEncrypt);
+		logger.debug(Constants.LOG_INPUT, productIdEncrypt);
 		User userSession = (User) session.getAttribute("user");
 		
 		List<Sale> saleList = new ArrayList<>();
 		List<SaleForm> saleFormList = new ArrayList<>();
 		SaleForm saleForm;
 		
-		if(StringUtils.isNotBlank(saleIdEncrypt) && !StringUtils.equalsAnyIgnoreCase(saleIdEncrypt, "null")) {
-			Product product = productService.findByIdEncrypt(saleIdEncrypt, userSession);
+		if(StringUtils.isNotBlank(productIdEncrypt) && !StringUtils.equalsAnyIgnoreCase(productIdEncrypt, "null")) {
+			Product product = productService.findByIdEncrypt(productIdEncrypt, userSession);
 			saleList = product.getSaleList();
 		}
 	
-		DecimalFormat df = new DecimalFormat();
-		df.setMinimumFractionDigits(2);
+		Collections.sort(saleList, (o1, o2) -> o1.getStartDate().compareTo(o2.getStartDate()));
+		
 		for (Sale sale : saleList) {
-			sale.encryptData(sale);
+			sale.encryptData();
 			saleForm = new SaleForm();
 			saleForm.setStartDateText(DateUtils.dateToString(sale.getStartDate(), DateUtils.DDMMYYYY));
 			saleForm.setEndDateText(DateUtils.dateToString(sale.getEndDate(), DateUtils.DDMMYYYY));
-			saleForm.setPrice(df.format(sale.getPrice()));
+			saleForm.setPrice(NumberUtils.bigDecimalToString(sale.getPrice()));
 			saleForm.setCurrencyName(sale.getCurrency().getCurrencyName());
 			saleForm.setMeasureName(sale.getMeasure().getMeasureName());
 			saleForm.setSaleIdEncrypt(sale.getSaleIdEncrypt());
@@ -116,19 +117,18 @@ public class SaleController {
 			User userSession = (User) session.getAttribute("user");
 			Sale saleTemp = saleService.findByIdEncrypt(sale.getSaleIdEncrypt(), userSession);
 			
-			DecimalFormat df = new DecimalFormat();
-			df.setMinimumFractionDigits(2);
 			SaleForm saleForm = new SaleForm();
 			saleForm.setStartDateText(DateUtils.dateToString(saleTemp.getStartDate(), DateUtils.DDMMYYYY));
 			saleForm.setEndDateText(DateUtils.dateToString(saleTemp.getEndDate(), DateUtils.DDMMYYYY));
-			saleForm.setPrice(df.format(saleTemp.getPrice()));
+			saleForm.setPrice(NumberUtils.bigDecimalToString(saleTemp.getPrice()));
 			saleForm.setCurrencyId(saleTemp.getCurrency().getCurrencyId());
 			saleForm.setCurrencyName(saleTemp.getCurrency().getCurrencyName());
 			saleForm.setMeasureIdEncrypt(AESencrpUtils.encryptLong(saleTemp.getMeasure().getMeasureId()));
 			saleForm.setMeasureName(saleTemp.getMeasure().getMeasureName());
 			saleForm.setSaleIdEncrypt(saleTemp.getSaleIdEncrypt());
-			
-			jsonResponse.setLoadSuccess(messageSource);
+			 
+			jsonResponse.setStatus(Constants.STATUS_SUCCESS);
+			jsonResponse.setResult(saleForm);
 		} catch (Exception e) {
 			logger.error(Constants.MESSAGE_ERROR,e);
 			jsonResponse.setLoadError(messageSource);

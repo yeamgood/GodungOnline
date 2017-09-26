@@ -1,8 +1,5 @@
 package com.yeamgood.godungonline.service;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,14 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.form.SaleForm;
-import com.yeamgood.godungonline.model.Sale;
 import com.yeamgood.godungonline.model.Product;
+import com.yeamgood.godungonline.model.Sale;
 import com.yeamgood.godungonline.model.User;
 import com.yeamgood.godungonline.repository.CurrencyRepository;
 import com.yeamgood.godungonline.repository.MeasureRepository;
-import com.yeamgood.godungonline.repository.SaleRepository;
 import com.yeamgood.godungonline.repository.ProductRepository;
+import com.yeamgood.godungonline.repository.SaleRepository;
 import com.yeamgood.godungonline.utils.AESencrpUtils;
+import com.yeamgood.godungonline.utils.NumberUtils;
 
 @Service("saleService")
 public class SaleServiceImpl implements SaleService{
@@ -43,7 +41,7 @@ public class SaleServiceImpl implements SaleService{
 		logger.debug("I:");
 		logger.debug("O:");
 		Sale sale = saleRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		sale.encryptData(sale);
+		sale.encryptData();
 		return sale;
 	}
 
@@ -59,10 +57,10 @@ public class SaleServiceImpl implements SaleService{
 			Sale sale = new Sale();
 			sale.setStartDate(saleForm.getStartDate());
 			sale.setEndDate(saleForm.getEndDate());
-			sale.setPrice(new BigDecimal(saleForm.getPrice().replace(",", "")));
+			sale.setPrice(NumberUtils.stringToBigDecimal(saleForm.getPrice()));
 			sale.setMeasure(measureRepository.findOne(AESencrpUtils.decryptLong(saleForm.getMeasureIdEncrypt())));
 			sale.setCurrency(currencyRepository.findOne(Long.valueOf(saleForm.getCurrencyId())));
-			sale.setUpdate(userSession.getEmail(), new Date());
+			sale.setUpdate(userSession);
 			
 			product.getSaleList().add(sale);
 			productRepository.save(product);
@@ -70,10 +68,10 @@ public class SaleServiceImpl implements SaleService{
 			Sale saleTemp = saleRepository.findOne(AESencrpUtils.decryptLong(saleForm.getSaleIdEncrypt()));
 			saleTemp.setStartDate(saleForm.getStartDate());
 			saleTemp.setEndDate(saleForm.getEndDate());
-			saleTemp.setPrice(new BigDecimal(saleForm.getPrice().replace(",", "")));
+			saleTemp.setPrice(NumberUtils.stringToBigDecimal(saleForm.getPrice()));
 			saleTemp.setMeasure(measureRepository.findOne(AESencrpUtils.decryptLong(saleForm.getMeasureIdEncrypt())));
 			saleTemp.setCurrency(currencyRepository.findOne(Long.valueOf(saleForm.getCurrencyId())));
-			saleTemp.setCreate(userSession.getEmail(), new Date());
+			saleTemp.setCreate(userSession);
 			saleRepository.save(saleTemp);
 		}
 		

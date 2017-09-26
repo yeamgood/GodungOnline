@@ -51,8 +51,8 @@ public class Rolegodung extends ModelTemplate{
 		this.description  = rolegodung.getDescription();
 	}
 	
-	public void encryptData(Rolegodung rolegodung) {
-		this.rolegodungIdEncrypt = AESencrpUtils.encryptLong(rolegodung.getRolegodungId());
+	public void encryptData() {
+		this.rolegodungIdEncrypt = AESencrpUtils.encryptLong(this.rolegodungId);
 		this.rolegodungId = null;
 	}
 

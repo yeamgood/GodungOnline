@@ -58,8 +58,8 @@ public class Dealer extends ModelTemplate{
 	private String productIdEncrypt;
 	
 	
-	public void encryptData(Dealer dealer) {
-		this.dealerIdEncrypt = AESencrpUtils.encryptLong(dealer.getDealerId());
+	public void encryptData() {
+		this.dealerIdEncrypt = AESencrpUtils.encryptLong(this.dealerId);
 		this.dealerId = null;
 	}
 

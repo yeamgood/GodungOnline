@@ -7,4 +7,5 @@ import com.yeamgood.godungonline.model.Common;
 public interface CommonService {
 	public Common findById(long id);
 	public List<Common> findByType(String string);
+	public List<Common> findByTypeMapValueMessageSource(String string);
 }

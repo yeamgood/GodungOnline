@@ -113,8 +113,8 @@ public class Supplier extends ModelTemplate{
 		}
 	}
 	
-	public void encryptData(Supplier supplier) {
-		this.supplierIdEncrypt = AESencrpUtils.encryptLong(supplier.getSupplierId());
+	public void encryptData() {
+		this.supplierIdEncrypt = AESencrpUtils.encryptLong(this.supplierId);
 		this.supplierId = null;
 	}
 	

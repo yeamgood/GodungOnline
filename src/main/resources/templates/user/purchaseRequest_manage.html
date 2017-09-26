@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- Meta, title, CSS, favicons, etc. -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Godung Online</title>
+	 <link rel="icon" type="image/gif" th:href="@{/images/logo_box.png}" />
+
+	<!-- Bootstrap -->
+    <link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link th:href="@{/vendors/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+    <!-- NProgress -->
+    <link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
+    <!-- iCheck -->
+    <link th:href="@{/vendors/iCheck/skins/flat/green.css}" rel="stylesheet">
+    <!-- bootstrap-date range picker -->
+	<link th:href="@{/vendors/bootstrap-daterangepicker/daterangepicker.css}" rel="stylesheet">
+	<!-- bootstrap-date time picker -->
+	<link th:href="@{/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css}" rel="stylesheet">
+    <!-- Datatables -->
+    <link th:href="@{/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css}" rel="stylesheet">
+    <!-- PNotify -->
+	<link type="text/css" th:href="@{/vendors/pnotify/dist/pnotify.css}" rel="stylesheet">
+	<link type="text/css" th:href="@{/vendors/pnotify/dist/pnotify.buttons.css}" rel="stylesheet">
+	<link type="text/css" th:href="@{/vendors/pnotify/dist/pnotify.nonblock.css}" rel="stylesheet">
+	<!-- Select2 -->
+	<link type="text/css" th:href="@{/vendors/select2/dist/css/select2.min.css}" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
+
+	<!-- Main Theme Style -->
+	<link type="text/css" th:href="@{/css/main.css}" rel="stylesheet">
+	
+</head>
+
+<body class="nav-md">
+	<div class="container body">
+		<div class="main_container">
+			
+			<!-- menu -->	
+			<div th:replace="fragments/menu:: menu"></div>
+			<!-- /menu -->
+
+			<!-- header -->	
+			<div th:replace="fragments/header:: header"></div>
+			<!-- /header -->
+
+			<!-- page content -->
+			<div class="right_col" role="main">
+				<form id="form" autocomplete="off" enctype="multipart/form-data" th:action="@{/user/purchaseRequest/manage}" th:object="${purchaseRequestForm}" method="post" class="form-horizontal" role="form"  data-parsley-validate>
+				<div class="">
+				
+					<div class="col-md-12 col-sm-12 col-xs-12 x_panel search-head">
+						<div class="title_left">
+							<div class="col-md-6">
+								<h2>
+									<i th:class="${menu.icon}"></i> <span th:text="#{${menu.code}}"></span>
+								</h2>
+							</div>
+						</div>
+						<div class="title_right">
+							<div class="form-group pull-right title_right_button">
+								<a id="bt_back" type="button" class="btn btn-primary" th:href="@{/user/purchaseRequest}">
+									<i class="fa fa-reply"></i> <span class="span_white" th:text="#{bt.text.back}"></span>
+								</a>
+								<button id="bt_delete" type="button" class="btn btn-danger" onclick="openModalMainDelete();" th:if="*{purchaseRequestIdEncrypt} != null and *{purchaseRequestIdEncrypt} != '' " >
+									<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
+								</button>
+								<button id="bt_save" type="submit" class="btn btn-success">
+									<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
+								</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="clearfix"></div>
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="x_panel">
+								<div class="x_title x_title_edit">
+									<h2>
+										<i class="fa fa-info-circle"></i> 
+										<span class="title_left_text" th:text="#{form.purchaseRequest.profile.main}"></span>
+									</h2>
+									<div class="clearfix"></div>
+								</div>
+								<div class="x_content">
+									<div class="col-md-6 col-sm-6 col-xs-12">
+											<input type="hidden" th:field="*{purchaseRequestIdEncrypt}">
+											<div class="form-group">
+												<div class="control-label col-md-4 col-sm-4 col-xs-12">
+													<label th:text="#{form.purchaseRequest.label.code}"></label>
+												</div>
+												<div class="col-md-8 col-sm-8 col-xs-12">
+													<input type="text" class="form-control" readonly="readonly" th:placeholder="#{label.generate.auto}" th:field="*{purchaseRequestCode}">
+													<label th:if="${#fields.hasErrors('purchaseRequestCode')}" th:errors="*{purchaseRequestCode}" class="validation-message"></label>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="control-label col-md-4 col-sm-4 col-xs-12">
+													<label th:text="#{form.purchaseRequest.label.employeename}"></label>
+													<label class="validation-message" th:text="#{label.request}"></label>
+												</div>
+												<div class="col-md-8 col-sm-8 col-xs-12">
+													 <div class="input-group input_date">
+													 	<input type="hidden" th:field="*{employeeIdEncrypt}">
+							                     		<input type="text" class="form-control" readonly="readonly" th:field="*{employeeName}" >
+							                            	<span class="input-group-btn">
+			                                              	<button type="button" class="btn btn-default input_btn" onclick="openModalEmployee();"><i class="fa fa-search"></i></button>
+			                                          	</span>
+							                          </div>
+													<label th:if="${#fields.hasErrors('employeeName')}" th:errors="*{employeeName}" class="validation-message"></label>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="control-label col-md-4 col-sm-4 col-xs-12">
+													<label th:text="#{form.purchaseRequest.label.requestdate}"></label>
+													<label class="validation-message" th:text="#{label.request}"></label>
+												</div>
+												<div class="col-md-8 col-sm-8 col-xs-12">
+													<div class="input-group date input_date" id="request_date_datepicker">
+														<input type="text" class="form-control" th:field="*{requestDate}" placeholder="dd/mm/yyyy"> <span class="input-group-addon">
+															<span class="glyphicon glyphicon-calendar"></span>
+														</span>
+													</div>
+													<label th:if="${#fields.hasErrors('requestDate')}" th:errors="*{requestDate}" class="validation-message"></label>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="control-label col-md-4 col-sm-4 col-xs-12">
+													<label th:text="#{form.purchaseRequest.label.demanddate}"></label>
+													<label class="validation-message" th:text="#{label.request}"></label>
+												</div>
+												<div class="col-md-8 col-sm-8 col-xs-12">
+													<div class="input-group date" id="demand_date_datepicker">
+														<input type="text" class="form-control" th:field="*{demandDate}" placeholder="dd/mm/yyyy"> <span class="input-group-addon">
+															<span class="glyphicon glyphicon-calendar"></span>
+														</span>
+													</div>
+													<label th:if="${#fields.hasErrors('demandDate')}" th:errors="*{demandDate}" class="validation-message"></label>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<div class="form-group">
+												<div class="control-label col-md-4 col-sm-4 col-xs-12">
+													<label th:text="#{form.purchaseRequest.label.referencenumber}"></label>
+												</div>
+												<div class="col-md-8 col-sm-8 col-xs-12">
+													<input type="text" class="form-control" th:field="*{referenceNumber}" > 
+													<label th:if="${#fields.hasErrors('referenceNumber')}" th:errors="*{referenceNumber}" class="validation-message"></label>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="control-label col-md-4 col-sm-4 col-xs-12">
+													<label th:text="#{form.purchaseRequest.label.description}"></label>
+												</div>
+												<div class="col-md-8 col-sm-8 col-xs-12">
+													<textarea class="form-control" rows="3" th:field="*{description}"></textarea>
+													<label th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="validation-message"></label>
+												</div>
+											</div>
+										</div>
+
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-md-12 col-sm-12 col-xs-12">
+								<div class="x_panel">
+									<div class="x_title">
+										<div class="col-md-6 col-sm-6 col-xs-6 title_left_box x_title_edit">
+											<h2 class="table-small-header">
+												<i th:class="#{form.purchaseRequestProduct.icon}"></i> <span th:text="#{form.purchaseRequestProduct.label.list}"></span>
+											</h2>
+										</div>
+										<div class="col-md-6 col-sm-6 col-xs-6 title_box">
+											<div class="pull-right">
+												<div class="btn-group" th:if="*{purchaseRequestIdEncrypt} != null and *{purchaseRequestIdEncrypt} != '' ">
+													<button class="btn btn-primary dropdown-toggle" type="button" onclick="openModalPrProduct();">
+														<i class="fa fa-plus"></i> <span class="span_white" th:text="#{form.purchaseRequestProduct.bt.add}"></span>
+													</button>
+												</div>
+											</div>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="x_content">
+										<table id="pr_product_datatables" class="table  table-bordered table-small" style="width: 100%">
+											<thead class="search-content-header">
+												<tr>
+													<th th:text="#{datatables.text.no}" class="dt-body-no"></th>
+													<th th:text="#{form.product.label.code}" class="dt-body-code"></th>
+													<th th:text="#{form.purchaseRequestProduct.label.product}"></th>
+													<th th:text="#{form.purchaseRequestProduct.label.measure}"></th>
+													<th th:text="#{form.purchaseRequestProduct.label.amount}"></th>
+													<th th:text="#{form.purchaseRequestProduct.label.priceunit}"></th>
+													<th th:text="#{form.purchaseRequestProduct.label.sum.price}"></th>
+													<th th:text="#{form.purchaseRequestProduct.label.action}" class="dt-body-action"></th>
+												</tr>
+											</thead>
+										</table>
+										<div class="col-md-6 col-sm-6 col-xs-6 title_box  pull-right">
+											<div class="form-group">
+												<div class="control-label col-md-6 col-sm-6 col-xs-12">
+													<label th:text="#{form.purchaseRequestProduct.label.total.amount}"></label>
+												</div>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<input type="text" class="form-control" id="totalAmoumt" readonly="readonly" style="text-align: right;" value="0.00"> 
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="control-label col-md-6 col-sm-6 col-xs-12">
+													<label th:text="#{form.purchaseRequestProduct.label.total.price}"></label>
+												</div>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<input type="text" class="form-control" id="totalPrice" readonly="readonly" style="text-align: right;" value="0.00"> 
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<div class="x_panel">
+									<div class="x_title">
+										<div class="col-md-6 col-sm-6 col-xs-6 title_left_box x_title_edit">
+											<h2 class="table-small-header">
+												<i th:class="#{form.approver.icon}"></i> <span th:text="#{form.approver.header}"></span>
+											</h2>
+										</div>
+										<div class="col-md-6 col-sm-6 col-xs-6 title_box">
+											<div class="pull-right">
+												<div class="btn-group" th:if="*{purchaseRequestIdEncrypt} != null and *{purchaseRequestIdEncrypt} != '' ">
+													<button class="btn btn-primary dropdown-toggle" type="button" onclick="openModalApprover();">
+														<i class="fa fa-plus"></i> <span class="span_white" th:text="#{form.approver.bt.add}"></span>
+													</button>
+												</div>
+											</div>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="x_content">
+										<table id="approver_datatables" class=" table-small" style="width: 100%">
+										</table>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<div class="x_panel">
+									<div class="x_title">
+										<div class="col-md-6 col-sm-6 col-xs-6 title_left_box x_title_edit">
+											<h2 class="table-small-header">
+												<i class="fa fa-folder-open-o"></i> <span th:text="#{form.document.header}"></span>
+											</h2>
+										</div>
+										<div class="col-md-6 col-sm-6 col-xs-6 title_box">
+											<div class="pull-right">
+												<div class="btn-group" th:if="*{purchaseRequestIdEncrypt} != null and *{purchaseRequestIdEncrypt} != '' ">
+													<button class="btn btn-primary dropdown-toggle" type="button" onclick="openModalDocument();">
+														<i th:class="#{form.document.icon}"></i> 
+														<span class="span_white" th:text="#{form.document.label.attachfiles}"></span>
+													</button>
+												</div>
+											</div>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="x_content">
+										<table id="document_datatables" class=" table-small" style="width: 100%">
+											<!-- <thead class="search-content-header">
+												<tr>
+													<th th:text="#{datatables.text.no}" class="dt-body-no"></th>
+													<th>Name</th>
+													<th th:text="#{form.purchaseRequestProduct.label.action}" class="dt-body-action"></th>
+												</tr>
+											</thead> -->
+										</table>
+									</div>
+								</div>
+							</div>
+						
+					</div>
+					
+				</div>
+				</form>
+				</div>
+				<!-- /page content -->
+				
+				 <div id="modal_delete" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+                    <div class="modal-dialog ">
+                      <div class="modal-content">
+
+						<form autocomplete="off" method="post" id="deleteForm" data-parsley-validate class="form-horizontal form-label-left" th:action="@{/user/purchaseRequest/manage/delete}">
+                        <div class="modal-header modal-delete-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                          </button>
+                          <h4 class="modal-title" id="myModalLabel">
+								<i class="fa fa-trash"></i> <span th:text="#{label.delete.head.confirm}"></span>
+							</h4>
+                        </div>
+                        <div class="modal-body">
+                        			<input type="hidden" id="delete_id" name="purchaseRequestIdEncrypt" />
+                        			<span id="modal_delete_content"></span>
+                        </div>
+                        <div class="modal-footer">
+                         <button type="button" class="btn btn-default" data-dismiss="modal">
+							<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
+						 </button>
+                          <button id="bt_delete_main" type="submit" class="btn btn-danger" >
+							<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
+						</button>
+                        </div>
+						</form>
+						
+                      </div>
+                    </div>
+                  </div>
+			
+			<div id="modal_pr_product" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog ">
+					<div class="modal-content">
+						<div class="modal-header modal-custom-header">
+							<button type="button" class="close" data-dismiss="modal">
+								<span aria-hidden="true">×</span>
+							</button>
+							<h4 class="modal-title">
+								<i th:class="#{form.purchaseRequestProduct.icon}"></i> <span th:text="#{form.purchaseRequestProduct.header}"></span>
+							</h4>
+						</div>
+						<div class="modal-body">
+							<form id="pr_product_form" autocomplete="off" th:action="@{/user/purchaseRequest/manage}" method="post" class="form-horizontal" role="form" data-parsley-validate>
+								<div class="col-md-12 col-sm-12 col-xs-12">
+									<div class="form-group">
+										<div class="control-label col-md-3 col-sm-3 col-xs-12">
+											<label th:text="#{form.purchaseRequestProduct.label.product}"></label> 
+											<label class="validation-message" th:text="#{label.request}"></label>
+										</div>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+											<div class="input-group input_date">
+												<input type="hidden" id="pr_product_index" > 
+												<input type="hidden" id="pr_product_purchaseRequestProductIdEncrypt" name="purchaseRequestProductIdEncrypt" > 
+												<input type="hidden" id="pr_product_productIdEncrypt" name="productIdEncrypt"> 
+												<input type="hidden" id="pr_product_productCode" name="productCode"> 
+												<input type="text" id="pr_product_productName" class="form-control" readonly="readonly" name="productName"> 
+												<span class="input-group-btn">
+													<button type="button" class="btn btn-default input_btn" onclick="openModalProduct();">
+														<i class="fa fa-search"></i>
+													</button>
+												</span>
+											</div>
+											<label id="pr_product_error_productIdEncrypt" class="validation-message" style="display: none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-3 col-sm-3 col-xs-12">
+											<label th:text="#{form.purchaseRequestProduct.label.measure}"></label>
+											<label class="validation-message" th:text="#{label.request}"></label>
+										</div>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+											<input type="hidden" id="pr_product_measureIdEncrypt" name="measureIdEncrypt"> 
+											<input type="hidden" id="pr_product_measureName" name="measureName"> 
+											<select id="pr_product_measure"  style="width: 100%" > 
+												<option value=" " th:text="#{dropdown.text.select}"></option>
+												<option th:each="obj:${measureDropdown}" th:value="${obj.measureIdEncrypt}" th:text="${obj.measureName}"></option>
+											</select>
+											<label id="pr_product_error_measureIdEncrypt" class="validation-message" style="display: none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-3 col-sm-3 col-xs-12">
+											<label th:text="#{form.purchaseRequestProduct.label.amount}"></label>
+											<label class="validation-message" th:text="#{label.request}"></label>
+										</div>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+											<input id="pr_product_amount" type="text" class="form-control input_money" value="0.00" maxlength="16" name="amount"> 
+											<label id="pr_product_error_amount" class="validation-message" style="display: none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-3 col-sm-3 col-xs-12">
+											<label th:text="#{form.purchaseRequestProduct.label.priceunit}"></label>
+											<label class="validation-message" th:text="#{label.request}"></label>
+										</div>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+											<input  type="text" class="form-control input_money" id="pr_product_price" value="0.00" maxlength="16" name="price"> 
+											<label id="pr_product_error_price" class="validation-message" style="display: none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-3 col-sm-3 col-xs-12">
+											<label th:text="#{form.purchaseRequestProduct.label.sum.price}"></label>
+										</div>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+											<input type="text" class="form-control input_money"  id="pr_product_totalPrice" value="0.00" readonly="readonly" name="totalPrice"> 
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer modal-custom-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
+							</button>
+							<button id="bt_stock_save" type="button" class="btn btn-primary" onclick="prProductAddValidAction();">
+								<i class="fa fa-plus"></i> <span class="span_white" th:text="#{bt.text.add}"></span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div id="modal_product" class="modal fade bs-example-modal-lg"  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+
+						<div class="modal-header modal-custom-header">
+							<button type="button" class="close" data-dismiss="modal">
+								<span aria-hidden="true">×</span>
+							</button>
+							<h4 class="modal-title">
+								<i th:class="#{form.product.icon}"></i> <span th:text="#{form.product.header}"></span>
+							</h4>
+						</div>
+						
+						<div class="modal-body">
+
+							 <table id="datatables_product" class="table table-striped table-bordered" style="width:100%">
+										<thead class="search-content-header">
+											<tr>
+												<th th:text="#{datatables.text.no}"></th>
+												<th th:text="#{form.product.label.code}"></th>
+												<th th:text="#{form.product.label.name}"></th>
+												<th th:text="#{form.product.label.brand}" ></th>
+												<th th:text="#{form.product.label.category}" ></th>
+												<th th:text="#{form.product.label.measure}"></th>
+												<th th:text="#{form.dealer.label.price}"></th>
+												<th></th>
+											</tr>
+										</thead>
+									</table>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			
+			<div id="modal_employee" class="modal fade "  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog ">
+					<div class="modal-content">
+
+						<div class="modal-header modal-custom-header">
+							<button type="button" class="close" data-dismiss="modal">
+								<span aria-hidden="true">×</span>
+							</button>
+							<h4 class="modal-title">
+								<i th:class="#{form.employee.icon}"></i> <span th:text="#{form.employee.header}"></span>
+							</h4>
+						</div>
+						
+						<div class="modal-body">
+
+							 <table id="datatables_employee" class="table table-striped table-bordered" style="width:100%">
+								<thead class="search-content-header">
+									<tr>
+										<th th:text="#{datatables.text.no}"></th>
+										<th th:text="#{form.employee.label.code}"></th>
+										<th th:text="#{form.employee.label.fullname}" class="col-md-3"></th>
+										<th th:text="#{form.brand.label.action}"></th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div class="modal-footer modal-custom-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
+							</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			
+			
+			<div id="modal_document" class="modal fade "  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog ">
+					<div class="modal-content">
+
+						<div class="modal-header modal-custom-header">
+							<button type="button" class="close" data-dismiss="modal">
+								<span aria-hidden="true">×</span>
+							</button>
+							<h4 class="modal-title">
+								<i class="fa fa-paperclip"></i> <span th:text="#{form.document.label.attachfiles}"></span>
+							</h4>
+						</div>
+						
+						<div class="modal-body">
+								<input type="file" name="file">
+						</div>
+						<div class="modal-footer modal-custom-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
+							</button>
+							<button id="bt_stock_save" type="button" class="btn btn-primary" onclick="prProductAddValidAction();">
+								<i class="fa fa-upload"></i> <span class="span_white" th:text="#{bt.text.upload}"></span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div id=modal_approver class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog ">
+					<div class="modal-content">
+						<div class="modal-header modal-custom-header">
+							<button type="button" class="close" data-dismiss="modal">
+								<span aria-hidden="true">×</span>
+							</button>
+							<h4 class="modal-title">
+								<i th:class="#{form.approver.icon}"></i> <span th:text="#{form.approver.header}"></span>
+							</h4>
+						</div>
+						<div class="modal-body">
+							<form id="approve_form" autocomplete="off" th:action="@{/user/purchaseRequest/manage}" method="post" class="form-horizontal" role="form" data-parsley-validate>
+								<div class="col-md-12 col-sm-12 col-xs-12">
+									<div class="form-group">
+										<div class="control-label col-md-3 col-sm-3 col-xs-12">
+											<label th:text="#{form.approver.label.employee}"></label> 
+											<label class="validation-message" th:text="#{label.request}"></label>
+										</div>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+											<input type="hidden" id="modal_approver_employeeIdEncrypt" name="employeeIdEncrypt"> 
+											<div class="input-group input_date">
+												<input type="text" id="modal_approver_employeeName" class="form-control" readonly="readonly" name="employeeName"> 
+												<span class="input-group-btn">
+													<button type="button" class="btn btn-default input_btn" onclick="openModalEmployeeApprove();">
+														<i class="fa fa-search"></i>
+													</button>
+												</span>
+											</div>
+											<label id="modal_approve_error_employeeIdEncrypt" class="validation-message" style="display: none;"></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="control-label col-md-3 col-sm-3 col-xs-12">
+											<label th:text="#{form.approver.label.role}"></label>
+											<label class="validation-message" th:text="#{label.request}"></label>
+										</div>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+											<select id="approve_role_dropdown"  style="width: 100%" > 
+												<option value=" " th:text="#{dropdown.text.select}"></option>
+												<option th:each="obj:${approveRoleDropdown}" th:value="${obj.key}" th:text="${obj.value}"></option>
+											</select>
+											<label id="modal_approve_error_approverRoleCode" class="validation-message" style="display: none;"></label>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer modal-custom-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
+							</button>
+							<button id="bt_stock_save" type="button" class="btn btn-primary" onclick="approverAddValidAction();">
+								<i class="fa fa-plus"></i> <span class="span_white" th:text="#{bt.text.add}"></span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="modal_employee_approve" class="modal fade "  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog ">
+					<div class="modal-content">
+
+						<div class="modal-header modal-custom-header">
+							<button type="button" class="close" data-dismiss="modal">
+								<span aria-hidden="true">×</span>
+							</button>
+							<h4 class="modal-title">
+								<i th:class="#{form.employee.icon}"></i> <span th:text="#{form.employee.header}"></span>
+							</h4>
+						</div>
+						
+						<div class="modal-body">
+
+							 <table id="datatables_employee_approve" class="table table-striped table-bordered" style="width:100%">
+								<thead class="search-content-header">
+									<tr>
+										<th th:text="#{datatables.text.no}"></th>
+										<th th:text="#{form.employee.label.code}"></th>
+										<th th:text="#{form.employee.label.fullname}" class="col-md-3"></th>
+										<th th:text="#{form.brand.label.action}"></th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div class="modal-footer modal-custom-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
+							</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			
+			<!-- --------------------------- -->
+			<!-- -------- End Modal -------- -->
+			<!-- --------------------------- -->
+
+			<!-- footer content -->
+			<div th:replace="fragments/footer:: footer"></div>
+			<!-- /footer content -->
+		</div>
+	</div>
+
+	<!-- jQuery -->
+	<script th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+	<!-- Bootstrap -->
+	<script th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+	<!-- FastClick -->
+	<script th:src="@{/vendors/fastclick/lib/fastclick.js}"></script>
+	<!-- NProgress -->
+	<script th:src="@{/vendors/nprogress/nprogress.js}"></script>
+	<!-- iCheck -->
+	<script th:src="@{/vendors/iCheck/icheck.min.js}"></script>
+	<!-- bootstrap-date range picker -->
+	<script th:src="@{/vendors/moment/min/moment.min.js}"></script>
+	<script th:src="@{/vendors/moment/locale/th.js}"></script>
+	<script th:src="@{/vendors/bootstrap-daterangepicker/daterangepicker.js}"></script>
+	<!-- bootstrap-date time picker -->
+	<script th:src="@{/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js}"></script>
+	<!-- Data tables -->
+	<script th:src="@{/vendors/datatables.net/js/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-buttons/js/buttons.flash.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-buttons/js/buttons.html5.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-buttons/js/buttons.print.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+	<script th:src="@{/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js}"></script>
+	<script th:src="@{/vendors/datatables.net-scroller/js/dataTables.scroller.min.js}"></script>
+	<script th:src="@{/vendors/jszip/dist/jszip.min.js}"></script>
+	<script th:src="@{/vendors/pdfmake/build/pdfmake.min.js}"></script>
+	<script th:src="@{/vendors/pdfmake/build/vfs_fonts.js}"></script>
+	<!-- PNotify -->
+	<script th:src="@{/vendors/pnotify/dist/pnotify.js}"></script>
+	<script th:src="@{/vendors/pnotify/dist/pnotify.buttons.js}"></script>
+	<script th:src="@{/vendors/pnotify/dist/pnotify.nonblock.js}"></script>
+	<!-- Select2 -->
+	<script th:src="@{/vendors/select2/dist/js/select2.full.min.js}"></script>
+	<!-- price format -->
+	<script th:src="@{/js/jquery.maskMoney.min.js}"></script>
+	<!-- Custom Theme Scripts -->
+	<script th:src="@{/build/js/custom.js}"></script>
+	<!-- Custom Theme Scripts -->
+	<script th:src="@{/js/godung.js}"></script>
+	
+	
+	<script th:inline="javascript">
+		var textView = /*[[#{bt.text.view}]]*/;
+		var textEdit = /*[[#{bt.text.edit}]]*/;
+		var textDelete = /*[[#{bt.text.delete}]]*/;
+		var textSelect = /*[[#{bt.text.select}]]*/;
+		var urlFlags = /*[[@{/images/flags/24/}]]*/;
+		var url_language = /*[[#{javascript.datatable.language.url}]]*/;
+		var url_employee = /*[[@{/user/employee/list/ajax}]]*/;
+		var countPr  = 0;
+		
+		<!-- -------- Start datatables Employee -------- -->
+	    $(document).ready(function() {
+		    	var table =  $('#datatables_employee').DataTable( {
+		    			"processing": true,
+		    	        "ajax": url_employee,
+		    	        "paging":   true,
+		    	        "ordering": true,
+		    	        "info":     true,
+		    	        "searching":	true,
+		    	        "language": {"url": url_language},
+		    	        "order": [[ 1, 'asc' ]],
+		    	        "columns": [
+		  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
+		  	            { 'data': 'employeeCode' , 'className': 'dt-body-code'},
+		  	            { 'data': 'firstName' },
+		  	            { 'data': 'employeeIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
+		  	        ],
+		  	      	"columnDefs": [{
+		                  "render": function ( data, type, row ) {
+		                		 return	'' +
+		                	  	 	    '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textSelect + '"' +
+		                	  	 	    '   onclick="selectEmployee(\''+ data + '\',\'' + row.title + row.firstName + " " + row.lastName + '\');" >' +
+		                	  	 	    '   <i class="fa fa-download"></i> '+ textSelect +' </button>'; 
+		                  },
+		                  "targets": 3
+		             },{
+		            	 	 "render": function ( data, type, row ) {
+	            	 			 return	row.title + row.firstName + " " + row.lastName;
+		                  },
+		                  "targets": 2
+		             }
+		  	      	]
+		    	    } );
+	    	
+		    		/* SET RELOAD TOOLTIP AFTER DATATABLE */
+			    	$('#datatables_employee').on( 'draw.dt', function () {
+			    		$('[data-toggle="tooltip"]').tooltip();
+			    	} );
+	        
+		       /* SET INDEX COLUMN */
+		        table.on( 'order.dt search.dt', function () {
+		        	table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+		                cell.innerHTML = i+1;
+		            } );
+		        } ).draw(); 
+		});
+		
+	    
+	    <!-- -------- Start datatables Product -------- -->
+	    $(document).ready(function() {
+	   	 	var url_product = /*[[@{/user/product/list/ajax}]]*/;
+		    	var table =  $('#datatables_product').DataTable( {
+		    			"processing": true,
+		    	        "ajax": url_product,
+		    	        "paging":   true,
+		    	        "ordering": true,
+		    	        "info":     true,
+		    	        "searching":	true,
+		    	        "language": {"url": url_language},
+		    	        "order": [[ 1, 'asc' ]],
+		    	        "columns": [
+		  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
+		  	            { 'data': 'productCode' ,'className': 'dt-body-code'},
+		  	            { 'data': 'productName' },
+		  	            { 'data': 'brand.brandName' },
+		  	            { 'data': 'category.categoryName' },
+		  	            { 'data': 'measure.measureName','orderable': false },
+		  	            { 'data': 'price','orderable': false },
+		  	            { 'data': 'productIdEncrypt' ,'className': 'dt-body-close','searchable': false, 'orderable': false }
+		  	        ],
+		  	      	"columnDefs": [
+		  	      	  	   {"targets": 1,"className": "content-left"},
+			   	        	   {"targets": 2,"className": "content-left"},
+			   	        	   {"targets": 3,"className": "content-center"},
+			   	        	   {"targets": 4,"className": "content-center"},
+			   	        	   {"targets": 5,"className": "content-center"}, 
+			   	           {"targets": 6,"className": "content-right"}, 
+		                   {"render": function ( data, type, row ) {
+		                		 return	'' +
+		                	  	 	    '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textSelect + '"' +
+		                	  	 	    '   onclick="selectProduct(\''+data+'\',\''+row.productCode +'\',\''+ row.productName +'\',\''+ row.measure.measureIdEncrypt +'\',\''+ row.measure.measureName + '\',\''+ row.price + '\');" >' +
+		                	  	 	    '   <i class="fa fa-download"></i> '+ textSelect + '</button>'; 
+		                	  	 	    
+		                  },
+		                  "targets": 7}
+		  	      	]
+		    	    } );
+	    	
+		    		/* SET RELOAD TOOLTIP AFTER DATATABLE */
+			    	$('#datatables_product').on( 'draw.dt', function () {
+			    		$('[data-toggle="tooltip"]').tooltip();
+			    	} );
+	        
+		       /* SET INDEX COLUMN */
+		        table.on( 'order.dt search.dt', function () {
+		        	table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+		                cell.innerHTML = i+1;
+		            } );
+		        } ).draw(); 
+	        
+		});
+	    
+	    <!-- -------- Start datatables Purchase Request Product -------- -->
+	    $(document).ready(function() {
+			var product_url = /*[[@{/user/purchaseRequestProduct/list/ajax/}]]*/
+			var purchaseRequestIdEncrypt = /*[[${purchaseRequestForm.purchaseRequestIdEncrypt}]]*/;
+			var product_url_complete = product_url + purchaseRequestIdEncrypt;
+			var table =  $('#pr_product_datatables').DataTable( {
+	    			"processing": true,
+	    			//"ajax": product_url_complete,
+	    	        "paging":   false,
+	    	        "ordering": false,
+	    	        "info":     false,
+	    	        "searching":	true,
+	    	        "language": {"url": url_language},
+	    	        "order": [[ 1, 'asc' ]],
+	    	        "columnDefs": [
+	    	        	   {"targets": 0,"className": "dt-body-no","searchable":false,"orderable":false},
+	    	        	   {"targets": 1,"className": "content-left"},
+	    	        	   {"targets": 2,"className": "content-left"},
+	    	        	   {"targets": 3,"className": "content-center"},
+	    	        	   {"targets": 4,"className": "content-right"},
+	    	        	   {"targets": 5,"className": "content-right"},
+	    	        	   {"targets": 6,"className": "content-right"},
+	    	        	   {"targets": 7,"className": "dt-body-action","searchable":false,"orderable":false}
+	    	        ],
+	    	        "initComplete": function( settings, json ) {
+            	 		//fix bug datatables use dom not responsive html
+            			 $("#pr_product_datatables_filter").hide();
+           		}
+	    	    } );
+	       
+	    		/* SET RELOAD TOOLTIP AFTER DATATABLE */
+		    	$('#pr_product_datatables').on( 'draw.dt', function () {
+		    		$('[data-toggle="tooltip"]').tooltip();
+		    	} );
+        
+	       /* SET INDEX COLUMN */
+	        table.on( 'order.dt search.dt', function () {
+	        	table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+	                cell.innerHTML = i+1;
+	            } );
+	        } ).draw(); 
+	       
+	        $('#pr_product_datatables tbody').on('click','i.fa-trash', function () {
+	            table.row( $(this).parents('tr') ).remove().draw();
+	          });
+	        
+	        var purchaseRequestProductList = /*[[${purchaseRequestForm.purchaseRequestProductFormList}]]*/
+	        categoryChildDatatableGenerate(purchaseRequestProductList);
+	        calculateTotalAll();
+		});
+	    
+	    function prProductAddRow(editIndex,purchaseRequestProductIdEncrypt,productIdEncrypt,productCode,productName,amount,measureIdEncrypt,measureName,price,totalPrice){
+	    	
+	    	var indexData = countPr;
+	    	if(editIndex != ""){
+	    		indexData = editIndex;
+	    	}
+	    	
+	    	var dataHidden = '' +
+	     	    '<input type="hidden" id="prProduct_'+indexData+'_purchaseRequestProductIdEncrypt" name="purchaseRequestProductFormList['+indexData+'].purchaseRequestProductIdEncrypt" value="'+purchaseRequestProductIdEncrypt+'">' +
+  				'<input type="hidden" id="prProduct_'+indexData+'_productIdEncrypt" name="purchaseRequestProductFormList['+indexData+'].productIdEncrypt" value="'+productIdEncrypt+'">' +
+  				'<input type="hidden" id="prProduct_'+indexData+'_productCode" name="purchaseRequestProductFormList['+indexData+'].productCode" value="'+productCode+'">' +
+  				'<input type="hidden" id="prProduct_'+indexData+'_productName" name="purchaseRequestProductFormList['+indexData+'].productName" value="'+productName+'">' +
+  				'<input type="hidden" id="prProduct_'+indexData+'_measureIdEncrypt" name="purchaseRequestProductFormList['+indexData+'].measureIdEncrypt" value="'+measureIdEncrypt+'">' +
+  				'<input type="hidden" id="prProduct_'+indexData+'_measureName" name="purchaseRequestProductFormList['+indexData+'].measureName" value="'+measureName+'">' +
+  				'<input type="hidden" id="prProduct_'+indexData+'_amount" name="purchaseRequestProductFormList['+indexData+'].amount" value="'+amount+'">' +
+  				'<input type="hidden" id="prProduct_'+indexData+'_price" name="purchaseRequestProductFormList['+indexData+'].price" value="'+price+'">' +
+  				'<input type="hidden" id="prProduct_'+indexData+'_totalPrice" name="purchaseRequestProductFormList['+indexData+'].totalPrice" value="'+totalPrice+'">' +
+  	            '<span>' + productCode + '</span>';
+			     	            
+	        var btAction  =  '<button id="bt_edit_'+indexData+'" type="button" class="btn btn-primary btn-xs" onClick="editProduct('+indexData+');"><i class="fa fa-wrench"></i></button> ' +
+		                		 '<button type="button" class="btn btn-danger btn-xs" ><i class="fa fa-trash"></i></button>';
+			     	            
+	     	var table = $('#pr_product_datatables').DataTable();
+	     	if(editIndex == ""){
+	     		table.row.add(['',dataHidden,productName,measureName,amount,price,totalPrice,btAction]).draw();
+	     		countPr++;
+	     	}else{
+	     		var indexDataEdit = $("#bt_edit_" + editIndex).parent().parent().find('td:eq(0)').text() - 1;
+	     		table.row(indexDataEdit).data(['',dataHidden,productName,measureName,amount,price,totalPrice,btAction]).draw();
+	     	}
+	    }
+	    
+	    function calculateTotalAll(){
+	    		var table = $('#pr_product_datatables').DataTable();
+	    		
+	    		var totalAmount = parseFloat("0.00");
+	    		var totalPrice = parseFloat("0.00");
+	    		table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+	    		    var data = this.data();
+	    		    totalAmount += parseFloat(data[4].replace(/,/g,""));
+	    		    totalPrice += parseFloat(data[6].replace(/,/g,""));
+	    		} );
+	     	$("#totalAmoumt").val(totalAmount); 
+	     	$("#totalAmoumt").maskMoney('mask');
+	     	$("#totalPrice").val(totalPrice); 
+	     	$("#totalPrice").maskMoney('mask');
+	    		
+	    }
+	    
+	    function categoryChildDatatableGenerate(obj){
+		    $('#pr_product_datatables').DataTable().clear().draw();
+	        $(obj).each(function(i, item){
+	    	 		prProductAddRow( '', 
+	    	 						item.purchaseRequestProductIdEncrypt,
+	    	 						item.productIdEncrypt,
+	    	 						item.productCode,
+	    	 						item.productName,
+	    	 						item.amount,
+	    	 						item.measureIdEncrypt,
+	    	 						item.measureName,
+	    	 						item.price,
+	    	 						item.totalPrice);
+	       });
+	    }
+	    
+	    function editProduct(indexProduct){
+	    		openModalPrProduct();
+	    		var idTxt = "#prProduct_" + indexProduct + "_";
+	    		
+	    		var purchaseRequestProductIdEncrypt = $(idTxt + "purchaseRequestProductIdEncrypt").val();
+	    		var productIdEncrypt = $(idTxt + "productIdEncrypt").val();
+	    		var productCode = $(idTxt + "productCode").val()
+	    		var productName = $(idTxt + "productName").val()
+	    		var measureIdEncrypt = $(idTxt + "measureIdEncrypt").val()
+	    		var measureName = $(idTxt + "measureName").val()
+	    		var amount = $(idTxt + "amount").val()
+	    		var price = $(idTxt + "price").val()
+	    		
+	    		$("#pr_product_purchaseRequestProductIdEncrypt").val(purchaseRequestProductIdEncrypt);
+	    		$("#pr_product_index").val(indexProduct);
+	    		$("#pr_product_productIdEncrypt").val(productIdEncrypt);
+			$("#pr_product_productCode").val(productCode);
+			$("#pr_product_productName").val(productName);
+			$("#pr_product_measure").val(measureIdEncrypt).trigger('change');
+			$("#pr_product_measureIdEncrypt").val(measureIdEncrypt);
+			$("#pr_product_measureName").val(measureName);
+			$("#pr_product_amount").val(amount);
+			$("#pr_product_price").val(price);
+			calculateTotalPrice();
+	    }
+	    
+	    <!-- -------- Start datatables Document -------- -->
+	    $(document).ready(function() {
+		    	var table =  $('#document_datatables').DataTable( {
+		    			"processing": true,
+		    	        "paging":   false,
+		    	        "ordering": false,
+		    	        "info":     false,
+		    	        "searching":	false,
+		    	        "language": {"url": url_language},
+		    	        "order": [[ 1, 'asc' ]],
+		    	        "columns": [
+		  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
+		  	            { 'data': 'firstName' },
+		  	            { 'data': 'employeeIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
+		  	        ],
+		  	      	"columnDefs": [{
+		                  "render": function ( data, type, row ) {
+		                		 return	'' +
+		                	  	 	    '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textSelect + '"' +
+		                	  	 	    '   onclick="selectEmployee(\''+ data + '\',\'' + row.title + row.firstName + " " + row.lastName + '\');" >' +
+		                	  	 	    '   <i class="fa fa-download"></i> '+ textSelect +' </button>'; 
+		                  },
+		                  "targets": 2
+		             }
+		  	      	]
+		    	    } );
+	    	
+		    		/* SET RELOAD TOOLTIP AFTER DATATABLE */
+			    	$('#datatables_employee').on( 'draw.dt', function () {
+			    		$('[data-toggle="tooltip"]').tooltip();
+			    	} );
+		});
+	    
+	    <!-- -------- Start datatables Approve -------- -->
+	    $(document).ready(function() {
+		    	var table =  $('#approver_datatables').DataTable( {
+		    			"processing": true,
+		    	        "paging":   false,
+		    	        "ordering": false,
+		    	        "info":     false,
+		    	        "searching":	false,
+		    	        "language": {"url": url_language},
+		    	        "order": [[ 1, 'asc' ]],
+		    	        "columns": [
+		  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
+		  	            { 'data': 'firstName' },
+		  	            { 'data': 'employeeIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
+		  	        ],
+		  	      	"columnDefs": [{
+		                  "render": function ( data, type, row ) {
+		                		 return	'' +
+		                	  	 	    '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textSelect + '"' +
+		                	  	 	    '   onclick="selectEmployee(\''+ data + '\',\'' + row.title + row.firstName + " " + row.lastName + '\');" >' +
+		                	  	 	    '   <i class="fa fa-download"></i> '+ textSelect +' </button>'; 
+		                  },
+		                  "targets": 2
+		             }
+		  	      	]
+		    	    } );
+	    	
+		    		/* SET RELOAD TOOLTIP AFTER DATATABLE */
+			    	$('#datatables_employee').on( 'draw.dt', function () {
+			    		$('[data-toggle="tooltip"]').tooltip();
+			    	} );
+		});
+	    
+	    <!-- -------- Start datatables Empleyee Approve -------- -->
+	    $(document).ready(function() {
+	    	var table =  $('#datatables_employee_approve').DataTable( {
+	    			"processing": true,
+	    	        "ajax": url_employee,
+	    	        "paging":   true,
+	    	        "ordering": true,
+	    	        "info":     true,
+	    	        "searching":	true,
+	    	        "language": {"url": url_language},
+	    	        "order": [[ 1, 'asc' ]],
+	    	        "columns": [
+	  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
+	  	            { 'data': 'employeeCode' , 'className': 'dt-body-code'},
+	  	            { 'data': 'firstName' },
+	  	            { 'data': 'employeeIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
+	  	        ],
+	  	      	"columnDefs": [{
+	                  "render": function ( data, type, row ) {
+	                		 return	'' +
+	                	  	 	    '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textSelect + '"' +
+	                	  	 	    '   onclick="selectEmployeeApprove(\''+ data + '\',\'' + row.title + row.firstName + " " + row.lastName + '\');" >' +
+	                	  	 	    '   <i class="fa fa-download"></i> '+ textSelect +' </button>'; 
+	                  },
+	                  "targets": 3
+	             },{
+	            	 	 "render": function ( data, type, row ) {
+            	 			 return	row.title + row.firstName + " " + row.lastName;
+	                  },
+	                  "targets": 2
+	             }
+	  	      	]
+	    	    } );
+    	
+	    		/* SET RELOAD TOOLTIP AFTER DATATABLE */
+		    	$('#datatables_employee_approve').on( 'draw.dt', function () {
+		    		$('[data-toggle="tooltip"]').tooltip();
+		    	} );
+        
+	       /* SET INDEX COLUMN */
+	        table.on( 'order.dt search.dt', function () {
+	        	table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+	                cell.innerHTML = i+1;
+	            } );
+	        } ).draw(); 
+	});
+	    
+		<!-- -------------------------------- -->
+		<!-- -------- Start Select2  -------- -->
+		<!-- -------------------------------- -->
+		$(function(){
+			var selectText = /*[[#{dropdown.text.select}]]*/;
+	      	$('#pr_product_measure').select2({
+	    	  		placeholder: selectText
+	     	 });
+	      	
+	      	 $('#pr_product_measure').on('select2:select', function (evt) {
+			    var data = $('#pr_product_measure').select2('data');
+			 	$("#pr_product_measureIdEncrypt").val(data[0].id);
+		     	$("#pr_product_measureName").val(data[0].text);
+		     }); 
+	      	 
+			/* <input type="hidden" id="pr_product_measureIdEncrypt" name="measureIdEncrypt"> 
+			<input type="hidden" id="pr_product_measureName" name="measureName">  */
+			
+	     	$('#approve_role_dropdown').select2({
+	    	  		placeholder: selectText
+	     	 });
+		});
+		
+		
+		
+		
+		<!-- -------------------------------- -->
+		<!-- -------- End Select2  -------- -->
+		<!-- -------------------------------- -->
+		
+		<!-- -------------------------------- -->
+		<!-- -------- Start Price  -------- -->
+		<!-- -------------------------------- -->
+		$("#totalAmoumt").maskMoney();
+		$("#totalPrice").maskMoney();
+		$("#pr_product_amount").maskMoney();
+		$("#pr_product_price").maskMoney();
+		$("#pr_product_totalPrice").maskMoney();
+		
+		<!-- -------------------------------- -->
+		<!-- -------- Start MODAL  ---------- -->
+		<!-- -------------------------------- -->
+		function openModalEmployee(){
+			$('#modal_employee').modal('show');
+		}
+		
+		function closeModalEmployee(){
+			$('#modal_employee').modal('hide');
+		}
+		
+		function openModalPrProduct(){
+			clearSelectProduct();
+			$('#modal_pr_product').modal('show');
+		}
+		
+		function closeModalProproduct(){
+			$('#modal_pr_product').modal('hide');
+		}
+		
+		function openModalProduct(){
+			$('#modal_product').modal('show');
+		}
+		
+		function closeModalProduct(){
+			$('#modal_product').modal('hide');
+		}
+		
+		function openModalDocument(){
+			$('#modal_document').modal('show');
+		}
+		
+		function closeModalDocument(){
+			$('#modal_document').modal('hide');
+		}
+		
+		function openModalApprover(){
+			$('#modal_approver').modal('show');
+		}
+		
+		function closeModalApprover(){
+			$('#modal_approver').modal('hide');
+		}
+		
+		function openModalEmployeeApprove(){
+			$('#modal_employee_approve').modal('show');
+		}
+		
+		function closeModalEmployeeApprove(){
+			$('#modal_employee_approve').modal('hide');
+		}
+		<!-- -------------------------------- -->
+		<!-- -------- Start Date  -------- -->
+		<!-- -------------------------------- -->
+        $(function () { 
+        		var localeUser = /*[[${session.user.language}]]*/;
+            $('#request_date_datepicker').datetimepicker({
+            		format: 'DD/MM/YYYY',
+            		locale: localeUser
+            });
+           
+            $('#demand_date_datepicker').datetimepicker({
+	        		format: 'DD/MM/YYYY',
+	        		locale: localeUser
+	        });
+            
+        });
+		
+		
+		<!-- -------------------------------- -->
+		<!-- -------- Start Action  -------- -->
+		<!-- -------------------------------- -->
+		function prProductAddValidAction() {
+	  		resetValidationErrorWithPrefix("pr_product_error_");
+	 	   	var urlAction = /*[[@{/user/purchaseRequestProduct/valid}]]*/;
+		    $.ajax({
+		        type: "POST",
+		        url: urlAction,
+		        dataType: 'json',
+		        data: $("#pr_product_form").serialize(),
+		        success: function(response){
+		            if(response.status == "SUCCESS"){
+		            		var editIndex = $("#pr_product_index").val();
+		            		var purchaseRequestProductIdEncrypt = response.result.purchaseRequestProductIdEncrypt;
+		            		var productIdEncrypt = response.result.productIdEncrypt;
+		            		var productCode = response.result.productCode;
+		            		var productName = response.result.productName;
+		            		var amount = response.result.amount;
+		            		var measureIdEncrypt = response.result.measureIdEncrypt;
+		            		var measureName = response.result.measureName;
+		            		var price = response.result.price;
+		            		var totalPrice = response.result.totalPrice;
+		            		prProductAddRow(editIndex,purchaseRequestProductIdEncrypt,productIdEncrypt,productCode,productName,amount,measureIdEncrypt,measureName,price,totalPrice);
+		            		closeModalProproduct();
+		            		calculateTotalAll();
+		             }else{
+		            	 	validationErrorShowWithPrefix("pr_product_error_",response.result);
+		             }
+		         },
+		         error: function(e){
+		             openNotification("error","error",e);
+		         }
+		    });
+		}
+		
+		function approverAddValidAction() {
+	  		resetValidationErrorWithPrefix("pr_product_error_");
+	 	   	var urlAction = /*[[@{/user/approver/valid}]]*/;
+		    $.ajax({
+		        type: "POST",
+		        url: urlAction,
+		        dataType: 'json',
+		        data: $("#pr_product_form").serialize(),
+		        success: function(response){
+		            if(response.status == "SUCCESS"){
+		            		var editIndex = $("#pr_product_index").val();
+		            		var purchaseRequestProductIdEncrypt = response.result.purchaseRequestProductIdEncrypt;
+		            		var productIdEncrypt = response.result.productIdEncrypt;
+		            		var productCode = response.result.productCode;
+		            		var productName = response.result.productName;
+		            		var amount = response.result.amount;
+		            		var measureIdEncrypt = response.result.measureIdEncrypt;
+		            		var measureName = response.result.measureName;
+		            		var price = response.result.price;
+		            		var totalPrice = response.result.totalPrice;
+		            		prProductAddRow(editIndex,purchaseRequestProductIdEncrypt,productIdEncrypt,productCode,productName,amount,measureIdEncrypt,measureName,price,totalPrice);
+		            		closeModalProproduct();
+		            		calculateTotalAll();
+		             }else{
+		            	 	validationErrorShowWithPrefix("pr_product_error_",response.result);
+		             }
+		         },
+		         error: function(e){
+		             openNotification("error","error",e);
+		         }
+		    });
+		}
+		
+		function selectEmployee(employeeIdEncrypt,fullname){
+			$("#employeeIdEncrypt").val(employeeIdEncrypt);
+			$("#employeeName").val(fullname);
+			closeModalEmployee();
+		}
+		
+		function selectEmployeeApprove(employeeIdEncrypt,fullname){
+			$("#modal_approver_employeeIdEncrypt").val(employeeIdEncrypt);
+			$("#modal_approver_employeeName").val(fullname);
+			closeModalEmployeeApprove();
+		}
+		
+		function selectProduct(productIdEncrypt,productCode,productName,measureIdEncrypt,measureName,price){
+			$("#pr_product_productIdEncrypt").val(productIdEncrypt);
+			$("#pr_product_productCode").val(productCode);
+			$("#pr_product_productName").val(productName);
+			$("#pr_product_amount").val("1.00");
+			$("#pr_product_measure").val(measureIdEncrypt).trigger('change');
+			$("#pr_product_measureIdEncrypt").val(measureIdEncrypt);
+			$("#pr_product_measureName").val(measureName);
+			$("#pr_product_price").val(price);
+			calculateTotalPrice();
+			closeModalProduct();
+		}
+		
+		function clearSelectProduct(){
+			$("#pr_product_purchaseRequestProductIdEncrypt").val("");
+			$("#pr_product_index").val("");
+			$("#pr_product_productIdEncrypt").val("");
+			$("#pr_product_productCode").val("");
+			$("#pr_product_productName").val("");
+			$("#pr_product_amount").val("0.00");
+			$("#pr_product_measure").val("").trigger('change');
+			$("#pr_product_measureIdEncrypt").val("");
+			$("#pr_product_measureName").val("");
+			$("#pr_product_price").val("0.00");
+			calculateTotalPrice();
+		}
+		
+		
+		
+		$('#pr_product_amount,#pr_product_price').on( 'change', function () {
+			calculateTotalPrice();
+		});
+		
+		function calculateTotalPrice(){
+			var amount = $("#pr_product_amount").val().replace(/,/g,"");
+			var price = $("#pr_product_price").val().replace(/,/g,"");
+			var totalPrice = (price * amount).toFixed(2);
+			$("#pr_product_totalPrice").val(totalPrice);
+			$("#pr_product_totalPrice").maskMoney('mask');
+		}
+		
+		
+		function openModalMainDelete(){
+			var messageMain = /*[[#{label.delete.content.confirm}]]*/;
+			var id = $("#purchaseRequestIdEncrypt").val();
+			var code = $("#purchaseRequestCode").val();
+			
+			var message = code;
+			
+			$("#delete_id").val(id);
+    			$("#modal_delete_content").html(messageMain + " : " + message);
+    			$('#modal_delete').modal('show');
+		}
+		
+		var pnotify = /*[[${pnotify}]]*/;
+		if(pnotify != null){
+			openNotification(pnotify.type,pnotify.title,pnotify.text);
+		}
+		
+		// check active menu
+	    $(document).ready(function() {
+			var CURRENT_URL = /*[[@{${menu.action}}]]*/;
+			$('#sidebar-menu').find('a[href="' + CURRENT_URL + '"]').parent('li').parent('ul').parent('li').children('a').trigger("click");
+	    });
+		
+	  
+	</script>
+	
+	
+</body>
+</html>

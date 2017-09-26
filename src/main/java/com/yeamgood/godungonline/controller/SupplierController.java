@@ -86,7 +86,7 @@ public class SupplierController {
 	}
 	
 	@RequestMapping(value="/user/supplier/list/ajax", method=RequestMethod.GET)
-	public @ResponseBody String userSupplierListtest(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException {
+	public @ResponseBody String userSupplierList(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException {
 		logger.debug("I");
 		logger.debug(Constants.LOG_INPUT, datatableRequest);
 		

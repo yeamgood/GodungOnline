@@ -109,13 +109,19 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value="/user/product/list/ajax", method=RequestMethod.GET)
-	public @ResponseBody String userProductListtest(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException {
+	public @ResponseBody String userProductList(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException {
 		logger.debug("I");
 		logger.debug(Constants.LOG_INPUT, datatableRequest);
 		
 		User userSession = (User) session.getAttribute("user");
 		Long godungId = userSession.getGodung().getGodungId();
 		List<Product> productList = productService.findAllByGodungGodungIdOrderByProductNameAsc(godungId);
+		
+		for (Product product : productList) {
+			product.getBrand().setBrandId(null);
+			product.getMeasure().setMeasureId(null);
+			product.getCategory().setCategoryId(null);
+		}
 		
 		DataTableObject dataTableObject = new DataTableObject();
 		dataTableObject.setAaData(new ArrayList<Object>(productList));

@@ -1,6 +1,5 @@
 package com.yeamgood.godungonline.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +33,7 @@ public class BrandServiceImpl implements BrandService{
 		logger.debug("I");
 		logger.debug("brandIdEncrypt:{}",brandIdEncrypt);
 		Brand brand = brandRepository.findOne(AESencrpUtils.decryptLong(brandIdEncrypt));
-		brand.encryptData(brand);
+		brand.encryptData();
 		logger.debug("O");
 		return brand;
 	}
@@ -45,7 +44,7 @@ public class BrandServiceImpl implements BrandService{
 		logger.debug("brandIdEncrypt:{}",brandIdEncrypt);
 		Brand brand = brandRepository.findOne(AESencrpUtils.decryptLong(brandIdEncrypt));
 		godungService.checkGodungId(brand.getGodung().getGodungId(), userSession);
-		brand.encryptData(brand);
+		brand.encryptData();
 		logger.debug("O");
 		return brand;
 	}
@@ -56,7 +55,7 @@ public class BrandServiceImpl implements BrandService{
 		List<Brand> brandList = brandRepository.findAll(new Sort(Sort.Direction.ASC, "brandName"));
 		for (Brand brand : brandList) {
 			brand.setBrandIdEncrypt(AESencrpUtils.encryptLong(brand.getBrandId()));
-			brand.encryptData(brand);
+			brand.encryptData();
 		}
 		logger.debug("O");
 		return brandList;
@@ -69,7 +68,7 @@ public class BrandServiceImpl implements BrandService{
 		List<Brand> brandList = brandRepository.findAllByGodungGodungIdOrderByBrandNameAsc(godungId);
 		for (Brand brand : brandList) {
 			brand.setBrandIdEncrypt(AESencrpUtils.encryptLong(brand.getBrandId()));
-			brand.encryptData(brand);
+			brand.encryptData();
 		}
 		logger.debug("O");
 		return brandList;
@@ -97,7 +96,7 @@ public class BrandServiceImpl implements BrandService{
 			}
 			String generateCode = GenerateCodeUtils.generateCode(GenerateCodeUtils.TYPE_BRAND, maxBrand.getBrandCode());
 			brand.setGodung(user.getGodung());
-			brand.setCreate(user.getEmail(), new Date());
+			brand.setCreate(user);
 			brand.setBrandCode(generateCode);
 			brand.setGodung(user.getGodung());
 			brandRepository.save(brand);
@@ -105,7 +104,7 @@ public class BrandServiceImpl implements BrandService{
 			Brand brandTemp = brandRepository.findOne(AESencrpUtils.decryptLong(brand.getBrandIdEncrypt()));
 			brandTemp.setBrandName(brand.getBrandName());
 			brandTemp.setDescription(brand.getDescription());
-			brandTemp.setUpdate(user.getEmail(), new Date());
+			brandTemp.setUpdate(user);
 			brandRepository.save(brandTemp);
 		}
 		logger.debug("O");

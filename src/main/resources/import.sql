@@ -339,50 +339,64 @@ INSERT INTO `godung_online`.`role` (`role_id`, `system`, `version`, `name`) VALU
 INSERT INTO `godung_online`.`role` (`role_id`, `system`, `version`, `name`) VALUES ('5', '1', '1', 'ADMIN_FREE_4');
 INSERT INTO `godung_online`.`role` (`role_id`, `system`, `version`, `name`) VALUES ('6', '1', '1', 'ADMIN_FREE_5');
 
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('1','/admin/home', '1', 'fa fa-home', 'Home', 'menu.name.home', '1');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('2','/admin/user', '1', 'fa fa-user', 'Users', 'menu.name.user', '2');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('3','/admin/role', '1', 'fa fa-tasks', 'Roles', 'menu.name.role', '3');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('4','/admin/menu', '1', 'fa fa-desktop', 'Menu', 'menu.name.menu', '4');
-INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '1');
-INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '2');
-INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '3');
-INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '4');
 
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('5','/user/home', '1', 'fa fa-home', 'Home', 'menu.name.home', '1');
-INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '5');
+-- USER MENU --
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('1','/user/home', '1', 'fa fa-home', 'Home', 'menu.name.home', '1');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '1');
 
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('8','javascript:;', '1', 'fa fa-table', 'Product Management', 'menu.name.productmanagement', '30');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('9','/user/warehouse', '1', 'fa fa-home', 'Werehouse', 'menu.name.werehouse', '1','8');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('10','/user/product', '1', 'fa fa-cubes', 'Product', 'menu.name.product', '2','8');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('11','/user/brand', '1', 'fa fa-tags', 'Brand', 'menu.name.brand', '3','8');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('12','/user/measure', '1', 'fa fa-book', 'Measure', 'menu.name.measure', '4','8');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('13','/user/category', '1', 'fa fa-sitemap', 'Category', 'menu.name.category', '5','8');
-INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '8');
-INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '9');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('10','javascript:;', '1', 'fa fa-book', 'Purchase', 'menu.name.purchase', '1');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('11','/user/purchaseRequest', '1', 'fa fa-file-text-o', 'Profile', 'menu.name.purchaserequest', '1','10');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '10');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '11');
-INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '12');
-INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '13');
 
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('30','javascript:;', '1', 'fa fa-users', 'Person Management', 'menu.name.person.management', '40');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('31','/user/supplier', '1', 'fa fa-university', 'Supplier', 'menu.name.supplier', '1','30');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('32','/user/customer', '1', 'fa fa-user', 'Customer', 'menu.name.customer', '2','30');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('33','/user/employee', '1', 'fa fa-users', 'Employee', 'menu.name.employee', '3','30');
-INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '30');
-INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '31');
-INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '32');
-INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '33');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('40','javascript:;', '1', 'fa fa-table', 'Product Management', 'menu.name.productmanagement', '30');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('41','/user/warehouse', '1', 'fa fa-home', 'Werehouse', 'menu.name.werehouse', '1','40');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('42','/user/product', '1', 'fa fa-cubes', 'Product', 'menu.name.product', '2','40');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('43','/user/brand', '1', 'fa fa-tags', 'Brand', 'menu.name.brand', '3','40');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('44','/user/measure', '1', 'fa fa-book', 'Measure', 'menu.name.measure', '4','40');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('45','/user/category', '1', 'fa fa-sitemap', 'Category', 'menu.name.category', '5','40');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '40');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '41');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '42');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '43');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '44');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '45');
 
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('50','javascript:;', '1', 'fa fa-cogs', 'Setting', 'menu.name.setting', '50');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('51','/user/profile', '1', 'fa fa-user', 'Profile', 'menu.name.profile', '1','50');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('52','/user/rolegodung', '1', 'fa fa-briefcase', 'Rolegodung', 'menu.name.rolegodung', '2','50');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('50','javascript:;', '1', 'fa fa-users', 'Person Management', 'menu.name.person.management', '40');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('51','/user/supplier', '1', 'fa fa-university', 'Supplier', 'menu.name.supplier', '1','50');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('52','/user/customer', '1', 'fa fa-user', 'Customer', 'menu.name.customer', '2','50');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('53','/user/employee', '1', 'fa fa-users', 'Employee', 'menu.name.employee', '3','50');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '50');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '51');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '52');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '53');
+
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('100','javascript:;', '1', 'fa fa-cogs', 'Setting', 'menu.name.setting', '50');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('101','/user/profile', '1', 'fa fa-user', 'Profile', 'menu.name.profile', '1','100');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('102','/user/rolegodung', '1', 'fa fa-briefcase', 'Rolegodung', 'menu.name.rolegodung', '2','100');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '100');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '101');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '102');
+
+-- ADMIN MENU --
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('200','/admin/home', '1', 'fa fa-home', 'Home', 'menu.name.home', '1');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('201','/admin/user', '1', 'fa fa-user', 'Users', 'menu.name.user', '2');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('202','/admin/role', '1', 'fa fa-tasks', 'Roles', 'menu.name.role', '3');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('203','/admin/menu', '1', 'fa fa-desktop', 'Menu', 'menu.name.menu', '4');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '200');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '201');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '202');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '203');
+
 
 -- COMMON CODE --
 INSERT INTO `godung_online`.`common` (`common_id`, `common_type`, `common_key`, `common_value`, `description`,`sequence`) VALUES ('1', 'LANGUAGE', 'th', 'ภาษาไทย', 'language thai','1');
 INSERT INTO `godung_online`.`common` (`common_id`, `common_type`, `common_key`, `common_value`, `description`,`sequence`) VALUES ('2', 'LANGUAGE', 'en', 'English', 'language Englist','2');
+INSERT INTO `godung_online`.`common` (`common_id`, `common_type`, `common_key`, `common_value`, `description`,`sequence`) VALUES ('10', 'APPROVE_ROLE', 'verify', 'approve.role.verify', '','1');
+INSERT INTO `godung_online`.`common` (`common_id`, `common_type`, `common_key`, `common_value`, `description`,`sequence`) VALUES ('11', 'APPROVE_ROLE', 'approve', 'approve.role.approve', '','2');
+INSERT INTO `godung_online`.`common` (`common_id`, `common_type`, `common_key`, `common_value`, `description`,`sequence`) VALUES ('20', 'APPROVE_ACTION', 'reject', 'approve.action.reject', '','1');
+INSERT INTO `godung_online`.`common` (`common_id`, `common_type`, `common_key`, `common_value`, `description`,`sequence`) VALUES ('21', 'APPROVE_ACTION', 'approve', 'approve.action.approve', '','2');
+INSERT INTO `godung_online`.`common` (`common_id`, `common_type`, `common_key`, `common_value`, `description`,`sequence`) VALUES ('22', 'APPROVE_ACTION', 'cancel', 'approve.action.cancel', '','2');
 
 -- ADD USER ADMIN --
 INSERT INTO `godung_online`.`user` (`user_id`,`active`, `email`, `name`, `password`,`language`) VALUES ('1','1', 'admin@gmail.com', 'admin', '$2a$10$z3LIFllUl2jRgzEBl2JYnucHH8v7Dp64A11du7Ehmo6drTf7jeOKq','en');
@@ -391,7 +405,7 @@ INSERT INTO `godung_online`.`godung` (`godung_id`, `godung_name`, `create_date`,
 INSERT INTO `godung_online`.`godung_user_role` (`id`, `godung_id`, `role_id`, `user_id`) VALUES ('1', '1', '1', '1');
 
 -- ADD USER USER --
-INSERT INTO `godung_online`.`user` (`user_id`,`active`, `email`, `name`, `password`,`language`) VALUES ('2','1', 'user@gmail.com', 'user niyomthrong', '$2a$10$MdTHdzf7fafXyH72gWn5XuPYj1GsPUYUqF5tSt6bmw75LVMsONEl.','en');
+INSERT INTO `godung_online`.`user` (`user_id`,`active`, `email`, `name`, `password`,`language`) VALUES ('2','1', 'user@gmail.com', 'user niyomthrong', '$2a$10$MdTHdzf7fafXyH72gWn5XuPYj1GsPUYUqF5tSt6bmw75LVMsONEl.','th');
 INSERT INTO `godung_online`.`user_rolelogin` (`user_id`, `role_id`) VALUES ('2', '2');
 INSERT INTO `godung_online`.`godung` (`godung_id`, `godung_name`, `create_date`, `create_user`, `version`, `active`) VALUES ('2', 'userGodung', SYSDATE() , 'SYSTEM', '0', '1');
 INSERT INTO `godung_online`.`godung_user_role` (`id`, `godung_id`, `role_id`, `user_id`) VALUES ('2', '2', '2', '2');
@@ -439,16 +453,16 @@ INSERT INTO `godung_online`.`customer` (`customer_id`,`email`,`title`,`first_nam
 -- EMPLOYEE --
 INSERT INTO `godung_online`.`address` (`address_id`,`street1`,`street2`,`city`,`province_code`,`postcode`,`country_id`,`version`) VALUES (9,'103/64 ถนนศุภกิจ','ต.หน้าเมือง','อ.เมือง',1,'24000',217,0);
 INSERT INTO `godung_online`.`address` (`address_id`,`street1`,`street2`,`city`,`province_code`,`postcode`,`country_id`,`version`) VALUES (10,'103/64 ถนนศุภกิจ','ต.หน้าเมือง','อ.เมือง',1,'24000',217,0);
-INSERT INTO `godung_online`.`employee` (`employee_id`,`email`,`title`,`first_name`,`last_name`,`national_number`,`employee_code`,`tax_number`,`telephone`,`address_id`,`godung_id`,`version`) VALUES (1,'yeamgood@gmail.com','นาย','ธนรัฐ','นิยมตรง','1101500243245','EMP20170830-00001','','0878336750',9,2,0);
-INSERT INTO `godung_online`.`employee` (`employee_id`,`email`,`title`,`first_name`,`last_name`,`national_number`,`employee_code`,`tax_number`,`telephone`,`address_id`,`godung_id`,`version`) VALUES (2,'thailand@gmail.com','นาย','สมชาย','ใจดี','1101500243245','EMP20170830-00002','','0878336750',10,2,0);
+INSERT INTO `godung_online`.`employee` (`employee_id`,`email`,`title`,`first_name`,`last_name`,`national_number`,`employee_code`,`tax_number`,`telephone`,`address_id`,`godung_id`,`rolegodung_id`,`version`) VALUES (1,'yeamgood@gmail.com','นาย','ธนรัฐ','นิยมตรง','1101500243245','EMP20170830-00001','','0878336750',9,2,1,0);
+INSERT INTO `godung_online`.`employee` (`employee_id`,`email`,`title`,`first_name`,`last_name`,`national_number`,`employee_code`,`tax_number`,`telephone`,`address_id`,`godung_id`,`rolegodung_id`,`version`) VALUES (2,'thailand@gmail.com','นาย','สมชาย','ใจดี','1101500243245','EMP20170830-00002','','0878336750',10,2,2,0);
 
 INSERT INTO `godung_online`.`product` (`product_id`,`product_code`, `brand_id`, `measure_id`, `category_id`, `version`, `product_name`, `godung_id`, `description`) VALUES ('1', 'PRO20170830-00001', '1','1','3', '0', 'เหล็กท่อ 1.5นิ้ว', '2','');
 INSERT INTO `godung_online`.`product` (`product_id`,`product_code`, `brand_id`, `measure_id`, `category_id`, `version`, `product_name`, `godung_id`, `description`) VALUES ('2', 'PRO20170830-00002', '1','1','3', '0', 'เหล็กท่อ 2นิ้ว', '2','');
 INSERT INTO `godung_online`.`product` (`product_id`,`product_code`, `brand_id`, `measure_id`, `category_id`, `version`, `product_name`, `godung_id`, `description`) VALUES ('3', 'PRO20170830-00003', '1','1','3', '0', 'เหล็กท่อ 3นิ้ว', '2','');
-INSERT INTO `godung_online`.`product` (`product_id`,`product_code`, `brand_id`, `measure_id`, `category_id`, `version`, `product_name`, `godung_id`, `description`) VALUES ('4', 'PRO20170830-00003', '2','2','2', '0', 'กระจกใสบานใหญ่', '2','');
-INSERT INTO `godung_online`.`price` (`price_id`, `create_date`, `create_user`, `version`, `end_date`, `price`, `start_date`, `currency_id`, `measure_id`) VALUES ('1', '2017-09-16 23:10:58', 'user@gmail.com', '0', '2017-09-15 00:00:00', '1000.00', '2017-09-15 00:00:00', '1', '2');
-INSERT INTO `godung_online`.`product_price` (`product_id`, `price_id`) VALUES ('1', '1');
-INSERT INTO `godung_online`.`dealer` (`dealer_id`, `create_date`, `create_user`, `version`, `end_date`, `price`, `start_date`, `measure_id`, `supplier_id`, `currency_id`) VALUES ('1', '2017-09-16 23:20:09', 'user@gmail.com', '0', '2017-09-23 00:00:00', '2000.00', '2017-09-16 00:00:00', '2', '2', '1');
+INSERT INTO `godung_online`.`product` (`product_id`,`product_code`, `brand_id`, `measure_id`, `category_id`, `version`, `product_name`, `godung_id`, `description`) VALUES ('4', 'PRO20170830-00004', '2','2','2', '0', 'กระจกใสบานใหญ่', '2','');
+INSERT INTO `godung_online`.`sale` (`sale_id`, `create_date`, `create_user`, `version`, `end_date`, `price`, `start_date`, `currency_id`, `measure_id`) VALUES ('1', '2017-09-16 23:10:58', 'user@gmail.com', '0', '2017-09-15 00:00:00', '1000.00', '2017-09-15 00:00:00', '1', '2');
+INSERT INTO `godung_online`.`product_sale` (`product_id`, `sale_id`) VALUES ('1', '1');
+INSERT INTO `godung_online`.`dealer` (`dealer_id`, `create_date`, `create_user`, `version`, `end_date`, `price`, `start_date`, `measure_id`, `supplier_id`, `currency_id`) VALUES ('1', '2017-09-16 23:20:09', 'user@gmail.com', '0', '2018-09-23 00:00:00', '2000.00', '2017-09-16 00:00:00', '2', '2', '1');
 INSERT INTO `godung_online`.`product_dealer` (`product_id`, `dealer_id`) VALUES ('1', '1');
 INSERT INTO `godung_online`.`stock` (`stock_id`, `create_date`, `create_user`, `version`, `remind_number`, `location_id`, `warehouse_id`) VALUES ('1', '2017-09-16 23:21:43', 'user@gmail.com', '0', '10.00', '1', '1');
 INSERT INTO `godung_online`.`product_stock` (`product_id`, `stock_id`) VALUES ('1', '1');

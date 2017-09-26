@@ -1,7 +1,6 @@
 package com.yeamgood.godungonline.service;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashSet;
 
 import org.slf4j.Logger;
@@ -61,10 +60,12 @@ public class UserServiceImpl implements UserService{
 	public void saveUser(User user) {
 		logger.debug("I:");
 		Role role = roleRepository.findById(ROLE_ADMIN_FREE);
+		User userSystem = new User();
+		userSystem.setEmail(USER_SYSTEM);
 		
 		Godung godung = user.getGodung();
 		godung.setActive(ACTIVE);
-		godung.setCreate(USER_SYSTEM, new Date());
+		godung.setCreate(userSystem);
 		godungRepository.save(godung);
 		
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));

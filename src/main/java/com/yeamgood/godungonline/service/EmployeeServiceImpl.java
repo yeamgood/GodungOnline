@@ -1,6 +1,5 @@
 package com.yeamgood.godungonline.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -45,7 +44,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 		logger.debug("I:");
 		logger.debug("O:");
 		Employee employee = employeeRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		employee.encryptData(employee);
+		employee.encryptData();
 		godungService.checkGodungId(employee.getGodung().getGodungId(), userSession);
 		return employee;
 	}
@@ -55,9 +54,14 @@ public class EmployeeServiceImpl implements EmployeeService{
 		logger.debug(Constants.LOG_INPUT, godungId);
 		logger.debug("O:");
 		List<Employee> employeeList = employeeRepository.findAllByGodungGodungIdOrderByEmployeeCodeAsc(godungId);
+		
+		Rolegodung rolegodung = new Rolegodung();
 		for (Employee employee : employeeList) {
 			employee.setEmployeeIdEncrypt(AESencrpUtils.encryptLong(employee.getEmployeeId()));
-			employee.encryptData(employee);
+			employee.encryptData();
+			if(employee.getRolegodung() == null) {
+				employee.setRolegodung(rolegodung);
+			}
 		}
 		return employeeList;
 	}
@@ -83,7 +87,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 			String generateCode = GenerateCodeUtils.generateCode(GenerateCodeUtils.TYPE_EMPLOYEE, maxEmployee.getEmployeeCode());
 			employee.setEmployeeCode(generateCode);
 			employee.setGodung(userSession.getGodung());
-			employee.setCreate(userSession.getEmail(), new Date());
+			employee.setCreate(userSession);
 			
 			// PROVINCE
 			Province provinceTemp = employee.getAddress().getProvince();
@@ -106,7 +110,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 			Long id = AESencrpUtils.decryptLong(employee.getEmployeeIdEncrypt());
 			Employee employeeTemp = employeeRepository.findOne(id);
 			employeeTemp.setObject(employee);
-			employeeTemp.setUpdate(userSession.getEmail(), new Date());
+			employeeTemp.setUpdate(userSession);
 			
 			// ADDRESS
 			employeeTemp.getAddress().setObject(employee.getAddress());
@@ -132,7 +136,6 @@ public class EmployeeServiceImpl implements EmployeeService{
 			
 			employeeRepository.save(employeeTemp);
 			employee.setEmployeeIdEncrypt(AESencrpUtils.encryptLong(employeeTemp.getEmployeeId()));
-			logger.debug("I:Step6");
 		}
 		logger.debug("O:");
 	}

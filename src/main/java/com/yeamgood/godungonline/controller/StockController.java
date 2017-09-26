@@ -1,7 +1,5 @@
 package com.yeamgood.godungonline.controller;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +33,7 @@ import com.yeamgood.godungonline.service.MenuService;
 import com.yeamgood.godungonline.service.ProductService;
 import com.yeamgood.godungonline.service.StockService;
 import com.yeamgood.godungonline.utils.AESencrpUtils;
+import com.yeamgood.godungonline.utils.NumberUtils;
 
 @Controller
 public class StockController {
@@ -69,19 +68,17 @@ public class StockController {
 		StockForm stockForm;
 		List<StockForm> stockFormList = new ArrayList<>();
 		
-		DecimalFormat df = new DecimalFormat();
-		df.setMinimumFractionDigits(2);
 		for (Stock stock : stockList) {
 			stockForm = new StockForm();
 			stockForm.setStockIdEncrypt(AESencrpUtils.encryptLong(stock.getStockId()));
-			stockForm.setRemindNumber(df.format(stock.getRemindNumber()));
+			stockForm.setRemindNumber(NumberUtils.bigDecimalToString(stock.getRemindNumber()));
 			if(stock.getWarehouse() != null) {
 				stockForm.setWarehouseName(stock.getWarehouse().getWarehouseName());
 			}
 			if(stock.getLocation() != null) {
 				stockForm.setLocationCode(stock.getLocation().getLocationCode());
 			}
-			stockForm.setRemainNumber(df.format(new BigDecimal(0)));
+			stockForm.setRemainNumber(NumberUtils.EMPLY_DATA);
 			stockFormList.add(stockForm);
 		}
 		DataTableObject dataTableObject = new DataTableObject();
@@ -116,15 +113,13 @@ public class StockController {
 			User userSession = (User) session.getAttribute("user");
 			Stock stockTemp = stockService.findByIdEncrypt(stockForm.getStockIdEncrypt(), userSession);
 			
-			DecimalFormat df = new DecimalFormat();
-			df.setMinimumFractionDigits(2);
 			StockForm stockFormTemp = new StockForm();
 			stockFormTemp.setStockIdEncrypt(stockTemp.getStockIdEncrypt());
 			stockFormTemp.setWarehouseIdEncrypt(AESencrpUtils.encryptLong(stockTemp.getWarehouse().getWarehouseId()));
 			if(stockTemp.getLocation() != null) {
 				stockFormTemp.setLocationIdEncrypt(AESencrpUtils.encryptLong(stockTemp.getLocation().getLocationId()));
 			}
-			stockFormTemp.setRemindNumber(df.format(stockTemp.getRemindNumber()));
+			stockFormTemp.setRemindNumber(NumberUtils.bigDecimalToString(stockTemp.getRemindNumber()));
 			
 			jsonResponse.setStatus(Constants.STATUS_SUCCESS);
 			jsonResponse.setResult(stockFormTemp);

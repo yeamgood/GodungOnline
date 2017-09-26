@@ -1,7 +1,6 @@
 package com.yeamgood.godungonline.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -40,7 +39,7 @@ public class WarehouseServiceImpl implements WarehouseService{
 		logger.debug("I:");
 		Warehouse warehouse = warehouseRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
 		godungService.checkGodungId(warehouse.getGodung().getGodungId(), userSession);
-		warehouse.encryptData(warehouse);
+		warehouse.encryptData();
 		logger.debug("O:");
 		return warehouse;
 	}
@@ -52,7 +51,7 @@ public class WarehouseServiceImpl implements WarehouseService{
 		List<Warehouse> warehouseList = warehouseRepository.findAllByGodungGodungIdOrderByWarehouseCodeAsc(godungId);
 		for (Warehouse warehouse : warehouseList) {
 			warehouse.setWarehouseIdEncrypt(AESencrpUtils.encryptLong(warehouse.getWarehouseId()));
-			warehouse.encryptData(warehouse);
+			warehouse.encryptData();
 		}
 		logger.debug("O:");
 		return warehouseList;
@@ -92,7 +91,7 @@ public class WarehouseServiceImpl implements WarehouseService{
 			String generateCode = GenerateCodeUtils.generateCode(GenerateCodeUtils.TYPE_WAREHOUSE , maxWarehouse.getWarehouseCode());
 			warehouse.setWarehouseCode(generateCode);
 			warehouse.setGodung(userSession.getGodung());
-			warehouse.setCreate(userSession.getEmail(), new Date());
+			warehouse.setCreate(userSession);
 			warehouse.getLocationList().clear();
 			warehouse.getLocationList().addAll(locationTempList);
 			warehouseRepository.save(warehouse);
@@ -101,12 +100,11 @@ public class WarehouseServiceImpl implements WarehouseService{
 			Long id = AESencrpUtils.decryptLong(warehouse.getWarehouseIdEncrypt());
 			Warehouse warehouseTemp = warehouseRepository.findOne(id);
 			warehouseTemp.setObject(warehouse);
-			warehouseTemp.setUpdate(userSession.getEmail(), new Date());
+			warehouseTemp.setUpdate(userSession);
 			warehouseTemp.getLocationList().clear();
 			warehouseTemp.getLocationList().addAll(locationTempList);
 			warehouseRepository.save(warehouseTemp);
 			warehouse.setWarehouseIdEncrypt(AESencrpUtils.encryptLong(warehouse.getWarehouseId()));
-			logger.debug("I:Step6");
 		}
 		logger.debug("O:");
 	}
@@ -130,12 +128,12 @@ public class WarehouseServiceImpl implements WarehouseService{
 		Location locaitonTemp;
 		for (Location location : locationList) {
 			if(StringUtils.isBlank(location.getLocationIdEncrypt())) {
-				location.setCreate(userSession.getEmail(), new Date());
+				location.setCreate(userSession);
 				warehouseTemp.getLocationList().add(location);
 			}else {
 				locaitonTemp = locationRepository.findOne(AESencrpUtils.decryptLong(location.getLocationIdEncrypt()));
 				locaitonTemp.setObject(location);
-				locaitonTemp.setUpdate(userSession.getEmail(), new Date());
+				locaitonTemp.setUpdate(userSession);
 				locationRepository.save(locaitonTemp);
 			}
 		}

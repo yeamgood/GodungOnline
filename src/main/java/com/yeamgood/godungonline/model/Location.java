@@ -58,8 +58,8 @@ public class Location extends ModelTemplate{
 		this.description = location.getDescription();
 	}
 	
-	public void encryptData(Location location) {
-		this.locationIdEncrypt = AESencrpUtils.encryptLong(location.getLocationId());
+	public void encryptData() {
+		this.locationIdEncrypt = AESencrpUtils.encryptLong(this.locationId);
 		this.locationId = null;
 	}
 

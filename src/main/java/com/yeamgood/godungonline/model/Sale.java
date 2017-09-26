@@ -56,8 +56,8 @@ public class Sale extends ModelTemplate{
 		this.endDate = sale.getEndDate();
 	}
 	
-	public void encryptData(Sale sale) {
-		this.saleIdEncrypt = AESencrpUtils.encryptLong(sale.getSaleId());
+	public void encryptData() {
+		this.saleIdEncrypt = AESencrpUtils.encryptLong(this.saleId);
 		this.saleId = null;
 	}
 

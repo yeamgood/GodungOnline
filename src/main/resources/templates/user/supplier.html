@@ -176,12 +176,12 @@
 									 <table id="datatablesMain" class="table table-striped table-bordered" style="width:100%">
 										<thead class="search-content-header">
 											<tr>
-												<th th:text="#{datatables.text.no}"></th>
-												<th th:text="#{form.supplier.label.code}" class="col-md-1"></th>
-												<th th:text="#{form.supplier.label.fullname}" class="col-md-2"></th>
-												<th th:text="#{form.supplier.label.telephone}" class="col-md-1"></th>
-												<th th:text="#{form.supplier.label.email}" class="col-md-1"></th>
-												<th th:text="#{form.brand.label.action}"></th>
+												<th th:text="#{datatables.text.no}" class="dt-body-no"></th>
+												<th th:text="#{form.supplier.label.code}" class="dt-body-code"></th>
+												<th th:text="#{form.supplier.label.fullname}"></th>
+												<th th:text="#{form.supplier.label.telephone}"></th>
+												<th th:text="#{form.supplier.label.email}"></th>
+												<th th:text="#{form.brand.label.action}" class="dt-body-action"></th>
 											</tr>
 										</thead>
 									</table>
@@ -291,7 +291,7 @@
 		    	        "order": [[ 1, 'asc' ]],
 		    	        "columns": [
 		  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
-		  	            { 'data': 'supplierCode' },
+		  	            { 'data': 'supplierCode' ,'className': 'dt-body-cdoe'},
 		  	            { 'data': 'firstName' },
 		  	            { 'data': 'telephone' },
 		  	            { 'data': 'email' },

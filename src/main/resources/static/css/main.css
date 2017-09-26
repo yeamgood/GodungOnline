@@ -83,6 +83,10 @@ label {
     vertical-align: middle !important;
 }
 
+.dt-body-code {
+	width: 140px !important;
+}
+
 .dt-body-action button{
     margin-bottom: 0px !important;
     margin-right: 0px !important;
@@ -118,6 +122,10 @@ label {
 
 .table-small-header{
 	margin-bottom: 0px;
+}
+
+.dataTables_filter{
+	width: 100%;
 }
 
 /* Modal */
@@ -189,4 +197,16 @@ label {
 /* SELECT2 EDIT */
 .select2-container--default .select2-selection--single .select2-selection__rendered{
 	color: #555 !important;
+}
+
+.input_date{
+	margin-bottom: 0px;
+}
+
+.input_btn{
+	margin-right: 0px;
+}
+
+.input_money{
+	text-align: right;
 }

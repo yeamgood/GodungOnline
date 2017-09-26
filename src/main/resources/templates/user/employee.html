@@ -109,6 +109,7 @@
 												<span th:text="#{label.search.by}"></span> 
 												<span th:text="#{form.employee.label.code}"></span> ,
 												<span th:text="#{form.employee.label.fullname}"></span> ,
+												<span th:text="#{form.rolegodung.header}"></span> ,
 												<span th:text="#{form.employee.label.telephone}"></span> ,
 												<span th:text="#{form.employee.label.email}"></span>
 											</div>
@@ -169,12 +170,13 @@
 									 <table id="datatablesMain" class="table table-striped table-bordered" style="width:100%">
 										<thead class="search-content-header">
 											<tr>
-												<th th:text="#{datatables.text.no}"></th>
-												<th th:text="#{form.employee.label.code}" class="col-md-1"></th>
-												<th th:text="#{form.employee.label.fullname}" class="col-md-2"></th>
-												<th th:text="#{form.employee.label.telephone}" class="col-md-1"></th>
-												<th th:text="#{form.employee.label.email}" class="col-md-1"></th>
-												<th th:text="#{form.brand.label.action}"></th>
+												<th th:text="#{datatables.text.no}" class="dt-body-no"></th>
+												<th th:text="#{form.employee.label.code}" class="dt-body-code"></th>
+												<th th:text="#{form.employee.label.fullname}"></th>
+												<th th:text="#{form.rolegodung.header}"></th>
+												<th th:text="#{form.employee.label.telephone}"></th>
+												<th th:text="#{form.employee.label.email}"></th>
+												<th th:text="#{form.brand.label.action}" class="dt-body-action"></th>
 											</tr>
 										</thead>
 									</table>
@@ -286,6 +288,7 @@
 		  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
 		  	            { 'data': 'employeeCode' },
 		  	            { 'data': 'firstName' },
+		  	            { 'data': 'rolegodung.rolegodungName' },
 		  	            { 'data': 'telephone' },
 		  	            { 'data': 'email' },
 		  	            { 'data': 'employeeIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
@@ -301,14 +304,10 @@
 		                	  	 	    '   onclick="openModalDelete(\''+data+'\',\''+row.employeeCode + " " + row.firstName + '\');" >' +
 		                	  	 	    '   <i class="fa fa-trash"></i></button>'; 
 		                  },
-		                  "targets": 5
+		                  "targets": 6
 		             },{
 		            	 	 "render": function ( data, type, row ) {
-		            	 		 if(row.employeeType == "PERSON"){
-		            	 			 return	row.title + row.firstName + " " + row.lastName;
-		            	 		 }else{
-		            	 			 return	row.firstName;
-		            	 		 }
+		            	 		return	row.title + row.firstName + " " + row.lastName;
 		                  },
 		                  "targets": 2
 		             }

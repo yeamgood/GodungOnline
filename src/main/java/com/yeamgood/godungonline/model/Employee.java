@@ -98,8 +98,12 @@ public class Employee extends ModelTemplate{
 		this.email = employee.getEmail();
 	}
 	
-	public void encryptData(Employee employee) {
-		this.employeeIdEncrypt = AESencrpUtils.encryptLong(employee.getEmployeeId());
+	public String getFullName() {
+		return this.title + this.firstName + " " + this.lastName;
+	}
+	
+	public void encryptData() {
+		this.employeeIdEncrypt = AESencrpUtils.encryptLong(this.employeeId);
 		this.employeeId = null;
 	}
 

@@ -3,15 +3,19 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
   <test name="Default test(failed)">
     <classes>
-      <class name="com.yeamgood.godungonline.web.TestProfile">
+      <class name="com.yeamgood.godungonline.web.TestRolegodung">
         <methods>
-          <include name="mainPageInputGodungNameMaxLenght"/>
+          <include name="mainPageDatatablesSearchByCode000001"/>
+          <include name="managePageEdit00002"/>
+          <include name="mainPageDatatablesSearchByName00001"/>
           <include name="setUp"/>
           <include name="login"/>
           <include name="tearDown"/>
-          <include name="mainPageInputNameMaxLenght"/>
+          <include name="managePageSave00001"/>
+          <include name="mainPageDatatablesSearchByDescription00001"/>
+          <include name="managePageSave00002"/>
         </methods>
-      </class> <!-- com.yeamgood.godungonline.web.TestProfile -->
+      </class> <!-- com.yeamgood.godungonline.web.TestRolegodung -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

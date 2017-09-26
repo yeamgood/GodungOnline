@@ -79,7 +79,7 @@ public class RolegodungController {
 	}
 	
 	@RequestMapping(value="/user/rolegodung/list/ajax", method=RequestMethod.GET)
-	public @ResponseBody String userRolegodungListtest(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException {
+	public @ResponseBody String userRolegodungList(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException {
 		logger.debug("I");
 		logger.debug(Constants.LOG_INPUT,datatableRequest);
 		

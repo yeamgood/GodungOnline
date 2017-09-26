@@ -1,8 +1,6 @@
 package com.yeamgood.godungonline.service;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -23,6 +21,7 @@ import com.yeamgood.godungonline.repository.ProductRepository;
 import com.yeamgood.godungonline.repository.SupplierRepository;
 import com.yeamgood.godungonline.utils.AESencrpUtils;
 import com.yeamgood.godungonline.utils.DateUtils;
+import com.yeamgood.godungonline.utils.NumberUtils;
 
 @Service("dealerService")
 public class DealerServiceImpl implements DealerService{
@@ -49,7 +48,7 @@ public class DealerServiceImpl implements DealerService{
 		logger.debug("I:");
 		logger.debug("O:");
 		Dealer dealer = dealerRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		dealer.encryptData(dealer);
+		dealer.encryptData();
 		return dealer;
 	}
 
@@ -60,26 +59,26 @@ public class DealerServiceImpl implements DealerService{
 		logger.debug(Constants.LOG_INPUT, productIdEncrypt);
 		if(StringUtils.isBlank(dealerForm.getDealerIdEncrypt())) {
 			Dealer dealer = new Dealer();
-			dealer.setPrice(new BigDecimal(dealerForm.getPrice().replace(",", "")));
+			dealer.setPrice(NumberUtils.stringToBigDecimal(dealerForm.getPrice()));
 			dealer.setStartDate(DateUtils.stringToDate(dealerForm.getStartDate(), DateUtils.DDMMYYYY));
 			dealer.setEndDate(DateUtils.stringToDate(dealerForm.getEndDate(), DateUtils.DDMMYYYY));
 			dealer.setSupplier(supplierRepository.findOne(AESencrpUtils.decryptLong(dealerForm.getSupplierIdEncrypt())));
 			dealer.setMeasure(measureRepository.findOne(AESencrpUtils.decryptLong(dealerForm.getMeasureIdEncrypt())));
 			dealer.setCurrency(currencyRepository.findOne(dealerForm.getCurrencyId()));
-			dealer.setCreate(userSession.getEmail(), new Date());
+			dealer.setCreate(userSession);
 			
 			Product product = productRepository.findOne(AESencrpUtils.decryptLong(productIdEncrypt));
 			product.getDealerList().add(dealer);
 			productRepository.save(product);
 		}else {
 			Dealer dealerTemp = dealerRepository.findOne(AESencrpUtils.decryptLong(dealerForm.getDealerIdEncrypt()));
-			dealerTemp.setPrice(new BigDecimal(dealerForm.getPrice().replace(",", "")));
+			dealerTemp.setPrice(NumberUtils.stringToBigDecimal(dealerForm.getPrice()));
 			dealerTemp.setStartDate(DateUtils.stringToDate(dealerForm.getStartDate(), DateUtils.DDMMYYYY));
 			dealerTemp.setEndDate(DateUtils.stringToDate(dealerForm.getEndDate(), DateUtils.DDMMYYYY));
 			dealerTemp.setSupplier(supplierRepository.findOne(AESencrpUtils.decryptLong(dealerForm.getSupplierIdEncrypt())));
 			dealerTemp.setMeasure(measureRepository.findOne(AESencrpUtils.decryptLong(dealerForm.getMeasureIdEncrypt())));
 			dealerTemp.setCurrency(currencyRepository.findOne(dealerForm.getCurrencyId()));
-			dealerTemp.setUpdate(userSession.getEmail(), new Date());
+			dealerTemp.setUpdate(userSession);
 			dealerRepository.save(dealerTemp);
 		}
 		logger.debug("O:");

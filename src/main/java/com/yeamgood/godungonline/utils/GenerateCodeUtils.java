@@ -26,6 +26,7 @@ public class GenerateCodeUtils {
 	public static final String TYPE_CUSTOMER = "CUS";
 	public static final String TYPE_EMPLOYEE = "EMP";
 	public static final String TYPE_ROLEGODUNG = "ROL";
+	public static final String TYPE_PURCHASE_REQUEST = "PR";
 	
 	
 	public static String generateCode(String title,String maxCode) {

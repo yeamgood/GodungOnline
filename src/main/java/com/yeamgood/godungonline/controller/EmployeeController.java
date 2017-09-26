@@ -88,7 +88,7 @@ public class EmployeeController {
 	}
 	
 	@RequestMapping(value="/user/employee/list/ajax", method=RequestMethod.GET)
-	public @ResponseBody String userEmployeeListtest(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException {
+	public @ResponseBody String userEmployeeList(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException {
 		logger.debug("I");
 		logger.debug(Constants.LOG_INPUT, datatableRequest);
 		

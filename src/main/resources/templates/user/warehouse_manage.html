@@ -125,7 +125,7 @@
 								</div>
 							</div>
 							<!-- LOCATION BlOG  -->
-							<div class="col-md-12 col-sm-12 col-xs-12" th:if="${warehouse.warehouseIdEncrypt} != null and ${warehouse.warehouseIdEncrypt} != '' ">
+							<div class="col-md-12 col-sm-12 col-xs-12">
 								<div class="x_panel">
 									<div class="x_title">
 										<div class="col-md-6 col-sm-6 col-xs-6 title_left_box x_title_edit">
@@ -135,9 +135,9 @@
 										</div>
 										<div class="col-md-6 col-sm-6 col-xs-6 title_box">
 											<div class="pull-right">
-												<div class="btn-group">
-													<button class="btn btn-success dropdown-toggle" type="button" onclick="openModalLocationAdd();">
-														<i class="fa fa-plus"></i> <span class="span_white" th:text="#{form.location.bt.add}"></span>
+												<div class="btn-group" th:if="${warehouse.warehouseIdEncrypt} != null and ${warehouse.warehouseIdEncrypt} != '' ">
+													<button class="btn btn-primary dropdown-toggle" type="button" onclick="openModalLocationAdd();">
+														<i class="fa fa-pencil-square-o"></i> <span class="span_white" th:text="#{bt.text.add}"></span>
 													</button>
 												</div>
 											</div>

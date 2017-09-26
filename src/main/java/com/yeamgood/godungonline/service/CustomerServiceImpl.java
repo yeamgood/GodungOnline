@@ -1,6 +1,5 @@
 package com.yeamgood.godungonline.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -44,7 +43,7 @@ public class CustomerServiceImpl implements CustomerService{
 		logger.debug("I:");
 		logger.debug("O:");
 		Customer customer = customerRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		customer.encryptData(customer);
+		customer.encryptData();
 		godungService.checkGodungId(customer.getGodung().getGodungId(), userSession);
 		return customer;
 	}
@@ -56,7 +55,7 @@ public class CustomerServiceImpl implements CustomerService{
 		List<Customer> customerList = customerRepository.findAllByGodungGodungIdOrderByCustomerCodeAsc(godungId);
 		for (Customer customer : customerList) {
 			customer.setCustomerIdEncrypt(AESencrpUtils.encryptLong(customer.getCustomerId()));
-			customer.encryptData(customer);
+			customer.encryptData();
 		}
 		return customerList;
 	}
@@ -82,7 +81,7 @@ public class CustomerServiceImpl implements CustomerService{
 			String generateCode = GenerateCodeUtils.generateCode(GenerateCodeUtils.TYPE_CUSTOMER, maxCustomer.getCustomerCode());
 			customer.setCustomerCode(generateCode);
 			customer.setGodung(userSession.getGodung());
-			customer.setCreate(userSession.getEmail(), new Date());
+			customer.setCreate(userSession);
 			
 			// PROVINCE
 			Province provinceTemp = customer.getAddress().getProvince();
@@ -108,7 +107,7 @@ public class CustomerServiceImpl implements CustomerService{
 			Long id = AESencrpUtils.decryptLong(customer.getCustomerIdEncrypt());
 			Customer customerTemp = customerRepository.findOne(id);
 			customerTemp.setObject(customer);
-			customerTemp.setUpdate(userSession.getEmail(), new Date());
+			customerTemp.setUpdate(userSession);
 			
 			// ADDRESS
 			customerTemp.getAddress().setObject(customer.getAddress());
@@ -134,7 +133,6 @@ public class CustomerServiceImpl implements CustomerService{
 						
 			customerRepository.save(customerTemp);
 			customer.setCustomerIdEncrypt(AESencrpUtils.encryptLong(customerTemp.getCustomerId()));
-			logger.debug("I:Step6");
 		}
 		logger.debug("O:");
 	}

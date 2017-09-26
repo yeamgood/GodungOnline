@@ -46,8 +46,8 @@ public class Category extends ModelTemplate{
 	@JsonIgnore
 	private Godung godung;
 	
-	public void encryptData(Category category) {
-		this.categoryIdEncrypt = AESencrpUtils.encryptLong(category.getCategoryId());
+	public void encryptData() {
+		this.categoryIdEncrypt = AESencrpUtils.encryptLong(this.categoryId);
 		this.categoryId = null;
 	}
 

@@ -176,13 +176,13 @@
 									 <table id="datatablesMain" class="table table-striped table-bordered" style="width:100%">
 										<thead class="search-content-header">
 											<tr>
-												<th th:text="#{datatables.text.no}"></th>
-												<th th:text="#{form.product.label.code}"></th>
+												<th th:text="#{datatables.text.no}" class="dt-body-no"></th>
+												<th th:text="#{form.product.label.code}" class="dt-body-code"></th>
 												<th th:text="#{form.product.label.name}"></th>
 												<th th:text="#{form.product.label.brand}" ></th>
 												<th th:text="#{form.product.label.category}" ></th>
 												<th th:text="#{form.product.label.description}"></th>
-												<th th:text="#{form.product.label.action}"></th>
+												<th th:text="#{form.product.label.action}" class="dt-body-action"></th>
 											</tr>
 										</thead>
 									</table>
@@ -291,7 +291,7 @@
 		    	        "order": [[ 1, 'asc' ]],
 		    	        "columns": [
 		  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
-		  	            { 'data': 'productCode' },
+		  	            { 'data': 'productCode' ,'className': 'dt-body-code'},
 		  	            { 'data': 'productName' },
 		  	            { 'data': 'brand.brandName' },
 		  	            { 'data': 'category.categoryName' },

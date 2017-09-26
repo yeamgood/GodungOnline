@@ -23,7 +23,7 @@ public class LocationServiceImpl implements LocationService{
 		logger.debug("I:");
 		logger.debug("O:");
 		Location location = locationRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		location.encryptData(location);
+		location.encryptData();
 		return location;
 	}
 	

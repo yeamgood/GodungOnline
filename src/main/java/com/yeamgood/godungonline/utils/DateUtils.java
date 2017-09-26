@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class DateUtils {
 	
 	private DateUtils() {
@@ -20,7 +22,7 @@ public class DateUtils {
 	}
 	
 	public static Date stringToDate(String dateString,String format) throws ParseException {
-		if(dateString == null || format == null) {
+		if(StringUtils.isBlank(dateString) || format == null) {
 			return null;
 		}
 		return new SimpleDateFormat(format).parse(dateString);

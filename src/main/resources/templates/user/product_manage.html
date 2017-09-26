@@ -95,7 +95,7 @@
 										<div class="clearfix"></div>
 									</div>
 									<div class="x_content">
-										<div class="col-md-ุ6 col-sm-6 col-xs-12">
+										<div class="col-md-6 col-sm-6 col-xs-12">
 											<input type="hidden" th:field="*{productIdEncrypt}">
 											<div class="form-group">
 												<div class="control-label col-md-4 col-sm-4 col-xs-12">
@@ -126,7 +126,7 @@
 												</div>
 											</div>
 										</div>
-										<div class="col-md-ุ6 col-sm-6 col-xs-12">
+										<div class="col-md-6 col-sm-6 col-xs-12">
 											<div class="form-group">
 												<div class="control-label col-md-4 col-sm-4 col-xs-12">
 													<label th:text="#{form.product.label.brand}"></label>
@@ -165,7 +165,7 @@
 								</div>
 							</div>
 
-							<div class="col-md-12 col-sm-12 col-xs-12" th:if="*{productIdEncrypt} != null and *{productIdEncrypt} != '' ">
+							<div class="col-md-12 col-sm-12 col-xs-12">
 								<div class="x_panel">
 									<div class="x_title">
 										<div class="col-md-6 col-sm-6 col-xs-6 title_left_box x_title_edit">
@@ -175,9 +175,9 @@
 										</div>
 										<div class="col-md-6 col-sm-6 col-xs-6 title_box">
 											<div class="pull-right">
-												<div class="btn-group">
-													<button class="btn btn-success dropdown-toggle" type="button" onclick="openPriceNewModal();">
-														<i class="fa fa-plus"></i> <span class="span_white" th:text="#{bt.text.add}"></span>
+												<div class="btn-group" th:if="*{productIdEncrypt} != null and *{productIdEncrypt} != '' ">
+													<button class="btn btn-primary dropdown-toggle" type="button" onclick="openPriceNewModal();">
+														<i class="fa fa-pencil-square-o"></i> <span class="span_white" th:text="#{bt.text.add}"></span>
 													</button>
 												</div>
 											</div>
@@ -202,7 +202,7 @@
 								</div>
 							</div>
 
-							<div class="col-md-12 col-sm-12 col-xs-12" th:if="*{productIdEncrypt} != null and *{productIdEncrypt} != '' ">
+							<div class="col-md-12 col-sm-12 col-xs-12">
 								<div class="x_panel">
 									<div class="x_title">
 										<div class="col-md-6 col-sm-6 col-xs-6 title_left_box x_title_edit">
@@ -212,9 +212,9 @@
 										</div>
 										<div class="col-md-6 col-sm-6 col-xs-6 title_box">
 											<div class="pull-right">
-												<div class="btn-group">
-													<button class="btn btn-success dropdown-toggle" type="button" onclick="openDealerNewModal();">
-														<i class="fa fa-plus"></i> <span class="span_white" th:text="#{bt.text.add}"></span>
+												<div class="btn-group" th:if="*{productIdEncrypt} != null and *{productIdEncrypt} != '' ">
+													<button class="btn btn-primary dropdown-toggle" type="button" onclick="openDealerNewModal();">
+														<i class="fa fa-pencil-square-o"></i> <span class="span_white" th:text="#{bt.text.add}"></span>
 													</button>
 												</div>
 											</div>
@@ -240,7 +240,7 @@
 								</div>
 							</div>
 
-							<div class="col-md-12 col-sm-12 col-xs-12" th:if="*{productIdEncrypt} != null and *{productIdEncrypt} != '' ">
+							<div class="col-md-12 col-sm-12 col-xs-12">
 								<div class="x_panel">
 									<div class="x_title">
 										<div class="col-md-6 col-sm-6 col-xs-6 title_left_box x_title_edit">
@@ -250,9 +250,9 @@
 										</div>
 										<div class="col-md-6 col-sm-6 col-xs-6 title_box">
 											<div class="pull-right">
-												<div class="btn-group">
-													<button class="btn btn-success dropdown-toggle" type="button" onclick="openStockNewModal();">
-														<i class="fa fa-plus"></i> <span class="span_white" th:text="#{bt.text.add}"></span>
+												<div class="btn-group" th:if="*{productIdEncrypt} != null and *{productIdEncrypt} != '' ">
+													<button class="btn btn-primary dropdown-toggle" type="button" onclick="openStockNewModal();">
+														<i class="fa fa-pencil-square-o"></i> <span class="span_white" th:text="#{bt.text.add}"></span>
 													</button>
 												</div>
 											</div>
@@ -339,7 +339,7 @@
 											<label th:text="#{form.sale.label.startdate}"></label> <label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-											<div class="input-group date" id="start_Datepicker">
+											<div class="input-group date input_date" id="start_Datepicker">
 												<input type="text" class="form-control" name="startDate" id="startDate" placeholder="dd/mm/yyyy"> <span class="input-group-addon">
 													<span class="glyphicon glyphicon-calendar"></span>
 												</span>
@@ -352,7 +352,7 @@
 											<label th:text="#{form.sale.label.enddate}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-											<div class="input-group date" id="end_Datepicker">
+											<div class="input-group date input_date" id="end_Datepicker">
 												<input type="text" class="form-control" name="endDate" id="endDate" placeholder="dd/mm/yyyy"> <span class="input-group-addon">
 													<span class="glyphicon glyphicon-calendar"></span>
 												</span>
@@ -587,7 +587,7 @@
 											<label th:text="#{form.sale.label.startdate}"></label> <label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-											<div class="input-group date" id="dealer_startDate_Datepicker">
+											<div class="input-group date input_date" id="dealer_startDate_Datepicker">
 												<input type="text" class="form-control" name="startDate" id="dealer_startDate" placeholder="dd/mm/yyyy"> <span
 													class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span>
 												</span>
@@ -600,7 +600,7 @@
 											<label th:text="#{form.sale.label.enddate}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-											<div class="input-group date" id="dealer_endDate_Datepicker">
+											<div class="input-group date input_date" id="dealer_endDate_Datepicker">
 												<input type="text" class="form-control" name="endDate" id="dealer_endDate" placeholder="dd/mm/yyyy"> <span
 													class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span>
 												</span>
@@ -769,7 +769,6 @@
 	    	        "info":     false,
 	    	        "searching":	true,
 	    	        "language": {"url": url_language},
-	    	        "order": [[ 1, 'asc' ]],
 	    	        "columns": [
 	  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
 	  	            { 'data': 'startDateText' },
@@ -825,7 +824,6 @@
 	    	        "info":     false,
 	    	        "searching":	true,
 	    	        "language": {"url": url_language},
-	    	        "order": [[ 1, 'asc' ]],
 	    	        "columns": [
 	  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
 	  	            { 'data': 'warehouseName' },
@@ -878,7 +876,6 @@
 	    	        "info":     false,
 	    	        "searching":	true,
 	    	        "language": {"url": url_language},
-	    	        "order": [[ 1, 'asc' ]],
 	    	        "columns": [
 	  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
 	  	            { 'data': 'supplierName' },

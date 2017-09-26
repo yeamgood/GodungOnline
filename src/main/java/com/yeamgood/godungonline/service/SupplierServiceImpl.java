@@ -1,6 +1,5 @@
 package com.yeamgood.godungonline.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -44,7 +43,7 @@ public class SupplierServiceImpl implements SupplierService{
 		logger.debug("I:");
 		logger.debug("O:");
 		Supplier supplier = supplierRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		supplier.encryptData(supplier);
+		supplier.encryptData();
 		godungService.checkGodungId(supplier.getGodung().getGodungId(), userSession);
 		return supplier;
 	}
@@ -56,7 +55,7 @@ public class SupplierServiceImpl implements SupplierService{
 		List<Supplier> supplierList = supplierRepository.findAllByGodungGodungIdOrderBySupplierCodeAsc(godungId);
 		for (Supplier supplier : supplierList) {
 			supplier.setSupplierIdEncrypt(AESencrpUtils.encryptLong(supplier.getSupplierId()));
-			supplier.encryptData(supplier);
+			supplier.encryptData();
 		}
 		return supplierList;
 	}
@@ -82,7 +81,7 @@ public class SupplierServiceImpl implements SupplierService{
 			String generateCode = GenerateCodeUtils.generateCode(GenerateCodeUtils.TYPE_SUPPLIER, maxSupplier.getSupplierCode());
 			supplier.setSupplierCode(generateCode);
 			supplier.setGodung(userSession.getGodung());
-			supplier.setCreate(userSession.getEmail(), new Date());
+			supplier.setCreate(userSession);
 			
 			// PROVINCE
 			Province provinceTemp = supplier.getAddress().getProvince();
@@ -108,7 +107,7 @@ public class SupplierServiceImpl implements SupplierService{
 			Long id = AESencrpUtils.decryptLong(supplier.getSupplierIdEncrypt());
 			Supplier supplierTemp = supplierRepository.findOne(id);
 			supplierTemp.setObject(supplier);
-			supplierTemp.setUpdate(userSession.getEmail(), new Date());
+			supplierTemp.setUpdate(userSession);
 			
 			// ADDRESS
 			supplierTemp.getAddress().setObject(supplier.getAddress());
@@ -134,7 +133,6 @@ public class SupplierServiceImpl implements SupplierService{
 			
 			supplierRepository.save(supplierTemp);
 			supplier.setSupplierIdEncrypt(AESencrpUtils.encryptLong(supplierTemp.getSupplierId()));
-			logger.debug("I:Step6");
 		}
 		logger.debug("O:");
 	}

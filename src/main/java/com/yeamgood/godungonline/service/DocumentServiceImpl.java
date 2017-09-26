@@ -1,0 +1,60 @@
+package com.yeamgood.godungonline.service;
+
+import java.text.ParseException;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.yeamgood.godungonline.constants.Constants;
+import com.yeamgood.godungonline.model.Document;
+import com.yeamgood.godungonline.model.User;
+import com.yeamgood.godungonline.repository.DocumentRepository;
+import com.yeamgood.godungonline.utils.AESencrpUtils;
+
+@Service("documentService")
+public class DocumentServiceImpl implements DocumentService{
+	
+	final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	@Autowired
+	private DocumentRepository documentRepository;
+	
+	@Override
+	public Document findByIdEncrypt(String idEncrypt,User userSession)  {
+		logger.debug("I:");
+		logger.debug("O:");
+		Document document = documentRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
+		document.encryptData();
+		return document;
+	}
+
+	@Override
+	@Transactional(rollbackFor={Exception.class})
+	public void save(Document document,User userSession) throws ParseException  {
+		logger.debug("I:");
+		logger.debug(Constants.LOG_INPUT, document);
+		if(StringUtils.isBlank(document.getDocumentIdEncrypt())) {
+			document.setCreate(userSession);
+			documentRepository.save(document);
+		}else {
+			Document documentTemp = new Document();
+			documentTemp.setUpdate(userSession);
+			documentRepository.save(document);
+		}
+		logger.debug("O:");
+	}
+
+	@Override
+	@Transactional(rollbackFor={Exception.class})
+	public void delete(String documentIdEncrypt, User userSession) {
+		logger.debug("I:");
+		Document document = documentRepository.findOne(AESencrpUtils.decryptLong(documentIdEncrypt));
+		documentRepository.delete(document);
+		logger.debug("O:");
+	}
+	
+}

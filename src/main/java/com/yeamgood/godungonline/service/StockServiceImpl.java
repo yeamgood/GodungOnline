@@ -1,8 +1,5 @@
 package com.yeamgood.godungonline.service;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +17,7 @@ import com.yeamgood.godungonline.repository.ProductRepository;
 import com.yeamgood.godungonline.repository.StockRepository;
 import com.yeamgood.godungonline.repository.WarehouseRepository;
 import com.yeamgood.godungonline.utils.AESencrpUtils;
+import com.yeamgood.godungonline.utils.NumberUtils;
 
 @Service("stockService")
 public class StockServiceImpl implements StockService{
@@ -43,7 +41,7 @@ public class StockServiceImpl implements StockService{
 		logger.debug("I:");
 		logger.debug("O:");
 		Stock stock = stockRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		stock.encryptData(stock);
+		stock.encryptData();
 		return stock;
 	}
 
@@ -54,20 +52,20 @@ public class StockServiceImpl implements StockService{
 		logger.debug(Constants.LOG_INPUT, productIdEncrypt);
 		if(StringUtils.isBlank(stockForm.getStockIdEncrypt())) {
 			Stock stock = new Stock();
-			stock.setRemindNumber(new BigDecimal(stockForm.getRemindNumber().replace(",", "")));
+			stock.setRemindNumber(NumberUtils.stringToBigDecimal(stockForm.getRemindNumber()));
 			stock.setWarehouse(warehouseRepository.findOne(AESencrpUtils.decryptLong(stockForm.getWarehouseIdEncrypt())));
 			stock.setLocation(locationRepository.findOne(AESencrpUtils.decryptLong(stockForm.getLocationIdEncrypt())));
-			stock.setCreate(userSession.getEmail(), new Date());
+			stock.setCreate(userSession);
 			
 			Product product = productRepository.findOne(AESencrpUtils.decryptLong(productIdEncrypt));
 			product.getStockList().add(stock);
 			productRepository.save(product);
 		}else {
 			Stock stockTemp = stockRepository.findOne(AESencrpUtils.decryptLong(stockForm.getStockIdEncrypt()));
-			stockTemp.setRemindNumber(new BigDecimal(stockForm.getRemindNumber().replace(",", "")));
+			stockTemp.setRemindNumber(NumberUtils.stringToBigDecimal(stockForm.getRemindNumber()));
 			stockTemp.setWarehouse(warehouseRepository.findOne(AESencrpUtils.decryptLong(stockForm.getWarehouseIdEncrypt())));
 			stockTemp.setLocation(locationRepository.findOne(AESencrpUtils.decryptLong(stockForm.getLocationIdEncrypt())));
-			stockTemp.setUpdate(userSession.getEmail(), new Date());
+			stockTemp.setUpdate(userSession);
 			stockRepository.save(stockTemp);
 			
 		}

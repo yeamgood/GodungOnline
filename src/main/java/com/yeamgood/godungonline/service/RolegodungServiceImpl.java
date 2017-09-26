@@ -1,6 +1,5 @@
 package com.yeamgood.godungonline.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +33,7 @@ public class RolegodungServiceImpl implements RolegodungService{
 		logger.debug("I:");
 		logger.debug("O:");
 		Rolegodung rolegodung = rolegodungRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		rolegodung.encryptData(rolegodung);
+		rolegodung.encryptData();
 		godungService.checkGodungId(rolegodung.getGodung().getGodungId(), userSession);
 		return rolegodung;
 	}
@@ -46,7 +45,7 @@ public class RolegodungServiceImpl implements RolegodungService{
 		List<Rolegodung> rolegodungList = rolegodungRepository.findAllByGodungGodungIdOrderByRolegodungCodeAsc(godungId);
 		for (Rolegodung rolegodung : rolegodungList) {
 			rolegodung.setRolegodungIdEncrypt(AESencrpUtils.encryptLong(rolegodung.getRolegodungId()));
-			rolegodung.encryptData(rolegodung);
+			rolegodung.encryptData();
 		}
 		return rolegodungList;
 	}
@@ -72,17 +71,16 @@ public class RolegodungServiceImpl implements RolegodungService{
 			String generateCode = GenerateCodeUtils.generateCode(GenerateCodeUtils.TYPE_ROLEGODUNG , maxRolegodung.getRolegodungCode());
 			rolegodung.setRolegodungCode(generateCode);
 			rolegodung.setGodung(userSession.getGodung());
-			rolegodung.setCreate(userSession.getEmail(), new Date());
+			rolegodung.setCreate(userSession);
 			rolegodungRepository.save(rolegodung);
 			rolegodung.setRolegodungIdEncrypt(AESencrpUtils.encryptLong(rolegodung.getRolegodungId()));
 		}else {
 			Long id = AESencrpUtils.decryptLong(rolegodung.getRolegodungIdEncrypt());
 			Rolegodung rolegodungTemp = rolegodungRepository.findOne(id);
 			rolegodungTemp.setObject(rolegodung);
-			rolegodungTemp.setUpdate(userSession.getEmail(), new Date());
+			rolegodungTemp.setUpdate(userSession);
 			rolegodungRepository.save(rolegodungTemp);
 			rolegodung.setRolegodungIdEncrypt(AESencrpUtils.encryptLong(rolegodungTemp.getRolegodungId()));
-			logger.debug("I:Step6");
 		}
 		logger.debug("O:");
 	}

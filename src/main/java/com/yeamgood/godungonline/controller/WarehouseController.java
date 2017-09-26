@@ -82,7 +82,7 @@ public class WarehouseController {
 	}
 	
 	@RequestMapping(value="/user/warehouse/list/ajax", method=RequestMethod.GET)
-	public @ResponseBody String userWarehouseListtest(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException {
+	public @ResponseBody String userWarehouseList(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException {
 		logger.debug("I");
 		logger.debug(Constants.LOG_INPUT, datatableRequest);
 		
@@ -167,7 +167,7 @@ public class WarehouseController {
 		
 		for (Location location : locationList) {
 			location.setLocationIdEncrypt(AESencrpUtils.encryptLong(location.getLocationId()));
-			location.encryptData(location);
+			location.encryptData();
 		}
 		
 		DataTableObject dataTableObject = new DataTableObject();

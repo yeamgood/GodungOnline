@@ -86,7 +86,7 @@ public class CustomerController {
 	}
 	
 	@RequestMapping(value="/user/customer/list/ajax", method=RequestMethod.GET)
-	public @ResponseBody String userCustomerListtest(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException {
+	public @ResponseBody String userCustomerList(DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException {
 		logger.debug("I");
 		logger.debug(Constants.LOG_INPUT, datatableRequest);
 		User userSession = (User) session.getAttribute("user");

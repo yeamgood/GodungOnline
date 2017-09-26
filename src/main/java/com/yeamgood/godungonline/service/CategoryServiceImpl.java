@@ -1,6 +1,5 @@
 package com.yeamgood.godungonline.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -35,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService{
 	public Category findByIdEncrypt(String idEncrypt)  {
 		logger.debug("I:");
 		Category category = categoryRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
-		category.encryptData(category);
+		category.encryptData();
 		logger.debug("O:");
 		return category;
 	}
@@ -45,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService{
 		logger.debug("I:");
 		Category category = categoryRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
 		godungService.checkGodungId(category.getGodung().getGodungId(), userSession);
-		category.encryptData(category);
+		category.encryptData();
 		logger.debug("O:");
 		return category;
 	}
@@ -56,7 +55,7 @@ public class CategoryServiceImpl implements CategoryService{
 		List<Category> categoryList = categoryRepository.findAll(sortByCategoryNameAsc());
 		for (Category category : categoryList) {
 			category.setCategoryIdEncrypt(AESencrpUtils.encryptLong(category.getCategoryId()));
-			category.encryptData(category);
+			category.encryptData();
 		}
 		logger.debug("O:");
 		return categoryList;
@@ -68,7 +67,7 @@ public class CategoryServiceImpl implements CategoryService{
 		List<Category> categoryList = categoryRepository.findAllByGodungGodungIdOrderByCategoryNameAsc(godungId);
 		for (Category category : categoryList) {
 			category.setCategoryIdEncrypt(AESencrpUtils.encryptLong(category.getCategoryId()));
-			category.encryptData(category);
+			category.encryptData();
 		}
 		logger.debug("O:");
 		return categoryList;
@@ -91,7 +90,7 @@ public class CategoryServiceImpl implements CategoryService{
 		List<Category> categoryList = categoryRepository.findByGodungGodungIdAndCategoryNameIgnoreCaseContaining(godungId, categoryName, pageable);
 		for (Category category : categoryList) {
 			category.setCategoryIdEncrypt(AESencrpUtils.encryptLong(category.getCategoryId()));
-			category.encryptData(category);
+			category.encryptData();
 		}
 		logger.debug("O:");
 		return categoryList;
@@ -109,7 +108,7 @@ public class CategoryServiceImpl implements CategoryService{
 			}
 			String generateCode = GenerateCodeUtils.generateCode(GenerateCodeUtils.TYPE_CATEGORY, maxCategory.getCategoryCode());
 			category.setGodung(user.getGodung());
-			category.setCreate(user.getEmail(), new Date());
+			category.setCreate(user);
 			category.setCategoryCode(generateCode);
 			category.setGodung(user.getGodung());
 			categoryRepository.save(category);
@@ -117,7 +116,7 @@ public class CategoryServiceImpl implements CategoryService{
 			Category categoryTemp = categoryRepository.findOne(AESencrpUtils.decryptLong(category.getCategoryIdEncrypt()));
 			categoryTemp.setCategoryName(category.getCategoryName());
 			categoryTemp.setDescription(category.getDescription());
-			categoryTemp.setUpdate(user.getEmail(), new Date());
+			categoryTemp.setUpdate(user);
 			categoryRepository.save(categoryTemp);
 		}
 		logger.debug("O:");
