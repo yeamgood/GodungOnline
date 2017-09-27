@@ -194,7 +194,7 @@
 													<th th:text="#{form.sale.label.currencytype}"></th>
 													<th th:text="#{form.sale.label.price}"></th>
 													<th th:text="#{form.sale.label.measure}"></th>
-													<th></th>
+													<th th:text="#{datatables.text.action}"></th>
 												</tr>
 											</thead>
 										</table>
@@ -232,7 +232,7 @@
 													<th th:text="#{form.dealer.label.currency}"></th>
 													<th th:text="#{form.dealer.label.price}"></th>
 													<th th:text="#{form.dealer.label.measure}"></th>
-													<th></th>
+													<th th:text="#{datatables.text.action}"></th>
 												</tr>
 											</thead>
 										</table>
@@ -268,7 +268,7 @@
 													<th th:text="#{form.stock.label.location}"></th>
 													<th th:text="#{form.stock.label.remind}"></th>
 													<th th:text="#{form.stock.label.remain}"></th>
-													<th></th>
+													<th th:text="#{datatables.text.action}"></th>
 												</tr>
 											</thead>
 										</table>
@@ -315,7 +315,7 @@
 
 
 
-			<!-- Price -->
+			<!-- Sale -->
 			<div id="modal_sale" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 				<div class="modal-dialog ">
 					<div class="modal-content">
@@ -331,8 +331,8 @@
 
 						<div class="modal-body">
 							<form autocomplete="off" id="saleModalForm" data-parsley-validate class="form-horizontal form-label-left">
-								<input type="hidden" name="productIdEncrypt" th:value="${product.productIdEncrypt}"> <input type="hidden" id="sale_id_encrypt"
-									name="saleIdEncrypt">
+								<input type="hidden" name="productIdEncrypt" th:value="${product.productIdEncrypt}"> 
+								<input type="hidden" id="sale_id_encrypt" name="saleIdEncrypt">
 								<div class="col-md-ุ12 col-sm-12 col-xs-12">
 									<div class="form-group">
 										<div class="control-label col-md-4 col-sm-4 col-xs-12">

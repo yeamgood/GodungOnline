@@ -26,13 +26,13 @@ public class PurchaseRequest extends ModelTemplate{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "purchaseRequest_Id")
+	@Column(name = "purchaserequest_Id")
 	private Long purchaseRequestId;
 	
 	@Transient
 	private String purchaseRequestIdEncrypt;
 	
-	@Column(name = "purchaseRequest_code")
+	@Column(name = "purchaserequest_code")
 	private String purchaseRequestCode;
 	
 	@ManyToOne()
@@ -57,8 +57,12 @@ public class PurchaseRequest extends ModelTemplate{
 	private Godung godung;
 	
 	@OneToMany(cascade = CascadeType.ALL,orphanRemoval=true)
-	@JoinTable(name = "purchaserequest_purchaserequestProduct", joinColumns = @JoinColumn(name = "purchaserequest_Id"), inverseJoinColumns = @JoinColumn(name = "purchaserequestProduct_Id"))
+	@JoinTable(name = "purchaserequest_purchaserequestproduct", joinColumns = @JoinColumn(name = "purchaserequest_Id"), inverseJoinColumns = @JoinColumn(name = "purchaserequestproduct_Id"))
 	private List<PurchaseRequestProduct> purchaseRequestProductList;
+	
+	@OneToMany(cascade = CascadeType.ALL,orphanRemoval=true)
+	@JoinTable(name = "purchaserequest_approver", joinColumns = @JoinColumn(name = "purchaserequest_Id"), inverseJoinColumns = @JoinColumn(name = "approver_id"))
+	private List<Approver> approverList;
 	
 	public void setObject(PurchaseRequest purchaseRequest) {
 		this.description  = purchaseRequest.getDescription();
@@ -149,13 +153,21 @@ public class PurchaseRequest extends ModelTemplate{
 		this.purchaseRequestProductList = purchaseRequestProductList;
 	}
 
+	public List<Approver> getApproverList() {
+		return approverList;
+	}
+
+	public void setApproverList(List<Approver> approverList) {
+		this.approverList = approverList;
+	}
+
 	@Override
 	public String toString() {
 		return "PurchaseRequest [purchaseRequestId=" + purchaseRequestId + ", purchaseRequestIdEncrypt="
 				+ purchaseRequestIdEncrypt + ", purchaseRequestCode=" + purchaseRequestCode + ", employee=" + employee
 				+ ", requestDate=" + requestDate + ", demandDate=" + demandDate + ", referenceNumber=" + referenceNumber
 				+ ", description=" + description + ", godung=" + godung + ", purchaseRequestProductList="
-				+ purchaseRequestProductList + "]";
+				+ purchaseRequestProductList + ", approverList=" + approverList + "]";
 	}
 	
 }

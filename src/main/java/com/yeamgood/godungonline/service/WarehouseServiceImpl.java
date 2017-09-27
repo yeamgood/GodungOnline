@@ -1,6 +1,5 @@
 package com.yeamgood.godungonline.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -71,17 +70,6 @@ public class WarehouseServiceImpl implements WarehouseService{
 		logger.debug("I:");
 		logger.debug(Constants.LOG_INPUT, warehouse);
 		
-		if(warehouse.getLocationList() == null) {
-			warehouse.setLocationList(new ArrayList<>());
-		}
-		
-		List<Location> locationTempList = new ArrayList<>();
-		for (Location locationTemp : warehouse.getLocationList()) {
-			if(StringUtils.isNotBlank(locationTemp.getLocationCode())) {
-				locationTempList.add(locationTemp);
-			}
-		}
-		
 		if(StringUtils.isBlank(warehouse.getWarehouseIdEncrypt())) {
 			Warehouse maxWarehouse = warehouseRepository.findTopByGodungGodungIdOrderByWarehouseCodeDesc(userSession.getGodung().getGodungId());
 			if(maxWarehouse == null) {
@@ -92,8 +80,6 @@ public class WarehouseServiceImpl implements WarehouseService{
 			warehouse.setWarehouseCode(generateCode);
 			warehouse.setGodung(userSession.getGodung());
 			warehouse.setCreate(userSession);
-			warehouse.getLocationList().clear();
-			warehouse.getLocationList().addAll(locationTempList);
 			warehouseRepository.save(warehouse);
 			warehouse.setWarehouseIdEncrypt(AESencrpUtils.encryptLong(warehouse.getWarehouseId()));
 		}else {
@@ -101,10 +87,8 @@ public class WarehouseServiceImpl implements WarehouseService{
 			Warehouse warehouseTemp = warehouseRepository.findOne(id);
 			warehouseTemp.setObject(warehouse);
 			warehouseTemp.setUpdate(userSession);
-			warehouseTemp.getLocationList().clear();
-			warehouseTemp.getLocationList().addAll(locationTempList);
 			warehouseRepository.save(warehouseTemp);
-			warehouse.setWarehouseIdEncrypt(AESencrpUtils.encryptLong(warehouse.getWarehouseId()));
+			warehouse.setWarehouseIdEncrypt(AESencrpUtils.encryptLong(warehouseTemp.getWarehouseId()));
 		}
 		logger.debug("O:");
 	}

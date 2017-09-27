@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.yeamgood.godungonline.model.template.ModelTemplate;
+import com.yeamgood.godungonline.utils.AESencrpUtils;
 
 @Entity
 @Table(name = "approver")
@@ -33,17 +34,22 @@ public class Approver extends ModelTemplate{
 	@Column(name = "request_date")
 	private Date requestDate;
 	
-	@JoinColumn(name = "approver_role_code")
-	private String approverRoleCode;
-	
 	@Column(name = "approve_date")
 	private Date approverDate;
+	
+	@JoinColumn(name = "approver_role_code")
+	private String approverRoleCode;
 	
 	@JoinColumn(name = "approve_action")
 	private String approverActionCode;
 	
 	@Column(name = "description")
 	private String description;
+	
+	public void encryptData() {
+		this.approverIdEncrypt = AESencrpUtils.encryptLong(this.approverId);
+		this.approverId = null;
+	}
 
 	public Long getApproverId() {
 		return approverId;

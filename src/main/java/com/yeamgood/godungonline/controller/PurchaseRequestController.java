@@ -32,7 +32,6 @@ import com.yeamgood.godungonline.datatable.DataTableObject;
 import com.yeamgood.godungonline.datatable.DataTablesRequest;
 import com.yeamgood.godungonline.exception.GodungIdException;
 import com.yeamgood.godungonline.form.PurchaseRequestForm;
-import com.yeamgood.godungonline.form.PurchaseRequestProductForm;
 import com.yeamgood.godungonline.model.Common;
 import com.yeamgood.godungonline.model.Measure;
 import com.yeamgood.godungonline.model.Menu;
@@ -173,29 +172,13 @@ public class PurchaseRequestController {
 		purchaseRequestForm.setReferenceNumber(purchaseRequest.getReferenceNumber());
 		purchaseRequestForm.setDescription(purchaseRequest.getDescription());
 		
-		
-		PurchaseRequestProductForm prProductForm;
-		List<PurchaseRequestProductForm> prProductFormList = new ArrayList<>();
-		for(PurchaseRequestProduct prProduct:purchaseRequest.getPurchaseRequestProductList()) {
-			prProductForm = new PurchaseRequestProductForm();
-			prProductForm.setPurchaseRequestProductIdEncrypt(AESencrpUtils.encryptLong(prProduct.getPurchaseRequestProductId()));
-			prProductForm.setAmount(NumberUtils.bigDecimalToString(prProduct.getAmount()));
-			prProductForm.setPrice(NumberUtils.bigDecimalToString(prProduct.getPrice()));
-			prProductForm.setProductIdEncrypt(AESencrpUtils.encryptLong(prProduct.getProduct().getProductId()));
-			prProductForm.setProductCode(prProduct.getProduct().getProductCode());
-			prProductForm.setProductName(prProduct.getProduct().getProductName());
-			prProductForm.setMeasureIdEncrypt(AESencrpUtils.encryptLong(prProduct.getMeasure().getMeasureId()));
-			prProductForm.setMeasureName(prProduct.getMeasure().getMeasureName());
-			prProductForm.setTotalPrice(NumberUtils.bigDecimalToString(prProduct.getAmount().multiply(prProduct.getPrice())));
-			prProductFormList.add(prProductForm);
-		}
-		purchaseRequestForm.setPurchaseRequestProductFormList(prProductFormList);
-		
 		List<Measure> measureDropdown = measureService.findAllByGodungGodungIdOrderByMeasureNameAsc(godungId);
+		List<Common> approveRoleDropdown = commonService.findByTypeMapValueMessageSource(CommonType.APPROVE_ROLE.toString());
 		
 		modelAndView.addObject(Constants.MENU, menu);
 		modelAndView.addObject("measureDropdown",measureDropdown);
 		modelAndView.addObject(PURCHASE_REQUEST_FORM,purchaseRequestForm);
+		modelAndView.addObject("approveRoleDropdown",approveRoleDropdown);
 		modelAndView.setViewName("user/purchaseRequest_manage");
 		logger.debug("O:");
 		return modelAndView;

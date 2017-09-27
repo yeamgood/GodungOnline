@@ -1,26 +1,22 @@
 package com.yeamgood.godungonline.form;
 
-import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotBlank;
 
 public class ApproverForm {
 	
-	@Transient
 	private String approverIdEncrypt;
-
-	@NotNull(message = "{form.approver.valid.employee}")
+	
+	@NotBlank(message = "{form.purchaseRequestProduct.valid.product}")
 	private String employeeIdEncrypt;
 	
 	private String employeeName;
 
 	private String requestDate;
 	
-	@NotNull(message = "{form.approver.valid.role}")
-	private String approverRoleCode;
-	
-	private String approverRoleName;
-	
 	private String approverDate;
+	
+	@NotBlank(message = "{form.purchaseRequestProduct.valid.product}")
+	private String approverRoleCode;
 	
 	private String approverActionCode;
 	
@@ -58,28 +54,20 @@ public class ApproverForm {
 		this.requestDate = requestDate;
 	}
 
-	public String getApproverRoleCode() {
-		return approverRoleCode;
-	}
-
-	public void setApproverRoleCode(String approverRoleCode) {
-		this.approverRoleCode = approverRoleCode;
-	}
-
-	public String getApproverRoleName() {
-		return approverRoleName;
-	}
-
-	public void setApproverRoleName(String approverRoleName) {
-		this.approverRoleName = approverRoleName;
-	}
-
 	public String getApproverDate() {
 		return approverDate;
 	}
 
 	public void setApproverDate(String approverDate) {
 		this.approverDate = approverDate;
+	}
+
+	public String getApproverRoleCode() {
+		return approverRoleCode;
+	}
+
+	public void setApproverRoleCode(String approverRoleCode) {
+		this.approverRoleCode = approverRoleCode;
 	}
 
 	public String getApproverActionCode() {
@@ -100,9 +88,9 @@ public class ApproverForm {
 
 	@Override
 	public String toString() {
-		return "ApproverForm [approverIdEncrypt=" + approverIdEncrypt + ", employeeIdEncrypt=" + employeeIdEncrypt
-				+ ", employeeName=" + employeeName + ", requestDate=" + requestDate + ", approverRoleCode="
-				+ approverRoleCode + ", approverRoleName=" + approverRoleName + ", approverDate=" + approverDate
+		return "ApproverForm [approverIdEncrypt=" + approverIdEncrypt
+				+ ", employeeIdEncrypt=" + employeeIdEncrypt + ", employeeName=" + employeeName + ", requestDate="
+				+ requestDate + ", approverDate=" + approverDate + ", approverRoleCode=" + approverRoleCode
 				+ ", approverActionCode=" + approverActionCode + ", description=" + description + "]";
 	}
 	

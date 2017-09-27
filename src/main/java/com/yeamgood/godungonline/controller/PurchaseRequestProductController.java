@@ -1,5 +1,6 @@
 package com.yeamgood.godungonline.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,9 @@ import com.yeamgood.godungonline.bean.JsonResponse;
 import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.datatable.DataTableObject;
 import com.yeamgood.godungonline.datatable.DataTablesRequest;
+import com.yeamgood.godungonline.datatables.PurchaseRequestProductDatatables;
 import com.yeamgood.godungonline.exception.GodungIdException;
+import com.yeamgood.godungonline.form.PurchaseRequestForm;
 import com.yeamgood.godungonline.form.PurchaseRequestProductForm;
 import com.yeamgood.godungonline.model.Menu;
 import com.yeamgood.godungonline.model.PurchaseRequest;
@@ -37,6 +40,7 @@ import com.yeamgood.godungonline.service.MenuService;
 import com.yeamgood.godungonline.service.ProvinceService;
 import com.yeamgood.godungonline.service.PurchaseRequestProductService;
 import com.yeamgood.godungonline.service.PurchaseRequestService;
+import com.yeamgood.godungonline.utils.AESencrpUtils;
 import com.yeamgood.godungonline.utils.NumberUtils;
 
 @Controller
@@ -74,8 +78,8 @@ public class PurchaseRequestProductController {
 		User userSession = (User) session.getAttribute("user");
 		
 		List<PurchaseRequestProduct> prProductList = new ArrayList<>();
-		List<PurchaseRequestProductForm> prProductFormList = new ArrayList<>();
-		PurchaseRequestProductForm prProductForm;
+		List<PurchaseRequestProductDatatables> prProductDatatablesList = new ArrayList<>();
+		PurchaseRequestProductDatatables prProductDatatables;
 		
 		if(StringUtils.isNotBlank(purchaseRequestIdEncrypt) && !StringUtils.equalsAnyIgnoreCase(purchaseRequestIdEncrypt, "null")) {
 			PurchaseRequest purchaseRequest = purchaseRequestService.findByIdEncrypt(purchaseRequestIdEncrypt, userSession);
@@ -84,23 +88,52 @@ public class PurchaseRequestProductController {
 	
 		for (PurchaseRequestProduct prProductTemp : prProductList) {
 			prProductTemp.encryptData();
-			prProductForm = new PurchaseRequestProductForm();
-			prProductForm.setAmount(NumberUtils.bigDecimalToString(prProductTemp.getAmount()));
-			prProductForm.setPrice(NumberUtils.bigDecimalToString(prProductTemp.getPrice()));
-			prProductForm.setTotalPrice(NumberUtils.bigDecimalToString(prProductTemp.getAmount().multiply(prProductTemp.getPrice())));
-			prProductForm.setDescription(prProductTemp.getDescription());
-			prProductForm.setProductIdEncrypt(prProductTemp.getProduct().getProductIdEncrypt());
-			prProductForm.setProductCode(prProductTemp.getProduct().getProductCode());
-			prProductForm.setProductName(prProductTemp.getProduct().getProductName());
-			prProductForm.setMeasureIdEncrypt(prProductTemp.getMeasure().getMeasureIdEncrypt());
-			prProductForm.setMeasureName(prProductTemp.getMeasure().getMeasureName());
-			prProductFormList.add(prProductForm);
+			prProductDatatables = new PurchaseRequestProductDatatables();
+			prProductDatatables.setPurchaseRequestProductIdEncrypt(prProductTemp.getPurchaseRequestProductIdEncrypt());
+			prProductDatatables.setAmount(NumberUtils.bigDecimalToString(prProductTemp.getAmount()));
+			prProductDatatables.setPrice(NumberUtils.bigDecimalToString(prProductTemp.getPrice()));
+			prProductDatatables.setTotalPrice(NumberUtils.bigDecimalToString(prProductTemp.getAmount().multiply(prProductTemp.getPrice())));
+			prProductDatatables.setDescription(prProductTemp.getDescription());
+			prProductDatatables.setProductCode(prProductTemp.getProduct().getProductCode());
+			prProductDatatables.setProductName(prProductTemp.getProduct().getProductName());
+			prProductDatatables.setMeasureName(prProductTemp.getMeasure().getMeasureName());
+			prProductDatatablesList.add(prProductDatatables);
 		}
 		
 		DataTableObject dataTableObject = new DataTableObject();
-		dataTableObject.setAaData(new ArrayList<Object>(prProductFormList));
+		dataTableObject.setAaData(new ArrayList<Object>(prProductDatatablesList));
 		logger.debug("O");
 		return new ObjectMapper().writeValueAsString(dataTableObject);
+	}
+	
+	@RequestMapping(value="/user/purchaseRequestProduct/load/{purchaseRequestProductIdEncrypt}", method=RequestMethod.GET)
+	public @ResponseBody JsonResponse load(@PathVariable String purchaseRequestProductIdEncrypt,HttpSession session){
+		logger.debug("I");
+		logger.debug(Constants.LOG_INPUT,purchaseRequestProductIdEncrypt);
+		JsonResponse jsonResponse = new JsonResponse();
+		
+		try {
+			User userSession = (User) session.getAttribute("user");
+			PurchaseRequestProduct prProduct = purchaseRequestProductService.findByIdEncrypt(purchaseRequestProductIdEncrypt, userSession);
+			
+			PurchaseRequestProductForm prProductForm = new PurchaseRequestProductForm();
+			prProductForm.setPurchaseRequestProductIdEncrypt(prProduct.getPurchaseRequestProductIdEncrypt());
+			prProductForm.setProductIdEncrypt(AESencrpUtils.encryptLong(prProduct.getProduct().getProductId()));
+			prProductForm.setProductName(prProduct.getProduct().getProductName());
+			prProductForm.setMeasureIdEncrypt(AESencrpUtils.encryptLong(prProduct.getMeasure().getMeasureId()));
+			prProductForm.setAmount(NumberUtils.bigDecimalToString(prProduct.getAmount()));
+			prProductForm.setPrice(NumberUtils.bigDecimalToString(prProduct.getPrice()));
+			prProductForm.setTotalPrice(NumberUtils.bigDecimalToString(prProduct.getAmount().multiply(prProduct.getPrice())));
+			prProductForm.setDescription(prProduct.getDescription());
+			 
+			jsonResponse.setStatus(Constants.STATUS_SUCCESS);
+			jsonResponse.setResult(prProductForm);
+		} catch (Exception e) {
+			logger.error(Constants.MESSAGE_ERROR,e);
+			jsonResponse.setLoadError(messageSource);
+		}
+		logger.debug("O");
+		return jsonResponse;
 	}
 	
 	@RequestMapping(value="/user/purchaseRequestProduct/manage/{purchaseRequestProductIdEncrypt}", method = RequestMethod.GET)
@@ -120,18 +153,20 @@ public class PurchaseRequestProductController {
 		return modelAndView;
 	}
 	
-	@RequestMapping(value="/user/purchaseRequestProduct/valid", method=RequestMethod.POST)
-	public @ResponseBody JsonResponse load(@Valid PurchaseRequestProductForm prProductForm,BindingResult bindingResult,HttpSession session){
+	@RequestMapping(value="/user/purchaseRequestProduct/save", method=RequestMethod.POST)
+	public @ResponseBody JsonResponse save(@Valid PurchaseRequestProductForm prProductForm,BindingResult bindingResult,HttpSession session){
 		logger.debug("I");
 		logger.debug(Constants.LOG_INPUT,prProductForm);
 		JsonResponse jsonResponse = new JsonResponse();
+		User userSession = (User) session.getAttribute("user");
 		
 		if (bindingResult.hasErrors()) {
 			jsonResponse.setBinddingResultError(bindingResult);
 		}else {
 			try {
+				purchaseRequestProductService.save(prProductForm.getPurchaseRequestIdEncrypt(), prProductForm, userSession);
 				jsonResponse.setStatus(Constants.STATUS_SUCCESS);
-				jsonResponse.setResult(prProductForm);
+				jsonResponse.setSaveSuccess(messageSource);
 			} catch (Exception e) {
 				logger.error(Constants.MESSAGE_ERROR,e);
 				jsonResponse.setLoadError(messageSource);
@@ -141,6 +176,56 @@ public class PurchaseRequestProductController {
 		return jsonResponse;
 	}
 	
+	@RequestMapping(value="/user/purchaseRequestProduct/calculateTotal/{purchaseRequestIdEncrypt}", method=RequestMethod.POST)
+	public @ResponseBody JsonResponse calculateTotal(@PathVariable String purchaseRequestIdEncrypt,HttpSession session){
+		logger.debug("I");
+		logger.debug(Constants.LOG_INPUT, purchaseRequestIdEncrypt);
+		JsonResponse jsonResponse = new JsonResponse();
+		User userSession = (User) session.getAttribute("user");
+		
+		try {
+			List<PurchaseRequestProduct> prProductList = new ArrayList<>();
+			if(StringUtils.isNotBlank(purchaseRequestIdEncrypt) && !StringUtils.equalsAnyIgnoreCase(purchaseRequestIdEncrypt, "null")) {
+				PurchaseRequest purchaseRequest = purchaseRequestService.findByIdEncrypt(purchaseRequestIdEncrypt, userSession);
+				prProductList = purchaseRequest.getPurchaseRequestProductList();
+			}
+		
+			BigDecimal totalAmount = new BigDecimal(NumberUtils.EMPLY_DATA);
+			BigDecimal totalPrice = new BigDecimal(NumberUtils.EMPLY_DATA);
+			for (PurchaseRequestProduct prProductTemp : prProductList) {
+				totalAmount = totalAmount.add(prProductTemp.getAmount());
+				totalPrice = totalPrice.add(prProductTemp.getAmount().multiply(prProductTemp.getPrice()));
+			}
+			
+			PurchaseRequestForm purchaseRequestForm = new PurchaseRequestForm();
+			purchaseRequestForm.setTotalAmount(NumberUtils.bigDecimalToString(totalAmount));
+			purchaseRequestForm.setTotalPrice(NumberUtils.bigDecimalToString(totalPrice));
+			
+			jsonResponse.setStatus(Constants.STATUS_SUCCESS);
+			jsonResponse.setResult(purchaseRequestForm);
+		}catch (Exception e) {
+			logger.error(Constants.MESSAGE_ERROR,e);
+			jsonResponse.setLoadError(messageSource);
+		}
+		logger.debug("O");
+		return jsonResponse;
+	}
 	
-	
+	@RequestMapping(value="/user/purchaseRequestProduct/delete", method=RequestMethod.POST)
+	public @ResponseBody JsonResponse delete(PurchaseRequestProductForm purchaserRequestProductForm,HttpSession session){
+		logger.debug("I");
+		logger.debug(Constants.LOG_INPUT, purchaserRequestProductForm);
+		JsonResponse jsonResponse = new JsonResponse();
+		try {
+			User userSession = (User) session.getAttribute("user");
+			purchaseRequestProductService.delete(purchaserRequestProductForm.getPurchaseRequestIdEncrypt(), purchaserRequestProductForm.getPurchaseRequestProductIdEncrypt(), userSession);
+			jsonResponse.setDeleteSuccess(messageSource);
+		} catch (Exception e) {
+			logger.error(Constants.MESSAGE_ERROR,e);
+			jsonResponse.setDeleteError(messageSource);
+		}
+		logger.debug("O");
+		return jsonResponse;
+	}
+
 }

@@ -467,6 +467,13 @@ INSERT INTO `godung_online`.`product_dealer` (`product_id`, `dealer_id`) VALUES 
 INSERT INTO `godung_online`.`stock` (`stock_id`, `create_date`, `create_user`, `version`, `remind_number`, `location_id`, `warehouse_id`) VALUES ('1', '2017-09-16 23:21:43', 'user@gmail.com', '0', '10.00', '1', '1');
 INSERT INTO `godung_online`.`product_stock` (`product_id`, `stock_id`) VALUES ('1', '1');
 
+INSERT INTO `godung_online`.`purchaserequest` (`purchaserequest_id`, `create_date`, `create_user`, `version`, `demand_date`, `description`, `purchaserequest_code`, `reference_number`, `requst_date`, `employee_id`, `godung_id`) VALUES ('1', '2017-09-27 16:41:12', 'user@gmail.com', '4', '2017-09-27 00:00:00', '', 'PR20170927-00001', '', '2017-09-27 00:00:00', '1', '2');
+INSERT INTO `godung_online`.`purchaserequestproduct` (`purchaserequestproduct_id`, `version`, `amount`, `price`, `measure_id`, `product_id`) VALUES ('1', '0', '1.00', '2000.00', '1', '1');
+INSERT INTO `godung_online`.`purchaserequestproduct` (`purchaserequestproduct_id`, `version`, `amount`, `price`, `measure_id`, `product_id`) VALUES ('2', '0', '1.00', '2000.00', '1', '1');
+INSERT INTO `godung_online`.`purchaserequest_purchaserequestproduct` (`purchaserequest_id`, `purchaserequestproduct_id`) VALUES ('1', '1');
+INSERT INTO `godung_online`.`purchaserequest_purchaserequestproduct` (`purchaserequest_id`, `purchaserequestproduct_id`) VALUES ('1', '2');
+
+
 -- ADD USER USER SELENIUM --
 INSERT INTO `godung_online`.`user` (`user_id`,`active`, `email`, `name`, `password`,`language`) VALUES ('3','1', 'user2@gmail.com', 'Selenium User', '$2a$10$2ENrJAZwLxRopqim.mRDgOCK9BzDUDNxk38EUot/2wQ90KgqHLGX6','en');
 INSERT INTO `godung_online`.`user_rolelogin` (`user_id`, `role_id`) VALUES ('3', '2');

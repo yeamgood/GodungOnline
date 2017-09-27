@@ -189,7 +189,7 @@
 											<div class="pull-right">
 												<div class="btn-group" th:if="*{purchaseRequestIdEncrypt} != null and *{purchaseRequestIdEncrypt} != '' ">
 													<button class="btn btn-primary dropdown-toggle" type="button" onclick="openModalPrProduct();">
-														<i class="fa fa-plus"></i> <span class="span_white" th:text="#{form.purchaseRequestProduct.bt.add}"></span>
+														<i class="fa fa-pencil-square-o"></i> <span class="span_white" th:text="#{form.purchaseRequestProduct.bt.add}"></span>
 													</button>
 												</div>
 											</div>
@@ -197,7 +197,7 @@
 										<div class="clearfix"></div>
 									</div>
 									<div class="x_content">
-										<table id="pr_product_datatables" class="table  table-bordered table-small" style="width: 100%">
+										<table id="purchaserequest_product_datatables" class="table  table-bordered table-small" style="width: 100%">
 											<thead class="search-content-header">
 												<tr>
 													<th th:text="#{datatables.text.no}" class="dt-body-no"></th>
@@ -245,7 +245,7 @@
 											<div class="pull-right">
 												<div class="btn-group" th:if="*{purchaseRequestIdEncrypt} != null and *{purchaseRequestIdEncrypt} != '' ">
 													<button class="btn btn-primary dropdown-toggle" type="button" onclick="openModalApprover();">
-														<i class="fa fa-plus"></i> <span class="span_white" th:text="#{form.approver.bt.add}"></span>
+														<i class="fa fa-pencil-square-o"></i> <span class="span_white" th:text="#{form.approver.bt.add}"></span>
 													</button>
 												</div>
 											</div>
@@ -281,13 +281,6 @@
 									</div>
 									<div class="x_content">
 										<table id="document_datatables" class=" table-small" style="width: 100%">
-											<!-- <thead class="search-content-header">
-												<tr>
-													<th th:text="#{datatables.text.no}" class="dt-body-no"></th>
-													<th>Name</th>
-													<th th:text="#{form.purchaseRequestProduct.label.action}" class="dt-body-action"></th>
-												</tr>
-											</thead> -->
 										</table>
 									</div>
 								</div>
@@ -299,6 +292,10 @@
 				</form>
 				</div>
 				<!-- /page content -->
+				
+				<!-- --------------------------------------------------------------------------------- -->
+				<!-- ------------------------------------- MODAL ------------------------------------- -->
+				<!-- --------------------------------------------------------------------------------- -->
 				
 				 <div id="modal_delete" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog ">
@@ -343,6 +340,8 @@
 						</div>
 						<div class="modal-body">
 							<form id="pr_product_form" autocomplete="off" th:action="@{/user/purchaseRequest/manage}" method="post" class="form-horizontal" role="form" data-parsley-validate>
+								<input type="hidden" name="purchaseRequestIdEncrypt" th:value="${purchaseRequestForm.purchaseRequestIdEncrypt}"> 
+								<input type="hidden" id="pr_product_purchaseRequestProductIdEncrypt" name="purchaseRequestProductIdEncrypt" > 
 								<div class="col-md-12 col-sm-12 col-xs-12">
 									<div class="form-group">
 										<div class="control-label col-md-3 col-sm-3 col-xs-12">
@@ -351,10 +350,7 @@
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
 											<div class="input-group input_date">
-												<input type="hidden" id="pr_product_index" > 
-												<input type="hidden" id="pr_product_purchaseRequestProductIdEncrypt" name="purchaseRequestProductIdEncrypt" > 
 												<input type="hidden" id="pr_product_productIdEncrypt" name="productIdEncrypt"> 
-												<input type="hidden" id="pr_product_productCode" name="productCode"> 
 												<input type="text" id="pr_product_productName" class="form-control" readonly="readonly" name="productName"> 
 												<span class="input-group-btn">
 													<button type="button" class="btn btn-default input_btn" onclick="openModalProduct();">
@@ -371,9 +367,7 @@
 											<label class="validation-message" th:text="#{label.request}"></label>
 										</div>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-											<input type="hidden" id="pr_product_measureIdEncrypt" name="measureIdEncrypt"> 
-											<input type="hidden" id="pr_product_measureName" name="measureName"> 
-											<select id="pr_product_measure"  style="width: 100%" > 
+											<select id="pr_product_measure"  style="width: 100%"  name="measureIdEncrypt"> 
 												<option value=" " th:text="#{dropdown.text.select}"></option>
 												<option th:each="obj:${measureDropdown}" th:value="${obj.measureIdEncrypt}" th:text="${obj.measureName}"></option>
 											</select>
@@ -415,8 +409,8 @@
 							<button type="button" class="btn btn-default" data-dismiss="modal">
 								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
 							</button>
-							<button id="bt_stock_save" type="button" class="btn btn-primary" onclick="prProductAddValidAction();">
-								<i class="fa fa-plus"></i> <span class="span_white" th:text="#{bt.text.add}"></span>
+							<button id="bt_stock_save" type="button" class="btn btn-success" onclick="prProductSaveAction();">
+								<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
 							</button>
 						</div>
 					</div>
@@ -515,7 +509,7 @@
 							<button type="button" class="btn btn-default" data-dismiss="modal">
 								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
 							</button>
-							<button id="bt_stock_save" type="button" class="btn btn-primary" onclick="prProductAddValidAction();">
+							<button id="bt_stock_save" type="button" class="btn btn-primary" onclick="prProductSaveAction();">
 								<i class="fa fa-upload"></i> <span class="span_white" th:text="#{bt.text.upload}"></span>
 							</button>
 						</div>
@@ -575,8 +569,8 @@
 							<button type="button" class="btn btn-default" data-dismiss="modal">
 								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
 							</button>
-							<button id="bt_stock_save" type="button" class="btn btn-primary" onclick="approverAddValidAction();">
-								<i class="fa fa-plus"></i> <span class="span_white" th:text="#{bt.text.add}"></span>
+							<button id="bt_stock_save" type="button" class="btn btn-primary" onclick="xxxxxxxxxxxxx();">
+								<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
 							</button>
 						</div>
 					</div>
@@ -612,6 +606,41 @@
 						<div class="modal-footer modal-custom-footer">
 							<button type="button" class="btn btn-default" data-dismiss="modal">
 								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
+							</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			
+			
+			<!-- --------------------------------------------------------------------------------- -->
+			<!-- ------------------------------------- MODAL DELETE ------------------------------ -->
+			<!-- --------------------------------------------------------------------------------- -->
+			<div id="modal_delete_prProduct" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog ">
+					<div class="modal-content">
+
+						<div class="modal-header modal-delete-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">×</span>
+							</button>
+							<h4 class="modal-title" id="myModalLabel">
+								<i class="fa fa-trash"></i> <span th:text="#{label.delete.head.confirm}"></span>
+							</h4>
+						</div>
+						<div class="modal-body">
+							<form autocomplete="off" id="deletePrPrProductForm" data-parsley-validate class="form-horizontal form-label-left">
+								<input type="hidden" name="purchaseRequestIdEncrypt" th:value="${purchaseRequestForm.purchaseRequestIdEncrypt}"> 
+								<input type="hidden" id="delete_id_prProduct" name="purchaseRequestProductIdEncrypt" /> <span id="modal_delete_content_prProduct"></span>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
+							</button>
+							<button type="button" class="btn btn-danger" onclick="prProductDeleteAction();">
+								<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
 							</button>
 						</div>
 
@@ -685,6 +714,10 @@
 		var url_employee = /*[[@{/user/employee/list/ajax}]]*/;
 		var countPr  = 0;
 		
+		<!-- ---------------------------------- -->
+		<!-- -------- FUNCTION MAIN ----------- -->
+		<!-- ---------------------------------- -->
+		
 		<!-- -------- Start datatables Employee -------- -->
 	    $(document).ready(function() {
 		    	var table =  $('#datatables_employee').DataTable( {
@@ -732,6 +765,11 @@
 		        } ).draw(); 
 		});
 		
+		
+		<!-- ---------------------------------- -->
+		<!-- -------- FUNCTION PRODUCT -------- -->
+		<!-- ---------------------------------- -->
+
 	    
 	    <!-- -------- Start datatables Product -------- -->
 	    $(document).ready(function() {
@@ -765,7 +803,7 @@
 		                   {"render": function ( data, type, row ) {
 		                		 return	'' +
 		                	  	 	    '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textSelect + '"' +
-		                	  	 	    '   onclick="selectProduct(\''+data+'\',\''+row.productCode +'\',\''+ row.productName +'\',\''+ row.measure.measureIdEncrypt +'\',\''+ row.measure.measureName + '\',\''+ row.price + '\');" >' +
+		                	  	 	    '   onclick="selectProduct(\''+''+'\',\''+ data +'\',\''+ row.productName +'\',\''+ row.measure.measureIdEncrypt + '\',\''+ row.price + '\',\''+ '1.00' + '\');" >' +
 		                	  	 	    '   <i class="fa fa-download"></i> '+ textSelect + '</button>'; 
 		                	  	 	    
 		                  },
@@ -789,18 +827,28 @@
 	    
 	    <!-- -------- Start datatables Purchase Request Product -------- -->
 	    $(document).ready(function() {
-			var product_url = /*[[@{/user/purchaseRequestProduct/list/ajax/}]]*/
+			var purchaseRequestUrl = /*[[@{/user/purchaseRequestProduct/list/ajax/}]]*/
 			var purchaseRequestIdEncrypt = /*[[${purchaseRequestForm.purchaseRequestIdEncrypt}]]*/;
-			var product_url_complete = product_url + purchaseRequestIdEncrypt;
-			var table =  $('#pr_product_datatables').DataTable( {
+			var purchaseRequestUrlComplete = purchaseRequestUrl + purchaseRequestIdEncrypt;
+			var table =  $('#purchaserequest_product_datatables').DataTable( {
 	    			"processing": true,
-	    			//"ajax": product_url_complete,
+	    			"ajax": purchaseRequestUrlComplete,
 	    	        "paging":   false,
 	    	        "ordering": false,
 	    	        "info":     false,
 	    	        "searching":	true,
 	    	        "language": {"url": url_language},
 	    	        "order": [[ 1, 'asc' ]],
+	    	        "columns": [
+	  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
+	  	            { 'data': 'productCode' },
+	  	            { 'data': 'productName' },
+	  	            { 'data': 'measureName' },
+	  	            { 'data': 'amount' },
+	  	            { 'data': 'price'},
+	  	            { 'data': 'totalPrice' },
+	  	            { 'data': 'purchaseRequestProductIdEncrypt','searchable': false, 'orderable': false }
+	  	        ],
 	    	        "columnDefs": [
 	    	        	   {"targets": 0,"className": "dt-body-no","searchable":false,"orderable":false},
 	    	        	   {"targets": 1,"className": "content-left"},
@@ -809,16 +857,25 @@
 	    	        	   {"targets": 4,"className": "content-right"},
 	    	        	   {"targets": 5,"className": "content-right"},
 	    	        	   {"targets": 6,"className": "content-right"},
-	    	        	   {"targets": 7,"className": "dt-body-action","searchable":false,"orderable":false}
+	    	        	   {"targets": 7,"className": "dt-body-action","searchable":false,"orderable":false,
+	    	        		   "render": function ( data, type, row ) {
+	                		 return	 '<button type="button" class="btn btn-primary btn-xs" onclick="prProductLoadAction(\''+data+'\');" ><i class="fa fa-wrench"></i></button> ' +
+	                		 '<button type="button" class="btn btn-danger btn-xs" onclick="openPrProductModalDelete(\''+ data 
+	                		 																						 + '\',\'' + row.productCode 
+	                				 																				 + '\',\'' + row.productName 
+	                				 																				 +'\');" ><i class="fa fa-trash"></i></button>';
+			            }   
+	    	        	   }
 	    	        ],
 	    	        "initComplete": function( settings, json ) {
             	 		//fix bug datatables use dom not responsive html
-            			 $("#pr_product_datatables_filter").hide();
+            			 $("#purchaserequest_product_datatables_filter").hide();
            		}
 	    	    } );
 	       
+			
 	    		/* SET RELOAD TOOLTIP AFTER DATATABLE */
-		    	$('#pr_product_datatables').on( 'draw.dt', function () {
+		    	$('#purchaserequest_product_datatables').on( 'draw.dt', function () {
 		    		$('[data-toggle="tooltip"]').tooltip();
 		    	} );
         
@@ -828,107 +885,14 @@
 	                cell.innerHTML = i+1;
 	            } );
 	        } ).draw(); 
-	       
-	        $('#pr_product_datatables tbody').on('click','i.fa-trash', function () {
-	            table.row( $(this).parents('tr') ).remove().draw();
-	          });
 	        
-	        var purchaseRequestProductList = /*[[${purchaseRequestForm.purchaseRequestProductFormList}]]*/
-	        categoryChildDatatableGenerate(purchaseRequestProductList);
-	        calculateTotalAll();
+	        purchaseReloadTotalCalculate();
 		});
+	  
 	    
-	    function prProductAddRow(editIndex,purchaseRequestProductIdEncrypt,productIdEncrypt,productCode,productName,amount,measureIdEncrypt,measureName,price,totalPrice){
-	    	
-	    	var indexData = countPr;
-	    	if(editIndex != ""){
-	    		indexData = editIndex;
-	    	}
-	    	
-	    	var dataHidden = '' +
-	     	    '<input type="hidden" id="prProduct_'+indexData+'_purchaseRequestProductIdEncrypt" name="purchaseRequestProductFormList['+indexData+'].purchaseRequestProductIdEncrypt" value="'+purchaseRequestProductIdEncrypt+'">' +
-  				'<input type="hidden" id="prProduct_'+indexData+'_productIdEncrypt" name="purchaseRequestProductFormList['+indexData+'].productIdEncrypt" value="'+productIdEncrypt+'">' +
-  				'<input type="hidden" id="prProduct_'+indexData+'_productCode" name="purchaseRequestProductFormList['+indexData+'].productCode" value="'+productCode+'">' +
-  				'<input type="hidden" id="prProduct_'+indexData+'_productName" name="purchaseRequestProductFormList['+indexData+'].productName" value="'+productName+'">' +
-  				'<input type="hidden" id="prProduct_'+indexData+'_measureIdEncrypt" name="purchaseRequestProductFormList['+indexData+'].measureIdEncrypt" value="'+measureIdEncrypt+'">' +
-  				'<input type="hidden" id="prProduct_'+indexData+'_measureName" name="purchaseRequestProductFormList['+indexData+'].measureName" value="'+measureName+'">' +
-  				'<input type="hidden" id="prProduct_'+indexData+'_amount" name="purchaseRequestProductFormList['+indexData+'].amount" value="'+amount+'">' +
-  				'<input type="hidden" id="prProduct_'+indexData+'_price" name="purchaseRequestProductFormList['+indexData+'].price" value="'+price+'">' +
-  				'<input type="hidden" id="prProduct_'+indexData+'_totalPrice" name="purchaseRequestProductFormList['+indexData+'].totalPrice" value="'+totalPrice+'">' +
-  	            '<span>' + productCode + '</span>';
-			     	            
-	        var btAction  =  '<button id="bt_edit_'+indexData+'" type="button" class="btn btn-primary btn-xs" onClick="editProduct('+indexData+');"><i class="fa fa-wrench"></i></button> ' +
-		                		 '<button type="button" class="btn btn-danger btn-xs" ><i class="fa fa-trash"></i></button>';
-			     	            
-	     	var table = $('#pr_product_datatables').DataTable();
-	     	if(editIndex == ""){
-	     		table.row.add(['',dataHidden,productName,measureName,amount,price,totalPrice,btAction]).draw();
-	     		countPr++;
-	     	}else{
-	     		var indexDataEdit = $("#bt_edit_" + editIndex).parent().parent().find('td:eq(0)').text() - 1;
-	     		table.row(indexDataEdit).data(['',dataHidden,productName,measureName,amount,price,totalPrice,btAction]).draw();
-	     	}
-	    }
-	    
-	    function calculateTotalAll(){
-	    		var table = $('#pr_product_datatables').DataTable();
-	    		
-	    		var totalAmount = parseFloat("0.00");
-	    		var totalPrice = parseFloat("0.00");
-	    		table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
-	    		    var data = this.data();
-	    		    totalAmount += parseFloat(data[4].replace(/,/g,""));
-	    		    totalPrice += parseFloat(data[6].replace(/,/g,""));
-	    		} );
-	     	$("#totalAmoumt").val(totalAmount); 
-	     	$("#totalAmoumt").maskMoney('mask');
-	     	$("#totalPrice").val(totalPrice); 
-	     	$("#totalPrice").maskMoney('mask');
-	    		
-	    }
-	    
-	    function categoryChildDatatableGenerate(obj){
-		    $('#pr_product_datatables').DataTable().clear().draw();
-	        $(obj).each(function(i, item){
-	    	 		prProductAddRow( '', 
-	    	 						item.purchaseRequestProductIdEncrypt,
-	    	 						item.productIdEncrypt,
-	    	 						item.productCode,
-	    	 						item.productName,
-	    	 						item.amount,
-	    	 						item.measureIdEncrypt,
-	    	 						item.measureName,
-	    	 						item.price,
-	    	 						item.totalPrice);
-	       });
-	    }
-	    
-	    function editProduct(indexProduct){
-	    		openModalPrProduct();
-	    		var idTxt = "#prProduct_" + indexProduct + "_";
-	    		
-	    		var purchaseRequestProductIdEncrypt = $(idTxt + "purchaseRequestProductIdEncrypt").val();
-	    		var productIdEncrypt = $(idTxt + "productIdEncrypt").val();
-	    		var productCode = $(idTxt + "productCode").val()
-	    		var productName = $(idTxt + "productName").val()
-	    		var measureIdEncrypt = $(idTxt + "measureIdEncrypt").val()
-	    		var measureName = $(idTxt + "measureName").val()
-	    		var amount = $(idTxt + "amount").val()
-	    		var price = $(idTxt + "price").val()
-	    		
-	    		$("#pr_product_purchaseRequestProductIdEncrypt").val(purchaseRequestProductIdEncrypt);
-	    		$("#pr_product_index").val(indexProduct);
-	    		$("#pr_product_productIdEncrypt").val(productIdEncrypt);
-			$("#pr_product_productCode").val(productCode);
-			$("#pr_product_productName").val(productName);
-			$("#pr_product_measure").val(measureIdEncrypt).trigger('change');
-			$("#pr_product_measureIdEncrypt").val(measureIdEncrypt);
-			$("#pr_product_measureName").val(measureName);
-			$("#pr_product_amount").val(amount);
-			$("#pr_product_price").val(price);
-			calculateTotalPrice();
-	    }
-	    
+		<!-- ---------------------------------- -->
+		<!-- -------- FUNCTION DOCUMENT -------- -->
+		<!-- ---------------------------------- -->
 	    <!-- -------- Start datatables Document -------- -->
 	    $(document).ready(function() {
 		    	var table =  $('#document_datatables').DataTable( {
@@ -962,6 +926,9 @@
 			    	} );
 		});
 	    
+		<!-- ---------------------------------- -->
+		<!-- -------- FUNCTION APPROVE -------- -->
+		<!-- ---------------------------------- -->
 	    <!-- -------- Start datatables Approve -------- -->
 	    $(document).ready(function() {
 		    	var table =  $('#approver_datatables').DataTable( {
@@ -997,50 +964,51 @@
 	    
 	    <!-- -------- Start datatables Empleyee Approve -------- -->
 	    $(document).ready(function() {
-	    	var table =  $('#datatables_employee_approve').DataTable( {
-	    			"processing": true,
-	    	        "ajax": url_employee,
-	    	        "paging":   true,
-	    	        "ordering": true,
-	    	        "info":     true,
-	    	        "searching":	true,
-	    	        "language": {"url": url_language},
-	    	        "order": [[ 1, 'asc' ]],
-	    	        "columns": [
-	  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
-	  	            { 'data': 'employeeCode' , 'className': 'dt-body-code'},
-	  	            { 'data': 'firstName' },
-	  	            { 'data': 'employeeIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
-	  	        ],
-	  	      	"columnDefs": [{
-	                  "render": function ( data, type, row ) {
-	                		 return	'' +
-	                	  	 	    '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textSelect + '"' +
-	                	  	 	    '   onclick="selectEmployeeApprove(\''+ data + '\',\'' + row.title + row.firstName + " " + row.lastName + '\');" >' +
-	                	  	 	    '   <i class="fa fa-download"></i> '+ textSelect +' </button>'; 
-	                  },
-	                  "targets": 3
-	             },{
-	            	 	 "render": function ( data, type, row ) {
-            	 			 return	row.title + row.firstName + " " + row.lastName;
-	                  },
-	                  "targets": 2
-	             }
-	  	      	]
-	    	    } );
-    	
-	    		/* SET RELOAD TOOLTIP AFTER DATATABLE */
-		    	$('#datatables_employee_approve').on( 'draw.dt', function () {
-		    		$('[data-toggle="tooltip"]').tooltip();
-		    	} );
-        
-	       /* SET INDEX COLUMN */
-	        table.on( 'order.dt search.dt', function () {
-	        	table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-	                cell.innerHTML = i+1;
-	            } );
-	        } ).draw(); 
-	});
+		    	var table =  $('#datatables_employee_approve').DataTable( {
+		    			"processing": true,
+		    	        "ajax": url_employee,
+		    	        "paging":   true,
+		    	        "ordering": true,
+		    	        "info":     true,
+		    	        "searching":	true,
+		    	        "language": {"url": url_language},
+		    	        "order": [[ 1, 'asc' ]],
+		    	        "columns": [
+		  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
+		  	            { 'data': 'employeeCode' , 'className': 'dt-body-code'},
+		  	            { 'data': 'firstName' },
+		  	            { 'data': 'employeeIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
+		  	        ],
+		  	      	"columnDefs": [{
+		                  "render": function ( data, type, row ) {
+		                		 return	'' +
+		                	  	 	    '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textSelect + '"' +
+		                	  	 	    '   onclick="selectEmployeeApprove(\''+ data + '\',\'' + row.title + row.firstName + " " + row.lastName + '\');" >' +
+		                	  	 	    '   <i class="fa fa-download"></i> '+ textSelect +' </button>'; 
+		                  },
+		                  "targets": 3
+		             },{
+		            	 	 "render": function ( data, type, row ) {
+	            	 			 return	row.title + row.firstName + " " + row.lastName;
+		                  },
+		                  "targets": 2
+		             }
+		  	      	]
+		    	    } );
+	    	
+		    		/* SET RELOAD TOOLTIP AFTER DATATABLE */
+			    	$('#datatables_employee_approve').on( 'draw.dt', function () {
+			    		$('[data-toggle="tooltip"]').tooltip();
+			    	} );
+	        
+		       /* SET INDEX COLUMN */
+		        table.on( 'order.dt search.dt', function () {
+		        	table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+		                cell.innerHTML = i+1;
+		            } );
+		        } ).draw(); 
+		});
+	    
 	    
 		<!-- -------------------------------- -->
 		<!-- -------- Start Select2  -------- -->
@@ -1050,27 +1018,12 @@
 	      	$('#pr_product_measure').select2({
 	    	  		placeholder: selectText
 	     	 });
-	      	
-	      	 $('#pr_product_measure').on('select2:select', function (evt) {
-			    var data = $('#pr_product_measure').select2('data');
-			 	$("#pr_product_measureIdEncrypt").val(data[0].id);
-		     	$("#pr_product_measureName").val(data[0].text);
-		     }); 
-	      	 
-			/* <input type="hidden" id="pr_product_measureIdEncrypt" name="measureIdEncrypt"> 
-			<input type="hidden" id="pr_product_measureName" name="measureName">  */
 			
 	     	$('#approve_role_dropdown').select2({
 	    	  		placeholder: selectText
 	     	 });
 		});
 		
-		
-		
-		
-		<!-- -------------------------------- -->
-		<!-- -------- End Select2  -------- -->
-		<!-- -------------------------------- -->
 		
 		<!-- -------------------------------- -->
 		<!-- -------- Start Price  -------- -->
@@ -1080,6 +1033,7 @@
 		$("#pr_product_amount").maskMoney();
 		$("#pr_product_price").maskMoney();
 		$("#pr_product_totalPrice").maskMoney();
+		
 		
 		<!-- -------------------------------- -->
 		<!-- -------- Start MODAL  ---------- -->
@@ -1132,6 +1086,17 @@
 		function closeModalEmployeeApprove(){
 			$('#modal_employee_approve').modal('hide');
 		}
+		
+		function openPrProductModalDelete(idEncrypt,productCode,productName){
+	    		var messageMain = /*[[#{label.delete.content.confirm}]]*/;
+	    		$("#delete_id_prProduct").val(idEncrypt);
+	    		$("#modal_delete_content_prProduct").html(messageMain + ' ' + productCode + ':' + productName);
+	    		$('#modal_delete_prProduct').modal('show');
+	    }
+		
+		function closePrProductModalDelete(){
+			$('#modal_delete_prProduct').modal('hide');
+	    }
 		<!-- -------------------------------- -->
 		<!-- -------- Start Date  -------- -->
 		<!-- -------------------------------- -->
@@ -1153,9 +1118,41 @@
 		<!-- -------------------------------- -->
 		<!-- -------- Start Action  -------- -->
 		<!-- -------------------------------- -->
-		function prProductAddValidAction() {
+		
+		 function prProductLoadAction(idEncrypt) {
+			   clearSelectProduct();
+		 	   	var urlAction = /*[[@{/user/purchaseRequestProduct/load}]]*/;
+		 	   urlAction = urlAction + "/" + idEncrypt;
+			    $.ajax({
+			        type: "GET",
+			        url: urlAction,
+			        dataType: 'json',
+			        data: {"saleIdEncrypt": idEncrypt},
+			        success: function(response){
+			            if(response.status == "SUCCESS"){
+			            	
+			            	   var purchaseRequestProductIdEncrypt = response.result.purchaseRequestProductIdEncrypt;
+				        	   var productIdEncrypt = response.result.productIdEncrypt;
+				        	   var productName = response.result.productName;
+				        	   var measureIdEncrypt = response.result.measureIdEncrypt;
+				        	   var price = response.result.price;
+				        	   var amount = response.result.amount;
+				        	   
+				        	   openModalPrProduct();
+				        	   selectProduct(purchaseRequestProductIdEncrypt,productIdEncrypt,productName,measureIdEncrypt,price,amount);
+			             }else{
+			            		openNotification(response.result.type,response.result.title,response.result.text);
+			             }
+			         },
+			         error: function(e){
+			             openNotification("error","error",e);
+			         }
+			    });
+			}
+		 
+		function prProductSaveAction() {
 	  		resetValidationErrorWithPrefix("pr_product_error_");
-	 	   	var urlAction = /*[[@{/user/purchaseRequestProduct/valid}]]*/;
+	 	   	var urlAction = /*[[@{/user/purchaseRequestProduct/save}]]*/;
 		    $.ajax({
 		        type: "POST",
 		        url: urlAction,
@@ -1163,19 +1160,11 @@
 		        data: $("#pr_product_form").serialize(),
 		        success: function(response){
 		            if(response.status == "SUCCESS"){
-		            		var editIndex = $("#pr_product_index").val();
-		            		var purchaseRequestProductIdEncrypt = response.result.purchaseRequestProductIdEncrypt;
-		            		var productIdEncrypt = response.result.productIdEncrypt;
-		            		var productCode = response.result.productCode;
-		            		var productName = response.result.productName;
-		            		var amount = response.result.amount;
-		            		var measureIdEncrypt = response.result.measureIdEncrypt;
-		            		var measureName = response.result.measureName;
-		            		var price = response.result.price;
-		            		var totalPrice = response.result.totalPrice;
-		            		prProductAddRow(editIndex,purchaseRequestProductIdEncrypt,productIdEncrypt,productCode,productName,amount,measureIdEncrypt,measureName,price,totalPrice);
-		            		closeModalProproduct();
-		            		calculateTotalAll();
+		            		openNotification(response.result.type,response.result.title,response.result.text);
+		            		var table =  $('#purchaserequest_product_datatables').DataTable();
+			             table.ajax.reload(); 
+			         	closeModalProproduct();
+			         	purchaseReloadTotalCalculate();
 		             }else{
 		            	 	validationErrorShowWithPrefix("pr_product_error_",response.result);
 		             }
@@ -1186,31 +1175,23 @@
 		    });
 		}
 		
-		function approverAddValidAction() {
+		function purchaseReloadTotalCalculate() {
 	  		resetValidationErrorWithPrefix("pr_product_error_");
-	 	   	var urlAction = /*[[@{/user/approver/valid}]]*/;
+	 	   	var urlAction = /*[[@{/user/purchaseRequestProduct/calculateTotal/}]]*/;
+		    var purchaseRequestIdEncrypt = /*[[${purchaseRequestForm.purchaseRequestIdEncrypt}]]*/;
+			var urlActionComplete = urlAction + purchaseRequestIdEncrypt;
+				
 		    $.ajax({
 		        type: "POST",
-		        url: urlAction,
+		        url: urlActionComplete,
+		        data: '',
 		        dataType: 'json',
-		        data: $("#pr_product_form").serialize(),
 		        success: function(response){
 		            if(response.status == "SUCCESS"){
-		            		var editIndex = $("#pr_product_index").val();
-		            		var purchaseRequestProductIdEncrypt = response.result.purchaseRequestProductIdEncrypt;
-		            		var productIdEncrypt = response.result.productIdEncrypt;
-		            		var productCode = response.result.productCode;
-		            		var productName = response.result.productName;
-		            		var amount = response.result.amount;
-		            		var measureIdEncrypt = response.result.measureIdEncrypt;
-		            		var measureName = response.result.measureName;
-		            		var price = response.result.price;
-		            		var totalPrice = response.result.totalPrice;
-		            		prProductAddRow(editIndex,purchaseRequestProductIdEncrypt,productIdEncrypt,productCode,productName,amount,measureIdEncrypt,measureName,price,totalPrice);
-		            		closeModalProproduct();
-		            		calculateTotalAll();
-		             }else{
-		            	 	validationErrorShowWithPrefix("pr_product_error_",response.result);
+		            		$("#totalAmoumt").val(response.result.totalAmount); 
+		        	     	$("#totalAmoumt").maskMoney('mask');
+		        	     	$("#totalPrice").val(response.result.totalPrice); 
+		        	     	$("#totalPrice").maskMoney('mask');
 		             }
 		         },
 		         error: function(e){
@@ -1218,6 +1199,31 @@
 		         }
 		    });
 		}
+		
+		 function prProductDeleteAction() {
+		 	   	var urlAction = /*[[@{/user/purchaseRequestProduct/delete}]]*/;
+			    $.ajax({
+			        type: "POST",
+			        url: urlAction,
+			        dataType: 'json',
+			        data: $("#deletePrPrProductForm").serialize(),
+			        success: function(response){
+			            if(response.status == "SUCCESS"){
+			               	openNotification(response.result.type,response.result.title,response.result.text);
+			               	$('#modal_delete_prProduct').modal('hide');
+			               	closeModalProproduct();
+			               	var table =  $('#purchaserequest_product_datatables').DataTable();
+				             table.ajax.reload(); 
+			             }else{
+			            		openNotification(response.result.type,response.result.title,response.result.text);
+			             }
+			         },
+			         error: function(e){
+			             openNotification("error","error",e);
+			         }
+			    });
+			}
+		
 		
 		function selectEmployee(employeeIdEncrypt,fullname){
 			$("#employeeIdEncrypt").val(employeeIdEncrypt);
@@ -1231,14 +1237,12 @@
 			closeModalEmployeeApprove();
 		}
 		
-		function selectProduct(productIdEncrypt,productCode,productName,measureIdEncrypt,measureName,price){
+		function selectProduct(purchaseRequestProductIdEncrypt,productIdEncrypt,productName,measureIdEncrypt,price,amount){
+			$("#pr_product_purchaseRequestProductIdEncrypt").val(purchaseRequestProductIdEncrypt);
 			$("#pr_product_productIdEncrypt").val(productIdEncrypt);
-			$("#pr_product_productCode").val(productCode);
 			$("#pr_product_productName").val(productName);
-			$("#pr_product_amount").val("1.00");
+			$("#pr_product_amount").val(amount);
 			$("#pr_product_measure").val(measureIdEncrypt).trigger('change');
-			$("#pr_product_measureIdEncrypt").val(measureIdEncrypt);
-			$("#pr_product_measureName").val(measureName);
 			$("#pr_product_price").val(price);
 			calculateTotalPrice();
 			closeModalProduct();
@@ -1246,14 +1250,10 @@
 		
 		function clearSelectProduct(){
 			$("#pr_product_purchaseRequestProductIdEncrypt").val("");
-			$("#pr_product_index").val("");
 			$("#pr_product_productIdEncrypt").val("");
-			$("#pr_product_productCode").val("");
 			$("#pr_product_productName").val("");
 			$("#pr_product_amount").val("0.00");
 			$("#pr_product_measure").val("").trigger('change');
-			$("#pr_product_measureIdEncrypt").val("");
-			$("#pr_product_measureName").val("");
 			$("#pr_product_price").val("0.00");
 			calculateTotalPrice();
 		}

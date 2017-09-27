@@ -1,7 +1,6 @@
 package com.yeamgood.godungonline.service;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,22 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.exception.GodungIdException;
 import com.yeamgood.godungonline.form.PurchaseRequestForm;
-import com.yeamgood.godungonline.form.PurchaseRequestProductForm;
 import com.yeamgood.godungonline.model.Employee;
-import com.yeamgood.godungonline.model.Measure;
-import com.yeamgood.godungonline.model.Product;
 import com.yeamgood.godungonline.model.PurchaseRequest;
-import com.yeamgood.godungonline.model.PurchaseRequestProduct;
 import com.yeamgood.godungonline.model.User;
 import com.yeamgood.godungonline.repository.EmployeeRepository;
-import com.yeamgood.godungonline.repository.MeasureRepository;
-import com.yeamgood.godungonline.repository.ProductRepository;
-import com.yeamgood.godungonline.repository.PurchaseRequestProductRepository;
 import com.yeamgood.godungonline.repository.PurchaseRequestRepository;
 import com.yeamgood.godungonline.utils.AESencrpUtils;
 import com.yeamgood.godungonline.utils.DateUtils;
 import com.yeamgood.godungonline.utils.GenerateCodeUtils;
-import com.yeamgood.godungonline.utils.NumberUtils;
 
 @Service("purchaseRequestService")
 public class PurchaseRequestServiceImpl implements PurchaseRequestService{
@@ -40,19 +31,10 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService{
 	private PurchaseRequestRepository purchaseRequestRepository;
 	
 	@Autowired
-	private PurchaseRequestProductRepository purchaseRequestProductRepository;
-	
-	@Autowired
 	private EmployeeRepository employeeRepository;
 	
 	@Autowired
 	private GodungService godungService;
-	
-	@Autowired
-	private ProductRepository productRepository;
-	
-	@Autowired
-	private MeasureRepository measureRepository;
 	
 	@Override
 	public PurchaseRequest findByIdEncrypt(String idEncrypt,User userSession) throws GodungIdException  {
@@ -100,8 +82,6 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService{
 			purchaseRequestTemp.setPurchaseRequestCode(generateCode);
 			purchaseRequestTemp.setGodung(userSession.getGodung());
 			purchaseRequestTemp.setCreate(userSession);
-			purchaseRequestRepository.save(purchaseRequestTemp);
-			purchaseRequestForm.setPurchaseRequestIdEncrypt(AESencrpUtils.encryptLong(purchaseRequestTemp.getPurchaseRequestId()));
 		}else {
 			Long id = AESencrpUtils.decryptLong(purchaseRequestForm.getPurchaseRequestIdEncrypt());
 			purchaseRequestTemp = purchaseRequestRepository.findOne(id);
@@ -118,70 +98,6 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService{
 		purchaseRequestTemp.setDemandDate(DateUtils.stringToDate(purchaseRequestForm.getDemandDate(), DateUtils.DDMMYYYY));
 		purchaseRequestTemp.setReferenceNumber(purchaseRequestForm.getReferenceNumber());
 		purchaseRequestTemp.setDescription(purchaseRequestForm.getDescription());
-		
-		
-		
-		
-		
-		//Manage List
-		PurchaseRequestProduct purchaseRequestProduct;
-		List<PurchaseRequestProduct> prProductFormListTemp = new ArrayList<>();
-		if(purchaseRequestForm.getPurchaseRequestProductFormList() != null) {
-			for (PurchaseRequestProductForm purchaseRequestProductForm : purchaseRequestForm.getPurchaseRequestProductFormList()) {
-				if(!StringUtils.isBlank(purchaseRequestProductForm.getProductIdEncrypt())) {// check delete row null pointer
-					
-					if(StringUtils.isBlank(purchaseRequestProductForm.getPurchaseRequestProductIdEncrypt())) {// check create new data
-						purchaseRequestProduct = new PurchaseRequestProduct();
-						purchaseRequestProduct.setCreate(userSession);
-						purchaseRequestProduct.setAmount(NumberUtils.stringToBigDecimal(purchaseRequestProductForm.getAmount()));
-						purchaseRequestProduct.setPrice(NumberUtils.stringToBigDecimal(purchaseRequestProductForm.getPrice()));
-						
-						//Product
-						Product product = null;
-						if(!StringUtils.isBlank(purchaseRequestProductForm.getProductIdEncrypt())) {
-							product = productRepository.findOne(AESencrpUtils.decryptLong(purchaseRequestProductForm.getProductIdEncrypt()));
-						}
-						purchaseRequestProduct.setProduct(product);
-						//Measure
-						Measure measure = null;
-						if(!StringUtils.isBlank(purchaseRequestProductForm.getProductIdEncrypt())) {
-							measure = measureRepository.findOne(AESencrpUtils.decryptLong(purchaseRequestProductForm.getMeasureIdEncrypt()));
-						}
-						purchaseRequestProduct.setMeasure(measure);
-						
-						prProductFormListTemp.add(purchaseRequestProduct);
-					}else {
-						purchaseRequestProduct = purchaseRequestProductRepository.findOne(AESencrpUtils.decryptLong(purchaseRequestProductForm.getPurchaseRequestProductIdEncrypt()));
-						purchaseRequestProduct.setUpdate(userSession);
-						purchaseRequestProduct.setAmount(NumberUtils.stringToBigDecimal(purchaseRequestProductForm.getAmount()));
-						purchaseRequestProduct.setPrice(NumberUtils.stringToBigDecimal(purchaseRequestProductForm.getPrice()));
-						//Product
-						Product product = null;
-						if(!StringUtils.isBlank(purchaseRequestProductForm.getProductIdEncrypt())) {
-							product = productRepository.findOne(AESencrpUtils.decryptLong(purchaseRequestProductForm.getProductIdEncrypt()));
-						}
-						purchaseRequestProduct.setProduct(product);
-						
-						//Measure
-						Measure measure = null;
-						if(!StringUtils.isBlank(purchaseRequestProductForm.getProductIdEncrypt())) {
-							measure = measureRepository.findOne(AESencrpUtils.decryptLong(purchaseRequestProductForm.getMeasureIdEncrypt()));
-						}
-						purchaseRequestProduct.setMeasure(measure);
-						
-						prProductFormListTemp.add(purchaseRequestProduct);
-						
-					}
-					
-				}
-			}
-		}
-		
-		if(purchaseRequestTemp.getPurchaseRequestProductList() == null) {
-			purchaseRequestTemp.setPurchaseRequestProductList(new ArrayList<>());
-		}
-		purchaseRequestTemp.getPurchaseRequestProductList().clear();
-		purchaseRequestTemp.getPurchaseRequestProductList().addAll(prProductFormListTemp);
 		
 		purchaseRequestRepository.save(purchaseRequestTemp);
 		purchaseRequestForm.setPurchaseRequestIdEncrypt(AESencrpUtils.encryptLong(purchaseRequestTemp.getPurchaseRequestId()));
