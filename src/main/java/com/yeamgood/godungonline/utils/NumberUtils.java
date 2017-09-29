@@ -30,4 +30,10 @@ public class NumberUtils {
 		}
 		return result;
 	}
+	
+	public static String longToString(long data) {
+		DecimalFormat df = new DecimalFormat();
+		df.setMinimumFractionDigits(2);
+		return df.format(data);
+	}
 }

@@ -6,6 +6,8 @@ public class ApproverForm {
 	
 	private String approverIdEncrypt;
 	
+	private String purchaseRequestIdEncrypt;
+	
 	@NotBlank(message = "{form.purchaseRequestProduct.valid.product}")
 	private String employeeIdEncrypt;
 	
@@ -17,6 +19,8 @@ public class ApproverForm {
 	
 	@NotBlank(message = "{form.purchaseRequestProduct.valid.product}")
 	private String approverRoleCode;
+	
+	private String approverRoleName;
 	
 	private String approverActionCode;
 	
@@ -85,12 +89,29 @@ public class ApproverForm {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public String getPurchaseRequestIdEncrypt() {
+		return purchaseRequestIdEncrypt;
+	}
+
+	public void setPurchaseRequestIdEncrypt(String purchaseRequestIdEncrypt) {
+		this.purchaseRequestIdEncrypt = purchaseRequestIdEncrypt;
+	}
+	
+	public String getApproverRoleName() {
+		return approverRoleName;
+	}
+
+	public void setApproverRoleName(String approverRoleName) {
+		this.approverRoleName = approverRoleName;
+	}
 
 	@Override
 	public String toString() {
-		return "ApproverForm [approverIdEncrypt=" + approverIdEncrypt
-				+ ", employeeIdEncrypt=" + employeeIdEncrypt + ", employeeName=" + employeeName + ", requestDate="
-				+ requestDate + ", approverDate=" + approverDate + ", approverRoleCode=" + approverRoleCode
+		return "ApproverForm [approverIdEncrypt=" + approverIdEncrypt + ", purchaseRequestIdEncrypt="
+				+ purchaseRequestIdEncrypt + ", employeeIdEncrypt=" + employeeIdEncrypt + ", employeeName="
+				+ employeeName + ", requestDate=" + requestDate + ", approverDate=" + approverDate
+				+ ", approverRoleCode=" + approverRoleCode + ", approverRoleName=" + approverRoleName
 				+ ", approverActionCode=" + approverActionCode + ", description=" + description + "]";
 	}
 	

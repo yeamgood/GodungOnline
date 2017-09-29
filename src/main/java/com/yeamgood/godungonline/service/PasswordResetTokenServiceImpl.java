@@ -30,7 +30,7 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService{
 	@Override
 	public String validatePasswordResetToken(long id, String token) {
 	    PasswordResetToken passToken = passwordResetTokenRepository.findByToken(token);
-	    if ((passToken == null) || (passToken.getUser().getId() != id)) {
+	    if ((passToken == null) || (passToken.getUser().getUserId() != id)) {
 	        return "invalidToken";
 	    }
 	 

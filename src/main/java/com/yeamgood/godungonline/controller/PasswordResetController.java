@@ -147,7 +147,7 @@ public class PasswordResetController {
 		try {
 	        MimeMessage mineMessage = emailSender.createMimeMessage();
 	        MimeMessageHelper helper = new MimeMessageHelper(mineMessage);
-	        String url = contextPath + "/changePassword?id=" + user.getId() + "&token=" + token;
+	        String url = contextPath + "/changePassword?id=" + user.getUserId() + "&token=" + token;
 	        String content = mailBuilderService.passwordResetTemplatebuild(url,user);
 	       
 	        helper.setSubject(messageSource.getMessage("email.resetpassword.subject",null,locale));

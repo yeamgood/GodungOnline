@@ -7,7 +7,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -34,10 +36,20 @@ public class Document extends ModelTemplate{
      
     @Column(name="type", length=100, nullable=false)
     private String type;
+    
+    @Column(name="size", nullable=false)
+    private long size;
      
     @Lob @Basic(fetch = FetchType.LAZY)
     @Column(name="content", nullable=false)
     private byte[] content;
+    
+    @ManyToOne()
+	@JoinColumn(name = "godung_id")
+	private Godung godung;
+    
+    @Column(name = "reference_code")
+    private String  referenceCode;
     
     public void encryptData() {
 		this.documentIdEncrypt = AESencrpUtils.encryptLong(this.documentId);
@@ -92,10 +104,28 @@ public class Document extends ModelTemplate{
 		this.content = content;
 	}
 
-	@Override
-	public String toString() {
-		return "Document [documentId=" + documentId + ", documentIdEncrypt=" + documentIdEncrypt + ", name=" + name
-				+ ", description=" + description + ", type=" + type + "]";
+	public String getReferenceCode() {
+		return referenceCode;
+	}
+
+	public void setReferenceCode(String referenceCode) {
+		this.referenceCode = referenceCode;
+	}
+
+	public Godung getGodung() {
+		return godung;
+	}
+
+	public void setGodung(Godung godung) {
+		this.godung = godung;
+	}
+
+	public long getSize() {
+		return size;
+	}
+
+	public void setSize(long size) {
+		this.size = size;
 	}
     	
 }

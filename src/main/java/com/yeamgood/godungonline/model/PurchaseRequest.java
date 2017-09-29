@@ -64,6 +64,10 @@ public class PurchaseRequest extends ModelTemplate{
 	@JoinTable(name = "purchaserequest_approver", joinColumns = @JoinColumn(name = "purchaserequest_Id"), inverseJoinColumns = @JoinColumn(name = "approver_id"))
 	private List<Approver> approverList;
 	
+	@OneToMany(cascade = CascadeType.ALL,orphanRemoval=true)
+	@JoinColumn(name="reference_code")
+    private List<Document> document;
+	
 	public void setObject(PurchaseRequest purchaseRequest) {
 		this.description  = purchaseRequest.getDescription();
 	}
@@ -159,6 +163,14 @@ public class PurchaseRequest extends ModelTemplate{
 
 	public void setApproverList(List<Approver> approverList) {
 		this.approverList = approverList;
+	}
+
+	public List<Document> getDocument() {
+		return document;
+	}
+
+	public void setDocument(List<Document> document) {
+		this.document = document;
 	}
 
 	@Override

@@ -10,7 +10,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.yeamgood.godungonline.model.Menu;
 import com.yeamgood.godungonline.model.Role;
-import com.yeamgood.godungonline.model.User;
 import com.yeamgood.godungonline.repository.MenuRepository;
 import com.yeamgood.godungonline.repository.RoleRepository;
 import com.yeamgood.godungonline.repository.UserRepository;
@@ -27,14 +26,14 @@ public class AdminController {
 	@Autowired
 	RoleRepository roleRepository;
 	
-	@RequestMapping(value="/admin/user", method = RequestMethod.GET)
-	public ModelAndView userHome(){
-		ModelAndView modelAndView = new ModelAndView();
-		List<User> userList = userRepository.findAll();
-		modelAndView.addObject("userList",userList);
-		modelAndView.setViewName("admin/user");
-		return modelAndView;
-	}
+//	@RequestMapping(value="/admin/user", method = RequestMethod.GET)
+//	public ModelAndView userHome(){
+//		ModelAndView modelAndView = new ModelAndView();
+//		List<User> userList = userRepository.findAll();
+//		modelAndView.addObject("userList",userList);
+//		modelAndView.setViewName("admin/user");
+//		return modelAndView;
+//	}
 	
 	@RequestMapping(value="/admin/role", method = RequestMethod.GET)
 	public ModelAndView userRole(){

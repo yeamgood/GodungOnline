@@ -2,6 +2,7 @@ package com.yeamgood.godungonline.service;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yeamgood.godungonline.exception.GodungIdException;
 import com.yeamgood.godungonline.model.Godung;
 import com.yeamgood.godungonline.model.GodungUserRole;
 import com.yeamgood.godungonline.model.Role;
@@ -21,6 +23,7 @@ import com.yeamgood.godungonline.repository.GodungUserRoleRepository;
 import com.yeamgood.godungonline.repository.RoleLoginRepository;
 import com.yeamgood.godungonline.repository.RoleRepository;
 import com.yeamgood.godungonline.repository.UserRepository;
+import com.yeamgood.godungonline.utils.AESencrpUtils;
 
 @Service("userService")
 public class UserServiceImpl implements UserService{
@@ -56,6 +59,15 @@ public class UserServiceImpl implements UserService{
 	private static final int ACTIVE = 1;
 	
 	@Override
+	public User findByIdEncrypt(String idEncrypt,User userSession) throws GodungIdException  {
+		logger.debug("I:");
+		User user = userRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
+		user.encryptData();
+		logger.debug("O:");
+		return user;
+	}
+	
+	@Override
 	@Transactional(rollbackFor={Exception.class})
 	public void saveUser(User user) {
 		logger.debug("I:");
@@ -87,6 +99,17 @@ public class UserServiceImpl implements UserService{
 	public void changeUserPassword(User user, String password) {
 		user.setPassword(bCryptPasswordEncoder.encode(password));
 		userRepository.save(user);
+	}
+
+	@Override
+	public List<User> findAll() {
+		logger.debug("I");
+		List<User> userList = userRepository.findAll();
+		for (User user : userList) {
+			user.encryptData();
+		}
+		logger.debug("O");
+		return userList;
 	}
 
 }

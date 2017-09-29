@@ -2,15 +2,18 @@ package com.yeamgood.godungonline.controller;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,7 +26,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yeamgood.godungonline.bean.CommonType;
 import com.yeamgood.godungonline.bean.JsonResponse;
 import com.yeamgood.godungonline.bean.Pnotify;
 import com.yeamgood.godungonline.bean.PnotifyType;
@@ -31,13 +33,16 @@ import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.datatable.DataTableObject;
 import com.yeamgood.godungonline.datatable.DataTablesRequest;
 import com.yeamgood.godungonline.exception.GodungIdException;
+import com.yeamgood.godungonline.form.ApproverForm;
 import com.yeamgood.godungonline.form.PurchaseRequestForm;
-import com.yeamgood.godungonline.model.Common;
+import com.yeamgood.godungonline.model.Approver;
+import com.yeamgood.godungonline.model.ApproverRole;
 import com.yeamgood.godungonline.model.Measure;
 import com.yeamgood.godungonline.model.Menu;
 import com.yeamgood.godungonline.model.PurchaseRequest;
 import com.yeamgood.godungonline.model.PurchaseRequestProduct;
 import com.yeamgood.godungonline.model.User;
+import com.yeamgood.godungonline.service.ApproverRoleService;
 import com.yeamgood.godungonline.service.CommonService;
 import com.yeamgood.godungonline.service.CountryService;
 import com.yeamgood.godungonline.service.MeasureService;
@@ -75,6 +80,9 @@ public class PurchaseRequestController {
 	
 	@Autowired
 	CommonService commonService;  
+	
+	@Autowired
+	ApproverRoleService approverRoleService;
 	
 	@RequestMapping(value="/user/purchaseRequest", method = RequestMethod.GET)
 	public ModelAndView userPurchaseRequest(HttpSession session) {
@@ -173,7 +181,7 @@ public class PurchaseRequestController {
 		purchaseRequestForm.setDescription(purchaseRequest.getDescription());
 		
 		List<Measure> measureDropdown = measureService.findAllByGodungGodungIdOrderByMeasureNameAsc(godungId);
-		List<Common> approveRoleDropdown = commonService.findByTypeMapValueMessageSource(CommonType.APPROVE_ROLE.toString());
+		List<ApproverRole> approveRoleDropdown = approverRoleService.findAll();
 		
 		modelAndView.addObject(Constants.MENU, menu);
 		modelAndView.addObject("measureDropdown",measureDropdown);
@@ -203,7 +211,7 @@ public class PurchaseRequestController {
 	    }
 		
 		List<Measure> measureDropdown = measureService.findAllByGodungGodungIdOrderByMeasureNameAsc(godungId);
-		List<Common> approveRoleDropdown = commonService.findByTypeMapValueMessageSource(CommonType.APPROVE_ROLE.toString());
+		List<ApproverRole> approveRoleDropdown = approverRoleService.findAll();
 		
 		modelAndView.addObject(Constants.MENU, menu);
 		modelAndView.addObject("measureDropdown",measureDropdown);
@@ -262,5 +270,78 @@ public class PurchaseRequestController {
 	}
 	
 	
+	// APPROVER
+	@RequestMapping(value="/user/apaprover/save", method=RequestMethod.POST)
+	public @ResponseBody JsonResponse approverSave(@Valid ApproverForm approverForm,BindingResult bindingResult,HttpSession session){
+		logger.debug("I");
+		logger.debug(Constants.LOG_INPUT, approverForm);
+		JsonResponse jsonResponse = new JsonResponse();
+		if (bindingResult.hasErrors()) {
+			jsonResponse.setBinddingResultError(bindingResult);
+		}else {
+			try {
+				User userSession = (User) session.getAttribute("user");
+				purchaseRequestService.approverSave(approverForm.getPurchaseRequestIdEncrypt(), approverForm, userSession);
+				jsonResponse.setSaveSuccess(messageSource);
+			} catch (Exception e) {
+				logger.error(Constants.MESSAGE_ERROR,e);
+				jsonResponse.setSaveError(messageSource);
+			}
+		}
+		logger.debug("O");
+		return jsonResponse;
+	}
+	
+	
+	@RequestMapping(value="/user/purchaseRequest/approver/list/ajax/{purchaseRequestIdEncrypt}", method=RequestMethod.GET)
+	public @ResponseBody String approverList(@PathVariable String purchaseRequestIdEncrypt,DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException, GodungIdException {
+		logger.debug("I");
+		logger.debug(Constants.LOG_INPUT,purchaseRequestIdEncrypt);
+		logger.debug(Constants.LOG_INPUT,datatableRequest);
+		
+		User userSession = (User) session.getAttribute("user");
+		
+		List<Approver> approverList = new ArrayList<>();
+		if(StringUtils.isNotBlank(purchaseRequestIdEncrypt) && !StringUtils.equalsAnyIgnoreCase(purchaseRequestIdEncrypt, "null")) {
+			PurchaseRequest purchaseRequest = purchaseRequestService.findByIdEncrypt(purchaseRequestIdEncrypt, userSession);
+			approverList = purchaseRequest.getApproverList();
+		}
+		
+		Collections.sort(approverList, (o1, o2) -> o1.getSequence().compareTo(o2.getSequence()));
+		
+		ApproverForm approverForm;
+		List<ApproverForm> approverFormList = new ArrayList<>();
+		for (Approver approver : approverList) {
+			approver.encryptData();
+			approverForm = new ApproverForm();
+			approverForm.setApproverIdEncrypt(approver.getApproverIdEncrypt());
+			approverForm.setEmployeeName(approver.getEmployee().getFullName());
+			approverForm.setApproverRoleName(messageSource.getMessage(approver.getApproverRole().getMessage(),null,LocaleContextHolder.getLocale()));
+			approverForm.setRequestDate(DateUtils.dateToString(approver.getRequestDate(), DateUtils.DDMMYYYY_HHMMSS));
+			approverForm.setApproverDate(DateUtils.dateToString(approver.getApproverDate(), DateUtils.DDMMYYYY_HHMMSS));
+			approverFormList.add(approverForm);
+		}
+		
+		DataTableObject dataTableObject = new DataTableObject();
+		dataTableObject.setAaData(new ArrayList<Object>(approverFormList));
+		return new ObjectMapper().writeValueAsString(dataTableObject);
+	}
+	
+	@RequestMapping(value="/user/purchaseRequest/approver/delete", method=RequestMethod.POST)
+	public @ResponseBody JsonResponse approverDelete(ApproverForm approverForm,HttpSession session){
+		logger.debug("I");
+		logger.debug(Constants.LOG_INPUT, approverForm);
+		JsonResponse jsonResponse = new JsonResponse();
+		try {
+			User userSession = (User) session.getAttribute("user");
+			purchaseRequestService.approverDelete(approverForm.getPurchaseRequestIdEncrypt(), approverForm.getApproverIdEncrypt(), userSession);
+			jsonResponse.setDeleteSuccess(messageSource);
+		} catch (Exception e) {
+			logger.error(Constants.MESSAGE_ERROR,e);
+			jsonResponse.setDeleteError(messageSource);
+		}
+		logger.debug("O");
+		return jsonResponse;
+	}
 	
 }

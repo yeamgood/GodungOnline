@@ -36,15 +36,20 @@ public class Approver extends ModelTemplate{
 	
 	@Column(name = "approve_date")
 	private Date approverDate;
+		
+	@ManyToOne()
+	@JoinColumn(name = "approverrole_code")
+	private ApproverRole approverRole;
 	
-	@JoinColumn(name = "approver_role_code")
-	private String approverRoleCode;
-	
-	@JoinColumn(name = "approve_action")
-	private String approverActionCode;
+	@ManyToOne()
+	@JoinColumn(name = "approveraction_code")
+	private ApproverAction approverAction;
 	
 	@Column(name = "description")
 	private String description;
+	
+	@Column(name = "sequence")
+	private Long sequence;
 	
 	public void encryptData() {
 		this.approverIdEncrypt = AESencrpUtils.encryptLong(this.approverId);
@@ -83,14 +88,6 @@ public class Approver extends ModelTemplate{
 		this.requestDate = requestDate;
 	}
 
-	public String getApproverRoleCode() {
-		return approverRoleCode;
-	}
-
-	public void setApproverRoleCode(String approverRoleCode) {
-		this.approverRoleCode = approverRoleCode;
-	}
-
 	public Date getApproverDate() {
 		return approverDate;
 	}
@@ -99,12 +96,20 @@ public class Approver extends ModelTemplate{
 		this.approverDate = approverDate;
 	}
 
-	public String getApproverActionCode() {
-		return approverActionCode;
+	public ApproverRole getApproverRole() {
+		return approverRole;
 	}
 
-	public void setApproverActionCode(String approverActionCode) {
-		this.approverActionCode = approverActionCode;
+	public void setApproverRole(ApproverRole approverRole) {
+		this.approverRole = approverRole;
+	}
+
+	public ApproverAction getApproverAction() {
+		return approverAction;
+	}
+
+	public void setApproverAction(ApproverAction approverAction) {
+		this.approverAction = approverAction;
 	}
 
 	public String getDescription() {
@@ -115,6 +120,12 @@ public class Approver extends ModelTemplate{
 		this.description = description;
 	}
 
-	
+	public Long getSequence() {
+		return sequence;
+	}
+
+	public void setSequence(Long sequence) {
+		this.sequence = sequence;
+	}
 
 }

@@ -63,7 +63,7 @@ public class ProfileController {
 		if (!model.containsAttribute(PROFILE_FORM)) {
 			ProfileForm profileForm = new ProfileForm();
 			User userSession = (User) session.getAttribute("user");
-			profileService.loadProfile(profileForm, userSession.getId(),userSession.getGodung().getGodungId());
+			profileService.loadProfile(profileForm, userSession.getUserId(),userSession.getGodung().getGodungId());
 			modelAndView.addObject(PROFILE_FORM,profileForm);
 	    }
 		modelAndView.setViewName("user/profile");
@@ -82,7 +82,7 @@ public class ProfileController {
 		} else {
 			try {
 				User userSession = (User) session.getAttribute("user");
-				profileService.updateProfile(profileForm, userSession.getId(),userSession.getGodung().getGodungId());
+				profileService.updateProfile(profileForm, userSession.getUserId(),userSession.getGodung().getGodungId());
 				userSession.setName(profileForm.getName());
 				userSession.getGodung().setGodungName(profileForm.getGodungName());
 				userSession.setLanguage(profileForm.getLanguage());

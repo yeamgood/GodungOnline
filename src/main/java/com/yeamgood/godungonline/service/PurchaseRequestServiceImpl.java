@@ -1,6 +1,7 @@
 package com.yeamgood.godungonline.service;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,10 +13,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.exception.GodungIdException;
+import com.yeamgood.godungonline.form.ApproverForm;
 import com.yeamgood.godungonline.form.PurchaseRequestForm;
+import com.yeamgood.godungonline.model.Approver;
+import com.yeamgood.godungonline.model.ApproverRole;
 import com.yeamgood.godungonline.model.Employee;
 import com.yeamgood.godungonline.model.PurchaseRequest;
 import com.yeamgood.godungonline.model.User;
+import com.yeamgood.godungonline.repository.ApproverRepository;
+import com.yeamgood.godungonline.repository.ApproverRoleRepository;
 import com.yeamgood.godungonline.repository.EmployeeRepository;
 import com.yeamgood.godungonline.repository.PurchaseRequestRepository;
 import com.yeamgood.godungonline.utils.AESencrpUtils;
@@ -35,6 +41,12 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService{
 	
 	@Autowired
 	private GodungService godungService;
+	
+	@Autowired
+	private ApproverRepository approverRepository;
+	
+	@Autowired
+	private ApproverRoleRepository approverRoleRepository;
 	
 	@Override
 	public PurchaseRequest findByIdEncrypt(String idEncrypt,User userSession) throws GodungIdException  {
@@ -112,6 +124,63 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService{
 		PurchaseRequest purchaseRequestTemp = purchaseRequestRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
 		godungService.checkGodungId(purchaseRequestTemp.getGodung().getGodungId(), userSession);
 		purchaseRequestRepository.delete(purchaseRequestTemp.getPurchaseRequestId());
+		logger.debug("O:");
+	}
+	
+	@Override
+	@Transactional(rollbackFor={Exception.class})
+	public void approverSave(String purchaseRequestIdEncrypt,ApproverForm approverForm,User userSession)  {
+		logger.debug("I:");
+		logger.debug(Constants.LOG_INPUT, purchaseRequestIdEncrypt);
+		
+		if(StringUtils.isBlank(approverForm.getApproverIdEncrypt())) {
+			PurchaseRequest purchaseRequest = purchaseRequestRepository.findOne(AESencrpUtils.decryptLong(purchaseRequestIdEncrypt));
+			Employee employee = employeeRepository.findOne(AESencrpUtils.decryptLong(approverForm.getEmployeeIdEncrypt()));
+			ApproverRole approverRole = approverRoleRepository.findOneByApproverRoleCode(approverForm.getApproverRoleCode());
+			
+			Long maxSequence = Long.valueOf("0");
+			for (Approver approver : purchaseRequest.getApproverList()) {
+				if(maxSequence < approver.getSequence()) {
+					maxSequence = approver.getSequence();
+				}
+			}
+			
+			Approver approver = new Approver();
+			approver.setEmployee(employee);
+			approver.setApproverRole(approverRole);
+			approver.setRequestDate(new Date());
+			approver.setCreate(userSession);
+			approver.setSequence(maxSequence+1);
+			
+			purchaseRequest.getApproverList().add(approver);
+			purchaseRequestRepository.save(purchaseRequest);
+		}else {
+			Approver approver = approverRepository.findOne(AESencrpUtils.decryptLong(approverForm.getApproverIdEncrypt()));
+			Employee employee = employeeRepository.findOne(AESencrpUtils.decryptLong(approverForm.getEmployeeIdEncrypt()));
+			ApproverRole approverRole = approverRoleRepository.findOneByApproverRoleCode(approverForm.getApproverRoleCode());
+			
+			approver.setEmployee(employee);
+			approver.setApproverRole(approverRole);
+			approver.setRequestDate(new Date());
+			approver.setUpdate(userSession);
+			approverRepository.save(approver);
+		}
+		
+		logger.debug("O:");
+	}
+
+	@Override
+	public void approverDelete(String purchaseRequestIdEncrypt, String approverIdEncrypt, User userSession) {
+		logger.debug("I:");
+		PurchaseRequest purchaseRequest = purchaseRequestRepository.findOne(AESencrpUtils.decryptLong(purchaseRequestIdEncrypt));
+		Long approverId = AESencrpUtils.decryptLong(approverIdEncrypt);
+		for (Approver approver : purchaseRequest.getApproverList()) {
+			if(Long.valueOf(approverId) == Long.valueOf(approver.getApproverId())) {
+				purchaseRequest.getApproverList().remove(approver);
+				break;
+			}
+		}
+		purchaseRequestRepository.save(purchaseRequest);
 		logger.debug("O:");
 	}
 	

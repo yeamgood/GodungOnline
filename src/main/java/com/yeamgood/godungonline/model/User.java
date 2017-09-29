@@ -21,6 +21,8 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.yeamgood.godungonline.utils.AESencrpUtils;
+
 @Entity
 @Table(name = "user")
 public class User {
@@ -28,7 +30,10 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "user_id")
-	private Long id;
+	private Long userId;
+	
+	@Transient
+	private String userIdEncrypt;
 	
 	@Column(name = "email")
 	@Email(message = "{validation.required.email.valid}")
@@ -66,13 +71,18 @@ public class User {
 	
 	@Transient
 	Role role;
-
-	public Long getId() {
-		return id;
+	
+	public void encryptData() {
+		this.userIdEncrypt = AESencrpUtils.encryptLong(this.userId);
+		this.userId = null;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public String getEmail() {
@@ -154,6 +164,14 @@ public class User {
 
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
+	}
+
+	public String getUserIdEncrypt() {
+		return userIdEncrypt;
+	}
+
+	public void setUserIdEncrypt(String userIdEncrypt) {
+		this.userIdEncrypt = userIdEncrypt;
 	}
 	
 }

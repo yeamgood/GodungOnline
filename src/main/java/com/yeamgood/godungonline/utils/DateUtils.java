@@ -14,6 +14,8 @@ public class DateUtils {
 	
 	public static final String DDMMYYYY = "dd/MM/yyyy";
 	
+	public static final String DDMMYYYY_HHMMSS = "dd/MM/yyyy HH:mm:ss";
+	
 	public static String dateToString(Date date,String format) {
 		if(date == null || format == null) {
 			return null;

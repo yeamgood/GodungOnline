@@ -392,11 +392,15 @@ INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '203
 -- COMMON CODE --
 INSERT INTO `godung_online`.`common` (`common_id`, `common_type`, `common_key`, `common_value`, `description`,`sequence`) VALUES ('1', 'LANGUAGE', 'th', 'ภาษาไทย', 'language thai','1');
 INSERT INTO `godung_online`.`common` (`common_id`, `common_type`, `common_key`, `common_value`, `description`,`sequence`) VALUES ('2', 'LANGUAGE', 'en', 'English', 'language Englist','2');
-INSERT INTO `godung_online`.`common` (`common_id`, `common_type`, `common_key`, `common_value`, `description`,`sequence`) VALUES ('10', 'APPROVE_ROLE', 'verify', 'approve.role.verify', '','1');
-INSERT INTO `godung_online`.`common` (`common_id`, `common_type`, `common_key`, `common_value`, `description`,`sequence`) VALUES ('11', 'APPROVE_ROLE', 'approve', 'approve.role.approve', '','2');
-INSERT INTO `godung_online`.`common` (`common_id`, `common_type`, `common_key`, `common_value`, `description`,`sequence`) VALUES ('20', 'APPROVE_ACTION', 'reject', 'approve.action.reject', '','1');
-INSERT INTO `godung_online`.`common` (`common_id`, `common_type`, `common_key`, `common_value`, `description`,`sequence`) VALUES ('21', 'APPROVE_ACTION', 'approve', 'approve.action.approve', '','2');
-INSERT INTO `godung_online`.`common` (`common_id`, `common_type`, `common_key`, `common_value`, `description`,`sequence`) VALUES ('22', 'APPROVE_ACTION', 'cancel', 'approve.action.cancel', '','2');
+
+--APPROVE ROLE --
+INSERT INTO `godung_online`.`approverrole` (`approverrole_code`, `name`,`message`) VALUES ('verify', 'verify' ,'approve.role.verify');
+INSERT INTO `godung_online`.`approverrole` (`approverrole_code`, `name`,`message`) VALUES ('approve', 'approve' ,'approve.role.approve');
+
+--APPROVE ACTION --
+INSERT INTO `godung_online`.`approveraction` (`approveraction_code`, `name`,`message`) VALUES ('reject', 'reject' ,'approve.action.reject');
+INSERT INTO `godung_online`.`approveraction` (`approveraction_code`, `name`,`message`) VALUES ('approve', 'approve' ,'approve.action.approve');
+INSERT INTO `godung_online`.`approveraction` (`approveraction_code`, `name`,`message`) VALUES ('cancel', 'cancel' ,'approve.action.cancel');
 
 -- ADD USER ADMIN --
 INSERT INTO `godung_online`.`user` (`user_id`,`active`, `email`, `name`, `password`,`language`) VALUES ('1','1', 'admin@gmail.com', 'admin', '$2a$10$z3LIFllUl2jRgzEBl2JYnucHH8v7Dp64A11du7Ehmo6drTf7jeOKq','en');

@@ -1,3 +1,7 @@
+body {
+	font-weight: normal;
+	font-size: 14px;	
+}
 
 label {
   font-weight: normal;
@@ -128,6 +132,13 @@ label {
 	width: 100%;
 }
 
+.table-row-border tbody>tr>td {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-bottom: 1px solid #ddd;
+}
+
 /* Modal */
 .modal-custom-header{
     background: #337ab7 !important;
@@ -209,4 +220,20 @@ label {
 
 .input_money{
 	text-align: right;
+}
+
+/* MENU */
+.nav.child_menu>li>a {
+    color: rgba(255,255,255,.75);
+    font-size: 14px;
+    padding: 9px;
+}
+
+/* SEARCH ADVANCE BUTTOM */
+.search-advance-box {
+	background: #fff; 
+	cursor: pointer; 
+	padding: 5px 5px; 
+	border: 1px solid #E6E9ED;
+	cursor: pointer;
 }
