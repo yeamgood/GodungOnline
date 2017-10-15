@@ -1,7 +1,6 @@
 package com.yeamgood.godungonline.service;
 
 import java.text.ParseException;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,22 +50,8 @@ public class DocumentServiceImpl implements DocumentService{
 	public void delete(String documentIdEncrypt, User userSession) throws GodungIdException {
 		logger.debug("I:");
 		Document document = documentRepository.findOne(AESencrpUtils.decryptLong(documentIdEncrypt));
-		godungService.checkGodungId(document.getGodung().getGodungId(), userSession);
 		documentRepository.delete(document);
 		logger.debug("O:");
-	}
-
-	@Override
-	public List<Document> findAllByGodungGodungIdAndReferenceCode(Long godungId, String referenceCode) {
-		logger.debug("I:");
-		logger.debug(Constants.LOG_INPUT, godungId);
-		logger.debug(Constants.LOG_INPUT, referenceCode);
-		List<Document> documentList = documentRepository.findAllByGodungGodungIdAndReferenceCode(godungId, referenceCode);
-		for (Document document : documentList) {
-			document.encryptData();
-		}
-		logger.debug("O:");
-		return documentList;
 	}
 	
 }

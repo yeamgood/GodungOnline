@@ -394,13 +394,23 @@ INSERT INTO `godung_online`.`common` (`common_id`, `common_type`, `common_key`, 
 INSERT INTO `godung_online`.`common` (`common_id`, `common_type`, `common_key`, `common_value`, `description`,`sequence`) VALUES ('2', 'LANGUAGE', 'en', 'English', 'language Englist','2');
 
 --APPROVE ROLE --
-INSERT INTO `godung_online`.`approverrole` (`approverrole_code`, `name`,`message`) VALUES ('verify', 'verify' ,'approve.role.verify');
-INSERT INTO `godung_online`.`approverrole` (`approverrole_code`, `name`,`message`) VALUES ('approve', 'approve' ,'approve.role.approve');
+INSERT INTO `godung_online`.`approverrole` (`approverrole_code`, `name`,`message`,`sequence`) VALUES ('verify', 'verify' ,'approve.role.verify','1');
+INSERT INTO `godung_online`.`approverrole` (`approverrole_code`, `name`,`message`,`sequence`) VALUES ('approve', 'approve' ,'approve.role.approve','2');
 
 --APPROVE ACTION --
 INSERT INTO `godung_online`.`approveraction` (`approveraction_code`, `name`,`message`) VALUES ('reject', 'reject' ,'approve.action.reject');
 INSERT INTO `godung_online`.`approveraction` (`approveraction_code`, `name`,`message`) VALUES ('approve', 'approve' ,'approve.action.approve');
 INSERT INTO `godung_online`.`approveraction` (`approveraction_code`, `name`,`message`) VALUES ('cancel', 'cancel' ,'approve.action.cancel');
+
+--PROCESS STATUS ACTION --
+INSERT INTO `godung_online`.`processstatus` (`processstatus_code`, `name`,`message`,`sequence`) VALUES ('draft', 'draft' ,'process.status.draft','1');
+INSERT INTO `godung_online`.`processstatus` (`processstatus_code`, `name`,`message`,`sequence`) VALUES ('process', 'process' ,'process.status.process','2');
+INSERT INTO `godung_online`.`processstatus` (`processstatus_code`, `name`,`message`,`sequence`) VALUES ('reject', 'reject' ,'process.status.reject','3');
+INSERT INTO `godung_online`.`processstatus` (`processstatus_code`, `name`,`message`,`sequence`) VALUES ('cancel', 'cancel' ,'process.status.cancel','4');
+INSERT INTO `godung_online`.`processstatus` (`processstatus_code`, `name`,`message`,`sequence`) VALUES ('wait_verify', 'wait_verify' ,'process.status.wait.verify','5');
+INSERT INTO `godung_online`.`processstatus` (`processstatus_code`, `name`,`message`,`sequence`) VALUES ('wait_approve', 'wait_approve' ,'process.status.wait.approve','6');
+INSERT INTO `godung_online`.`processstatus` (`processstatus_code`, `name`,`message`,`sequence`) VALUES ('complete', 'complete' ,'process.status.complete','7');
+
 
 -- ADD USER ADMIN --
 INSERT INTO `godung_online`.`user` (`user_id`,`active`, `email`, `name`, `password`,`language`) VALUES ('1','1', 'admin@gmail.com', 'admin', '$2a$10$z3LIFllUl2jRgzEBl2JYnucHH8v7Dp64A11du7Ehmo6drTf7jeOKq','en');
@@ -477,6 +487,17 @@ INSERT INTO `godung_online`.`purchaserequestproduct` (`purchaserequestproduct_id
 INSERT INTO `godung_online`.`purchaserequest_purchaserequestproduct` (`purchaserequest_id`, `purchaserequestproduct_id`) VALUES ('1', '1');
 INSERT INTO `godung_online`.`purchaserequest_purchaserequestproduct` (`purchaserequest_id`, `purchaserequestproduct_id`) VALUES ('1', '2');
 
+-- APPROVER --
+INSERT INTO `godung_online`.`approver` (`approver_id`, `create_date`, `create_user`, `version`, `request_date`, `sequence`, `approverrole_code`, `employee_id`) VALUES ('1', '2017-10-15 18:19:46', 'user@gmail.com', '0', '2017-10-15 18:19:46', '1', 'verify', '1');
+INSERT INTO `godung_online`.`approver` (`approver_id`, `create_date`, `create_user`, `version`, `request_date`, `sequence`, `approverrole_code`, `employee_id`) VALUES ('2', '2017-10-15 18:19:46', 'user@gmail.com', '0', '2017-10-15 18:19:46', '2', 'approve', '2');
+INSERT INTO `godung_online`.`purchaserequest_approver` (`purchaserequest_id`, `approver_id`) VALUES ('1', '1');
+INSERT INTO `godung_online`.`purchaserequest_approver` (`purchaserequest_id`, `approver_id`) VALUES ('1', '2');
+
+-- DOCUMENT --
+INSERT INTO `godung_online`.`document` (`document_id`, `create_date`, `create_user`, `version`, `content`, `description`, `name`, `size`, `type`) VALUES ('1', '2017-10-15 18:30:12', 'user@gmail.com', '0', '', 'ทอสอบ 1', 'document.pdf', '367324', 'application/pdf');
+INSERT INTO `godung_online`.`document` (`document_id`, `create_date`, `create_user`, `version`, `content`, `description`, `name`, `size`, `type`) VALUES ('2', '2017-10-15 18:30:12', 'user@gmail.com', '0', '', 'ทอสอบ 1', 'เอกสาร.pdf', '167324', 'application/pdf');
+INSERT INTO `godung_online`.`purchaserequest_document` (`purchaserequest_id`, `document_Id`) VALUES ('1', '1');
+INSERT INTO `godung_online`.`purchaserequest_document` (`purchaserequest_id`, `document_Id`) VALUES ('1', '2');
 
 -- ADD USER USER SELENIUM --
 INSERT INTO `godung_online`.`user` (`user_id`,`active`, `email`, `name`, `password`,`language`) VALUES ('3','1', 'user2@gmail.com', 'Selenium User', '$2a$10$2ENrJAZwLxRopqim.mRDgOCK9BzDUDNxk38EUot/2wQ90KgqHLGX6','en');

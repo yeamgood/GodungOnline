@@ -36,6 +36,8 @@ public class PurchaseRequestForm {
 	
 	private String totalPrice;
 	
+	private String processStatusName;
+	
 	private List<PurchaseRequestProductForm> purchaseRequestProductFormList;
 
 	public String getPurchaseRequestIdEncrypt() {
@@ -124,6 +126,14 @@ public class PurchaseRequestForm {
 
 	public void setPurchaseRequestProductFormList(List<PurchaseRequestProductForm> purchaseRequestProductFormList) {
 		this.purchaseRequestProductFormList = purchaseRequestProductFormList;
+	}
+
+	public String getProcessStatusName() {
+		return processStatusName;
+	}
+
+	public void setProcessStatusName(String processStatusName) {
+		this.processStatusName = processStatusName;
 	}
 
 	@Override

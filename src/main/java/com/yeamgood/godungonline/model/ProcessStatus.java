@@ -6,12 +6,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "approverrole")
-public class ApproverRole{
+@Table(name = "processstatus")
+public class ProcessStatus{
 
 	@Id
-	@Column(name = "approverrole_code")
-	private String approverRoleCode;
+	@Column(name = "processstatus_code")
+	private String processStatusCode;
 
 	@Column(name = "name")
 	private String name;
@@ -22,12 +22,12 @@ public class ApproverRole{
 	@Column(name = "sequence")
 	private String sequence;
 
-	public String getApproverRoleCode() {
-		return approverRoleCode;
+	public String getProcessStatusCode() {
+		return processStatusCode;
 	}
 
-	public void setApproverRoleCode(String approverRoleCode) {
-		this.approverRoleCode = approverRoleCode;
+	public void setProcessStatusCode(String processStatusCode) {
+		this.processStatusCode = processStatusCode;
 	}
 
 	public String getName() {

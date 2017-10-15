@@ -17,7 +17,9 @@ import com.yeamgood.godungonline.form.ApproverForm;
 import com.yeamgood.godungonline.form.PurchaseRequestForm;
 import com.yeamgood.godungonline.model.Approver;
 import com.yeamgood.godungonline.model.ApproverRole;
+import com.yeamgood.godungonline.model.Document;
 import com.yeamgood.godungonline.model.Employee;
+import com.yeamgood.godungonline.model.History;
 import com.yeamgood.godungonline.model.PurchaseRequest;
 import com.yeamgood.godungonline.model.User;
 import com.yeamgood.godungonline.repository.ApproverRepository;
@@ -47,6 +49,9 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService{
 	
 	@Autowired
 	private ApproverRoleRepository approverRoleRepository;
+	
+	@Autowired
+	private HistoryService historyService;
 	
 	@Override
 	public PurchaseRequest findByIdEncrypt(String idEncrypt,User userSession) throws GodungIdException  {
@@ -114,6 +119,16 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService{
 		purchaseRequestRepository.save(purchaseRequestTemp);
 		purchaseRequestForm.setPurchaseRequestIdEncrypt(AESencrpUtils.encryptLong(purchaseRequestTemp.getPurchaseRequestId()));
 		
+		History history = new History();
+		history.setHistoryType("PR");
+		history.setHistoryCode(purchaseRequestTemp.getPurchaseRequestCode());
+		history.setEmployeeName(userSession.getName());
+		history.setAction("SAVE");
+		history.setDescription("Save Purchase Request");
+		history.setGodung(userSession.getGodung());
+		history.setCreate(userSession);
+		historyService.save(history, userSession);
+		
 		logger.debug("O:");
 	}
 
@@ -129,12 +144,14 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService{
 	
 	@Override
 	@Transactional(rollbackFor={Exception.class})
-	public void approverSave(String purchaseRequestIdEncrypt,ApproverForm approverForm,User userSession)  {
+	public void approverSave(String purchaseRequestIdEncrypt,ApproverForm approverForm,User userSession) throws GodungIdException  {
 		logger.debug("I:");
 		logger.debug(Constants.LOG_INPUT, purchaseRequestIdEncrypt);
 		
+		PurchaseRequest purchaseRequest = purchaseRequestRepository.findOne(AESencrpUtils.decryptLong(purchaseRequestIdEncrypt));
+		godungService.checkGodungId(purchaseRequest.getGodung().getGodungId(), userSession);
+		
 		if(StringUtils.isBlank(approverForm.getApproverIdEncrypt())) {
-			PurchaseRequest purchaseRequest = purchaseRequestRepository.findOne(AESencrpUtils.decryptLong(purchaseRequestIdEncrypt));
 			Employee employee = employeeRepository.findOne(AESencrpUtils.decryptLong(approverForm.getEmployeeIdEncrypt()));
 			ApproverRole approverRole = approverRoleRepository.findOneByApproverRoleCode(approverForm.getApproverRoleCode());
 			
@@ -170,13 +187,40 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService{
 	}
 
 	@Override
-	public void approverDelete(String purchaseRequestIdEncrypt, String approverIdEncrypt, User userSession) {
+	public void approverDelete(String purchaseRequestIdEncrypt, String approverIdEncrypt, User userSession) throws GodungIdException {
 		logger.debug("I:");
 		PurchaseRequest purchaseRequest = purchaseRequestRepository.findOne(AESencrpUtils.decryptLong(purchaseRequestIdEncrypt));
+		godungService.checkGodungId(purchaseRequest.getGodung().getGodungId(), userSession);
 		Long approverId = AESencrpUtils.decryptLong(approverIdEncrypt);
 		for (Approver approver : purchaseRequest.getApproverList()) {
 			if(Long.valueOf(approverId) == Long.valueOf(approver.getApproverId())) {
 				purchaseRequest.getApproverList().remove(approver);
+				break;
+			}
+		}
+		purchaseRequestRepository.save(purchaseRequest);
+		logger.debug("O:");
+	}
+
+	@Override
+	public void documentUpload(String purchaseRequestIdEncrypt, Document document, User userSession) throws GodungIdException {
+		logger.debug("I:");
+		PurchaseRequest purchaseRequest = purchaseRequestRepository.findOne(AESencrpUtils.decryptLong(purchaseRequestIdEncrypt));
+		godungService.checkGodungId(purchaseRequest.getGodung().getGodungId(), userSession);
+		purchaseRequest.getDocumentList().add(document);
+		purchaseRequestRepository.save(purchaseRequest);
+		logger.debug("O:");
+	}
+
+	@Override
+	public void documentDelete(String purchaseRequestIdEncrypt, String documentIdEncrypt,User userSession) throws GodungIdException {
+		logger.debug("I:");
+		PurchaseRequest purchaseRequest = purchaseRequestRepository.findOne(AESencrpUtils.decryptLong(purchaseRequestIdEncrypt));
+		godungService.checkGodungId(purchaseRequest.getGodung().getGodungId(), userSession);
+		Long documentId = AESencrpUtils.decryptLong(documentIdEncrypt);
+		for (Document document : purchaseRequest.getDocumentList()) {
+			if(Long.valueOf(documentId) == Long.valueOf(document.getDocumentId())) {
+				purchaseRequest.getDocumentList().remove(document);
 				break;
 			}
 		}

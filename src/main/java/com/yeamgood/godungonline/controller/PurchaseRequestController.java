@@ -17,10 +17,13 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -32,11 +35,14 @@ import com.yeamgood.godungonline.bean.PnotifyType;
 import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.datatable.DataTableObject;
 import com.yeamgood.godungonline.datatable.DataTablesRequest;
+import com.yeamgood.godungonline.datatables.DocumentDatatables;
 import com.yeamgood.godungonline.exception.GodungIdException;
 import com.yeamgood.godungonline.form.ApproverForm;
+import com.yeamgood.godungonline.form.DocumentForm;
 import com.yeamgood.godungonline.form.PurchaseRequestForm;
 import com.yeamgood.godungonline.model.Approver;
 import com.yeamgood.godungonline.model.ApproverRole;
+import com.yeamgood.godungonline.model.Document;
 import com.yeamgood.godungonline.model.Measure;
 import com.yeamgood.godungonline.model.Menu;
 import com.yeamgood.godungonline.model.PurchaseRequest;
@@ -51,6 +57,7 @@ import com.yeamgood.godungonline.service.ProvinceService;
 import com.yeamgood.godungonline.service.PurchaseRequestService;
 import com.yeamgood.godungonline.utils.AESencrpUtils;
 import com.yeamgood.godungonline.utils.DateUtils;
+import com.yeamgood.godungonline.utils.DocumentUtils;
 import com.yeamgood.godungonline.utils.NumberUtils;
 
 @Controller
@@ -339,6 +346,114 @@ public class PurchaseRequestController {
 		} catch (Exception e) {
 			logger.error(Constants.MESSAGE_ERROR,e);
 			jsonResponse.setDeleteError(messageSource);
+		}
+		logger.debug("O");
+		return jsonResponse;
+	}
+	
+	// DOCUMENT FUNCTION
+	@RequestMapping(value="/user/purchaseRequest/document/list/ajax/{purchaseRequestIdEncrypt}", method=RequestMethod.GET)
+	public @ResponseBody String documentList(@PathVariable String purchaseRequestIdEncrypt,DataTablesRequest datatableRequest, HttpSession session) throws JsonProcessingException, GodungIdException {
+		logger.debug("I");
+		logger.debug(Constants.LOG_INPUT,purchaseRequestIdEncrypt);
+		logger.debug(Constants.LOG_INPUT,datatableRequest);
+		
+		User userSession = (User) session.getAttribute("user");
+		
+		List<Document> documentList = new ArrayList<>();
+		if(StringUtils.isNotBlank(purchaseRequestIdEncrypt) && !StringUtils.equalsAnyIgnoreCase(purchaseRequestIdEncrypt, "null")) {
+			PurchaseRequest purchaseRequest = purchaseRequestService.findByIdEncrypt(purchaseRequestIdEncrypt, userSession);
+			documentList = purchaseRequest.getDocumentList();
+		}
+			
+		DocumentDatatables documentDatatables;
+		List<DocumentDatatables> documentDatatablesList = new ArrayList<>();
+		for (Document document : documentList) {
+			documentDatatables = new DocumentDatatables();
+			documentDatatables.setDocumentIdEncrypt(AESencrpUtils.encryptLong(document.getDocumentId()));
+			documentDatatables.setName(document.getName());
+			documentDatatables.setDescription(document.getDescription());
+			documentDatatables.setType(document.getType());
+			documentDatatables.setSize(DocumentUtils.getStringSizeLengthFile(document.getSize()));
+			documentDatatablesList.add(documentDatatables);
+		}
+		
+		DataTableObject dataTableObject = new DataTableObject();
+		dataTableObject.setAaData(new ArrayList<Object>(documentDatatablesList));
+		logger.debug("O");
+		return new ObjectMapper().writeValueAsString(dataTableObject);
+	}
+	
+	@RequestMapping(value="/user/purchaseRequest/document/upload/{purchaseRequestIdEncrypt}", method=RequestMethod.POST)
+	public @ResponseBody JsonResponse documentUpload(@Valid DocumentForm documentForm,@PathVariable String purchaseRequestIdEncrypt,HttpSession session,BindingResult bindingResult){
+		logger.debug("I");
+		logger.debug(Constants.LOG_INPUT,purchaseRequestIdEncrypt);
+		 Document document = new Document();
+		JsonResponse jsonResponse = new JsonResponse();
+		
+		  if (documentForm.getFile() != null && documentForm.getFile().isEmpty()){
+			  bindingResult.addError(new FieldError("documentForm", "file", messageSource.getMessage("file.empty",null,LocaleContextHolder.getLocale())));
+		  }
+		  
+		  if(documentForm.getDescription() != null && documentForm.getDescription().length() > 100) {
+			  bindingResult.addError(new FieldError("documentForm", "description", messageSource.getMessage("validation.max.lenght.input",new Object[] {"100"},LocaleContextHolder.getLocale())));
+		  }
+		  
+		if (bindingResult.hasErrors()) {
+			 jsonResponse.setBinddingResultError(bindingResult);
+		}else {
+			try {
+				User userSession = (User) session.getAttribute("user");
+		        MultipartFile multipartFile = documentForm.getFile();
+		        document.setName(multipartFile.getOriginalFilename());
+		        document.setDescription(documentForm.getDescription());
+		        document.setType(multipartFile.getContentType());
+		        document.setSize(multipartFile.getSize());
+		        document.setContent(multipartFile.getBytes());
+		        purchaseRequestService.documentUpload(purchaseRequestIdEncrypt, document, userSession);
+				 
+				jsonResponse.setStatus(Constants.STATUS_SUCCESS);
+				jsonResponse.setSaveSuccess(messageSource);
+			} catch (Exception e) {
+				logger.error(Constants.MESSAGE_ERROR,e);
+				jsonResponse.setSaveError(messageSource);
+			}
+		}
+		logger.debug("O");
+		return jsonResponse;
+	}
+	
+	@RequestMapping(value="/user/purchaseRequest/document/delete", method=RequestMethod.POST)
+	public @ResponseBody JsonResponse documentDelete(ApproverForm approverForm,HttpSession session){
+		logger.debug("I");
+		logger.debug(Constants.LOG_INPUT, approverForm);
+		JsonResponse jsonResponse = new JsonResponse();
+		try {
+			User userSession = (User) session.getAttribute("user");
+			purchaseRequestService.approverDelete(approverForm.getPurchaseRequestIdEncrypt(), approverForm.getApproverIdEncrypt(), userSession);
+			jsonResponse.setDeleteSuccess(messageSource);
+		} catch (Exception e) {
+			logger.error(Constants.MESSAGE_ERROR,e);
+			jsonResponse.setDeleteError(messageSource);
+		}
+		logger.debug("O");
+		return jsonResponse;
+	}
+	
+	@PostMapping(value="/user/purchaseRequest/document/delete/{purchaseRequestIdEncrypt}/{documentIdEncrypt}")
+	public @ResponseBody JsonResponse documentDelete(@PathVariable String purchaseRequestIdEncrypt,@PathVariable String documentIdEncrypt,HttpSession session){
+		logger.debug("I");
+		logger.debug(Constants.LOG_INPUT,documentIdEncrypt);
+		JsonResponse jsonResponse = new JsonResponse();
+		User userSession = (User) session.getAttribute("user");
+		
+		try {
+			purchaseRequestService.documentDelete(purchaseRequestIdEncrypt, documentIdEncrypt, userSession);
+			jsonResponse.setStatus(Constants.STATUS_SUCCESS);
+			jsonResponse.setSaveSuccess(messageSource);
+		} catch (Exception e) {
+			logger.error(Constants.MESSAGE_ERROR,e);
+			jsonResponse.setSaveError(messageSource);
 		}
 		logger.debug("O");
 		return jsonResponse;

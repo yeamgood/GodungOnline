@@ -65,8 +65,9 @@ public class PurchaseRequest extends ModelTemplate{
 	private List<Approver> approverList;
 	
 	@OneToMany(cascade = CascadeType.ALL,orphanRemoval=true)
-	@JoinColumn(name="reference_code")
-    private List<Document> document;
+	//@JoinColumn(name="purchaserequest_id")
+	@JoinTable(name = "purchaserequest_document", joinColumns = @JoinColumn(name = "purchaserequest_Id"), inverseJoinColumns = @JoinColumn(name = "document_Id"))
+    private List<Document> documentList;
 	
 	public void setObject(PurchaseRequest purchaseRequest) {
 		this.description  = purchaseRequest.getDescription();
@@ -164,13 +165,13 @@ public class PurchaseRequest extends ModelTemplate{
 	public void setApproverList(List<Approver> approverList) {
 		this.approverList = approverList;
 	}
-
-	public List<Document> getDocument() {
-		return document;
+	
+	public List<Document> getDocumentList() {
+		return documentList;
 	}
 
-	public void setDocument(List<Document> document) {
-		this.document = document;
+	public void setDocumentList(List<Document> documentList) {
+		this.documentList = documentList;
 	}
 
 	@Override

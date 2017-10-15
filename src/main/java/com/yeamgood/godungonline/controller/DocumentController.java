@@ -1,8 +1,6 @@
 package com.yeamgood.godungonline.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -25,19 +23,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yeamgood.godungonline.bean.JsonResponse;
 import com.yeamgood.godungonline.constants.Constants;
-import com.yeamgood.godungonline.datatable.DataTableObject;
-import com.yeamgood.godungonline.datatable.DataTablesRequest;
-import com.yeamgood.godungonline.datatables.DocumentDatatables;
-import com.yeamgood.godungonline.exception.GodungIdException;
 import com.yeamgood.godungonline.form.DocumentForm;
 import com.yeamgood.godungonline.model.Document;
 import com.yeamgood.godungonline.model.User;
 import com.yeamgood.godungonline.service.DocumentService;
-import com.yeamgood.godungonline.utils.DocumentUtils;
 
 @Controller
 public class DocumentController {
@@ -50,7 +41,7 @@ public class DocumentController {
 	@Autowired
 	DocumentService documentService;
 	
-	@PostMapping(value="/user/document/upload/{referenceCode}")
+	@RequestMapping(value="/user/document/upload/{referenceCode}", method=RequestMethod.POST)
 	public @ResponseBody JsonResponse load(@Valid DocumentForm documentForm,@PathVariable String referenceCode,HttpSession session,BindingResult bindingResult){
 		logger.debug("I");
 		logger.debug(Constants.LOG_INPUT,referenceCode);
@@ -58,8 +49,11 @@ public class DocumentController {
 		JsonResponse jsonResponse = new JsonResponse();
 		
 		  if (documentForm.getFile() != null && documentForm.getFile().isEmpty()){
-			  logger.debug("file null");
-			  bindingResult.addError(new FieldError("file", "file", messageSource.getMessage("file.empty",null,LocaleContextHolder.getLocale())));
+			  bindingResult.addError(new FieldError("documentForm", "file", messageSource.getMessage("file.empty",null,LocaleContextHolder.getLocale())));
+		  }
+		  
+		  if(documentForm.getDescription() != null && documentForm.getDescription().length() > 100) {
+			  bindingResult.addError(new FieldError("documentForm", "description", messageSource.getMessage("validation.max.lenght.input",new Object[] {"100"},LocaleContextHolder.getLocale())));
 		  }
 		  
 		if (bindingResult.hasErrors()) {
@@ -73,8 +67,6 @@ public class DocumentController {
 		        document.setType(multipartFile.getContentType());
 		        document.setSize(multipartFile.getSize());
 		        document.setContent(multipartFile.getBytes());
-		        document.setReferenceCode(referenceCode);
-		        document.setGodung(userSession.getGodung());
 		        documentService.save(document, userSession);
 				 
 				jsonResponse.setStatus(Constants.STATUS_SUCCESS);
@@ -86,32 +78,6 @@ public class DocumentController {
 		}
 		logger.debug("O");
 		return jsonResponse;
-	}
-	
-	@RequestMapping(value="/user/document/list/ajax/{referenceCode}", method=RequestMethod.GET)
-	public @ResponseBody String userSaleList(@PathVariable String referenceCode,DataTablesRequest datatableRequest, HttpSession session) throws GodungIdException, JsonProcessingException {
-		logger.debug("I");
-		logger.debug(Constants.LOG_INPUT, referenceCode);
-		User userSession = (User) session.getAttribute("user");
-
-		List<Document> documentList = documentService.findAllByGodungGodungIdAndReferenceCode(userSession.getGodung().getGodungId(), referenceCode);
-		
-		DocumentDatatables documentDatatables;
-		List<DocumentDatatables> documentDatatablesList = new ArrayList<>();
-		for (Document document : documentList) {
-			documentDatatables = new DocumentDatatables();
-			documentDatatables.setDocumentIdEncrypt(document.getDocumentIdEncrypt());
-			documentDatatables.setName(document.getName());
-			documentDatatables.setDescription(document.getDescription());
-			documentDatatables.setType(document.getType());
-			documentDatatables.setSize(DocumentUtils.getStringSizeLengthFile(document.getSize()));
-			documentDatatablesList.add(documentDatatables);
-		}
-		
-		DataTableObject dataTableObject = new DataTableObject();
-		dataTableObject.setAaData(new ArrayList<Object>(documentDatatablesList));
-		logger.debug("O");
-		return new ObjectMapper().writeValueAsString(dataTableObject);
 	}
 	
 	@PostMapping(value="/user/document/delete/{documentIdEncrypt}")
@@ -152,17 +118,5 @@ public class DocumentController {
 		}
         logger.debug("O");
     }
-	
-//	@RequestMapping(value = { "/download-document-{userId}-{docId}" }, method = RequestMethod.GET)
-//    public String downloadDocument(@PathVariable int userId, @PathVariable int docId, HttpServletResponse response) throws IOException {
-//        UserDocument document = userDocumentService.findById(docId);
-//        response.setContentType(document.getType());
-//        response.setContentLength(document.getContent().length);
-//        response.setHeader("Content-Disposition","attachment; filename=\"" + document.getName() +"\"");
-//  
-//        FileCopyUtils.copy(document.getContent(), response.getOutputStream());
-//  
-//        return "redirect:/add-document-"+userId;
-//    }
 	
 }

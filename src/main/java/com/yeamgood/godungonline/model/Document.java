@@ -7,11 +7,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.validator.constraints.Length;
 
 import com.yeamgood.godungonline.model.template.ModelTemplate;
 import com.yeamgood.godungonline.utils.AESencrpUtils;
@@ -31,7 +31,8 @@ public class Document extends ModelTemplate{
 	@Column(name="name", length=100, nullable=false)
     private String name;
      
-    @Column(name="description", length=255)
+    @Column(name="description")
+    @Length(max = 100, message = "{validation.max.lenght}")
     private String description;
      
     @Column(name="type", length=100, nullable=false)
@@ -43,13 +44,6 @@ public class Document extends ModelTemplate{
     @Lob @Basic(fetch = FetchType.LAZY)
     @Column(name="content", nullable=false)
     private byte[] content;
-    
-    @ManyToOne()
-	@JoinColumn(name = "godung_id")
-	private Godung godung;
-    
-    @Column(name = "reference_code")
-    private String  referenceCode;
     
     public void encryptData() {
 		this.documentIdEncrypt = AESencrpUtils.encryptLong(this.documentId);
@@ -102,22 +96,6 @@ public class Document extends ModelTemplate{
 
 	public void setContent(byte[] content) {
 		this.content = content;
-	}
-
-	public String getReferenceCode() {
-		return referenceCode;
-	}
-
-	public void setReferenceCode(String referenceCode) {
-		this.referenceCode = referenceCode;
-	}
-
-	public Godung getGodung() {
-		return godung;
-	}
-
-	public void setGodung(Godung godung) {
-		this.godung = godung;
 	}
 
 	public long getSize() {

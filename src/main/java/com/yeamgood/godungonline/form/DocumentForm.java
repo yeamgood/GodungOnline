@@ -4,9 +4,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class DocumentForm {
 	
-	MultipartFile file;
+	private MultipartFile file;
      
-    String description;
+    private String description;
  
     public MultipartFile getFile() {
         return file;

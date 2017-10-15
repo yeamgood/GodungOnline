@@ -87,6 +87,11 @@ label {
     vertical-align: middle !important;
 }
 
+.dt-body-datetime {
+	width: 140px !important;
+	text-align: center;
+}
+
 .dt-body-code {
 	width: 140px !important;
 }
@@ -236,4 +241,25 @@ label {
 	padding: 5px 5px; 
 	border: 1px solid #E6E9ED;
 	cursor: pointer;
+}
+
+/* FILE */
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
 }

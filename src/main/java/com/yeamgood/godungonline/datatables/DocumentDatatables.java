@@ -11,6 +11,8 @@ public class DocumentDatatables {
     private String type;
     
     private String size;
+    
+    private String createDate;
 
 	public String getDocumentIdEncrypt() {
 		return documentIdEncrypt;
@@ -50,6 +52,14 @@ public class DocumentDatatables {
 
 	public void setSize(String size) {
 		this.size = size;
+	}
+
+	public String getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
 	}
     	
 }

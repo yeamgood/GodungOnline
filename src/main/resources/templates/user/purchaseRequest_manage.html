@@ -74,6 +74,9 @@
 								<a id="bt_back" type="button" class="btn btn-primary" th:href="@{/user/purchaseRequest}">
 									<i class="fa fa-reply"></i> <span class="span_white" th:text="#{bt.text.back}"></span>
 								</a>
+								<button id="bt_delete" type="button" class="btn btn-primary" onclick="$('#modal_history').modal('show');" th:if="*{purchaseRequestIdEncrypt} != null and *{purchaseRequestIdEncrypt} != '' " >
+									<i class="fa fa-history"></i> <span class="span_white" th:text="#{bt.text.history}"></span>
+								</button>
 								<button id="bt_delete" type="button" class="btn btn-danger" onclick="openModalMainDelete();" th:if="*{purchaseRequestIdEncrypt} != null and *{purchaseRequestIdEncrypt} != '' " >
 									<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
 								</button>
@@ -267,19 +270,7 @@
 									</div>
 									<div class="x_content">
 										<table id="approver_datatables" class="table-striped table-small" style="width: 100%">
-											<!-- <thead class="search-content-header">
-												<tr>
-													<th th:text="#{datatables.text.no}" class="dt-body-no"></th>
-													<th th:text="#{form.approver.label.employee}"></th>
-													<th th:text="#{form.approver.label.role}"></th>
-													<th th:text="#{form.purchaseRequestProduct.label.measure}"></th>
-													<th th:text="#{form.purchaseRequestProduct.label.action}" class="dt-body-action"></th>
-												</tr>
-											</thead> -->
 										</table>
-										
-
-
 									</div>
 								</div>
 							</div>
@@ -530,8 +521,37 @@
 						<div class="modal-body">
 							<form id="document_form" enctype="multipart/form-data" autocomplete="off" 
 							      method="post" class="form-horizontal" role="form" data-parsley-validate>
-								<input id="modal_document_file" type="file" name="file">
-								<label id="modal_document_error_file" class="validation-message" style="display: none;"></label>
+								<!-- <input id="modal_document_file" type="file" name="file"> -->
+								
+								<div class="form-group">
+									<div class="control-label col-md-3 col-sm-3 col-xs-12">
+										<label th:text="#{form.document.label.file}"></label>
+										<label class="validation-message" th:text="#{label.request}"></label>
+									</div>
+									<div class="col-md-9 col-sm-9 col-xs-12">
+											<div class="input-group">
+						               			<label class="input-group-btn">
+								                    <span class="btn btn-primary">
+								                        <span th:text="#{bt.text.browse}"></span>
+								                        <input id="modal_document_file"  name="file" type="file" style="display: none;" multiple>
+								                    </span>
+						                			</label>
+						                			<input id="modal_document_file_text" type="text" class="form-control" readonly>
+						            			</div>
+											<label id="modal_document_error_file" class="validation-message" style="display: none;"></label>
+										</div>
+								</div>
+								
+								<div class="form-group">
+									<div class="control-label col-md-3 col-sm-3 col-xs-12">
+										<label th:text="#{form.document.label.description}"></label>
+									</div>
+									<div class="col-md-9 col-sm-9 col-xs-12">
+										<textarea class="form-control" id="modal_document_file_description" name="description" rows="3" ></textarea>
+										<label id="modal_document_error_description" class="validation-message" style="display: none;"></label>
+									</div>
+								</div>
+								
 							</form>
 						</div>
 						<div class="modal-footer modal-custom-footer">
@@ -734,6 +754,38 @@
 							</button>
 						</div>
 
+					</div>
+				</div>
+			</div>
+			
+			
+			<!-- -------------------------------------------------------------------------------- -->
+			<!-- ----------------------------------- MODAL HISTORY ------------------------------ -->
+			<!-- -------------------------------------------------------------------------------- -->
+			<div id="modal_history" class="modal fade bs-example-modal-lg"  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header modal-custom-header">
+							<button type="button" class="close" data-dismiss="modal">
+								<span aria-hidden="true">×</span>
+							</button>
+							<h4 class="modal-title">
+								<i th:class="#{form.history.icon}"></i> <span th:text="#{form.history.header}"></span>
+							</h4>
+						</div>
+						<div class="modal-body">
+							<table id="history_datatables" class="table table-bordered table-striped table-small" style="width: 100%">
+			                    <thead class="search-content-header">
+			                      <tr>
+			                        <th th:text="#{datatables.text.no}" class="dt-body-no"></th>
+			                        <th th:text="#{form.history.label.createdate}" class="dt-body-datetime"></th>
+			                        <th th:text="#{form.history.label.employeename}"></th>
+			                        <th th:text="#{form.history.label.action}"></th>
+			                        <th th:text="#{form.history.label.description}"></th>
+			                      </tr>
+			                    </thead>
+			                  </table>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -986,10 +1038,11 @@
 	    <!-- -------- Start datatables Document -------- -->
 	    $(document).ready(function() {
 	    			var urlDownload = /*[[@{/user/document/downloadDocument/}]]*/
-	    	
-	    			var url = /*[[@{/user/document/list/ajax/}]]*/
-				var purchaseRequestCode = /*[[${purchaseRequestForm.purchaseRequestCode}]]*/;
-		    		var url_complete = url + purchaseRequestCode;
+		    		
+		    		var url = /*[[@{/user/purchaseRequest/document/list/ajax/}]]*/
+		    		var purchaseRequestIdEncrypt = /*[[${purchaseRequestForm.purchaseRequestIdEncrypt}]]*/;
+		    	    	var url_complete = url + purchaseRequestIdEncrypt;
+		    		
 		    	var table =  $('#document_datatables').DataTable( {
 		    			"processing": true,
 		    			"ajax": url_complete,
@@ -1002,7 +1055,7 @@
 		    	        "columns": [
 		  	        		// { 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false }, 
 		  	            { 'data': 'name' },
-		  	          { 'data': 'size' },
+		  	        //  { 'data': 'size' },
 		  	            { 'data': 'documentIdEncrypt' ,'className': 'dt-body-no','searchable': false, 'orderable': false }
 		  	        ],
 		  	      	"columnDefs": [
@@ -1018,14 +1071,18 @@
 		  	      	{
 		                  "render": function ( data, type, row ) {
 		                	  
-		                	  	var message = '<a href="'+urlDownload+row.documentIdEncrypt+'"><i class="fa fa-paperclip"></i> <span>' + data + '</span></a> ' + '<br>';
-		                		//var message = '<span>' + data + '</span> ' + '<br>';
-		                	  //	message += '<i class="fa fa-info-circle"></i> <span style="font-size:12px;">' + row.size + '</span>' ;
+		                	  	var message = '<a href="'+urlDownload+row.documentIdEncrypt+'"><i class="fa fa-file-o"></i> <span>' + data + '</span></a> ' + '<br>';
+		                	  	//message += '<i class="fa fa-info-circle"></i> <span style="font-size:12px;"> size:' + row.size + '</span>' + '<br>';
+		                		message += '<i class="fa fa-calendar"></i> <span style="font-size:14px;"> ' + row.createDate +  '</span> '  ;
+		                		message += '<i class="fa fa-paperclip"></i> <span style="font-size:14px;"> ' + row.size +  '</span>'  + '<br>';
+		                		if(row.description != ""){
+		                			message += '<i class="fa fa-info-circle"></i> <span style="font-size:14px;"> ' + row.description + ' </span>'  ;
+		                		}
 		                	  	return message;
 		                  },
 		                  "targets": 0
 		             	},
-		             	{
+		            /*  	{
 			                  "render": function ( data, type, row ) {
 			                	  
 			                	  	var message = '<span style="font-size:12px;">' + data + '</span>' ;
@@ -1034,7 +1091,7 @@
 			                	  	return message;
 			                  },
 			                  "targets": 1,"className": "content-right"
-			             	},
+			             	}, */
 		  	      {
 	                  "render": function ( data, type, row ) {
 	                	  return	 '' +
@@ -1042,7 +1099,7 @@
 	                		 																						 + '\',\'' + row.name 
 	                				 																				 +'\');" ><i class="fa fa-trash"></i></button>';
 	                  },
-	                  "targets": 2
+	                  "targets": 1
 	             	}
 		  	      	]
 		    	    } );
@@ -1160,6 +1217,46 @@
 		        } ).draw(); 
 		});
 	    
+	    <!-- ---------------------------------- -->
+		<!-- -------- FUNCTION HISTORY -------- -->
+		<!-- ---------------------------------- -->
+		
+	    <!-- -------- Start datatables History -------- -->
+	    $(document).ready(function() {
+	    		var url = /*[[@{/user/history/list/ajax/}]]*/
+			var purchaseRequestCode = /*[[${purchaseRequestForm.purchaseRequestCode}]]*/;
+		    	var url_complete = url + purchaseRequestCode;
+		    	var table =  $('#history_datatables').DataTable( {
+		    			"processing": true,
+		    	        "ajax": url_complete,
+		    	        "paging":   true,
+		    	        "ordering": false,
+		    	        "info":     true,
+		    	        "searching":	true,
+		    	        "language": {"url": url_language},
+		    	        "order": [[ 0, 'asc' ]],
+		    	        "dom": '<"top"lp>rt<"bottom"ip><"clear">',
+		    	        "columns": [
+		  	        		{ 'data': null ,'className': 'dt-body-no'},
+		  	            { 'data': 'createDate' ,'className': 'content-center'},
+		  	            { 'data': 'employeeName'},
+		  	            { 'data': 'action' ,'className': 'content-center'},
+		  	            { 'data': 'description'}
+		  	        ],
+			    	        "initComplete": function( settings, json ) {
+		            	 		//fix bug datatables use dom not responsive html
+		            			 $("#history_datatables_filter").hide();
+		           		}
+		    	    } );
+	        
+		       /* SET INDEX COLUMN */
+		        table.on( 'order.dt search.dt', function () {
+		        	table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+		                cell.innerHTML = i+1;
+		            } );
+		        } ).draw(); 
+		});
+	    
 	    
 		<!-- -------------------------------- -->
 		<!-- -------- Start Select2  -------- -->
@@ -1215,6 +1312,8 @@
 		}
 		
 		function openModalDocument(){
+			$("#modal_document_file_text").val("");
+			$("#modal_document_file_description").val("");
 			$("#modal_document_file").val(null);
 			$('#modal_document').modal('show');
 		}
@@ -1455,6 +1554,8 @@
 		   
 		   resetValidationErrorWithPrefix("modal_document_error_");
 		   if(this.files[0].size > maxSize){
+			   $("#modal_document_file_text").val("");
+			   $("#modal_document_file_description").val("");
 			   $("#modal_document_file").val(null);
 			   $("#modal_document_error_file").html(maxSize2mb);
 			   $("#modal_document_error_file").show();
@@ -1463,9 +1564,9 @@
 		
 		 function documentSaveAction() {
 			   resetValidationErrorWithPrefix("modal_document_error_");
-				var urlAction = /*[[@{/user/document/upload/}]]*/;
-			    var purchaseRequestCode = /*[[${purchaseRequestForm.purchaseRequestCode}]]*/;
-				var urlActionComplete = urlAction + purchaseRequestCode;
+				var urlAction = /*[[@{/user/purchaseRequest/document/upload/}]]*/;
+				var purchaseRequestIdEncrypt = /*[[${purchaseRequestForm.purchaseRequestIdEncrypt}]]*/;
+				var urlActionComplete = urlAction + purchaseRequestIdEncrypt;
 				
 				/* var formData = new FormData($("#document_form")); */
 				
@@ -1498,9 +1599,10 @@
 			}
 		 
 		 function documentDeleteAction() {
-			 var urlAction = /*[[@{/user/document/delete/}]]*/;
+			 var urlAction = /*[[@{/user/purchaseRequest/document/delete/}]]*/;
 			 var documentIdEncrypt = $("#delete_id_document").val();
-			 var urlActionComplete = urlAction + documentIdEncrypt;
+			 var purchaseRequestIdEncrypt = /*[[${purchaseRequestForm.purchaseRequestIdEncrypt}]]*/;
+			 var urlActionComplete = urlAction + purchaseRequestIdEncrypt + "/" + documentIdEncrypt;
 				
 			    $.ajax({
 			        type: "POST",
@@ -1585,6 +1687,33 @@
     			$("#modal_delete_content").html(messageMain + " : " + message);
     			$('#modal_delete').modal('show');
 		}
+		
+		$(function() {
+			  // We can attach the `fileselect` event to all file inputs on the page
+			  $(document).on('change', ':file', function() {
+			    var input = $(this),
+			        numFiles = input.get(0).files ? input.get(0).files.length : 1,
+			        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+			    input.trigger('fileselect', [numFiles, label]);
+			  });
+
+			  // We can watch for our custom `fileselect` event like this
+			  $(document).ready( function() {
+			      $(':file').on('fileselect', function(event, numFiles, label) {
+
+			          var input = $(this).parents('.input-group').find(':text'),
+			              log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+			          if( input.length ) {
+			              input.val(log);
+			          } else {
+			              if( log ) alert(log);
+			          }
+
+			      });
+			  });
+			  
+			});
 		
 		var pnotify = /*[[${pnotify}]]*/;
 		if(pnotify != null){

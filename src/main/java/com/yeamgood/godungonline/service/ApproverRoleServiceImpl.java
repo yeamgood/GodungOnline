@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.yeamgood.godungonline.model.ApproverRole;
@@ -34,11 +35,11 @@ public class ApproverRoleServiceImpl implements ApproverRoleService{
 	public List<ApproverRole> findAll() {
 		logger.debug("I");
 		logger.debug("O");
-		List<ApproverRole> approverRoleList = approverRoleRepository.findAll();
+		List<ApproverRole> approverRoleList = approverRoleRepository.findAll(new Sort(Sort.Direction.ASC, "sequence"));
 		for(ApproverRole obj : approverRoleList) {
 			obj.setMessage(messageSource.getMessage(obj.getMessage(),null,LocaleContextHolder.getLocale()));
 		}
-		return approverRoleRepository.findAll();
+		return approverRoleList;
 	}
 	
 }
