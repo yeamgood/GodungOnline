@@ -32,7 +32,9 @@ public class Constants {
 	public static final Long MENU_PROFILE_ID = (long) 101;
 	public static final Long MENU_ROLE_GODUNG_ID = (long) 102;
 	public static final Long MENU_PURCHASE_REQUEST = (long) 11;
+
 	public static final Long MENU_USER_ID = (long) 201;
+	public static final Long MENU_ROLE_ID = (long) 202;
 	
 	public static final Long COUNTRY_THAILAND = (long) 217;
 	

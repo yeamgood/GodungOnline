@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.yeamgood.godungonline.model.Role;
 
 @Repository("roleRepository")
-public interface RoleRepository extends JpaRepository<Role, Integer>{
-	public Role findById(Long id);
+public interface RoleRepository extends JpaRepository<Role, Long>{
 }

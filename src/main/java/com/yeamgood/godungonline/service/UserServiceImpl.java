@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService{
 	@Transactional(rollbackFor={Exception.class})
 	public void saveUser(User user) {
 		logger.debug("I:");
-		Role role = roleRepository.findById(ROLE_ADMIN_FREE);
+		Role role = roleRepository.findOne(ROLE_ADMIN_FREE);
 		User userSystem = new User();
 		userSystem.setEmail(USER_SYSTEM);
 		

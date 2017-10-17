@@ -332,12 +332,10 @@ INSERT INTO `godung_online`.`currency` (`CURRENCY_ID`, `CURRENCY_CODE`, `CURRENC
 INSERT INTO `godung_online`.`rolelogin` (`role_id`,`role`) VALUES ('1','ADMIN');
 INSERT INTO `godung_online`.`rolelogin` (`role_id`,`role`) VALUES ('2','USER');
 
-INSERT INTO `godung_online`.`role` (`role_id`, `system`, `version`, `name`) VALUES ('1', '1', '1', 'ADMIN_SYSTEM');
-INSERT INTO `godung_online`.`role` (`role_id`, `system`, `version`, `name`) VALUES ('2', '1', '1', 'ADMIN_FREE_1');
-INSERT INTO `godung_online`.`role` (`role_id`, `system`, `version`, `name`) VALUES ('3', '1', '1', 'ADMIN_FREE_2');
-INSERT INTO `godung_online`.`role` (`role_id`, `system`, `version`, `name`) VALUES ('4', '1', '1', 'ADMIN_FREE_3');
-INSERT INTO `godung_online`.`role` (`role_id`, `system`, `version`, `name`) VALUES ('5', '1', '1', 'ADMIN_FREE_4');
-INSERT INTO `godung_online`.`role` (`role_id`, `system`, `version`, `name`) VALUES ('6', '1', '1', 'ADMIN_FREE_5');
+INSERT INTO `godung_online`.`role` (`role_id`, `version`, `role_name`) VALUES ('1', '1', 'ADMIN_SYSTEM');
+INSERT INTO `godung_online`.`role` (`role_id`, `version`, `role_name`) VALUES ('2', '1', 'USER_FREE');
+INSERT INTO `godung_online`.`role` (`role_id`, `version`, `role_name`) VALUES ('3', '1', 'USER_BASIC');
+INSERT INTO `godung_online`.`role` (`role_id`, `version`, `role_name`) VALUES ('4', '1', 'USER_ENTERPRISE');
 
 
 -- USER MENU --
@@ -385,8 +383,8 @@ INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`
 INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('203','/admin/menu', '1', 'fa fa-desktop', 'Menu', 'menu.name.menu', '4');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '200');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '201');
---INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '202');
---INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '203');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '202');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '203');
 
 
 -- COMMON CODE --

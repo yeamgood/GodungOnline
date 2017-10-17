@@ -14,8 +14,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.yeamgood.godungonline.model.template.ModelTemplate;
+import com.yeamgood.godungonline.utils.AESencrpUtils;
 
 @Entity
 @Table(name = "role")
@@ -24,45 +28,45 @@ public class Role extends ModelTemplate{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "role_id")
-	private Long id;
+	private Long roleId;
 	
-	@Column(name = "name")
-	private String name;
-
-	@Column(name = "system")
-	private int system;
+	@Transient
+	private String roleIdEncrypt;
+	
+	@Column(name = "role_name")
+	@NotEmpty(message = "{form.role.valid.name}")
+	private String roleName;
+	
+	@Column(name = "description")
+	private String description;
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "role_menu", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "menu_id"))
-	//@Where(clause = "parent_id is null")
 	@OrderBy("priority ASC")
     private List<Menu> menuList;
 	
 	@OneToMany(mappedBy = "role", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<GodungUserRole> godungUserRoleList;
 	
-	public Long getId() {
-		return id;
+	public void encryptData() {
+		this.roleIdEncrypt = AESencrpUtils.encryptLong(this.roleId);
+		this.roleId = null;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public Long getRoleId() {
+		return roleId;
 	}
 
-	public String getName() {
-		return name;
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getRoleName() {
+		return roleName;
 	}
 
-	public int getSystem() {
-		return system;
-	}
-
-	public void setSystem(int system) {
-		this.system = system;
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 
 	public List<Menu> getMenuList() {
@@ -79,6 +83,22 @@ public class Role extends ModelTemplate{
 
 	public void setGodungUserRoleList(List<GodungUserRole> godungUserRoleList) {
 		this.godungUserRoleList = godungUserRoleList;
+	}
+
+	public String getRoleIdEncrypt() {
+		return roleIdEncrypt;
+	}
+
+	public void setRoleIdEncrypt(String roleIdEncrypt) {
+		this.roleIdEncrypt = roleIdEncrypt;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 }
