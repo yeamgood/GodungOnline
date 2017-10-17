@@ -133,7 +133,7 @@
 							                          
 							                          <select id="input_advance_language" style="width: 100%">
 														<option value=" " th:text="#{dropdown.text.all}"></option>
-														<option th:each="obj:${languageList}" th:value="${obj.key}" th:text="${obj.value}"></option>
+														<option th:each="obj:${languageList}" th:value="${obj.value}" th:text="${obj.value}"></option>
 													</select> 
 							                          
 							                         </div>
@@ -197,8 +197,8 @@
 			<!-- ----------------------------- -->
 			<!-- -------- Start Modal -------- -->
 			<!-- ----------------------------- -->
-			<div id="modal_save" class="modal fade bs-example-modal-lg"  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-				<div class="modal-dialog modal-lg">
+			<div id="modal_save" class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog">
 					<div class="modal-content">
 
 						<div class="modal-header modal-custom-header">
@@ -283,8 +283,8 @@
 				</div>
 			</div>
 			
-			<div id="modal_save_password" class="modal fade bs-example-modal-lg"  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-				<div class="modal-dialog modal-lg">
+			<div id="modal_save_password" class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog">
 					<div class="modal-content">
 
 						<div class="modal-header modal-custom-header">
@@ -430,6 +430,7 @@
 		var url_user = /*[[@{/admin/user/list}]]*/;
 		var textView = /*[[#{bt.text.view}]]*/;
 		var textEdit = /*[[#{bt.text.edit}]]*/;
+		var textChangePassword = /*[[#{tooltip.changepassword}]]*/;
 		var textDelete = /*[[#{bt.text.delete}]]*/;
 		var active_yes = /*[[#{active.yes}]]*/;
 		var active_no = /*[[#{active.no}]]*/;
@@ -464,7 +465,7 @@
 		                	  	 	    'onclick="loadAction(\''+data+'\');">' +
 		                	  	 	    '<i class="fa fa-wrench"></i></button>' + 
 		                	  	 	    ' ' +
-		                	  	 	 	'<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="change password" ' +
+		                	  	 	 	'<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textChangePassword + '" ' +
 		                	  	 	    'onclick="openModalPasswordForm(\''+data+'\');">' +
 		                	  	 	    '<i class="fa fa-key"></i></button>' + 
 		                	  	 	    ' ' +

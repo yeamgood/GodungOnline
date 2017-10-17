@@ -77,10 +77,19 @@ public class UserController {
 		logger.debug("I");
 		logger.debug(Constants.LOG_INPUT, datatableRequest);
 		List<User> userList = userService.findAll();
+		List<Common> languageList = commonService.findByType(CommonType.LANGUAGE.toString());
 		
 		UserDatatables userDatatables;
 		List<UserDatatables> userDatatablesList = new ArrayList<>();
 		for (User obj : userList) {
+			
+			for (Common language : languageList) {
+				if(StringUtils.equals(language.getKey(), obj.getLanguage())) {
+					obj.setLanguage(language.getValue());
+					break;
+				}
+			}
+			
 			userDatatables = new UserDatatables();
 			userDatatables.setDatatableByModel(obj);
 			userDatatablesList.add(userDatatables);
