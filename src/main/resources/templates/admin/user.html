@@ -67,10 +67,10 @@
 					</div>
 					<div class="title_right">
 						<div class="form-group pull-right title_right_button">
-							<button type="button" class="btn btn-success" onclick="openModalAdd();">
+						<!-- 	<button type="button" class="btn btn-success" onclick="openModalAdd();">
 								<i class="fa" th:class="#{bt.icon.add}"></i>
 								<span class="span_white" th:text="#{form.user.bt.add}"></span>
-							</button>
+							</button> -->
 						</div>
 					</div>
 				</div>
@@ -105,10 +105,8 @@
 											<div class="content-center">
 												<span th:text="#{label.search.by}"></span> 
 												<span th:text="#{form.user.label.email}"></span> ,
-												<span th:text="#{form.user.label.password}"></span> ,
 												<span th:text="#{form.user.label.name}"></span> ,
-												<span th:text="#{form.user.label.language}"></span> ,
-												<span th:text="#{form.user.label.active}"></span> 
+												<span th:text="#{form.user.label.language}"></span> 
 											</div>
 										</div>
 									</div>
@@ -116,9 +114,9 @@
 										<div class="col-md-12 col-sm-12 col-xs-12">
 												<form autocomplete="off" class="form-horizontal form-label-left input_mask">
 							                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.user.label.code}"></label>
+							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.user.label.email}"></label>
 							                         <div class="col-md-8 col-sm-8 col-xs-12">
-							                         <input id="input_advance_code" type="text" class="form-control" >
+							                         <input id="input_advance_email" type="text" class="form-control" >
 							                         </div>
 							                      </div>
 							
@@ -130,9 +128,27 @@
 							                      </div>
 							                      
 							                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.user.label.description}"></label>
+							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.user.label.language}"></label>
 							                         <div class="col-md-8 col-sm-8 col-xs-12">
-							                         <input id="input_advance_description"  type="text" class="form-control" >
+							                          
+							                          <select id="input_advance_language" style="width: 100%">
+														<option value=" " th:text="#{dropdown.text.all}"></option>
+														<option th:each="obj:${languageList}" th:value="${obj.key}" th:text="${obj.value}"></option>
+													</select> 
+							                          
+							                         </div>
+							                      </div>
+							                      
+							                       <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+							                       	<label class="control-label col-md-4 col-sm-4 col-xs-12" th:text="#{form.user.label.active}"></label>
+							                         <div class="col-md-8 col-sm-8 col-xs-12">
+							                          
+							                          <select id="input_advance_active" style="width: 100%">
+														<option value=" " th:text="#{dropdown.text.all}"></option>
+														<option th:text="#{active.yes}" value="1"></option>
+														<option th:text="#{active.no}" value="0"></option>
+													</select> 
+							                          
 							                         </div>
 							                      </div>
 							
@@ -163,9 +179,9 @@
 												<th th:text="#{form.user.label.email}" class="dt-body-code"></th>
 												<th th:text="#{form.user.label.name}"></th>
 												<th th:text="#{form.user.label.language}" class="dt-body-action"></th>
+												<th></th>
 												<th th:text="#{form.user.label.active}" class="dt-body-action"></th>
-												<th th:text="#{form.user.label.password}" class="dt-body-action"></th>
-												<th th:text="#{datatables.text.action}" class="dt-body-action"></th>
+												<th th:text="#{datatables.text.action}" class="dt-body-action-three"></th>
 											</tr>
 										</thead>
 									</table>
@@ -196,7 +212,7 @@
 						
 						<div class="profile_title">
 	                        <div class="col-md-12">
-	                          <i class="fa fa-info-circle"></i> <span th:text="#{form.user.profile.main}"></span>
+	                          <i class="fa fa-info-circle"></i> <span th:text="#{form.user.lable.info}"></span>
 	                        </div>
                       	</div>
 
@@ -205,10 +221,11 @@
 								<input type="hidden" id="userIdEncrypt" name="userIdEncrypt" >
 								<div class="form-group">
 									<div class="control-label col-md-3 col-sm-3 col-xs-12">
-										<label th:text="#{form.user.label.code}"></label>
+										<label th:text="#{form.user.label.email}"></label>
 									</div>
 									<div class="col-md-8 col-sm-8 col-xs-12">
-										<input type="text" id="userCode" name="userCode" class="form-control" readonly="readonly" th:placeholder="#{label.generate.auto}">
+										<input type="text" id="email" name="email" class="form-control">
+										<label id="error_email" class="validation-message" style="display:none;"></label>
 									</div>
 								</div>
 								<div class="form-group">
@@ -218,30 +235,103 @@
 										<label class="validation-message" th:text="#{label.request}"></label>
 									</div>
 									<div class="col-md-8 col-sm-8 col-xs-12">
-										<input type="text" id="userName" name="userName" required="required" class="form-control">
-										<label id="error_userName" class="validation-message" style="display:none;"></label>
+										<input type="text" id="name" name="name" required="required" class="form-control">
+										<label id="error_name" class="validation-message" style="display:none;"></label>
 									</div>
 								</div>
-								<div class="form-group">
+							
+								 <div class="form-group">
 									<div class="control-label col-md-3 col-sm-3 col-xs-12">
-										<label th:text="#{form.user.label.description}"></label>
+										<label th:text="#{form.profile.label.language}"></label> 
+										<label class="validation-message" th:text="#{label.request}"></label>
 									</div>
 									<div class="col-md-8 col-sm-8 col-xs-12">
-										<textarea id="description" name="description" class="form-control" rows="3"></textarea>
-										<label id="error_description" class="validation-message" style="display:none;"></label>
+			                          <select  class="form-control" id="language" name="language">
+			                            	<option th:each="common :${languageList}" 
+					                            th:value="${common.key}" 
+					                            th:text="${common.value}" >
+		                          		</option>
+			                          </select>
+			                          <label id="error_language" class="validation-message" style="display:none;"></label>
+									</div>
+								  </div>
+								
+								  <div class="form-group">
+									<div class="control-label col-md-3 col-sm-3 col-xs-12">
+										<label th:text="#{form.user.label.active}"></label>
+									</div>
+									<div class="col-md-8 col-sm-8 col-xs-12 form-switch">
+										<label><input type="checkbox" class="js-switch" id="active" name="active" value="1" /> </label>
+										<label id="error_active" class="validation-message" style="display:none;"></label>
+									</div>
+								</div>
+								
+							</div>
+	                      	
+							<div class="clearfix"></div>
+							<div class="modal-footer modal-custom-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">
+									<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
+								</button>
+								<button id="bt_save" type="button" class="btn btn-success" onclick="saveAction();">
+									<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
+								</button>
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+			
+			<div id="modal_save_password" class="modal fade bs-example-modal-lg"  tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+
+						<div class="modal-header modal-custom-header">
+							<button type="button" class="close" data-dismiss="modal">
+								<span aria-hidden="true">×</span>
+							</button>
+							<h4 class="modal-title" id="myModalLabel">
+								<i th:class="${menu.icon}"></i> <span th:text="#{${menu.code}}"></span>
+							</h4>
+						</div>
+						
+						<div class="profile_title">
+	                        <div class="col-md-12">
+	                          <i class="fa fa-info-circle"></i> <span th:text="#{form.user.lable.info}"></span>
+	                        </div>
+                      	</div>
+
+						<form autocomplete="off" id="userPasswordModalForm" data-parsley-validate class="form-horizontal form-label-left">
+							<div class="modal-body validation-box">
+								<input type="hidden" id="passwordUserIdEncrypt" name="userIdEncrypt" >
+								  
+								<div class="form-group">
+									<div class="control-label col-md-3 col-sm-3 col-xs-12">
+										<label th:text="#{form.user.label.password}"></label>
+									</div>
+									<div class="col-md-8 col-sm-8 col-xs-12">
+										<input type="password" id="password" name="password" required="required" class="form-control">
+										<label id="error_password" class="validation-message" style="display:none;"></label>
+									</div>
+								</div>
+								  <div class="form-group">
+									<div class="control-label col-md-3 col-sm-3 col-xs-12">
+										<label th:text="#{form.register.password.confirm}"></label>
+									</div>
+									<div class="col-md-8 col-sm-8 col-xs-12">
+										<input type="password" id="confirmPassword" name="confirmPassword" required="required" class="form-control">
+										<label id="error_confirmPassword" class="validation-message" style="display:none;"></label>
 									</div>
 								</div>
 							</div>
 	                      	
 							<div class="clearfix"></div>
 							<div class="modal-footer modal-custom-footer">
-								<button id="bt_delete" type="button" class="btn btn-danger" style="float: left;display: none;"  onclick="openModalMainDelete();">
-									<i class="fa fa-trash"></i> <span class="span_white" th:text="#{bt.text.delete}"></span>
-								</button>
 								<button type="button" class="btn btn-default" data-dismiss="modal">
 									<i class="fa fa-close"></i> <span th:text="#{bt.text.close}"></span>
 								</button>
-								<button id="bt_save" type="button" class="btn btn-success" onclick="saveAction();">
+								<button id="bt_save" type="button" class="btn btn-success" onclick="savePasswordAction();">
 									<i class="fa fa-save"></i> <span class="span_white" th:text="#{bt.text.save}"></span>
 								</button>
 							</div>
@@ -341,6 +431,8 @@
 		var textView = /*[[#{bt.text.view}]]*/;
 		var textEdit = /*[[#{bt.text.edit}]]*/;
 		var textDelete = /*[[#{bt.text.delete}]]*/;
+		var active_yes = /*[[#{active.yes}]]*/;
+		var active_no = /*[[#{active.no}]]*/;
 		
 		<!-- --------------------------------------- -->
 		<!-- -------- Start datatables Main -------- -->
@@ -359,18 +451,26 @@
 		  	        		{ 'data': null ,'className': 'dt-body-no','searchable': false, 'orderable': false },
 		  	            { 'data': 'email' },
 		  	            { 'data': 'name' },
-		  	            { 'data': 'language' ,"className": "content-center" ,'searchable': false, 'orderable': false },
-		  	            { 'data': 'active' ,'searchable': false, 'orderable': false },
-		  	            { 'data': 'password' ,'searchable': false, 'orderable': false },
-		  	            { 'data': 'userIdEncrypt' ,'className': 'dt-body-action','searchable': false, 'orderable': false }
+		  	            { 'data': 'language' ,"className": "content-center" ,'orderable': false },
+		  	            { 'data': 'active' ,'className': 'dt-body-action', 'orderable': false ,'visible': false},
+		  	            { 'data': null ,'className': 'dt-body-action','searchable': false, 'orderable': false },
+		  	            { 'data': 'userIdEncrypt' ,'className': 'dt-body-action-three','searchable': false, 'orderable': false }
 		  	        ],
 		  	      	"columnDefs": [
 		  	      		{
 		                  "render": function ( data, type, row ) {
-		                		 return	'<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textEdit +
-		                	  	 	'" onclick="loadAction(\''+data+'\');"><i class="fa fa-wrench"></i></button>' + " " +
-		                	  	 	'<button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textDelete +
-		                	  	 	'" onclick="openModalDelete(\''+data+'\',\''+row.userCode+ ' ' +row.userName+ '\');" ><i class="fa fa-trash"></i></button>'; 
+		                		 return	'' +
+		                		        '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textEdit + '" ' +
+		                	  	 	    'onclick="loadAction(\''+data+'\');">' +
+		                	  	 	    '<i class="fa fa-wrench"></i></button>' + 
+		                	  	 	    ' ' +
+		                	  	 	 	'<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="change password" ' +
+		                	  	 	    'onclick="openModalPasswordForm(\''+data+'\');">' +
+		                	  	 	    '<i class="fa fa-key"></i></button>' + 
+		                	  	 	    ' ' +
+		                	  	 	    '<button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="'+ textDelete + '" ' +
+		                	  	 	    'onclick="openModalDelete(\''+data+'\',\''+row.email+ ' ' +row.name+ '\');" >' + 
+		                		        '<i class="fa fa-trash"></i></button>';
 		                  },
 		                  "targets": 6
 		            	 	},
@@ -378,17 +478,10 @@
 		            	 		"targets": 5,
 		            	 		"className": "content-center",
 		            	 		 "render": function ( data, type, row ) {
-		            	 			 return '<button type="button" class="btn btn-success btn-xs">Password</button>';
-		            	 		 }
-		            	 	},
-		            	 	{
-		            	 		"targets": 4,
-		            	 		"className": "content-center",
-		            	 		 "render": function ( data, type, row ) {
-		            	 			 if(data == 1){
-		            	 				 return '<button type="button" class="btn btn-success btn-xs">Active</button>';
+		            	 			 if(row.active == 1){
+		            	 				 return '<input type="hidden" value="1"><button type="button" class="btn btn-success btn-xs">'+active_yes+'</button>';
 		            	 			 }else{
-		            	 				 return '<button type="button" class="btn btn-danger btn-xs">No Active</button>';
+		            	 				 return '<input type="hidden" value="0"><button type="button" class="btn btn-danger btn-xs">'+active_no+'</button>';
 		            	 			 }
 		            	 		 }
 		            	 	}
@@ -435,7 +528,7 @@
 				});
 		        
 		        /* ADVANCE SEARCH */
-		        $('#input_advance_code,#input_advance_name,#input_advance_description').on( 'keyup change', function () {
+		        $('#input_advance_email,#input_advance_name,#input_advance_language,#input_advance_active').on( 'keyup change', function () {
 		       	 	searchDatatablesMain();
 				});
 		        
@@ -444,21 +537,36 @@
 		        });
 		        
 		        $('#bt_advance_reset').on( 'click', function () {
-		        		$("#input_advance_code").val("");
+		        		$("#input_advance_email").val("");
 		        		$("#input_advance_name").val("");
-		        		$("#input_advance_description").val("");
+		        		
+		        		$('#input_advance_language').val(" "); // Change the value or make some change to the internal state
+		    			$('#input_advance_language').trigger('change.select2'); // Notify only Select2 of changes
+		    			
+		    			$('#input_advance_active').val(" "); // Change the value or make some change to the internal state
+		    			$('#input_advance_active').trigger('change.select2'); // Notify only Select2 of changes
 			    		searchDatatablesMain();
 			    });
 		});
 		
 		function searchDatatablesMain(){
 	   		var table = $('#datatablesMain').DataTable();
-	    		table.columns(1).search($("#input_advance_code").val()).columns(2).search($("#input_advance_name").val()).columns(3).search($("#input_advance_description").val()).draw();
+	    		table.columns(1).search($("#input_advance_email").val()).columns(2).search($("#input_advance_name").val()).columns(3).search($("#input_advance_language").val()).columns(4).search($("#input_advance_active").val()).draw();
 	    }
 		<!-- ------------------------------------- -->
 		<!-- -------- End datatables Main -------- -->
 		<!-- ------------------------------------- -->
 		
+		$(function(){
+			var selectText = /*[[#{dropdown.text.select}]]*/;
+	      	$('#input_advance_language').select2({
+	    	  		placeholder: selectText
+	     	 });
+	      	
+	      	$('#input_advance_active').select2({
+	    	  		placeholder: selectText
+	     	 });
+	    }); 
 		
 	    <!-- -------------------------------- -->
 		<!-- -------- Start Modal ----------- -->
@@ -473,8 +581,8 @@
 		function openModalMainDelete(){
 			var messageMain = /*[[#{label.delete.content.confirm}]]*/;
 			var id = $("#userIdEncrypt").val();
-			var code = $("#userCode").val();
-			var name = $("#userName").val();
+			var code = $("#email").val();
+			var name = $("#name").val();
 			var message = code + " " + name;
 			
 			$("#delete_id").val(id);
@@ -484,20 +592,45 @@
 		
 	 	function resetModalForm(){
 			$("#userIdEncrypt").val("");
-	   		$("#userCode").val("");
-		   	$("#userName").val("");
-		   	$("#description").val("");
-		   	$('#userChildDatatable').DataTable().clear().draw();;
+	   		$("#email").val("");
+		   	$("#name").val("");
+		   	$('#userChildDatatable').DataTable().clear().draw();
 		   	resetValidationError();
-		   	//$("#bt_save").focus();
 	    }
 	 	
-	 	function setModalForm(id,code,name,description){
+	 	function setModalForm(id,email,name,active,language){
 	 		$("#userIdEncrypt").val(id);
-        		$("#userCode").val(code);
-     		$("#userName").val(name);
-     	   	$("#description").val(description);
+        		$("#email").val(email);
+     		$("#name").val(name);
+     	   	$("#language").val(language);
+
+     		var element = $('#active');
+     	   	if(active == 1){
+     	   		changeSwitchery(element, true);
+     	   	}else{
+     	     	changeSwitchery(element, false);
+     	   	}
 	 	}
+	 	
+	 	function resetModalPasswordForm(){
+	 		$("#passwordUserIdEncrypt").val("");
+	 		$("#password").val("");
+	 		$("#confirmPassword").val("");
+	 		resetValidationError();
+	 	}
+	 	
+	 	function openModalPasswordForm(id){
+	 		resetModalPasswordForm();
+	 		$("#passwordUserIdEncrypt").val(id);
+	 		$('#modal_save_password').modal('show');
+	 	}
+	 	
+	 	
+	 	function changeSwitchery(element, checked) {
+	 		  if ( ( element.is(':checked') && checked == false ) || ( !element.is(':checked') && checked == true ) ) {
+	 		    element.parent().find('.switchery').trigger('click');
+	 		  }
+	 		}
 		<!-- -------------------------------- -->
 		<!-- -------- End Modal ----------- -->
 		<!-- -------------------------------- -->
@@ -523,7 +656,6 @@
 		                table.ajax.reload();
 		             }else{
 		            	 	validationErrorShow(response.result);
-		            		//openNotification(response.result.type,response.result.title,response.result.text);
 		             }
 		         },
 		         error: function(e){
@@ -531,6 +663,31 @@
 		         }
 		    });
 		}
+	    
+	    function savePasswordAction() {
+    		resetValidationError();
+ 	   	var urlAction = /*[[@{/admin/user/changepassword}]]*/;
+	    $.ajax({
+	        type: "POST",
+	        url: urlAction,
+	        dataType: 'json',
+	        data: $("#userPasswordModalForm").serialize(),
+	        success: function(response){
+	            if(response.status == "SUCCESS"){
+	               	openNotification(response.result.type,response.result.title,response.result.text);
+	               	$('#modal_save_password').modal('hide');
+	               	$("#userPasswordModalForm").trigger('reset');
+	              	var table =  $('#datatablesMain').DataTable();
+	                table.ajax.reload();
+	             }else{
+	            	 	validationErrorShow(response.result);
+	             }
+	         },
+	         error: function(e){
+	             openNotification("error","error",e);
+	         }
+	    });
+	}
 	    
 	    function deleteAction() {
 	 	   	var urlAction = /*[[@{/admin/user/delete}]]*/;
@@ -568,11 +725,12 @@
 		        success: function(response){
 		            if(response.status == "SUCCESS"){
 			        	   var id = response.result.userIdEncrypt;
-			        	   var code = response.result.userCode;
-			        	   var name = response.result.userName;
-			        	   var description = response.result.description;
-			        	   setModalForm(id,code,name,description);
-			        	   $("#bt_delete").show();
+			        	   var email = response.result.email;
+			        	   var name = response.result.name;
+			        	   var active = response.result.active;
+			        	   var language = response.result.language;
+			        	   
+			        	   setModalForm(id,email,name,active,language);
 		               $('#modal_save').modal('show');
 		             }else{
 		            		openNotification(response.result.type,response.result.title,response.result.text);
@@ -593,7 +751,7 @@
     		        dataType: 'json',
     		        success: function(response){
     		            if(response.status == "SUCCESS"){
-    		            	$("#bt_delete").hide();
+    		            	//$("#bt_delete").hide();
     		               $('#modal_save').modal('show');
     		             }else{
     		            		openNotification(response.result.type,response.result.title,response.result.text);

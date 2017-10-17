@@ -385,8 +385,8 @@ INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`
 INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('203','/admin/menu', '1', 'fa fa-desktop', 'Menu', 'menu.name.menu', '4');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '200');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '201');
-INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '202');
-INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '203');
+--INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '202');
+--INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '203');
 
 
 -- COMMON CODE --

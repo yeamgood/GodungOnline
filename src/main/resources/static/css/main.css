@@ -79,14 +79,6 @@ label {
 	text-align: center;
 }
 
-.dt-body-action {
-	width: 50px !important;
-	text-align: center;
-    padding-bottom: 0px !important;
-    padding-top: 0px !important;
-    vertical-align: middle !important;
-}
-
 .dt-body-datetime {
 	width: 140px !important;
 	text-align: center;
@@ -94,6 +86,14 @@ label {
 
 .dt-body-code {
 	width: 140px !important;
+}
+
+.dt-body-action {
+	width: 50px !important;
+	text-align: center;
+    padding-bottom: 0px !important;
+    padding-top: 0px !important;
+    vertical-align: middle !important;
 }
 
 .dt-body-action button{
@@ -104,6 +104,28 @@ label {
 }
 
 .dt-body-action a{
+    margin-bottom: 0px !important;
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+    margin-top: 2px !important;
+}
+
+.dt-body-action-three {
+	width: 80px !important;
+	text-align: center;
+    padding-bottom: 0px !important;
+    padding-top: 0px !important;
+    vertical-align: middle !important;
+}
+
+.dt-body-action-three button{
+    margin-bottom: 0px !important;
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+    margin-top: 2px !important;
+}
+
+.dt-body-action-three a{
     margin-bottom: 0px !important;
     margin-right: 0px !important;
     margin-left: 0px !important;
@@ -208,6 +230,10 @@ label {
 
 .x_title_edit h2{
 	overflow: visible;
+}
+
+.form-switch{
+	padding-top: 8px;
 }
 
 /* SELECT2 EDIT */

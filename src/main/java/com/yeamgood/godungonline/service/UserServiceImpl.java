@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yeamgood.godungonline.exception.GodungIdException;
+import com.yeamgood.godungonline.form.UserForm;
+import com.yeamgood.godungonline.form.UserPasswordForm;
 import com.yeamgood.godungonline.model.Godung;
 import com.yeamgood.godungonline.model.GodungUserRole;
 import com.yeamgood.godungonline.model.Role;
@@ -63,6 +65,7 @@ public class UserServiceImpl implements UserService{
 		logger.debug("I:");
 		User user = userRepository.findOne(AESencrpUtils.decryptLong(idEncrypt));
 		user.encryptData();
+		logger.debug("testyeam " + user.getEmail());
 		logger.debug("O:");
 		return user;
 	}
@@ -94,10 +97,29 @@ public class UserServiceImpl implements UserService{
 		godungUserRoleRepository.save(godungUserRole);
 		logger.debug("O:");
 	}
+	
+	@Override
+	public void updateUser(UserForm userForm) {
+		logger.debug("I:");
+		User user = userRepository.findOne(AESencrpUtils.decryptLong(userForm.getUserIdEncrypt()));
+		user.setEmail(userForm.getEmail());
+		user.setName(userForm.getName());
+		user.setLanguage(userForm.getLanguage());
+		user.setActive(userForm.getActive());
+		userRepository.save(user);
+		logger.debug("O:");
+	}
 
 	@Override
 	public void changeUserPassword(User user, String password) {
 		user.setPassword(bCryptPasswordEncoder.encode(password));
+		userRepository.save(user);
+	}
+	
+	@Override
+	public void changeUserPassword(UserPasswordForm userPasswordForm) {
+		User user = userRepository.findOne(AESencrpUtils.decryptLong(userPasswordForm.getUserIdEncrypt()));
+		user.setPassword(bCryptPasswordEncoder.encode(userPasswordForm.getPassword()));
 		userRepository.save(user);
 	}
 
@@ -111,5 +133,14 @@ public class UserServiceImpl implements UserService{
 		logger.debug("O");
 		return userList;
 	}
+
+	@Override
+	public void delete(User user) {
+		logger.debug("I:");
+		User userTemp = userRepository.findOne(AESencrpUtils.decryptLong(user.getUserIdEncrypt()));
+		userRepository.delete(userTemp);
+		logger.debug("O:");
+	}
+
 
 }

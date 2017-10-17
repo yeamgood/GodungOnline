@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,23 +21,28 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yeamgood.godungonline.bean.CommonType;
 import com.yeamgood.godungonline.bean.JsonResponse;
 import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.datatable.DataTableObject;
 import com.yeamgood.godungonline.datatable.DataTablesRequest;
 import com.yeamgood.godungonline.datatables.UserDatatables;
+import com.yeamgood.godungonline.form.UserForm;
+import com.yeamgood.godungonline.form.UserPasswordForm;
+import com.yeamgood.godungonline.model.Common;
 import com.yeamgood.godungonline.model.Menu;
 import com.yeamgood.godungonline.model.User;
 import com.yeamgood.godungonline.service.CommonService;
 import com.yeamgood.godungonline.service.MenuService;
 import com.yeamgood.godungonline.service.UserService;
+import com.yeamgood.godungonline.utils.AESencrpUtils;
 
 @Controller
 public class UserController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	private static final String LOG_CATEGORY = "user:{}";
+	private static final String LOG_USER = "user:{}";
 	
 
 	@Autowired
@@ -56,6 +62,10 @@ public class UserController {
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
 		Menu menu = menuService.findById(Constants.MENU_USER_ID);
+		
+		List<Common> languageList = commonService.findByType(CommonType.LANGUAGE.toString());
+		modelAndView.addObject("languageList",languageList);
+		
 		modelAndView.addObject(Constants.MENU, menu);
 		modelAndView.setViewName("admin/user");
 		logger.debug("O");
@@ -85,15 +95,17 @@ public class UserController {
 	@RequestMapping(value = "/admin/user/load", method = RequestMethod.GET)
 	public @ResponseBody JsonResponse userLoad(User user, HttpSession session) {
 		logger.debug("I");
-		logger.debug(LOG_CATEGORY, user);
+		logger.debug(LOG_USER, user);
 		JsonResponse jsonResponse = new JsonResponse();
 		User userSession = (User) session.getAttribute(Constants.SESSION_USER);
 		try {
-			User userTemp = new User();
+			logger.debug(user.getUserIdEncrypt());
+			UserForm userForm = new UserForm();
 			if (!StringUtils.isBlank(user.getUserIdEncrypt())) {
-				userTemp = userService.findByIdEncrypt(user.getUserIdEncrypt(), userSession);
+				User userTemp = userService.findByIdEncrypt(user.getUserIdEncrypt(), userSession);
+				userForm.mapObjectToForm(userTemp);
 			}
-			jsonResponse.setObject(Constants.STATUS_SUCCESS, userTemp);
+			jsonResponse.setObject(Constants.STATUS_SUCCESS, userForm);
 		} catch (Exception e) {
 			logger.error(Constants.MESSAGE_ERROR, e);
 			jsonResponse.setLoadError(messageSource);
@@ -103,15 +115,48 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/admin/user/save", method = RequestMethod.POST)
-	public @ResponseBody JsonResponse userSave(@Valid User user, BindingResult bindingResult, HttpSession session) {
+	public @ResponseBody JsonResponse userSave(@Valid UserForm userForm, BindingResult bindingResult, HttpSession session) {
 		logger.debug("I");
-		logger.debug(LOG_CATEGORY, user);
+		logger.debug(LOG_USER, userForm);
 		JsonResponse jsonResponse = new JsonResponse();
+		
+		User userExists = userService.findUserByEmail(userForm.getEmail());
+		if (userExists != null && userExists.getUserId().longValue() != AESencrpUtils.decryptLong(userForm.getUserIdEncrypt()).longValue()) {
+			logger.debug("userExists");
+			bindingResult.rejectValue("email", "error.user", messageSource.getMessage("validation.required.email.registered",null,LocaleContextHolder.getLocale()));
+		}
+		
 		if (bindingResult.hasErrors()) {
 			jsonResponse.setBinddingResultError(bindingResult);
 		} else {
 			try {
-				userService.saveUser(user);
+				userService.updateUser(userForm);
+				jsonResponse.setSaveSuccess(messageSource);
+			} catch (Exception e) {
+				logger.error(Constants.MESSAGE_ERROR, e);
+				jsonResponse.setSaveError(messageSource);
+			}
+		}
+		logger.debug("O");
+		return jsonResponse;
+	}
+	
+	@RequestMapping(value = "/admin/user/changepassword", method = RequestMethod.POST)
+	public @ResponseBody JsonResponse userChangePassword(@Valid UserPasswordForm userPasswordForm, BindingResult bindingResult, HttpSession session) {
+		logger.debug("I");
+		logger.debug(LOG_USER, userPasswordForm);
+		JsonResponse jsonResponse = new JsonResponse();
+		
+		if(!bindingResult.hasErrors() && !userPasswordForm.getPassword().equals(userPasswordForm.getConfirmPassword())) {
+			String messageError = messageSource.getMessage("validation.required.password.compare",null,LocaleContextHolder.getLocale());
+			bindingResult.rejectValue("password", "error.resetPasswordForm", messageError);
+		}
+		
+		if (bindingResult.hasErrors()) {
+			jsonResponse.setBinddingResultError(bindingResult);
+		} else {
+			try {
+				userService.changeUserPassword(userPasswordForm);
 				jsonResponse.setSaveSuccess(messageSource);
 			} catch (Exception e) {
 				logger.error(Constants.MESSAGE_ERROR, e);
@@ -125,10 +170,10 @@ public class UserController {
 	@RequestMapping(value = "/admin/user/delete", method = RequestMethod.POST)
 	public @ResponseBody JsonResponse userDelete(User user, HttpSession session) {
 		logger.debug("I");
-		logger.debug(LOG_CATEGORY, user);
+		logger.debug(LOG_USER, user);
 		JsonResponse jsonResponse = new JsonResponse();
 		try {
-			//userService.delete(user, userSession);
+			userService.delete(user);
 			jsonResponse.setDeleteSuccess(messageSource);
 		} catch (Exception e) {
 			logger.error(Constants.MESSAGE_ERROR, e);
