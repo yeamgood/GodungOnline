@@ -31,7 +31,7 @@
 	<link type="text/css" th:href="@{/vendors/pnotify/dist/pnotify.nonblock.css}" rel="stylesheet">
 	<!-- Select2 -->
 	<link type="text/css" th:href="@{/vendors/select2/dist/css/select2.min.css}" rel="stylesheet">
-	 <!-- Switchery -->
+	<!-- Switchery -->
     <link type="text/css" th:href="@{/vendors/switchery/dist/switchery.min.css}" rel="stylesheet">
 
     <!-- Custom Theme Style -->
@@ -61,7 +61,7 @@
 					<div class="title_left">
 						<div class="col-md-6">
 							<h2>
-								<i th:class="${menu.icon}"></i> <span th:text="#{${menu.code}}"></span>
+								<i th:class="${menu.icon}"></i> <span th:text="#{${menu.messageCode}}"></span>
 							</h2>
 						</div>
 					</div>
@@ -172,13 +172,14 @@
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
-									<table id="datatablesMain" class="table table-striped table-bordered table-small" style="width:100%">
+									<table id="datatablesMain" class="table table-striped table-bordered" style="width:100%">
 										<thead class="search-content-header">
 											<tr>
 												<th th:text="#{datatables.text.no}" class="dt-body-no"></th>
 												<th th:text="#{form.user.label.email}" class="dt-body-code"></th>
 												<th th:text="#{form.user.label.name}"></th>
-												<th th:text="#{form.user.label.language}" class="dt-body-action"></th>
+												<th th:text="#{form.user.label.language}"></th>
+												<th th:text="#{form.user.label.rolelogin}"></th>
 												<th></th>
 												<th th:text="#{form.user.label.active}" class="dt-body-action"></th>
 												<th th:text="#{datatables.text.action}" class="dt-body-action-three"></th>
@@ -206,7 +207,7 @@
 								<span aria-hidden="true">×</span>
 							</button>
 							<h4 class="modal-title" id="myModalLabel">
-								<i th:class="${menu.icon}"></i> <span th:text="#{${menu.code}}"></span>
+								<i th:class="${menu.icon}"></i> <span th:text="#{${menu.messageCode}}"></span>
 							</h4>
 						</div>
 						
@@ -255,6 +256,23 @@
 			                          <label id="error_language" class="validation-message" style="display:none;"></label>
 									</div>
 								  </div>
+								  
+								  <div class="form-group">
+									<div class="control-label col-md-3 col-sm-3 col-xs-12">
+										<label th:text="#{form.user.label.rolelogin}"></label> 
+										<label class="validation-message" th:text="#{label.request}"></label>
+									</div>
+									<div class="col-md-8 col-sm-8 col-xs-12">
+			                          <select  class="form-control" id="role" name="roleId">
+			                            	<option th:each="common :${roleLoginList}" 
+					                            th:value="${common.id}" 
+					                            th:text="${common.role}" >
+		                          		</option>
+			                          </select>
+			                          <label id="error_role" class="validation-message" style="display:none;"></label>
+									</div>
+								  </div>
+								  
 								
 								  <div class="form-group">
 									<div class="control-label col-md-3 col-sm-3 col-xs-12">
@@ -292,7 +310,7 @@
 								<span aria-hidden="true">×</span>
 							</button>
 							<h4 class="modal-title" id="myModalLabel">
-								<i th:class="${menu.icon}"></i> <span th:text="#{${menu.code}}"></span>
+								<i th:class="${menu.icon}"></i> <span th:text="#{${menu.messageCode}}"></span>
 							</h4>
 						</div>
 						
@@ -415,7 +433,7 @@
     <script th:src="@{/vendors/pnotify/dist/pnotify.nonblock.js}"></script>
     <!-- Select2 -->
     <script th:src="@{/vendors/select2/dist/js/select2.full.min.js}"></script>
-      <!-- Switchery -->
+    <!-- Switchery -->
     <script th:src="@{/vendors/switchery/dist/switchery.min.js}"></script>
 
     <!-- Custom Theme Scripts -->
@@ -427,7 +445,6 @@
 
 	<script th:inline="javascript">
 		var url_language = /*[[#{javascript.datatable.language.url}]]*/;
-		var url_user = /*[[@{/admin/user/list}]]*/;
 		var textView = /*[[#{bt.text.view}]]*/;
 		var textEdit = /*[[#{bt.text.edit}]]*/;
 		var textChangePassword = /*[[#{tooltip.changepassword}]]*/;
@@ -439,6 +456,7 @@
 		<!-- -------- Start datatables Main -------- -->
 		<!-- --------------------------------------- -->
 	    $(document).ready(function() {
+	    	    var url_user = /*[[@{/admin/user/list}]]*/;
 		    	var table =  $('#datatablesMain').DataTable( {
 		    			"processing": true,
 		    	        "ajax": url_user,
@@ -453,6 +471,7 @@
 		  	            { 'data': 'email' },
 		  	            { 'data': 'name' },
 		  	            { 'data': 'language' ,"className": "content-center" ,'orderable': false },
+		  	            { 'data': 'roleLogin' ,"className": "content-center" ,'orderable': false },
 		  	            { 'data': 'active' ,'className': 'dt-body-action', 'orderable': false ,'visible': false},
 		  	            { 'data': null ,'className': 'dt-body-action','searchable': false, 'orderable': false },
 		  	            { 'data': 'userIdEncrypt' ,'className': 'dt-body-action-three','searchable': false, 'orderable': false }
@@ -473,10 +492,10 @@
 		                	  	 	    'onclick="openModalDelete(\''+data+'\',\''+row.email+ ' ' +row.name+ '\');" >' + 
 		                		        '<i class="fa fa-trash"></i></button>';
 		                  },
-		                  "targets": 6
+		                  "targets": 7
 		            	 	},
 		            	 	{
-		            	 		"targets": 5,
+		            	 		"targets": 6,
 		            	 		"className": "content-center",
 		            	 		 "render": function ( data, type, row ) {
 		            	 			 if(row.active == 1){
@@ -599,11 +618,12 @@
 		   	resetValidationError();
 	    }
 	 	
-	 	function setModalForm(id,email,name,active,language){
+	 	function setModalForm(id,email,name,active,language,roleId){
 	 		$("#userIdEncrypt").val(id);
         		$("#email").val(email);
      		$("#name").val(name);
      	   	$("#language").val(language);
+     		$("#role").val(roleId);
 
      		var element = $('#active');
      	   	if(active == 1){
@@ -626,12 +646,11 @@
 	 		$('#modal_save_password').modal('show');
 	 	}
 	 	
-	 	
 	 	function changeSwitchery(element, checked) {
-	 		  if ( ( element.is(':checked') && checked == false ) || ( !element.is(':checked') && checked == true ) ) {
-	 		    element.parent().find('.switchery').trigger('click');
-	 		  }
-	 		}
+ 		  if ( ( element.is(':checked') && checked == false ) || ( !element.is(':checked') && checked == true ) ) {
+ 		    element.parent().find('.switchery').trigger('click');
+ 		  }
+ 		}
 		<!-- -------------------------------- -->
 		<!-- -------- End Modal ----------- -->
 		<!-- -------------------------------- -->
@@ -652,7 +671,6 @@
 		            if(response.status == "SUCCESS"){
 		               	openNotification(response.result.type,response.result.title,response.result.text);
 		               	$('#modal_save').modal('hide');
-		               	$("#userModalForm").trigger('reset');
 		              	var table =  $('#datatablesMain').DataTable();
 		                table.ajax.reload();
 		             }else{
@@ -730,8 +748,9 @@
 			        	   var name = response.result.name;
 			        	   var active = response.result.active;
 			        	   var language = response.result.language;
+			        	   var roleId = response.result.roleId;
 			        	   
-			        	   setModalForm(id,email,name,active,language);
+			        	   setModalForm(id,email,name,active,language,roleId);
 		               $('#modal_save').modal('show');
 		             }else{
 		            		openNotification(response.result.type,response.result.title,response.result.text);

@@ -10,5 +10,8 @@ import com.yeamgood.godungonline.model.Menu;
 
 @Repository("menuRepository")
 public interface MenuRepository extends JpaRepository<Menu, Long> {
-	public List<Menu> findAllByParentId(Long parentId);
+	public Menu findOneByMenuCode(String menuCode);
+	public List<Menu> findAllByParentCode(String parentCode);
+	public List<Menu> findAllByOrderByMenuCodeAsc();
+	public List<Menu> findAllByOrderBySequenceAsc();
 }

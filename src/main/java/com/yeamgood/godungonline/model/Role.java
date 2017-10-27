@@ -42,7 +42,7 @@ public class Role extends ModelTemplate{
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "role_menu", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "menu_id"))
-	@OrderBy("priority ASC")
+	@OrderBy("sequence ASC")
     private List<Menu> menuList;
 	
 	@OneToMany(mappedBy = "role", cascade = {CascadeType.PERSIST, CascadeType.MERGE})

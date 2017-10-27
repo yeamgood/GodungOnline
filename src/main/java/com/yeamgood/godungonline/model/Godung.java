@@ -9,10 +9,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yeamgood.godungonline.model.template.ModelTemplate;
+import com.yeamgood.godungonline.utils.AESencrpUtils;
 
 @Entity
 @Table(name = "godung")
@@ -23,6 +26,9 @@ public class Godung extends ModelTemplate{
 	@Column(name = "godung_id")
 	private Long godungId;
 	
+	@Transient
+	private String godungIdEncrypt;
+	
 	@Column(name = "godung_name")
 	@NotEmpty(message = "{validation.required.godung.name}")
 	private String godungName;
@@ -31,8 +37,14 @@ public class Godung extends ModelTemplate{
 	private int active;
 	
 	@OneToMany(mappedBy = "godung")
+	@JsonIgnore
     private List<GodungUserRole> godungUserRoleList;
 
+	public void encryptData() {
+		this.godungIdEncrypt = AESencrpUtils.encryptLong(this.godungId);
+		this.godungId = null;
+	}
+	
 	public Long getGodungId() {
 		return godungId;
 	}
@@ -65,5 +77,18 @@ public class Godung extends ModelTemplate{
 		this.godungUserRoleList = godungUserRoleList;
 	}
 
+	public String getGodungIdEncrypt() {
+		return godungIdEncrypt;
+	}
 
+	public void setGodungIdEncrypt(String godungIdEncrypt) {
+		this.godungIdEncrypt = godungIdEncrypt;
+	}
+
+	@Override
+	public String toString() {
+		return "Godung [godungId=" + godungId + ", godungIdEncrypt=" + godungIdEncrypt + ", godungName=" + godungName
+				+ ", active=" + active + "]";
+	}
+	
 }

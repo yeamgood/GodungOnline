@@ -151,6 +151,10 @@ label {
 	vertical-align: middle !important;
 }
 
+/* .table-small tbody tr td span{
+	line-height: 20px;
+} */
+
 .table-small-header{
 	margin-bottom: 0px;
 }
@@ -266,7 +270,6 @@ label {
 	cursor: pointer; 
 	padding: 5px 5px; 
 	border: 1px solid #E6E9ED;
-	cursor: pointer;
 }
 
 /* FILE */

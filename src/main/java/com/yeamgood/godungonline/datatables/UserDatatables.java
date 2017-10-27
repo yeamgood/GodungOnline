@@ -1,5 +1,10 @@
 package com.yeamgood.godungonline.datatables;
 
+import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.yeamgood.godungonline.model.RoleLogin;
 import com.yeamgood.godungonline.model.User;
 
 public class UserDatatables {
@@ -18,6 +23,8 @@ public class UserDatatables {
 	
 	private int active;
 	
+	private String roleLogin;
+	
 	public void setDatatableByModel(User user) {
 		this.userIdEncrypt = user.getUserIdEncrypt();
 		this.email = user.getEmail();
@@ -25,6 +32,18 @@ public class UserDatatables {
 		this.name = user.getName();
 		this.language = user.getLanguage();
 		this.active = user.getActive();
+		this.roleLogin = getRoleLogin(user.getRoles());
+	}
+	
+	public String getRoleLogin(Set<RoleLogin> roles) {
+		String roleList = "";
+		for (RoleLogin roleLogin : roles) {
+			if(StringUtils.isNotBlank(roleList)) {
+				roleList += ",";
+			}
+			roleList += roleLogin.getRole();
+		}
+		return roleList;
 	}
 
 	public String getUserIdEncrypt() {
@@ -82,7 +101,13 @@ public class UserDatatables {
 	public void setActive(int active) {
 		this.active = active;
 	}
-	
-	
+
+	public String getRoleLogin() {
+		return roleLogin;
+	}
+
+	public void setRoleLogin(String roleLogin) {
+		this.roleLogin = roleLogin;
+	}
 	
 }

@@ -54,7 +54,7 @@ public class BrandServiceImpl implements BrandService{
 		logger.debug("I");
 		List<Brand> brandList = brandRepository.findAll(new Sort(Sort.Direction.ASC, "brandName"));
 		for (Brand brand : brandList) {
-			brand.setBrandIdEncrypt(AESencrpUtils.encryptLong(brand.getBrandId()));
+			//brand.setBrandIdEncrypt(AESencrpUtils.encryptLong(brand.getBrandId()));
 			brand.encryptData();
 		}
 		logger.debug("O");
@@ -67,7 +67,7 @@ public class BrandServiceImpl implements BrandService{
 		logger.debug("godungId:{}",godungId);
 		List<Brand> brandList = brandRepository.findAllByGodungGodungIdOrderByBrandNameAsc(godungId);
 		for (Brand brand : brandList) {
-			brand.setBrandIdEncrypt(AESencrpUtils.encryptLong(brand.getBrandId()));
+			//brand.setBrandIdEncrypt(AESencrpUtils.encryptLong(brand.getBrandId()));
 			brand.encryptData();
 		}
 		logger.debug("O");

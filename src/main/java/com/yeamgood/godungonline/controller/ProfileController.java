@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.yeamgood.godungonline.bean.CommonType;
+import com.yeamgood.godungonline.bean.MenuCode;
 import com.yeamgood.godungonline.bean.Pnotify;
 import com.yeamgood.godungonline.bean.PnotifyType;
 import com.yeamgood.godungonline.constants.Constants;
@@ -54,7 +55,7 @@ public class ProfileController {
 		ModelAndView modelAndView = new ModelAndView();
 		
 		//INITIAL DATA
-		Menu menu = menuService.findById(Constants.MENU_PROFILE_ID);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.PROFILE.toString());
 		modelAndView.addObject(Constants.MENU,menu);
 		List<Common> languageList = commonService.findByType(CommonType.LANGUAGE.toString());
 		modelAndView.addObject("languageList",languageList);

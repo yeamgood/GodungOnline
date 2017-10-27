@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yeamgood.godungonline.bean.JsonResponse;
+import com.yeamgood.godungonline.bean.MenuCode;
 import com.yeamgood.godungonline.bean.Pnotify;
 import com.yeamgood.godungonline.bean.PnotifyType;
 import com.yeamgood.godungonline.bean.SupplierType;
@@ -75,7 +76,7 @@ public class SupplierController {
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
 		User userSession = (User) session.getAttribute("user");
-		Menu menu = menuService.findById(Constants.MENU_SUPPLIER_ID);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.SUPPLIER.toString());
 		List<Supplier> supplierList = supplierService.findAllByGodungGodungIdOrderBySupplierNameAsc(userSession.getGodung().getGodungId());
 		
 		modelAndView.addObject(Constants.MENU, menu);
@@ -122,7 +123,7 @@ public class SupplierController {
 		logger.debug("I:");
 		logger.debug(Constants.LOG_INPUT, idEncrypt);
 		ModelAndView modelAndView = new ModelAndView();
-		Menu menu = menuService.findById(Constants.MENU_SUPPLIER_ID);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.SUPPLIER.toString());
 		User userSession = (User) session.getAttribute("user");
 		
 		List<Province> provinceDropdown = provinceService.findAllByOrderByProvinceNameAsc();
@@ -161,7 +162,7 @@ public class SupplierController {
 	public ModelAndView userSupplierPerson(Model model,HttpSession session){
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
-		Menu menu = menuService.findById(Constants.MENU_SUPPLIER_ID);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.SUPPLIER.toString());
 		List<Province> provinceDropdown = provinceService.findAllByOrderByProvinceNameAsc();
 		List<Country> countryDropdown = countryService.findAllByOrderByCountryNameAsc();
 		
@@ -250,7 +251,7 @@ public class SupplierController {
 	public ModelAndView userSupplierCompany(Model model,HttpSession session){
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
-		Menu menu = menuService.findById(Constants.MENU_SUPPLIER_ID);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.SUPPLIER.toString());
 		List<Province> provinceDropdown = provinceService.findAllByOrderByProvinceNameAsc();
 		List<Country> countryDropdown = countryService.findAllByOrderByCountryNameAsc();
 		

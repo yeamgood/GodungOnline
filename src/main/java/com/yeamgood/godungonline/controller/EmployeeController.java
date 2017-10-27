@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yeamgood.godungonline.bean.JsonResponse;
+import com.yeamgood.godungonline.bean.MenuCode;
 import com.yeamgood.godungonline.bean.Pnotify;
 import com.yeamgood.godungonline.bean.PnotifyType;
 import com.yeamgood.godungonline.constants.Constants;
@@ -77,7 +78,7 @@ public class EmployeeController {
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
 		User userSession = (User) session.getAttribute("user");
-		Menu menu = menuService.findById(Constants.MENU_EMPLOYEE_ID);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.EMPLOYEE.toString());
 		List<Employee> employeeList = employeeService.findAllByGodungGodungIdOrderByEmployeeNameAsc(userSession.getGodung().getGodungId());
 		
 		modelAndView.addObject(Constants.MENU, menu);
@@ -125,7 +126,7 @@ public class EmployeeController {
 		logger.debug(LOG_EMPLOYEE_IDENCRYPT,employeeIdEncrypt);
 		
 		ModelAndView modelAndView = new ModelAndView();
-		Menu menu = menuService.findById(Constants.MENU_EMPLOYEE_ID);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.EMPLOYEE.toString());
 		User userSession = (User) session.getAttribute("user");
 		
 		Employee employee = employeeService.findByIdEncrypt(employeeIdEncrypt,userSession);
@@ -150,7 +151,7 @@ public class EmployeeController {
 	public ModelAndView userEmployeePerson(Model model,HttpSession session) {
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
-		Menu menu = menuService.findById(Constants.MENU_EMPLOYEE_ID);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.EMPLOYEE.toString());
 		User userSession = (User) session.getAttribute("user");
 		List<Province> provinceDropdown = provinceService.findAllByOrderByProvinceNameAsc();
 		List<Country> countryDropdown = countryService.findAllByOrderByCountryNameAsc();

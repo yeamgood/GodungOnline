@@ -339,20 +339,20 @@ INSERT INTO `godung_online`.`role` (`role_id`, `version`, `role_name`) VALUES ('
 
 
 -- USER MENU --
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('1','/user/home', '1', 'fa fa-home', 'Home', 'menu.name.home', '1');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`) VALUES ('1','/user/home', '1', 'fa fa-home', 'Home', 'USER_HOME','menu.name.home', '1', '0');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '1');
 
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('10','javascript:;', '1', 'fa fa-book', 'Purchase', 'menu.name.purchase', '1');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('11','/user/purchaseRequest', '1', 'fa fa-file-text-o', 'Profile', 'menu.name.purchaserequest', '1','10');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`) VALUES ('10','javascript:;', '1', 'fa fa-book', 'Purchase', 'PURCHASE', 'menu.name.purchase', '1', '0');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`,`parent_code`) VALUES ('11','/user/purchaseRequest', '1', 'fa fa-file-text-o', 'purchase request', 'PURCHASE_REQUEST', 'menu.name.purchaserequest', '1', '0','PURCHASE');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '10');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '11');
 
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('40','javascript:;', '1', 'fa fa-table', 'Product Management', 'menu.name.productmanagement', '30');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('41','/user/warehouse', '1', 'fa fa-home', 'Werehouse', 'menu.name.werehouse', '1','40');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('42','/user/product', '1', 'fa fa-cubes', 'Product', 'menu.name.product', '2','40');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('43','/user/brand', '1', 'fa fa-tags', 'Brand', 'menu.name.brand', '3','40');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('44','/user/measure', '1', 'fa fa-book', 'Measure', 'menu.name.measure', '4','40');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('45','/user/category', '1', 'fa fa-sitemap', 'Category', 'menu.name.category', '5','40');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`) VALUES ('40','javascript:;', '1', 'fa fa-table', 'Product Management', 'PRODUCT_MANAGE', 'menu.name.product.manage', '30', '0');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`,`parent_code`) VALUES ('41','/user/warehouse', '1', 'fa fa-home', 'Werehouse', 'WEREHOUSE', 'menu.name.werehouse', '1', '0','PRODUCT_MANAGE');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`,`parent_code`) VALUES ('42','/user/product', '1', 'fa fa-cubes', 'Product', 'PRODUCT', 'menu.name.product', '2', '0','PRODUCT_MANAGE');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`,`parent_code`) VALUES ('43','/user/brand', '1', 'fa fa-tags', 'Brand', 'BRAND', 'menu.name.brand', '3', '0','PRODUCT_MANAGE');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`,`parent_code`) VALUES ('44','/user/measure', '1', 'fa fa-book', 'Measure', 'MEASURE', 'menu.name.measure', '4', '0','PRODUCT_MANAGE');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`,`parent_code`) VALUES ('45','/user/category', '1', 'fa fa-sitemap', 'Category', 'CATEGORY', 'menu.name.category', '5', '0','PRODUCT_MANAGE');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '40');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '41');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '42');
@@ -360,31 +360,161 @@ INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '43'
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '44');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '45');
 
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('50','javascript:;', '1', 'fa fa-users', 'Person Management', 'menu.name.person.management', '40');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('51','/user/supplier', '1', 'fa fa-university', 'Supplier', 'menu.name.supplier', '1','50');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('52','/user/customer', '1', 'fa fa-user', 'Customer', 'menu.name.customer', '2','50');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('53','/user/employee', '1', 'fa fa-users', 'Employee', 'menu.name.employee', '3','50');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`) VALUES ('50','javascript:;', '1', 'fa fa-users', 'Person Management', 'PERSON_MANAGE', 'menu.name.person.manage', '40', '0');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`,`parent_code`) VALUES ('51','/user/supplier', '1', 'fa fa-university', 'Supplier', 'SUPPLIER', 'menu.name.supplier', '1', '0','PERSON_MANAGE');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`,`parent_code`) VALUES ('52','/user/customer', '1', 'fa fa-user', 'Customer', 'CUSTOMER', 'menu.name.customer', '2', '0','PERSON_MANAGE');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`,`parent_code`) VALUES ('53','/user/employee', '1', 'fa fa-users', 'Employee', 'EMPLOYEE', 'menu.name.employee', '3', '0','PERSON_MANAGE');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '50');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '51');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '52');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '53');
 
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('100','javascript:;', '1', 'fa fa-cogs', 'Setting', 'menu.name.setting', '50');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('101','/user/profile', '1', 'fa fa-user', 'Profile', 'menu.name.profile', '1','100');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`,`parent_id`) VALUES ('102','/user/rolegodung', '1', 'fa fa-briefcase', 'Rolegodung', 'menu.name.rolegodung', '2','100');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`) VALUES ('100','javascript:;', '1', 'fa fa-cogs', 'Setting', 'SETTING', 'menu.name.setting', '50', '0');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`,`parent_code`) VALUES ('101','/user/profile', '1', 'fa fa-user', 'Profile', 'PROFILE', 'menu.name.profile', '1', '0','SETTING');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`,`parent_code`) VALUES ('102','/user/rolegodung', '1', 'fa fa-briefcase', 'Rolegodung', 'ROLEGODUNG', 'menu.name.rolegodung', '2', '0','SETTING');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '100');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '101');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('2', '102');
 
+
+-- MENU PRIVILEGE -- 
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '1', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '1', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '1', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '1', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '1', 'HISTORY', '');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '10', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '10', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '10', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '10', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '10', 'HISTORY', '');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '11', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '11', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '11', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '11', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '11', 'HISTORY', '');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '40', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '40', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '40', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '40', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '40', 'HISTORY', '');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '41', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '41', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '41', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '41', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '41', 'HISTORY', '');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '42', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '42', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '42', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '42', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '42', 'HISTORY', '');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '43', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '43', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '43', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '43', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '43', 'HISTORY', '');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '44', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '44', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '44', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '44', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '44', 'HISTORY', '');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '45', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '45', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '45', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '45', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '45', 'HISTORY', '');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '50', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '50', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '50', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '50', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '50', 'HISTORY', '');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '51', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '51', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '51', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '51', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '51', 'HISTORY', '');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '52', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '52', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '52', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '52', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '52', 'HISTORY', '');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '53', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '53', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '53', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '53', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '53', 'HISTORY', '');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '100', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '100', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '100', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '100', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '100', 'HISTORY', '');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '101', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '101', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '101', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '101', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '101', 'HISTORY', '');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '102', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '102', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '102', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '102', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '102', 'HISTORY', '');
+
 -- ADMIN MENU --
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('200','/admin/home', '1', 'fa fa-home', 'Home', 'menu.name.home', '1');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('201','/admin/user', '1', 'fa fa-user', 'Users', 'menu.name.user', '2');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('202','/admin/role', '1', 'fa fa-tasks', 'Roles', 'menu.name.role', '3');
-INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `name`, `code`, `priority`) VALUES ('203','/admin/menu', '1', 'fa fa-desktop', 'Menu', 'menu.name.menu', '4');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`) VALUES ('200','/admin/home', '1', 'fa fa-home', 'Home', 'ADMIN_HOME', 'menu.name.home', '101', '0');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`) VALUES ('201','/admin/user', '1', 'fa fa-user', 'Users', 'ADMIN_USERS', 'menu.name.user', '102', '0');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`) VALUES ('202','/admin/godung', '1', 'fa fa-cube', 'Godung', 'ADMIN_GODUNG', 'menu.name.godung', '103', '0');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`) VALUES ('203','/admin/role', '1', 'fa fa-tasks', 'Roles', 'ADMIN_ROLES', 'menu.name.role', '104', '0');
+INSERT INTO `godung_online`.`menu` (`menu_id`,`action`, `active`, `icon`, `menu_name`, `menu_code`, `message_code`, `sequence`, `version`) VALUES ('204','/admin/menu', '1', 'fa fa-desktop', 'Menu', 'ADMIN_MENU', 'menu.name.menu', '105', '0');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '200');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '201');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '202');
 INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '203');
+INSERT INTO `godung_online`.`role_menu` (`role_id`, `menu_id`) VALUES ('1', '204');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '200', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '200', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '200', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '200', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '200', 'HISTORY', '');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '201', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '201', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '201', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '201', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '201', 'HISTORY', '');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '202', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '202', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '202', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '202', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '202', 'HISTORY', '');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '203', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '203', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '203', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '203', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '203', 'HISTORY', '');
+
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '204', 'ADD', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '204', 'EDIT', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '204', 'VIEW', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '204', 'DELETE', '');
+INSERT INTO `godung_online`.`menu_privilege` (`create_user`, `version`, `description`, `menu_id`, `menu_privilege_code`, `menu_privilege_name`) VALUES ('SYSTEM', '0', '', '204', 'HISTORY', '');
 
 
 -- COMMON CODE --

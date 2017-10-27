@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yeamgood.godungonline.bean.JsonResponse;
+import com.yeamgood.godungonline.bean.MenuCode;
 import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.datatable.DataTableObject;
 import com.yeamgood.godungonline.datatable.DataTablesRequest;
@@ -141,7 +142,7 @@ public class PurchaseRequestProductController {
 		logger.debug("I:");
 		logger.debug(Constants.LOG_INPUT, purchaseRequestProductIdEncrypt);
 		ModelAndView modelAndView = new ModelAndView();
-		Menu menu = menuService.findById(Constants.MENU_ROLE_GODUNG_ID);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.PURCHASE_REQUEST.toString());
 		User userSession = (User) session.getAttribute("user");
 		
 		PurchaseRequestProduct purchaseRequestProduct = purchaseRequestProductService.findByIdEncrypt(purchaseRequestProductIdEncrypt,userSession);

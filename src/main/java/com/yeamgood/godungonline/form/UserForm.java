@@ -21,12 +21,15 @@ public class UserForm {
 	
 	private int active;
 	
+	private Long roleId;
+	
 	public void mapObjectToForm(User user) {
 		this.userIdEncrypt = user.getUserIdEncrypt();
 		this.email = user.getEmail();
 		this.name = user.getName();
 		this.language = user.getLanguage();
 		this.active = user.getActive();
+		this.roleId = user.getRoles().iterator().next().getId();
 	}
 	
 	public String getUserIdEncrypt() {
@@ -58,6 +61,14 @@ public class UserForm {
 	}
 	public void setActive(int active) {
 		this.active = active;
+	}
+
+	public Long getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
 	}
 
 	@Override

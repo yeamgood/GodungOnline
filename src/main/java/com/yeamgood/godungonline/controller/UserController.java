@@ -23,6 +23,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yeamgood.godungonline.bean.CommonType;
 import com.yeamgood.godungonline.bean.JsonResponse;
+import com.yeamgood.godungonline.bean.MenuCode;
 import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.datatable.DataTableObject;
 import com.yeamgood.godungonline.datatable.DataTablesRequest;
@@ -31,9 +32,11 @@ import com.yeamgood.godungonline.form.UserForm;
 import com.yeamgood.godungonline.form.UserPasswordForm;
 import com.yeamgood.godungonline.model.Common;
 import com.yeamgood.godungonline.model.Menu;
+import com.yeamgood.godungonline.model.RoleLogin;
 import com.yeamgood.godungonline.model.User;
 import com.yeamgood.godungonline.service.CommonService;
 import com.yeamgood.godungonline.service.MenuService;
+import com.yeamgood.godungonline.service.RoleLoginService;
 import com.yeamgood.godungonline.service.UserService;
 import com.yeamgood.godungonline.utils.AESencrpUtils;
 
@@ -56,15 +59,21 @@ public class UserController {
 	
 	@Autowired
 	CommonService commonService;
+	
+	@Autowired
+	RoleLoginService roleLoginService;
 
 	@RequestMapping(value = "/admin/user", method = RequestMethod.GET)
 	public ModelAndView user(HttpSession session) {
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
-		Menu menu = menuService.findById(Constants.MENU_USER_ID);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.ADMIN_HOME.toString());
 		
 		List<Common> languageList = commonService.findByType(CommonType.LANGUAGE.toString());
 		modelAndView.addObject("languageList",languageList);
+		
+		List<RoleLogin> roleLoginList = roleLoginService.findAll();
+		modelAndView.addObject("roleLoginList",roleLoginList);
 		
 		modelAndView.addObject(Constants.MENU, menu);
 		modelAndView.setViewName("admin/user");

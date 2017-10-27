@@ -20,21 +20,21 @@ public class Constants {
 	public static final String LOG_INPUT = "input:{}"; 
 
 	public static final String MENU = "menu";
-	public static final Long MENU_HOME_ID = (long) 1;
-	public static final Long MENU_WAREHOUSE_ID = (long) 41;
-	public static final Long MENU_PRODUCT_ID = (long) 42;
-	public static final Long MENU_BRAND_ID = (long) 43;
-	public static final Long MENU_MEASURE_ID = (long) 44;
-	public static final Long MENU_CATEGORY_ID = (long) 45;
-	public static final Long MENU_SUPPLIER_ID = (long) 51;
-	public static final Long MENU_CUSTOMER_ID = (long) 52;
-	public static final Long MENU_EMPLOYEE_ID = (long) 53;
-	public static final Long MENU_PROFILE_ID = (long) 101;
-	public static final Long MENU_ROLE_GODUNG_ID = (long) 102;
-	public static final Long MENU_PURCHASE_REQUEST = (long) 11;
-
-	public static final Long MENU_USER_ID = (long) 201;
-	public static final Long MENU_ROLE_ID = (long) 202;
+//	public static final Long MENU_HOME_ID = (long) 1;
+//	public static final Long MENU_WAREHOUSE_ID = (long) 41;
+//	public static final Long MENU_PRODUCT_ID = (long) 42;
+//	public static final Long MENU_BRAND_ID = (long) 43;
+//	public static final Long MENU_MEASURE_ID = (long) 44;
+//	public static final Long MENU_CATEGORY_ID = (long) 45;
+//	public static final Long MENU_SUPPLIER_ID = (long) 51;
+//	public static final Long MENU_CUSTOMER_ID = (long) 52;
+//	public static final Long MENU_EMPLOYEE_ID = (long) 53;
+//	public static final Long MENU_PROFILE_ID = (long) 101;
+//	public static final Long MENU_ROLE_GODUNG_ID = (long) 102;
+//	public static final Long MENU_PURCHASE_REQUEST = (long) 11;
+//
+//	public static final Long MENU_USER_ID = (long) 201;
+//	public static final Long MENU_ROLE_ID = (long) 202;
 	
 	public static final Long COUNTRY_THAILAND = (long) 217;
 	

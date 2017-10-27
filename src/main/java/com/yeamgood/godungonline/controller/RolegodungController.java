@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yeamgood.godungonline.bean.JsonResponse;
+import com.yeamgood.godungonline.bean.MenuCode;
 import com.yeamgood.godungonline.bean.Pnotify;
 import com.yeamgood.godungonline.bean.PnotifyType;
 import com.yeamgood.godungonline.constants.Constants;
@@ -68,7 +69,7 @@ public class RolegodungController {
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
 		User userSession = (User) session.getAttribute("user");
-		Menu menu = menuService.findById(Constants.MENU_ROLE_GODUNG_ID);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.ROLEGODUNG.toString());
 		List<Rolegodung> rolegodungList = rolegodungService.findAllByGodungGodungIdOrderByRolegodungNameAsc(userSession.getGodung().getGodungId());
 		
 		modelAndView.addObject(Constants.MENU, menu);
@@ -114,7 +115,7 @@ public class RolegodungController {
 		logger.debug("I:");
 		logger.debug(Constants.LOG_INPUT, rolegodungIdEncrypt);
 		ModelAndView modelAndView = new ModelAndView();
-		Menu menu = menuService.findById(Constants.MENU_ROLE_GODUNG_ID);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.ROLEGODUNG.toString());
 		User userSession = (User) session.getAttribute("user");
 		
 		Rolegodung rolegodung = rolegodungService.findByIdEncrypt(rolegodungIdEncrypt,userSession);
@@ -137,7 +138,7 @@ public class RolegodungController {
 	public ModelAndView userRolegodungPerson(Model model,HttpSession session){
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
-		Menu menu = menuService.findById(Constants.MENU_ROLE_GODUNG_ID);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.ROLEGODUNG.toString());
 		List<Province> provinceDropdown = provinceService.findAllByOrderByProvinceNameAsc();
 		List<Country> countryDropdown = countryService.findAllByOrderByCountryNameAsc();
 		

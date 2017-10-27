@@ -30,6 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yeamgood.godungonline.bean.JsonResponse;
+import com.yeamgood.godungonline.bean.MenuCode;
 import com.yeamgood.godungonline.bean.Pnotify;
 import com.yeamgood.godungonline.bean.PnotifyType;
 import com.yeamgood.godungonline.constants.Constants;
@@ -96,7 +97,7 @@ public class PurchaseRequestController {
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
 		User userSession = (User) session.getAttribute("user");
-		Menu menu = menuService.findById(Constants.MENU_PURCHASE_REQUEST);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.PURCHASE_REQUEST.toString());
 		List<PurchaseRequest> purchaseRequestList = purchaseRequestService.findAllByGodungGodungIdOrderByPurchaseRequestNameAsc(userSession.getGodung().getGodungId());
 		
 		modelAndView.addObject(Constants.MENU, menu);
@@ -172,7 +173,7 @@ public class PurchaseRequestController {
 		logger.debug("I:");
 		logger.debug(Constants.LOG_INPUT, purchaseRequestIdEncrypt);
 		ModelAndView modelAndView = new ModelAndView();
-		Menu menu = menuService.findById(Constants.MENU_PURCHASE_REQUEST);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.PURCHASE_REQUEST.toString());
 		User userSession = (User) session.getAttribute("user");
 		Long godungId = userSession.getGodung().getGodungId();
 		
@@ -206,7 +207,7 @@ public class PurchaseRequestController {
 	public ModelAndView purchaseRequestManage(Model model,HttpSession session){
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
-		Menu menu = menuService.findById(Constants.MENU_PURCHASE_REQUEST);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.PURCHASE_REQUEST.toString());
 		User userSession = (User) session.getAttribute("user");
 		Long godungId = userSession.getGodung().getGodungId();
 		

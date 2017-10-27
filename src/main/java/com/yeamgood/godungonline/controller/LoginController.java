@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.yeamgood.godungonline.bean.MenuCode;
 import com.yeamgood.godungonline.bean.Pnotify;
 import com.yeamgood.godungonline.bean.PnotifyType;
 import com.yeamgood.godungonline.constants.Constants;
@@ -106,7 +108,7 @@ public class LoginController {
 		User user = userService.findUserByEmail(auth.getName());
 		manageSelectGodungAndRole(user);
 		manageMenu(user);
-		Menu menu = menuService.findById(Constants.MENU_HOME_ID);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.USER_HOME.toString());
 		modelAndView.addObject(Constants.MENU, menu);
 		modelAndView.addObject("user",user);
 		modelAndView.setViewName("home");
@@ -129,14 +131,14 @@ public class LoginController {
 		List<Menu> subMenuList;
 		List<Menu> menuList = new ArrayList<>();
 		for (Menu menu : user.getRole().getMenuList()) {
-			if(menu.getParentId() == null) {
+			if(StringUtils.isBlank(menu.getParentCode())) {
 				menuList.add(menu);
 			}
 		}
 		for(Menu menu : menuList) {
 			subMenuList = new ArrayList<>();
 			for (Menu subMenu : user.getRole().getMenuList()) {
-				if(subMenu.getParentId() != null && subMenu.getParentId().equals(menu.getId())) {
+				if(StringUtils.isNotBlank(subMenu.getParentCode()) &&  StringUtils.equals(subMenu.getParentCode(), menu.getMenuCode())) {
 					subMenuList.add(subMenu);
 				}
 			}

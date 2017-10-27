@@ -106,6 +106,9 @@ public class UserServiceImpl implements UserService{
 		user.setName(userForm.getName());
 		user.setLanguage(userForm.getLanguage());
 		user.setActive(userForm.getActive());
+		
+		 RoleLogin userRole = roleLoginRepository.findOne(userForm.getRoleId());
+		 user.setRoles(new HashSet<RoleLogin>(Arrays.asList(userRole)));
 		userRepository.save(user);
 		logger.debug("O:");
 	}

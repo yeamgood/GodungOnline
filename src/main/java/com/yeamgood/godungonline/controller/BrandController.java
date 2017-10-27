@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yeamgood.godungonline.bean.JsonResponse;
+import com.yeamgood.godungonline.bean.MenuCode;
 import com.yeamgood.godungonline.constants.Constants;
 import com.yeamgood.godungonline.datatable.DataTableObject;
 import com.yeamgood.godungonline.datatable.DataTablesRequest;
@@ -51,7 +52,7 @@ public class BrandController {
 	public ModelAndView brand(HttpSession session) {
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
-		Menu menu = menuService.findById(Constants.MENU_BRAND_ID);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.BRAND.toString());
 		modelAndView.addObject(Constants.MENU, menu);
 		modelAndView.setViewName("user/brand");
 		logger.debug("O");

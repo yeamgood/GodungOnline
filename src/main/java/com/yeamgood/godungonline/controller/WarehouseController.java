@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yeamgood.godungonline.bean.JsonResponse;
+import com.yeamgood.godungonline.bean.MenuCode;
 import com.yeamgood.godungonline.bean.Pnotify;
 import com.yeamgood.godungonline.bean.PnotifyType;
 import com.yeamgood.godungonline.constants.Constants;
@@ -71,7 +72,7 @@ public class WarehouseController {
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
 		User userSession = (User) session.getAttribute("user");
-		Menu menu = menuService.findById(Constants.MENU_WAREHOUSE_ID);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.WEREHOUSE.toString());
 		List<Warehouse> warehouseList = warehouseService.findAllByGodungGodungIdOrderByWarehouseNameAsc(userSession.getGodung().getGodungId());
 		
 		modelAndView.addObject(Constants.MENU, menu);
@@ -120,7 +121,7 @@ public class WarehouseController {
 	public ModelAndView userWarehousePerson(Model model,HttpSession session){
 		logger.debug("I");
 		ModelAndView modelAndView = new ModelAndView();
-		Menu menu = menuService.findById(Constants.MENU_WAREHOUSE_ID);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.WEREHOUSE.toString());
 		
 		//CHECK ERROR BINDING AND INITIAL DATA
 		if (!model.containsAttribute(WAREHOUSE)) {
@@ -141,7 +142,7 @@ public class WarehouseController {
 		logger.debug("I:");
 		logger.debug(Constants.LOG_INPUT, idEncrypt);
 		ModelAndView modelAndView = new ModelAndView();
-		Menu menu = menuService.findById(Constants.MENU_WAREHOUSE_ID);
+		Menu menu = menuService.findOneByMenuCode(MenuCode.WEREHOUSE.toString());
 		User userSession = (User) session.getAttribute("user");
 		
 		Warehouse warehouse = warehouseService.findByIdEncrypt(idEncrypt,userSession);

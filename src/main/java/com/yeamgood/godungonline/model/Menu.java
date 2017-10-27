@@ -9,62 +9,95 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.yeamgood.godungonline.model.template.ModelTemplate;
+import com.yeamgood.godungonline.utils.AESencrpUtils;
+
 @Entity
 @Table(name = "menu")
-public class Menu {
+public class Menu extends ModelTemplate{
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="menu_id")
-	private Long id;
+	private Long menuId;
 	
-	@Column(name="name")
-	private String name;
+	@Transient
+	private String menuIdEncrypt;
+	
+	@Column(name="menu_code")
+	@NotEmpty(message = "{form.menu.valid.code}")
+	private String menuCode;
+	
+	@Column(name="menu_name")
+	private String menuName;
+	
+	@Column(name="message_code")
+	private String messageCode;
+	
+	@Column(name="description")
+	private String description;
 	
 	@Column(name="icon")
 	private String icon;
 	
-	@Column(name="code")
-	private String code;
-	
 	@Column(name="action")
 	private String action;
 	
-	@Column(name="priority")
-	private String priority;
+	@Column(name="sequence")
+	private Long sequence;
 	
-	@Column(name="parent_id")
-	private Long parentId;
+	@Column(name="parent_code")
+	private String parentCode;
 	
 	@Column(name="active")
-	private String active;
+	private Long active;
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "menu_menu_privilege", joinColumns = @JoinColumn(name = "menu_id"), inverseJoinColumns = @JoinColumn(name = "menu_privilege_id"))
-    private List<MenuPrivilege> menuPrivilegeList;
+	//@ManyToMany(cascade = CascadeType.ALL)
+	//@JoinTable(name = "menu_menu_privilege", joinColumns = @JoinColumn(name = "menu_id"), inverseJoinColumns = @JoinColumn(name = "menu_privilege_id"))
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "menu_id")
+	private List<MenuPrivilege> menuPrivilegeList;
 	
 	@Transient
 	private List<Menu> menuList;
 	
-	public Long getId() {
-		return id;
+	public void setObject(Menu menu) {
+		this.menuName = menu.getMenuName();
+		this.menuCode = menu.getMenuCode();
+		this.description = menu.getDescription();
+		this.messageCode = menu.getMessageCode();
+		this.icon = menu.getIcon();
+		this.action = menu.getAction();
+		this.sequence = menu.getSequence();
+		this.parentCode = menu.getParentCode();
+		this.active = menu.getActive();
+	}
+	
+	public void encryptData() {
+		this.menuIdEncrypt = AESencrpUtils.encryptLong(this.menuId);
+		this.menuId = null;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public Long getMenuId() {
+		return menuId;
 	}
 
-	public String getName() {
-		return name;
+	public void setMenuId(Long menuId) {
+		this.menuId = menuId;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getMenuName() {
+		return menuName;
+	}
+
+	public void setMenuName(String menuName) {
+		this.menuName = menuName;
 	}
 
 	public String getIcon() {
@@ -75,12 +108,12 @@ public class Menu {
 		this.icon = icon;
 	}
 
-	public String getCode() {
-		return code;
+	public String getMenuCode() {
+		return menuCode;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setMenuCode(String menuCode) {
+		this.menuCode = menuCode;
 	}
 
 	public String getAction() {
@@ -91,20 +124,20 @@ public class Menu {
 		this.action = action;
 	}
 
-	public String getActive() {
+	public Long getActive() {
 		return active;
 	}
 
-	public void setActive(String active) {
+	public void setActive(Long active) {
 		this.active = active;
 	}
 
-	public String getPriority() {
-		return priority;
+	public Long getSequence() {
+		return sequence;
 	}
 
-	public void setPriority(String priority) {
-		this.priority = priority;
+	public void setSequence(Long sequence) {
+		this.sequence = sequence;
 	}
 
 	public List<MenuPrivilege> getMenuPrivilegeList() {
@@ -115,12 +148,12 @@ public class Menu {
 		this.menuPrivilegeList = menuPrivilegeList;
 	}
 
-	public Long getParentId() {
-		return parentId;
+	public String getParentCode() {
+		return parentCode;
 	}
 
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
+	public void setParentCode(String parentCode) {
+		this.parentCode = parentCode;
 	}
 
 	public List<Menu> getMenuList() {
@@ -130,5 +163,39 @@ public class Menu {
 	public void setMenuList(List<Menu> menuList) {
 		this.menuList = menuList;
 	}
+
+	public String getMenuIdEncrypt() {
+		return menuIdEncrypt;
+	}
+
+	public void setMenuIdEncrypt(String menuIdEncrypt) {
+		this.menuIdEncrypt = menuIdEncrypt;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getMessageCode() {
+		return messageCode;
+	}
+
+	public void setMessageCode(String messageCode) {
+		this.messageCode = messageCode;
+	}
+
+	@Override
+	public String toString() {
+		return "Menu [menuId=" + menuId + ", menuIdEncrypt=" + menuIdEncrypt + ", menuCode=" + menuCode + ", menuName="
+				+ menuName + ", messageCode=" + messageCode + ", description=" + description + ", icon=" + icon
+				+ ", action=" + action + ", sequence=" + sequence + ", parentCode=" + parentCode + ", active=" + active
+				+ "]";
+	}
+	
+	
 	
 }
